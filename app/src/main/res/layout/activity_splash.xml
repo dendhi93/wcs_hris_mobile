@@ -1,0 +1,61 @@
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.wcs.mobilehris.feature.preparation.splash.SplashViewModel"
+            />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorGray200">
+
+        <ProgressBar
+            android:id="@+id/pb_splash"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/permission_button_margin_vertical"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:indeterminate="true" />
+
+        <ImageView
+            android:id="@+id/imgV_splash"
+            android:layout_centerInParent="true"
+            android:layout_width="@dimen/spacing_very_huge_2"
+            android:layout_height="@dimen/spacing_very_huge_2"
+            android:src="@mipmap/ic_logo_wcs" />
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/padding_medium"
+            android:layout_below="@+id/imgV_splash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_splash_error"
+                android:textColor="@color/colorRed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/nav_header_vertical_spacing"
+                android:text="@={viewModel.stErrDownload}" />
+
+            <Button
+                android:id="@+id/btn_splash_retry"
+                android:layout_margin="@dimen/spacing_semi_medium"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="@string/retry_button"
+                android:onClick="@{() -> viewModel.retryDownload()}"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/ic_blue_button" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</layout>

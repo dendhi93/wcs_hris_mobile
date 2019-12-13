@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_marginTop="50dp"
+            android:id="@+id/imgV_permission"
+            android:layout_centerHorizontal="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/ic_logo_wcs" />
+
+        <TextView
+            android:layout_below="@id/imgV_permission"
+            android:id="@+id/permission_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/permission_content"
+            android:textColor="#2b2b2b"
+            android:textSize="17sp" />
+
+        <RelativeLayout
+            android:layout_below="@+id/permission_title"
+            android:id="@+id/permission_list_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/alph_size_medium"
+            android:layout_centerHorizontal="true">
+
+            <LinearLayout
+                android:id="@+id/permission_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/spacing_small">
+
+                <ImageView
+                    android:id="@+id/permission_ic_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/ic_gps_24" />
+
+                <TextView
+                    android:id="@+id/permission_txt_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:text="Gps"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/permission_storage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/permission_camera"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/spacing_small">
+
+                <ImageView
+                    android:id="@+id/permission_ic_storage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/ic_folder" />
+
+                <TextView
+                    android:id="@+id/permission_txt_storage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:text="Storage"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/permission_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/permission_storage"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/spacing_small">
+
+                <ImageView
+                    android:id="@+id/permission_ic_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/ic_action_phone_android" />
+
+                <TextView
+                    android:id="@+id/permission_txt_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:text="Phone"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <Button
+            android:layout_margin="@dimen/spacing_semi_medium"
+            android:layout_below="@+id/permission_list_container"
+            android:layout_width="match_parent"
+            android:text="@string/persmission_button"
+            android:id="@+id/btn_permission_all"
+            android:onClick="onAllPermissionsButtonClicked"
+            android:textColor="@android:color/white"
+            android:background="@drawable/ic_blue_button"
+            android:layout_height="45dp" />
+    </RelativeLayout>
+
+
+
+</layout>

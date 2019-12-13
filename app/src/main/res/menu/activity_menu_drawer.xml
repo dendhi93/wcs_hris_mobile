@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_activity"
+            android:icon="@mipmap/ic_request"
+            android:title="@string/activity_menu" />
+        <item
+            android:id="@+id/nav_request"
+            android:icon="@mipmap/ic_text_files"
+            android:title="@string/request_menu" />
+        <item
+            android:id="@+id/nav_approval"
+            android:icon="@mipmap/ic_approval"
+            android:title="@string/approval_menu" />
+        <item
+            android:id="@+id/nav_confirmation"
+            android:icon="@mipmap/ic_confirmation"
+            android:title="@string/confirmation_menu" />
+        <item
+            android:id="@+id/nav_status"
+            android:icon="@mipmap/ic_detail"
+            android:title="@string/status_menu" />
+        <item
+            android:id="@+id/nav_absent"
+            android:icon="@mipmap/ic_finger"
+            android:title="@string/absent_menu" />
+        <item
+            android:id="@+id/nav_notification"
+            android:icon="@mipmap/ic_notif_bell"
+            android:title="@string/notification_menu" />
+        <item
+            android:id="@+id/nav_team"
+            android:icon="@mipmap/ic_black_users"
+            android:title="@string/team_menu" />
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@mipmap/ic_setting"
+            android:title="@string/setting_menu" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@mipmap/ic_logout"
+            android:title="@string/logout_menu" />
+    </group>
+</menu>

@@ -1,0 +1,102 @@
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.wcs.mobilehris.feature.profile.ProfileViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/vw_profile"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:background="@mipmap/ic_background" />
+
+        <ImageView
+            android:id="@+id/imgV_profile"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="95dp"
+            android:background="@drawable/ic_white_circle"
+            android:src="@mipmap/ic_user_black" />
+        
+        <TextView
+            android:layout_below="@+id/imgV_profile"
+            android:id="@+id/tv_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/padding_medium2"
+            android:textStyle="bold"
+            android:text="@={viewModel.stProfileName}"
+            android:textSize="@dimen/alph_size_tiny2"/>
+
+        <TextView
+            android:layout_below="@+id/tv_profile_name"
+            android:id="@+id/tv_profile_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/padding_medium2"
+            android:textStyle="bold"
+            android:text="@string/position"
+            android:textSize="@dimen/alph_size_tiny2"/>
+
+        <LinearLayout
+            android:id="@+id/ln_profile_phone"
+            android:layout_below="@+id/tv_profile_position"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/spacing_medium_image"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/padding_medium2"
+                android:layout_height="@dimen/padding_medium2"
+                android:src="@mipmap/ic_phone"/>
+
+            <TextView
+                android:layout_marginStart="@dimen/spacing_tiny"
+                android:id="@+id/tv_profile_telp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.stProfilePhone}"
+                android:textSize="@dimen/alph_size_small_4"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ln_profile_email"
+            android:layout_below="@+id/ln_profile_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/padding_medium"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/padding_medium2"
+                android:layout_height="@dimen/padding_medium2"
+                android:src="@mipmap/ic_mail"/>
+
+            <TextView
+                android:layout_marginStart="@dimen/spacing_tiny"
+                android:id="@+id/tv_profile_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.stProfileMail}"
+                android:textSize="@dimen/alph_size_small_4"/>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>
