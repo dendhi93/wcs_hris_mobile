@@ -18,5 +18,7 @@ object ConstantObject {
     //UI type
     const val vButtonUI = 1
     const val vProgresBarUI = 2
+    const val vEditTextUI = 3
+    const val vGlobalUI = 4
 
 }
