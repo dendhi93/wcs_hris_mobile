@@ -14,6 +14,7 @@ object ConstantObject {
     const val vAlertDialogDismiss = 1
     const val vAlertDialogOkCancel = 2
     const val vAlertDialogNoConnection = "No Connection"
+    const val vAlertDialogConfirmation = "Confirmation"
 
     //UI type
     const val vButtonUI = 1

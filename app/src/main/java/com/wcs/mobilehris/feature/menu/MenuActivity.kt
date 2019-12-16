@@ -202,7 +202,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             EXTRA_FLAG_LOGOUT -> {
                 keyDialogActive = DIALOG_LOG_OUT
-               MessageUtils.alertDialogOkCancel("Are you sure want to exit Apps ?", "Exit Apps", MenuActivity@this, this)
+               MessageUtils.alertDialogOkCancel("Are you sure want to exit Apps ?", ConstantObject.vAlertDialogConfirmation, MenuActivity@this, this)
             }
         }
         frTransaction.commit()

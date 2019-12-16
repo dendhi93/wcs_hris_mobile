@@ -5,12 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.databinding.FragmentActivityBinding
 
 class ActivityFragment : Fragment() {
+    private lateinit var activityBinding : FragmentActivityBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_activity, container, false)
+        activityBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_activity, container, false)
+        return activityBinding.root
     }
+
+
 }
