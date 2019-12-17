@@ -14,14 +14,4 @@ class PlanFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_plan, container, false)
     }
-
-    companion object {
-        fun newInstance(text: String): PlanFragment {
-            val fragment = PlanFragment()
-            val bundle = Bundle()
-            bundle.putString(ConstantObject.vStTitlePlanFragment, text)
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
 }

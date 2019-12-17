@@ -15,13 +15,4 @@ class CompletedFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_completed, container, false)
     }
 
-    companion object {
-        fun newInstance(text: String): CompletedFragment {
-            val fragment = CompletedFragment()
-            val bundle = Bundle()
-            bundle.putString(ConstantObject.vStTitleCompletedFragment, text)
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
 }

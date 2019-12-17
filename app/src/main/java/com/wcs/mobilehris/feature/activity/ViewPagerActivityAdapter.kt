@@ -6,19 +6,19 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.wcs.mobilehris.feature.actual.ActualFragment
 import com.wcs.mobilehris.feature.completed.CompletedFragment
 import com.wcs.mobilehris.feature.plan.PlanFragment
-import com.wcs.mobilehris.utils.ConstantObject
 
 class ViewPagerActivityAdapter(fragmentManager : FragmentManager) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
 
+    private val itemPages =
+        listOf(PlanFragment(),
+        ActualFragment(),
+        CompletedFragment())
+
     override fun getItem(position: Int): Fragment {
-        return when(position) {
-            ConstantObject.vPlanFragment -> PlanFragment.newInstance(ConstantObject.vStTitlePlanFragment)
-            ConstantObject.vActualFragment -> ActualFragment.newInstance(ConstantObject.vStTitleActualFragment)
-            else -> CompletedFragment.newInstance(ConstantObject.vStTitleCompletedFragment)
-        }
+        return itemPages[position]
     }
 
-    override fun getCount(): Int = 3
+    override fun getCount(): Int { return itemPages.size }
 
     override fun getPageTitle(position: Int): CharSequence? {
         return when(position) {

@@ -15,13 +15,4 @@ class ActualFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_actual, container, false)
     }
 
-    companion object {
-        fun newInstance(text: String): ActualFragment {
-            val fragment = ActualFragment()
-            val bundle = Bundle()
-            bundle.putString(ConstantObject.vStTitleActualFragment, text)
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
 }

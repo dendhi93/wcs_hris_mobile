@@ -22,14 +22,4 @@ object ConstantObject {
     const val vEditTextUI = 3
     const val vGlobalUI = 4
 
-    //viewPagerFragment
-    const val vPlanFragment= 1
-    const val vActualFragment = 2
-    const val vCompletedFragment = 3
-
-    //title viewPager Fragment
-    const val vStTitlePlanFragment = "PLAN_FRAGMENT"
-    const val vStTitleActualFragment = "ACTUAL_FRAGMENT"
-    const val vStTitleCompletedFragment = "COMPLETED_FRAGMENT"
-
 }
