@@ -7,14 +7,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_activity"
+            android:layout_width="match_parent"
+            app:tabMode="fixed"
+            android:background="@color/colorWhite"
+            android:minHeight="?attr/actionBarSize"
+            app:tabTextColor="@color/colorBlack"
+            app:tabSelectedTextColor="@color/colorGray"
+            android:layout_height="wrap_content"/>
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/vp_activity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <TableLayout
-            android:id="@+id/tl_activity"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
     </LinearLayout>
 </layout>

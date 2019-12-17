@@ -19,7 +19,7 @@ class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindingLogin = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
+        bindingLogin = DataBindingUtil.setContentView(this, R.layout.activity_login)
         bindingLogin.viewModel = LoginViewModel(this, this)
     }
 
