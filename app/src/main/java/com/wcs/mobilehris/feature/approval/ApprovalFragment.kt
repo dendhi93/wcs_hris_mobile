@@ -13,6 +13,7 @@ import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentApprovalBinding
 import com.wcs.mobilehris.feature.request.CustomRequestAdapter
 import com.wcs.mobilehris.utils.ConstantObject
+import com.wcs.mobilehris.utils.MessageUtils
 import com.wcs.mobilehris.utilsinterface.ActionInterface
 
 class ApprovalFragment : Fragment(), ApprovalInterface {
@@ -45,20 +46,30 @@ class ApprovalFragment : Fragment(), ApprovalInterface {
         }
         approvalAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vProgresBarUI)
-        showUI(ConstantObject.vGlobalUI)
+        showUI(ConstantObject.vRecylerViewUI)
+    }
+
+    override fun onAlertApproval(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
+        when(intTypeActionAlert){
+            ALERT_APPROVAL_NO_CONNECTION -> MessageUtils.alertDialogDismiss(alertMessage, alertMessage, requireContext())
+        }
     }
 
     override fun hideUI(typeUI: Int) {
         when(typeUI){
             ConstantObject.vProgresBarUI -> approvalBinding.pbApproval.visibility = View.GONE
-            ConstantObject.vGlobalUI -> approvalBinding.rcApproval.visibility = View.GONE
+            ConstantObject.vRecylerViewUI -> approvalBinding.rcApproval.visibility = View.GONE
         }
     }
 
     override fun showUI(typeUI: Int) {
         when(typeUI){
             ConstantObject.vProgresBarUI -> approvalBinding.pbApproval.visibility = View.VISIBLE
-            ConstantObject.vGlobalUI -> approvalBinding.rcApproval.visibility = View.VISIBLE
+            ConstantObject.vRecylerViewUI -> approvalBinding.rcApproval.visibility = View.VISIBLE
         }
+    }
+
+    companion object{
+        const val ALERT_APPROVAL_NO_CONNECTION = 1
     }
 }

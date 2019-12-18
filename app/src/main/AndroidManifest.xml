@@ -36,8 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".feature.profile.ProfileActivity"
-            android:label="@string/profile_activity"/>
+        <activity android:name=".feature.profile.ProfileActivity" />
         <activity
             android:name="com.wcs.mobilehris.feature.menu.MenuActivity"
             android:label="@string/title_activity_menu"

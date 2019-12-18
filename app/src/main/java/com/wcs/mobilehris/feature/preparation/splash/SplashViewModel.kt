@@ -16,7 +16,10 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
 
     fun retryDownload(){
         when{
-            !ConnectionObject.isNetworkAvailable(_context) -> _splashInterface.onAlertSplash(_context.getString(R.string.alert_no_connection), ConstantObject.vAlertDialogNoConnection,SplashActivity.DIALOG_NO_INTERNET)
+            !ConnectionObject.isNetworkAvailable(_context) -> {
+                _splashInterface.onAlertSplash(_context.getString(R.string.alert_no_connection),
+                    ConstantObject.vAlertDialogNoConnection,SplashActivity.DIALOG_NO_INTERNET)
+            }
             else -> processDownload()
         }
     }

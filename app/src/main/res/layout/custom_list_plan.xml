@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/cv_customPlan"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="1dp"
+    android:elevation="2dp"
+    app:cardMaxElevation="0dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/cardview_light_background"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_margin="@dimen/spacing_tiny"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_margin="@dimen/spacing_tiny"
+            android:id="@+id/tv_custom_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/alph_size_small"
+            android:textStyle="bold"
+            android:layout_alignParentStart="true"/>
+
+        <ImageButton
+            android:background="@color/colorWhite"
+            android:id="@+id/imgB_menu"
+            android:layout_width="@dimen/spacing_large"
+            android:layout_height="@dimen/spacing_large"
+            android:src="@mipmap/ic_three_dot"
+            android:layout_alignParentEnd="true" />
+
+        <LinearLayout
+            android:id="@+id/ln_customPlan"
+            android:layout_below="@+id/tv_custom_plan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_margin="@dimen/spacing_tiny"
+                    android:layout_width="@dimen/padding_medium2"
+                    android:layout_height="@dimen/padding_medium2"
+                    android:src="@mipmap/ic_users"/>
+                <TextView
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_customPlan_created_user"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_margin="@dimen/spacing_tiny"
+                    android:layout_width="@dimen/padding_medium2"
+                    android:layout_height="@dimen/padding_medium2"
+                    android:src="@mipmap/ic_factory"/>
+                <TextView
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_customPlan_companyName"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_margin="@dimen/spacing_tiny"
+                    android:layout_width="@dimen/padding_medium2"
+                    android:layout_height="@dimen/padding_medium2"
+                    android:src="@mipmap/ic_marker"/>
+                <TextView
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_customPlan_Location"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_margin="@dimen/spacing_tiny"
+                    android:layout_width="@dimen/padding_medium2"
+                    android:layout_height="@dimen/padding_medium2"
+                    android:src="@mipmap/ic_calendar_24"/>
+                <TextView
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_customPlan_date"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginBottom="@dimen/spacing_tiny_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/spacing_tiny"
+                    android:layout_width="@dimen/padding_medium2"
+                    android:layout_height="@dimen/padding_medium2"
+                    android:src="@mipmap/ic_time"/>
+
+                <TextView
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_customPlan_time"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:padding="@dimen/spacing_tiny_3"
+            android:layout_marginBottom="@dimen/spacing_tiny"
+            android:layout_marginEnd="@dimen/spacing_tiny"
+            android:textColor="@color/colorWhite"
+            android:id="@+id/btn_customPlan"
+            android:layout_below="@+id/ln_customPlan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_red_button"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
