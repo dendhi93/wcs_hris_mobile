@@ -1,6 +1,7 @@
 package com.wcs.mobilehris.feature.approval
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,9 @@ class CustomApprovalAdapter (private val _context : Context, private val approva
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var model : ApprovalModel = approvalList[position]
         val stMenu = model.itemMenu.trim()+" ("+ model.qtyApproval.toString() +")"
+        when{
+            model.qtyApproval > 0 -> {holder.cvCustom.setCardBackgroundColor(Color.LTGRAY)}
+        }
         holder.tvMenu.text = stMenu.trim()
         holder.tvMenuContent.text = model.itemMenuContent.trim()
         holder.imgCustom.setImageResource(model.imgItemMenu)

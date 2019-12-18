@@ -1,7 +1,6 @@
 package com.wcs.mobilehris.feature.approval
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentApprovalBinding
-import com.wcs.mobilehris.feature.request.CustomRequestAdapter
 import com.wcs.mobilehris.utils.ConstantObject
 import com.wcs.mobilehris.utils.MessageUtils
-import com.wcs.mobilehris.utilsinterface.ActionInterface
 
 class ApprovalFragment : Fragment(), ApprovalInterface {
     private lateinit var approvalBinding : FragmentApprovalBinding
