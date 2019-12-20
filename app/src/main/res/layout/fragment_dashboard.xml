@@ -1,0 +1,66 @@
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.wcs.mobilehris.feature.dashboard.DashboardViewModel" />
+    </data>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/pb_dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_medium3"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:visibility="gone"
+        android:indeterminate="true" />
+
+    <LinearLayout
+        android:layout_below="@+id/pb_dashboard"
+        android:id="@+id/ln_dashboard_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_margin="@dimen/spacing_tiny"
+            android:id="@+id/btn_dashboard_leave"
+            android:padding="@dimen/spacing_tiny"
+            android:layout_width="@dimen/spacing_very_huge_1"
+            android:layout_height="@dimen/spacing_large"
+            android:text="@={viewModel.stLeaveQty}"
+            android:background="@drawable/ic_yelow_button"/>
+        
+        <View
+            android:layout_width="@dimen/padding_medium2"
+            android:layout_height="@dimen/spacing_large"/>
+
+        <Button
+            android:layout_margin="@dimen/spacing_tiny"
+            android:id="@+id/btn_dashboard_late"
+            android:padding="@dimen/spacing_tiny"
+            android:layout_width="@dimen/spacing_very_huge_1"
+            android:layout_height="@dimen/spacing_large"
+            android:text="@={viewModel.stLateQty}"
+            android:background="@drawable/ic_yelow_button"/>
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_below="@+id/ln_dashboard_top"
+        android:id="@+id/sw_dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rc_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</RelativeLayout>
+</layout>

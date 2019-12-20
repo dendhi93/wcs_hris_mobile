@@ -17,7 +17,7 @@
     <string name="action_settings">Settings</string>
 
     //menu - menu navigation drawer
-    <string name="profile_menu">Profile</string>
+    <string name="dashboard_menu">Dashboard</string>
     <string name="team_menu">Team</string>
     <string name="approval_menu">Approval</string>
     <string name="request_menu">Request</string>

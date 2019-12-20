@@ -130,6 +130,13 @@
                     android:layout_gravity="center_vertical"
                     android:id="@+id/tv_customPlan_time"/>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_tiny_4"
+                android:layout_marginTop="@dimen/spacing_tiny"
+                android:layout_marginBottom="@dimen/spacing_tiny"
+                android:background="@color/colorGray400"/>
         </LinearLayout>
 
         <Button

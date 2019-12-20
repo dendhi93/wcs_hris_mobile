@@ -31,6 +31,7 @@ class ApprovalFragment : Fragment(), ApprovalInterface {
         approvalBinding.rcApproval.setHasFixedSize(true)
         approvalAdapter = CustomApprovalAdapter(requireContext(), arrApprovalList)
         approvalBinding.rcApproval.adapter = approvalAdapter
+
         approvalBinding.viewModel?.approvalInitMenu()
     }
     override fun loadApprovalMenu(approvalMenuList: List<ApprovalModel>) {

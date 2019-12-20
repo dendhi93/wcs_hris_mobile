@@ -19,6 +19,7 @@ import com.wcs.mobilehris.feature.profile.ProfileActivity
 import com.wcs.mobilehris.feature.activity.ActivityFragment
 import com.wcs.mobilehris.feature.approval.ApprovalFragment
 import com.wcs.mobilehris.feature.confirmation.ConfirmationFragment
+import com.wcs.mobilehris.feature.dashboard.DashboardFragment
 import com.wcs.mobilehris.feature.notification.NotificationFragment
 import com.wcs.mobilehris.feature.request.RequestFragment
 import com.wcs.mobilehris.feature.setting.SettingFragment
@@ -73,6 +74,10 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         var vFragment : Fragment? = null
         when(menuItem.itemId){
+            R.id.nav_dashboard -> {
+                vFragment = DashboardFragment()
+                supportActionBar?.let { it.subtitle = "Dashboard" }
+            }
             R.id.nav_activity -> {
                 vFragment = ActivityFragment()
                 supportActionBar?.let { it.subtitle = "Activity" }
@@ -111,7 +116,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_logout -> {
                 keyDialogActive = DIALOG_LOG_OUT
-                MessageUtils.alertDialogOkCancel("Are you sure want to exit Apps ?", "Exit Apps", MenuActivity@this, this)
+                MessageUtils.alertDialogOkCancel("Are you sure want to exit Apps ?", "Exit Apps", this, this)
             }
         }
         if (vFragment != null) {
@@ -146,6 +151,12 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val frTransaction = supportFragmentManager.beginTransaction()
 
         when(intToFragment){
+            EXTRA_FLAG_DASHBOARD -> {
+                supportActionBar?.let {
+                    it.subtitle = "Dashboard"
+                    frTransaction.replace(R.id.frame_nav_container, DashboardFragment())
+                }
+            }
             EXTRA_FLAG_ACTIVITY -> {
                 supportActionBar?.let {
                     it.subtitle = "Activity"
@@ -222,18 +233,19 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     companion object{
-        const val EXTRA_FLAG_ACTIVITY = 1
-        const val EXTRA_FLAG_REQUEST = 2
-        const val EXTRA_FLAG_APPROVAL = 3
-        const val EXTRA_FLAG_CONFIRMATION = 4
-        const val EXTRA_FLAG_STATUS = 5
-        const val EXTRA_FLAG_ABSENT = 6
-        const val EXTRA_FLAG_NOTIFICATION = 7
-        const val EXTRA_FLAG_TEAM= 8
-        const val EXTRA_FLAG_SETTING = 9
-        const val EXTRA_FLAG_LOGOUT = 10
+        const val EXTRA_FLAG_DASHBOARD = 1
+        const val EXTRA_FLAG_ACTIVITY = 2
+        const val EXTRA_FLAG_REQUEST = 3
+        const val EXTRA_FLAG_APPROVAL = 4
+        const val EXTRA_FLAG_CONFIRMATION = 5
+        const val EXTRA_FLAG_STATUS = 6
+        const val EXTRA_FLAG_ABSENT = 7
+        const val EXTRA_FLAG_NOTIFICATION = 8
+        const val EXTRA_FLAG_TEAM= 9
+        const val EXTRA_FLAG_SETTING = 10
+        const val EXTRA_FLAG_LOGOUT = 11
         const val EXTRA_CALLER_ACTIVITY_FLAG = "hris_activity"
-        const val DIALOG_LOG_OUT = 11
+        const val DIALOG_LOG_OUT = 12
     }
 
 
