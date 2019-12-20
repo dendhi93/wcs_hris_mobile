@@ -26,20 +26,45 @@ class CustomDashboardAdapter(private val _context : Context, private val dashLis
         var model : DashboardModel = dashList[position]
         var titleContent = model.vtitleContent.trim()
         holder.cvCustomDasboard.setOnClickListener {
-            var intent : Intent = Intent(_context, MenuActivity::class.java)
+            var intent : Intent? = null
             when(titleContent.trim()){
-                _context.getString(R.string.team_menu) -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_TEAM)
-                _context.getString(R.string.approval_menu) -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_APPROVAL)
-                _context.getString(R.string.request_menu) -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_REQUEST)
-                _context.getString(R.string.activity_menu) -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_ACTIVITY)
-                _context.getString(R.string.absent_menu) -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_ABSENT)
-                _context.getString(R.string.confirmation_menu) -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_CONFIRMATION)
-                _context.getString(R.string.notification_menu) -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_NOTIFICATION)
-                _context.getString(R.string.status_menu) -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_STATUS)
+                _context.getString(R.string.team_menu) -> {
+                    intent = Intent(_context, MenuActivity::class.java)
+                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_TEAM)
+                }
+                _context.getString(R.string.approval_menu) -> {
+                    intent = Intent(_context, MenuActivity::class.java)
+                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_APPROVAL)
+                }
+                _context.getString(R.string.request_menu) -> {
+                    intent = Intent(_context, MenuActivity::class.java)
+                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_REQUEST)
+                }
+                _context.getString(R.string.activity_menu) -> {
+                    intent = Intent(_context, MenuActivity::class.java)
+                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_ACTIVITY)
+                }
+                _context.getString(R.string.absent_menu) -> {
+                    intent = Intent(_context, MenuActivity::class.java)
+                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_ABSENT)
+                }
+                _context.getString(R.string.confirmation_menu) -> {
+                    intent = Intent(_context, MenuActivity::class.java)
+                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_CONFIRMATION)
+                }
+                _context.getString(R.string.notification_menu) -> {
+                    intent = Intent(_context, MenuActivity::class.java)
+                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_NOTIFICATION)
+                }
+                _context.getString(R.string.status_menu) -> {
+                    intent = Intent(_context, MenuActivity::class.java)
+                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_STATUS)
+                }
+                else -> MessageUtils.toastMessage(_context,"Tidak Ada Menu tersebut pada list", ConstantObject.vToastError)
             }
-            _context.startActivity(intent)
-
-//            MessageUtils.toastMessage(_context, "coba", ConstantObject.vToastInfo)
+            if (intent != null){
+                _context.startActivity(intent)
+            }
         }
         holder.tvDashboardTitle.text = titleContent.trim()
         holder.tvDashboardContent.text = model.vcontentDashboard.trim()
