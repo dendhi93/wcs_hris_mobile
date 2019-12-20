@@ -31,10 +31,14 @@ class PlanFragment : Fragment(), PlanInterface {
         planFragmentBinding.rcPlan.setHasFixedSize(true)
         planAdapter = CustomPlanAdapter(requireContext(), arrPlanList)
         planFragmentBinding.rcPlan.adapter = planAdapter
-        planFragmentBinding.viewModel?.initPlan()
+        planFragmentBinding.viewModel?.initPlan(LOAD_WITH_PROGRESSBAR)
+        planFragmentBinding.swPlan.setOnRefreshListener {
+            planFragmentBinding.viewModel?.initPlan(LOAD_WITHOUT_PROGRESSBAR)
+            planFragmentBinding.swPlan.isRefreshing = false
+        }
     }
 
-    override fun onLoadList(planList: List<ContentPlanModel>) {
+    override fun onLoadList(planList: List<ContentPlanModel>, typeLoading : Int) {
         arrPlanList.clear()
         for(i in planList.indices){
             arrPlanList.add(
@@ -49,9 +53,13 @@ class PlanFragment : Fragment(), PlanInterface {
                     planList[i].taskDate))
         }
         planAdapter.notifyDataSetChanged()
-        showUI(ConstantObject.vRecylerViewUI)
-        hideUI(ConstantObject.vProgresBarUI)
         hideUI(ConstantObject.vGlobalUI)
+        showUI(ConstantObject.vRecylerViewUI)
+
+        when(typeLoading){
+            LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
+        }
+
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {
@@ -84,5 +92,7 @@ class PlanFragment : Fragment(), PlanInterface {
 
     companion object{
         const val ALERT_PLAN_NO_CONNECTION = 1
+        const val LOAD_WITH_PROGRESSBAR = 2
+        const val LOAD_WITHOUT_PROGRESSBAR = 3
     }
 }

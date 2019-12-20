@@ -16,7 +16,7 @@
         <ProgressBar
             android:id="@+id/pb_login"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/permission_button_margin_vertical"
+            android:layout_height="@dimen/padding_medium3"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:visibility="gone"
             android:indeterminate="true" />

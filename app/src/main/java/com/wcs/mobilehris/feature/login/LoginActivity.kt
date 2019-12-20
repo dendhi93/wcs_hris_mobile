@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
         hideUI(ConstantObject.vProgresBarUI)
         enableUI(ConstantObject.vButtonUI)
         val intent = Intent(this, MenuActivity::class.java)
-        intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_ACTIVITY)
+        intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_DASHBOARD)
         startActivity(intent)
         finish()
     }
