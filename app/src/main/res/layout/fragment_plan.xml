@@ -22,6 +22,20 @@
             android:visibility="gone"
             android:indeterminate="true" />
 
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/sw_plan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rc_plan"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
         <TextView
             android:id="@+id/tv_plan_empty"
             android:layout_width="wrap_content"
@@ -31,12 +45,6 @@
             android:textStyle="bold"
             android:textSize="@dimen/alph_size_small_2"
             android:text="@string/empty_data" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rc_plan"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
     </RelativeLayout>
 
 

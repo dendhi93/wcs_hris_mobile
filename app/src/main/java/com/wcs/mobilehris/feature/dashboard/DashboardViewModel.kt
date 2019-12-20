@@ -38,10 +38,10 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
         when(typeLoading){
             DashboardFragment.LOAD_WITH_PROGRESBAR -> {
                 _dashboardInterface.showUI(ConstantObject.vProgresBarUI)
-                _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
             }
         }
 
+        _dashboardInterface.showUI(DashboardFragment.TEXTVIEW_UI)
         _dashboardInterface.hideUI(ConstantObject.vRecylerViewUI)
         var listDashboard = mutableListOf<DashboardModel>()
         var dashBoardModel = DashboardModel("Activity","Metting at 13.00" +
@@ -61,6 +61,7 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
 
     //by deddy for get lateness qty and leave qty data
     private fun getLateness(){
+        _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
         Handler().postDelayed({
             stLeaveQty.set("Leave 10")
             stLateQty.set("Lateness 2")

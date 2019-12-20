@@ -58,9 +58,20 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rc_dashboard"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/tv_dashboard_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textStyle="bold"
+        android:textSize="@dimen/alph_size_small_2"
+        android:text="@string/empty_data" />
 
 </RelativeLayout>
 </layout>

@@ -59,6 +59,7 @@ class DashboardFragment : Fragment(), DashboardInterface {
                 showUI(ConstantObject.vGlobalUI)
             }
         }
+        hideUI(TEXTVIEW_UI)
         showUI(ConstantObject.vRecylerViewUI)
     }
 
@@ -80,7 +81,8 @@ class DashboardFragment : Fragment(), DashboardInterface {
         when(typeUI){
             ConstantObject.vRecylerViewUI -> dashboardBinding.rcDashboard.visibility = View.GONE
             ConstantObject.vProgresBarUI -> dashboardBinding.pbDashboard.visibility = View.GONE
-            ConstantObject.vGlobalUI -> {
+            TEXTVIEW_UI -> dashboardBinding.tvDashboardEmpty.visibility = View.GONE
+            else -> {
                 dashboardBinding.btnDashboardLate.visibility = View.GONE
                 dashboardBinding.btnDashboardLeave.visibility = View.GONE
             }
@@ -91,7 +93,8 @@ class DashboardFragment : Fragment(), DashboardInterface {
         when(typeUI){
             ConstantObject.vRecylerViewUI -> dashboardBinding.rcDashboard.visibility = View.VISIBLE
             ConstantObject.vProgresBarUI -> dashboardBinding.pbDashboard.visibility = View.VISIBLE
-            ConstantObject.vGlobalUI -> {
+            TEXTVIEW_UI -> dashboardBinding.tvDashboardEmpty.visibility = View.VISIBLE
+            else -> {
                 dashboardBinding.btnDashboardLate.visibility = View.VISIBLE
                 dashboardBinding.btnDashboardLeave.visibility = View.VISIBLE
             }
@@ -102,5 +105,6 @@ class DashboardFragment : Fragment(), DashboardInterface {
         const val ALERT_DASH_NO_CONNECTION = 1
         const val LOAD_WITH_PROGRESBAR = 2
         const val LOAD_WITHOUT_PROGRESBAR = 3
+        const val TEXTVIEW_UI = 4
     }
 }
