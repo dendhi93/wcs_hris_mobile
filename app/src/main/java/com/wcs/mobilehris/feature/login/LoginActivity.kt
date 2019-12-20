@@ -1,24 +1,27 @@
 package com.wcs.mobilehris.feature.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.text.method.PasswordTransformationMethod
 import android.view.View
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.ActivityLoginBinding
 import com.wcs.mobilehris.feature.menu.MenuActivity
-import com.wcs.mobilehris.utils.ConstantObject
-import com.wcs.mobilehris.utils.MessageUtils
-import com.wcs.mobilehris.utilsinterface.DialogInterface
+import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.MessageUtils
+import com.wcs.mobilehris.utilinterface.DialogInterface
 
 class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
-    private lateinit var bindingLogin : ActivityLoginBinding
+    private lateinit var bindingLogin: ActivityLoginBinding
     private var keyDialogActive = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         bindingLogin = DataBindingUtil.setContentView(this, R.layout.activity_login)
         bindingLogin.viewModel = LoginViewModel(this, this)
     }
@@ -27,18 +30,19 @@ class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
         super.onStart()
         supportActionBar?.hide()
         bindingLogin.viewModel?.getVersion()
+        bindingLogin.txtLoginPass.transformationMethod = PasswordTransformationMethod()
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {
-        when(messageType){
+        when (messageType) {
             ConstantObject.vSnackBarNoButton -> MessageUtils.snackBarMessage(message, this, ConstantObject.vSnackBarNoButton)
             ConstantObject.vToastInfo -> MessageUtils.toastMessage(this, message, ConstantObject.vToastInfo)
         }
     }
 
     override fun onAlertLogin(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
-        when(intTypeActionAlert){
-            DIALOG_NO_INTERNET ->{
+        when (intTypeActionAlert) {
+            DIALOG_NO_INTERNET -> {
                 keyDialogActive = DIALOG_NO_INTERNET
                 MessageUtils.alertDialogDismiss(alertMessage, alertTitle, this)
             }
@@ -65,7 +69,7 @@ class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
 
     private var isDoubleTab = false
     override fun onBackPressed() {
-        if(isDoubleTab){
+        if (isDoubleTab) {
             super.onBackPressed()
             val startMain = Intent(Intent.ACTION_MAIN)
             startMain.addCategory(Intent.CATEGORY_HOME)
@@ -79,32 +83,32 @@ class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
     }
 
     override fun showUI(typeUI: Int) {
-        when(typeUI) {
+        when (typeUI) {
             ConstantObject.vButtonUI -> bindingLogin.btnLoginLogIn.visibility = View.VISIBLE
             ConstantObject.vProgresBarUI -> bindingLogin.pbLogin.visibility = View.VISIBLE
         }
     }
 
     override fun hideUI(typeUI: Int) {
-        when(typeUI) {
+        when (typeUI) {
             ConstantObject.vButtonUI -> bindingLogin.btnLoginLogIn.visibility = View.GONE
             ConstantObject.vProgresBarUI -> bindingLogin.pbLogin.visibility = View.GONE
         }
     }
 
     override fun disableUI(typeUI: Int) {
-        when(typeUI){
-            ConstantObject.vButtonUI ->bindingLogin.btnLoginLogIn.isEnabled = false
+        when (typeUI) {
+            ConstantObject.vButtonUI -> bindingLogin.btnLoginLogIn.isEnabled = false
         }
     }
 
     override fun enableUI(typeUI: Int) {
-        when(typeUI){
-            ConstantObject.vButtonUI ->bindingLogin.btnLoginLogIn.isEnabled = true
+        when (typeUI) {
+            ConstantObject.vButtonUI -> bindingLogin.btnLoginLogIn.isEnabled = true
         }
     }
 
-    companion object{
+    companion object {
         const val DIALOG_NO_INTERNET = 1
     }
 
