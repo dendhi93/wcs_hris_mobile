@@ -3,13 +3,12 @@ package com.wcs.mobilehris.feature.login
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Handler
-import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
-import com.wcs.mobilehris.utils.ConstantObject
-import com.wcs.mobilehris.utils.Preference
+import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.Preference
 
 class LoginViewModel(private var _context : Context, private var _loginInterface : LoginInterface) : ViewModel() {
 

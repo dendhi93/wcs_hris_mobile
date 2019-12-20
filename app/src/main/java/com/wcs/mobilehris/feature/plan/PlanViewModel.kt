@@ -5,7 +5,7 @@ import android.os.Handler
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
-import com.wcs.mobilehris.utils.ConstantObject
+import com.wcs.mobilehris.util.ConstantObject
 
 class PlanViewModel (var _context : Context, var _planInterface : PlanInterface ) : ViewModel(){
 
@@ -26,8 +26,8 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
 
         _planInterface.hideUI(ConstantObject.vRecylerViewUI)
         _planInterface.showUI(ConstantObject.vGlobalUI)
-        var listPlan = mutableListOf<ContentPlanModel>()
-        var _planModel = ContentPlanModel("Prospect",
+        var listPlan = mutableListOf<ContentTaskModel>()
+        var _planModel = ContentTaskModel("Prospect",
             "Michael",
             "18/12/2019 11.24",
             "Cibitung",
@@ -37,7 +37,7 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
             "Plan",
             "20/12/2019")
         listPlan.add(_planModel)
-        _planModel = ContentPlanModel("Sales",
+        _planModel = ContentTaskModel("Sales",
             "Windy",
             "19/12/2019 11.24",
             "Jakarta Selatan",
@@ -52,5 +52,4 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
             _planInterface.onLoadList(listPlan, typeLoading)
         }, 2000)
     }
-
 }

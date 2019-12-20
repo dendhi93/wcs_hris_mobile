@@ -9,6 +9,7 @@
     <color name="colorRed">#ff0000</color>
     <color name="colorYellow">#FFFF00</color>
     <color name="colorGreen">#5ec64c</color>
+    <color name="colorGreen900">#1B5E20</color>
     <color name="colorBlack">#000000</color>
     <color name="colorBlue200">#90CAF9</color>
     <color name="colorBlue300">#64B5F6</color>
@@ -28,5 +29,7 @@
     <color name="colorBlueMantab">#003d79</color>
     <color name="colorGradient1">#43C6AC</color>
     <color name="colorGradient2">#FFEB3B</color>
+    <color name="colorLightGreen500">#8BC34A</color>
+
 
 </resources>

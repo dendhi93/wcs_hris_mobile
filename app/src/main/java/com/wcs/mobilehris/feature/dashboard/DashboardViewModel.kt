@@ -7,7 +7,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
-import com.wcs.mobilehris.utils.ConstantObject
+import com.wcs.mobilehris.util.ConstantObject
 
 class DashboardViewModel(val _context : Context, val _dashboardInterface : DashboardInterface) : ViewModel(){
     val stLeaveQty = ObservableField<String>("")

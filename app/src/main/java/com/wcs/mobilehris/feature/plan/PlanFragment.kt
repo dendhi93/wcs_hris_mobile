@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentPlanBinding
-import com.wcs.mobilehris.utils.ConstantObject
-import com.wcs.mobilehris.utils.MessageUtils
+import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.MessageUtils
 
 
 class PlanFragment : Fragment(), PlanInterface {
     private lateinit var planFragmentBinding : FragmentPlanBinding
-    private var arrPlanList = ArrayList<ContentPlanModel>()
-    private lateinit var planAdapter: CustomPlanAdapter
+    private var arrPlanList = ArrayList<ContentTaskModel>()
+    private lateinit var planAdapter: CustomTaskAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         planFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_plan, container, false)
@@ -29,7 +29,7 @@ class PlanFragment : Fragment(), PlanInterface {
         super.onViewCreated(view, savedInstanceState)
         planFragmentBinding.rcPlan.layoutManager = LinearLayoutManager(requireContext())
         planFragmentBinding.rcPlan.setHasFixedSize(true)
-        planAdapter = CustomPlanAdapter(requireContext(), arrPlanList)
+        planAdapter = CustomTaskAdapter(requireContext(), arrPlanList)
         planFragmentBinding.rcPlan.adapter = planAdapter
         planFragmentBinding.viewModel?.initPlan(LOAD_WITH_PROGRESSBAR)
         planFragmentBinding.swPlan.setOnRefreshListener {
@@ -38,11 +38,11 @@ class PlanFragment : Fragment(), PlanInterface {
         }
     }
 
-    override fun onLoadList(planList: List<ContentPlanModel>, typeLoading : Int) {
+    override fun onLoadList(planList: List<ContentTaskModel>, typeLoading : Int) {
         arrPlanList.clear()
         for(i in planList.indices){
             arrPlanList.add(
-                ContentPlanModel(planList[i].taskType ,
+                ContentTaskModel(planList[i].taskType ,
                     planList[i].userCreate,
                     planList[i].createDate,
                     planList[i].locationTask,
@@ -59,7 +59,6 @@ class PlanFragment : Fragment(), PlanInterface {
         when(typeLoading){
             LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
         }
-
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {

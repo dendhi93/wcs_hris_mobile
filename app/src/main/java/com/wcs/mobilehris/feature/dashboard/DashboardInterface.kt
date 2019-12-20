@@ -1,6 +1,6 @@
 package com.wcs.mobilehris.feature.dashboard
 
-import com.wcs.mobilehris.utilsinterface.ActionInterface
+import com.wcs.mobilehris.utilinterface.ActionInterface
 
 interface DashboardInterface :  ActionInterface.showHideUI {
     fun onLoadList(vListDash : List<DashboardModel>, typeLoading : Int)

@@ -10,11 +10,11 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
-import com.wcs.mobilehris.utils.ConstantObject
-import com.wcs.mobilehris.utils.MessageUtils
+import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.MessageUtils
 
-class CustomPlanAdapter (private val _context : Context, private val planList : MutableList<ContentPlanModel>):
-    RecyclerView.Adapter<CustomPlanAdapter.ViewHolder>(){
+class CustomTaskAdapter (private val _context : Context, private val planList : MutableList<ContentTaskModel>):
+    RecyclerView.Adapter<CustomTaskAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_list_plan,parent,false))
@@ -23,7 +23,7 @@ class CustomPlanAdapter (private val _context : Context, private val planList : 
     override fun getItemCount(): Int = planList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var model : ContentPlanModel = planList[position]
+        var model : ContentTaskModel = planList[position]
         val stTaskTime = model.beginTaskTime + " - " +model.endTaskTime
         val stCreated = model.userCreate.trim() + " at " + model.createDate.trim()
         holder.tvCreatedUser.text = stCreated

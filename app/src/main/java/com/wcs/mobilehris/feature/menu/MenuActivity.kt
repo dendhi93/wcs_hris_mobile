@@ -25,10 +25,10 @@ import com.wcs.mobilehris.feature.request.RequestFragment
 import com.wcs.mobilehris.feature.setting.SettingFragment
 import com.wcs.mobilehris.feature.status.StatusFragment
 import com.wcs.mobilehris.feature.team.TeamFragment
-import com.wcs.mobilehris.utils.ConstantObject
-import com.wcs.mobilehris.utils.MessageUtils
-import com.wcs.mobilehris.utils.Preference
-import com.wcs.mobilehris.utilsinterface.DialogInterface
+import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.MessageUtils
+import com.wcs.mobilehris.util.Preference
+import com.wcs.mobilehris.utilinterface.DialogInterface
 
 
 @Suppress("DEPRECATION")

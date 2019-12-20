@@ -1,4 +1,4 @@
-package com.wcs.mobilehris.utils
+package com.wcs.mobilehris.util
 
 object ConstantObject {
     //toast

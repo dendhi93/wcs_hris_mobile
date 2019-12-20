@@ -1,6 +1,6 @@
 package com.wcs.mobilehris.feature.login
 
-import com.wcs.mobilehris.utilsinterface.ActionInterface
+import com.wcs.mobilehris.utilinterface.ActionInterface
 
 interface LoginInterface: ActionInterface.showHideUI, ActionInterface {
     fun onSuccessLogin()

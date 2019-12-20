@@ -9,9 +9,9 @@ import androidx.databinding.DataBindingUtil
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.ActivityLoginBinding
 import com.wcs.mobilehris.feature.menu.MenuActivity
-import com.wcs.mobilehris.utils.ConstantObject
-import com.wcs.mobilehris.utils.MessageUtils
-import com.wcs.mobilehris.utilsinterface.DialogInterface
+import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.MessageUtils
+import com.wcs.mobilehris.utilinterface.DialogInterface
 
 class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
     private lateinit var bindingLogin : ActivityLoginBinding

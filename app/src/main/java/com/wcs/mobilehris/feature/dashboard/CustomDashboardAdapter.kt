@@ -10,8 +10,8 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.feature.menu.MenuActivity
-import com.wcs.mobilehris.utils.ConstantObject
-import com.wcs.mobilehris.utils.MessageUtils
+import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.MessageUtils
 
 class CustomDashboardAdapter(private val _context : Context, private val dashList : MutableList<DashboardModel>):
     RecyclerView.Adapter<CustomDashboardAdapter.ViewHolder>() {
