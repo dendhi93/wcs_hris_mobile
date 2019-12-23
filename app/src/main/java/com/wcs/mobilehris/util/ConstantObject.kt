@@ -20,7 +20,7 @@ object ConstantObject {
     const val vButtonUI = 1
     const val vProgresBarUI = 2
     const val vEditTextUI = 3
-    const val vGlobalUI = 4
+    const val vGlobalUI = 99
     const val vRecylerViewUI = 5
 
     //type flagTask Type

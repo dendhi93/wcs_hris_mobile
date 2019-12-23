@@ -58,6 +58,7 @@ class DashboardFragment : Fragment(), DashboardInterface {
         }
         hideUI(TEXTVIEW_UI)
         showUI(ConstantObject.vRecylerViewUI)
+        showUI(ConstantObject.vGlobalUI)
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {

@@ -43,6 +43,7 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
 
         _dashboardInterface.showUI(DashboardFragment.TEXTVIEW_UI)
         _dashboardInterface.hideUI(ConstantObject.vRecylerViewUI)
+        _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
         var listDashboard = mutableListOf<DashboardModel>()
         var dashBoardModel = DashboardModel("Activity","Metting at 13.00" +
                 "\nInterview new Candidate at  15.00" +
