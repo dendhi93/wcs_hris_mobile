@@ -1,6 +1,6 @@
 package com.wcs.mobilehris.feature.plan
 
-data class ContentPlanModel(
+data class ContentTaskModel(
     val taskType : String,
     val userCreate : String,
     val createDate : String,
