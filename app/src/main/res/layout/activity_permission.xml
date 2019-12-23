@@ -112,7 +112,7 @@
             android:layout_margin="@dimen/spacing_semi_medium"
             android:layout_below="@+id/permission_list_container"
             android:layout_width="match_parent"
-            android:text="@string/persmission_button"
+            android:text="@string/permission_button"
             android:id="@+id/btn_permission_all"
             android:onClick="onAllPermissionsButtonClicked"
             android:textColor="@android:color/white"

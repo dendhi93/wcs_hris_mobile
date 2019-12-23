@@ -12,7 +12,7 @@ import com.wcs.mobilehris.util.Preference
 
 class LoginViewModel(private var _context : Context, private var _loginInterface : LoginInterface) : ViewModel() {
 
-    val stUsername = ObservableField<String>("")
+    val stUserId = ObservableField<String>("")
     val stPassword = ObservableField<String>("")
     val stVersion = ObservableField<String>("")
     private var preference: Preference = Preference(_context)
@@ -25,7 +25,7 @@ class LoginViewModel(private var _context : Context, private var _loginInterface
 
     fun getLogin(){
         when {
-            stUsername.get().isNullOrEmpty() -> _loginInterface.onErrorMessage("Please fill username", ConstantObject.vSnackBarNoButton)
+            stUserId.get().isNullOrEmpty() -> _loginInterface.onErrorMessage("Please fill username", ConstantObject.vSnackBarNoButton)
             stPassword.get().isNullOrEmpty() -> _loginInterface.onErrorMessage("Please fill password", ConstantObject.vSnackBarNoButton)
             !ConnectionObject.isNetworkAvailable(_context) -> {_loginInterface.onAlertLogin(_context.getString(R.string.alert_no_connection),
                 ConstantObject.vAlertDialogNoConnection, LoginActivity.DIALOG_NO_INTERNET)}
@@ -41,7 +41,7 @@ class LoginViewModel(private var _context : Context, private var _loginInterface
         _loginInterface.showUI(ConstantObject.vProgresBarUI)
         _loginInterface.disableUI(ConstantObject.vButtonUI)
         Handler().postDelayed({
-            preference.saveUn(stUsername.get().toString().trim())
+            preference.saveUn(stUserId.get().toString().trim())
             _loginInterface.onSuccessLogin()
         }, 2000)
     }

@@ -1,12 +1,12 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
 
-    <!-- Base application theme. -->
+<resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="toolbarStyle">@style/CustomTextToolBarStyle</item>
+        <item name="android:fontFamily">@font/custom_font</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -17,6 +17,7 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="CustomToolbarStyle" parent="AppTheme">
         <item name="android:textColorSecondary">@color/colorBlack</item>
         <item name="android:textColorPrimary">@android:color/black</item>
@@ -26,5 +27,4 @@
         <item name="titleTextColor">@color/colorBlack</item>
         <item name="android:textColorSecondary">@color/colorBlack</item>
     </style>
-
 </resources>

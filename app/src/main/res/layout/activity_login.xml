@@ -11,102 +11,118 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <ProgressBar
             android:id="@+id/pb_login"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/padding_medium3"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:visibility="gone"
-            android:indeterminate="true" />
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/permission_button_margin_vertical"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/imgV_login"
-            android:layout_width="@dimen/spacing_very_huge"
-            android:layout_height="@dimen/spacing_very_huge"
-            android:layout_below="@+id/pb_login"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/spacing_very_huge_2"
-            android:layout_marginBottom="@dimen/spacing_very_huge"
-            android:src="@mipmap/ic_logo_wcs" />
+<!--        <ImageView-->
+<!--            android:id="@+id/imgV_login"-->
+<!--            android:layout_width="@dimen/spacing_very_huge"-->
+<!--            android:layout_height="@dimen/spacing_very_huge"-->
+<!--            android:layout_below="@+id/pb_login"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_marginTop="@dimen/spacing_very_huge_2"-->
+<!--            android:layout_marginBottom="@dimen/spacing_very_huge"-->
+<!--            android:src="@mipmap/ic_logo_wcs" />-->
 
         <LinearLayout
-            android:layout_below="@+id/imgV_login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_semi_medium"
-            android:layout_marginEnd="@dimen/spacing_semi_medium"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/pb_login"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/space_04"
+            android:layout_marginEnd="@dimen/space_04"
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/spacing_tiny"
-                android:layout_height="55dp">
+                android:layout_height="@dimen/text_fields_height"
+                app:boxStrokeWidth="@dimen/text_fields_box_width"
+                app:boxStrokeColor="@color/text_fields_box_color"
+                app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
 
-                <EditText
-                    android:id="@+id/txt_login_un"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_login_uid"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/spacing_huge"
-                    android:hint="@string/username"
-                    android:inputType="text"
-                    android:maxLength="15"
-                    android:text="@={viewModel.stUsername}"
-                    android:textColorHighlight="@color/colorWhite"
-                    android:textColor="@color/colorBlack"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
-                    android:textColorLink="@color/colorPrimary"
-                    android:gravity="center_vertical"/>
+                    android:layout_height="match_parent"
+                    android:digits="0123456789"
+                    android:gravity="center_vertical"
+                    android:hint="@string/user_id"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:text="@={viewModel.stUserId}"
+                    android:textSize="@dimen/text_fields_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/padding_medium2"
-                app:passwordToggleEnabled="true"
-                android:layout_height="55dp">
+                android:layout_height="@dimen/text_fields_height"
+                android:layout_marginTop="@dimen/space_04"
+                app:boxStrokeWidth="@dimen/text_fields_box_width"
+                app:boxStrokeColor="@color/text_fields_box_color"
+                app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                app:boxCornerRadiusTopStart="@dimen/text_fields_radius"
+                app:passwordToggleEnabled="true">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txt_login_pass"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLength="25"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:hint="@string/password"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:text="@={viewModel.stPassword}"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                    android:textSize="@dimen/text_fields_text_size" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_login_log_in"
-                android:layout_marginTop="@dimen/padding_medium2"
                 android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginTop="@dimen/space_06"
+                android:background="@drawable/log_in_button"
+                android:onClick="@{() -> viewModel.getLogin()}"
                 android:text="@string/login"
                 android:textStyle="bold"
-                android:onClick="@{() -> viewModel.getLogin()}"
-                android:layout_height="@dimen/spacing_large"
-                android:background="@drawable/ic_gradient_button" />
+                android:textSize="@dimen/button_text_size"
+                android:stateListAnimator="@null"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_medium"
-                android:text="@string/forgot_password"
+                android:layout_marginTop="@dimen/space_02"
+                android:layout_gravity="start"
                 android:onClick="@{() -> viewModel.intentForgotPass()}"
+                android:text="@string/forgot_password"
                 android:textStyle="bold" />
         </LinearLayout>
-        
+
         <TextView
-            android:layout_alignParentBottom="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:padding="@dimen/spacing_tiny_3"
-            android:textColor="@color/colorBlack"
-            android:text="@={viewModel.stVersion}"/>
+            android:text="@={viewModel.stVersion}"
+            android:textColor="@color/colorBlack" />
 
     </RelativeLayout>
 
