@@ -64,7 +64,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onStart() {
         super.onStart()
-        tvHeaderMenu.text = preference.getUn().trim()
+        tvHeaderMenu.text = preference.getName().trim()
         lnHeader.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }

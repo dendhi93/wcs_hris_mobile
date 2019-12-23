@@ -25,7 +25,7 @@ class LoginViewModel(private var _context : Context, private var _loginInterface
 
     fun getLogin(){
         when {
-            stUserId.get().isNullOrEmpty() -> _loginInterface.onErrorMessage("Please fill username", ConstantObject.vSnackBarNoButton)
+            stUserId.get().isNullOrEmpty() -> _loginInterface.onErrorMessage("Please fill userid", ConstantObject.vSnackBarNoButton)
             stPassword.get().isNullOrEmpty() -> _loginInterface.onErrorMessage("Please fill password", ConstantObject.vSnackBarNoButton)
             !ConnectionObject.isNetworkAvailable(_context) -> {_loginInterface.onAlertLogin(_context.getString(R.string.alert_no_connection),
                 ConstantObject.vAlertDialogNoConnection, LoginActivity.DIALOG_NO_INTERNET)}
@@ -41,7 +41,7 @@ class LoginViewModel(private var _context : Context, private var _loginInterface
         _loginInterface.showUI(ConstantObject.vProgresBarUI)
         _loginInterface.disableUI(ConstantObject.vButtonUI)
         Handler().postDelayed({
-            preference.saveUn(stUserId.get().toString().trim())
+            preference.saveUn(stUserId.get().toString().trim(), "Untitled", "0878900679", "untitled-id@id.wilmar-intl.com")
             _loginInterface.onSuccessLogin()
         }, 2000)
     }

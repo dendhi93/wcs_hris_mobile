@@ -12,11 +12,6 @@ import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentDashboardBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import com.wcs.mobilehris.util.ConstantObject
-import com.wcs.mobilehris.util.MessageUtils
 
 
 class DashboardFragment : Fragment(), DashboardInterface {
