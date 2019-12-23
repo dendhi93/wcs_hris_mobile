@@ -4,7 +4,7 @@ import com.wcs.mobilehris.feature.plan.ContentTaskModel
 import com.wcs.mobilehris.utilinterface.ActionInterface
 
 interface CompletedInterface : ActionInterface.showHideUI {
-    fun onCompletedList(completedList : List<ContentTaskModel>, typeLoading : Int)
+    fun onDisplayCompletedList(completedList : List<ContentTaskModel>, typeLoading : Int)
     fun onErrorMessage(message : String, messageType : Int)
     fun onAlertCompleted(alertMessage : String, alertTitle : String, intTypeActionAlert : Int)
 }

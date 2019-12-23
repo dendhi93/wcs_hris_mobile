@@ -3,11 +3,13 @@ package com.wcs.mobilehris.feature.plan
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
@@ -34,10 +36,7 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
         holder.tvCustomDate.text = model.taskDate.trim()
         holder.tvCustomTitle.text = model.taskType.trim()
         holder.imgBCustomPlan.setOnClickListener {
-            MessageUtils.toastMessage(_context, "Under Maintenance", ConstantObject.vToastInfo)
-        }
-        holder.cvCustomPlan.setOnClickListener {
-            MessageUtils.toastMessage(_context, "Under Maintenance 2", ConstantObject.vToastInfo)
+            showPopUp(it, position)
         }
         holder.btnPlan.setOnClickListener{
             MessageUtils.toastMessage(_context, "Under Maintenance 3", ConstantObject.vToastInfo)
@@ -66,7 +65,6 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
     }
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
-        var cvCustomPlan : CardView = view.findViewById(R.id.cv_customPlan)
         var imgBCustomPlan : ImageButton = view.findViewById(R.id.imgB_menu)
         var tvCustomTitle : TextView = view.findViewById(R.id.tv_custom_plan)
         var tvCreatedUser : TextView = view.findViewById(R.id.tv_customPlan_created_user)
@@ -75,7 +73,19 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
         var tvCustomDate : TextView = view.findViewById(R.id.tv_customPlan_date)
         var tvCustomTime : TextView = view.findViewById(R.id.tv_customPlan_time)
         var btnPlan : Button = view.findViewById(R.id.btn_customPlan)
+    }
 
+    private fun showPopUp(view : View, positionMenu : Int){
+        var popup = PopupMenu(_context, view)
+        popup.inflate(R.menu.menu_custom_list_task)
+        popup.setOnMenuItemClickListener{ item: MenuItem? ->
+            when(item?.itemId){
+                R.id.mnu_custom_list_task_dtl ->MessageUtils.toastMessage(_context,
+                    "Under Maintenance $positionMenu", ConstantObject.vToastInfo)
+            }
+            true
+        }
+        popup.show()
     }
 
 
