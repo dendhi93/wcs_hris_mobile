@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <color name="colorPrimary">@color/colorWhite</color>
+    <color name="colorPrimary">#ECE9E6</color>
     <color name="colorPrimaryDark">@color/colorGray200</color>
     <color name="colorAccent">#B71C1C</color>
+
     <color name="colorWhite">#ffffff</color>
     <color name="ColorBlue">#33b5e5</color>
     <color name="colorGray">#9b9b9b</color>
@@ -25,8 +27,13 @@
     <color name="colorGray400">#BDBDBD</color>
     <color name="colorGray300">#E0E0E0</color>
     <color name="colorGray200">#EEEEEE</color>
-    <color name="colorBlueMantab">#003d79</color>
-    <color name="colorGradient1">#43C6AC</color>
-    <color name="colorGradient2">#FFEB3B</color>
+    <color name="colorBlueMantab">#003D79</color>
 
+    <!--Text Fields-->
+    <color name="text_fields_box_color">#43C6AC</color>
+
+    <!--Login Button-->
+    <color name="logInButtonGradient1">#43C6AC</color>
+    <color name="logInButtonGradient2">#F8FFAE</color>
+    <color name="logInButtonGradientRipple">#52FFFFFF</color>
 </resources>

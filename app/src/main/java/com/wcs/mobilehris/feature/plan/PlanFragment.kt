@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentPlanBinding
-import com.wcs.mobilehris.utils.ConstantObject
-import com.wcs.mobilehris.utils.MessageUtils
+import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.MessageUtils
 
 
 class PlanFragment : Fragment(), PlanInterface {

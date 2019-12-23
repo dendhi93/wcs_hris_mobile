@@ -8,9 +8,9 @@ import androidx.databinding.DataBindingUtil
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.ActivitySplashBinding
 import com.wcs.mobilehris.feature.login.LoginActivity
-import com.wcs.mobilehris.utils.ConstantObject
-import com.wcs.mobilehris.utils.MessageUtils
-import com.wcs.mobilehris.utilsinterface.DialogInterface
+import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.MessageUtils
+import com.wcs.mobilehris.utilinterface.DialogInterface
 
 class SplashActivity : AppCompatActivity(), SplashInterface, DialogInterface {
     private lateinit var bindingSplash : ActivitySplashBinding

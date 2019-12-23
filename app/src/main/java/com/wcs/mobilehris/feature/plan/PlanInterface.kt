@@ -1,6 +1,6 @@
 package com.wcs.mobilehris.feature.plan
 
-import com.wcs.mobilehris.utilsinterface.ActionInterface
+import com.wcs.mobilehris.utilinterface.ActionInterface
 
 interface PlanInterface : ActionInterface.showHideUI{
 

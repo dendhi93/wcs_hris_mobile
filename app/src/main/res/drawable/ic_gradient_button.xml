@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true">
-        <shape>
-            <gradient android:angle="135" android:endColor="@color/colorGradient2" android:startColor="@color/colorGradient1" />
-            <corners android:radius="10dp" />
-        </shape>
-    </item>
     <item>
         <shape>
-            <gradient android:angle="135" android:endColor="@color/colorGradient1" android:startColor="@color/colorGradient2" />
-            <corners android:radius="10dp" />
+            <gradient android:angle="45" android:startColor="@color/logInButtonGradient1" android:endColor="@color/logInButtonGradient2" />
+            <corners android:radius="@dimen/button_radius" />
         </shape>
     </item>
-
 </selector>

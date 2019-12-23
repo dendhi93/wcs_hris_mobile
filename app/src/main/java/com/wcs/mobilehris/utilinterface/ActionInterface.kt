@@ -1,4 +1,4 @@
-package com.wcs.mobilehris.utilsinterface
+package com.wcs.mobilehris.utilinterface
 
 interface ActionInterface{
     fun enableUI(typeUI : Int)

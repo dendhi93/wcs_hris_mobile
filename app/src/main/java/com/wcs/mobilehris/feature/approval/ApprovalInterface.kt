@@ -1,6 +1,6 @@
 package com.wcs.mobilehris.feature.approval
 
-import com.wcs.mobilehris.utilsinterface.ActionInterface
+import com.wcs.mobilehris.utilinterface.ActionInterface
 
 interface ApprovalInterface : ActionInterface.showHideUI {
     fun loadApprovalMenu(approvalMenuList: List<ApprovalModel>)

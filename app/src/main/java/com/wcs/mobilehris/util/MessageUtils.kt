@@ -1,13 +1,12 @@
-package com.wcs.mobilehris.utils
+package com.wcs.mobilehris.util
 
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
-import com.wcs.mobilehris.utilsinterface.DialogInterface
+import com.wcs.mobilehris.utilinterface.DialogInterface
 import es.dmoral.toasty.Toasty
 
 object MessageUtils {

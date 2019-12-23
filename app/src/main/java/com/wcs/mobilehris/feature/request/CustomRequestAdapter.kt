@@ -9,8 +9,8 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
-import com.wcs.mobilehris.utils.ConstantObject
-import com.wcs.mobilehris.utils.MessageUtils
+import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.MessageUtils
 
 class CustomRequestAdapter(private val _context : Context, private val requestList : MutableList<RequestModel>):
     RecyclerView.Adapter<CustomRequestAdapter.ViewHolder>(){

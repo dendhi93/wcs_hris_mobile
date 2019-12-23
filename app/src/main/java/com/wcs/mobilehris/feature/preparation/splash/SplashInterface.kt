@@ -1,6 +1,6 @@
 package com.wcs.mobilehris.feature.preparation.splash
 
-import com.wcs.mobilehris.utilsinterface.ActionInterface
+import com.wcs.mobilehris.utilinterface.ActionInterface
 
 interface SplashInterface : ActionInterface.showHideUI {
     fun successSplash()

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.wcs.mobilehris.R
-import com.wcs.mobilehris.utils.ConstantObject
 
 class CompletedFragment : Fragment() {
 

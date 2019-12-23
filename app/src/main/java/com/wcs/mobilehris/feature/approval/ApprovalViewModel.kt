@@ -5,7 +5,7 @@ import android.os.Handler
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
-import com.wcs.mobilehris.utils.ConstantObject
+import com.wcs.mobilehris.util.ConstantObject
 
 
 class ApprovalViewModel(private val _context : Context, private val _approvalInterface : ApprovalInterface) : ViewModel(){

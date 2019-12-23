@@ -3,7 +3,7 @@ package com.wcs.mobilehris.feature.profile
 import android.content.Context
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
-import com.wcs.mobilehris.utils.Preference
+import com.wcs.mobilehris.util.Preference
 
 class ProfileViewModel(private var _context : Context) : ViewModel() {
     val stProfileName = ObservableField<String>("")
