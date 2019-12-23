@@ -25,5 +25,7 @@ object ConstantObject {
 
     //type flagTask Type
     const val vPlanTask = "Plan"
+    const val vConfirmTask = "Confirm"
+    const val vConfirmedTask = "Confirm"
 
 }

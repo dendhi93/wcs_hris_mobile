@@ -1,6 +1,7 @@
 package com.wcs.mobilehris.feature.plan
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,7 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
     RecyclerView.Adapter<CustomTaskAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_list_plan,parent,false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_list_task,parent,false))
     }
 
     override fun getItemCount(): Int = planList.size
@@ -38,11 +39,28 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
         holder.cvCustomPlan.setOnClickListener {
             MessageUtils.toastMessage(_context, "Under Maintenance 2", ConstantObject.vToastInfo)
         }
+        holder.btnPlan.setOnClickListener{
+            MessageUtils.toastMessage(_context, "Under Maintenance 3", ConstantObject.vToastInfo)
+        }
         val flagTask = model.flagTask.trim()
         holder.btnPlan.text = flagTask
         when(flagTask){
-            ConstantObject.vPlanTask -> holder.btnPlan.isEnabled = false
-            else -> holder.btnPlan.isEnabled = true
+            ConstantObject.vPlanTask -> {
+                holder.btnPlan.isEnabled = false
+                holder.btnPlan.setBackgroundResource(R.drawable.ic_red_button)
+            }
+            ConstantObject.vConfirmTask -> {
+                holder.btnPlan.isEnabled = true
+                holder.btnPlan.setBackgroundResource(R.drawable.ic_light_green_button)
+            }
+            ConstantObject.vConfirmedTask -> {
+                holder.btnPlan.isEnabled = true
+                holder.btnPlan.setBackgroundResource(R.drawable.ic_green_button)
+            }
+            else -> {
+                holder.btnPlan.isEnabled = true
+                holder.btnPlan.setBackgroundResource(R.drawable.ic_red_button)
+            }
         }
 
     }
