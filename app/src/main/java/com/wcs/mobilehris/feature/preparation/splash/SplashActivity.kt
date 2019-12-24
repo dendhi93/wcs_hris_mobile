@@ -26,15 +26,15 @@ class SplashActivity : AppCompatActivity(), SplashInterface, DialogInterface {
         super.onStart()
         supportActionBar?.hide()
         bindingSplash.viewModel?.processDownload()
-        hideUI(ConstantObject.vButtonUI)
+        bindingSplash.viewModel?.isBtnVisible?.set(false)
     }
 
     override fun onNegativeClick(o: Any) {}
 
     override fun onPositiveClick(o: Any) {
-//         when(keyDialogActive){
-//             DIALOG_NO_INTERNET -> finish()
-//         }
+         when(keyDialogActive){
+             DIALOG_NO_INTERNET -> finish()
+         }
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {}
@@ -51,21 +51,7 @@ class SplashActivity : AppCompatActivity(), SplashInterface, DialogInterface {
     override fun successSplash() {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
-        hideUI(ConstantObject.vProgresBarUI)
-    }
-
-    override fun showUI(typeUI: Int) {
-        when(typeUI){
-            ConstantObject.vButtonUI -> bindingSplash.btnSplashRetry.visibility = View.VISIBLE
-            ConstantObject.vProgresBarUI -> bindingSplash.pbSplash.visibility = View.VISIBLE
-        }
-    }
-
-    override fun hideUI(typeUI: Int) {
-        when(typeUI){
-            ConstantObject.vButtonUI -> bindingSplash.btnSplashRetry.visibility = View.GONE
-            ConstantObject.vProgresBarUI -> bindingSplash.pbSplash.visibility = View.GONE
-        }
+        bindingSplash.viewModel?.isPrgBarVisible?.set(false)
     }
 
     companion object{

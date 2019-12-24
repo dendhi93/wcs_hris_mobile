@@ -1,6 +1,5 @@
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <import type="android.view.View" />
@@ -19,6 +18,7 @@
             android:id="@+id/pb_splash"
             android:layout_width="match_parent"
             android:layout_height="@dimen/permission_button_margin_vertical"
+            android:visibility="@{viewModel.isPrgBarVisible ? View.VISIBLE : View.GONE}"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:indeterminate="true" />
 
@@ -52,6 +52,7 @@
                 android:layout_height="45dp"
                 android:text="@string/retry_button"
                 android:onClick="@{() -> viewModel.retryDownload()}"
+                android:visibility="@{viewModel.isBtnVisible ? View.VISIBLE : View.GONE}"
                 android:textColor="@color/colorWhite"
                 android:background="@drawable/ic_blue_button" />
         </LinearLayout>
