@@ -40,7 +40,6 @@ class LoginViewModel(private var _context : Context, private var _loginInterface
 
     private fun processLogin(){
         isVisibleProgress.set(true)
-        _loginInterface.disableUI(ConstantObject.vButtonUI)
         Handler().postDelayed({
             preference.saveUn(stUserId.get().toString().trim(), "Untitled", "0878900679", "untitled-id@id.wilmar-intl.com")
             _loginInterface.onSuccessLogin()

@@ -51,7 +51,6 @@ class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
 
     override fun onSuccessLogin() {
         bindingLogin.viewModel?.isVisibleProgress?.set(false)
-        enableUI(ConstantObject.vButtonUI)
         val intent = Intent(this, MenuActivity::class.java)
         intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_DASHBOARD)
         startActivity(intent)
@@ -80,32 +79,6 @@ class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
         this.isDoubleTab = true
         MessageUtils.toastMessage(this, "Tap again to exit", ConstantObject.vToastInfo)
         Handler().postDelayed({ isDoubleTab = false }, 2000)
-    }
-
-    override fun showUI(typeUI: Int) {
-        when (typeUI) {
-            ConstantObject.vButtonUI -> bindingLogin.btnLoginLogIn.visibility = View.VISIBLE
-            ConstantObject.vProgresBarUI -> bindingLogin.pbLogin.visibility = View.VISIBLE
-        }
-    }
-
-    override fun hideUI(typeUI: Int) {
-        when (typeUI) {
-            ConstantObject.vButtonUI -> bindingLogin.btnLoginLogIn.visibility = View.GONE
-            ConstantObject.vProgresBarUI -> bindingLogin.pbLogin.visibility = View.GONE
-        }
-    }
-
-    override fun disableUI(typeUI: Int) {
-        when (typeUI) {
-            ConstantObject.vButtonUI -> bindingLogin.btnLoginLogIn.isEnabled = false
-        }
-    }
-
-    override fun enableUI(typeUI: Int) {
-        when (typeUI) {
-            ConstantObject.vButtonUI -> bindingLogin.btnLoginLogIn.isEnabled = true
-        }
     }
 
     companion object {

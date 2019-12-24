@@ -101,6 +101,7 @@
                 android:layout_marginTop="@dimen/space_06"
                 android:background="@drawable/log_in_button"
                 android:onClick="@{() -> viewModel.getLogin()}"
+                android:enabled="@{!viewModel.isVisibleProgress}"
                 android:text="@string/login"
                 android:textStyle="bold"
                 android:textSize="@dimen/button_text_size"
