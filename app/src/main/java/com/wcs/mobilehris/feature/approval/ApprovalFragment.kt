@@ -43,27 +43,12 @@ class ApprovalFragment : Fragment(), ApprovalInterface {
                 approvalMenuList[i].itemMenuContent))
         }
         approvalAdapter.notifyDataSetChanged()
-        hideUI(ConstantObject.vProgresBarUI)
-        showUI(ConstantObject.vRecylerViewUI)
+        approvalBinding.viewModel?.isVisibleApprovalUI?.set(false)
     }
 
     override fun onAlertApproval(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
         when(intTypeActionAlert){
             ALERT_APPROVAL_NO_CONNECTION -> MessageUtils.alertDialogDismiss(alertMessage, alertMessage, requireContext())
-        }
-    }
-
-    override fun hideUI(typeUI: Int) {
-        when(typeUI){
-            ConstantObject.vProgresBarUI -> approvalBinding.pbApproval.visibility = View.GONE
-            ConstantObject.vRecylerViewUI -> approvalBinding.rcApproval.visibility = View.GONE
-        }
-    }
-
-    override fun showUI(typeUI: Int) {
-        when(typeUI){
-            ConstantObject.vProgresBarUI -> approvalBinding.pbApproval.visibility = View.VISIBLE
-            ConstantObject.vRecylerViewUI -> approvalBinding.rcApproval.visibility = View.VISIBLE
         }
     }
 

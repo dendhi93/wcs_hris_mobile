@@ -20,8 +20,8 @@ class Preference(private var _context : Context){
     fun saveUn(un: String, name : String, phone : String, email : String) {
         editor.putString(KEY_USERNAME, un)
         editor.putString(KEY_NAMEPROFILE, name)
-        editor.putString(KEY_PHONEPROFILE, name)
-        editor.putString(KEY_EMAILPROFILE, name)
+        editor.putString(KEY_PHONEPROFILE, phone)
+        editor.putString(KEY_EMAILPROFILE, email)
         editor.apply()
     }
     fun getUn(): String { return sharedPreferences.getString(KEY_USERNAME, "").toString() }
