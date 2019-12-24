@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
     }
 
     override fun onSuccessLogin() {
-        hideUI(ConstantObject.vProgresBarUI)
+        bindingLogin.viewModel?.isVisibleProgress?.set(false)
         enableUI(ConstantObject.vButtonUI)
         val intent = Intent(this, MenuActivity::class.java)
         intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_DASHBOARD)

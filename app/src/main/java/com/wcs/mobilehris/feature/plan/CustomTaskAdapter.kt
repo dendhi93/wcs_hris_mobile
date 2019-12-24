@@ -26,7 +26,7 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
     override fun getItemCount(): Int = planList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var model : ContentTaskModel = planList[position]
+        val model : ContentTaskModel = planList[position]
         val stTaskTime = model.beginTaskTime + " - " +model.endTaskTime
         val stCreated = model.userCreate.trim() + " at " + model.createDate.trim()
         holder.tvCreatedUser.text = stCreated
@@ -76,7 +76,7 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
     }
 
     private fun showPopUp(view : View, positionMenu : Int){
-        var popup = PopupMenu(_context, view)
+        val popup = PopupMenu(_context, view)
         popup.inflate(R.menu.menu_custom_list_task)
         popup.setOnMenuItemClickListener{ item: MenuItem? ->
             when(item?.itemId){

@@ -15,6 +15,7 @@ class LoginViewModel(private var _context : Context, private var _loginInterface
     val stUserId = ObservableField<String>("")
     val stPassword = ObservableField<String>("")
     val stVersion = ObservableField<String>("")
+    val isVisibleProgress = ObservableField<Boolean>(false)
     private var preference: Preference = Preference(_context)
 
     fun getVersion(){
@@ -38,7 +39,7 @@ class LoginViewModel(private var _context : Context, private var _loginInterface
     }
 
     private fun processLogin(){
-        _loginInterface.showUI(ConstantObject.vProgresBarUI)
+        isVisibleProgress.set(true)
         _loginInterface.disableUI(ConstantObject.vButtonUI)
         Handler().postDelayed({
             preference.saveUn(stUserId.get().toString().trim(), "Untitled", "0878900679", "untitled-id@id.wilmar-intl.com")
