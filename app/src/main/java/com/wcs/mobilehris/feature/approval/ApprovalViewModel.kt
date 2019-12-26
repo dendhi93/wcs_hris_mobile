@@ -24,7 +24,7 @@ class ApprovalViewModel(private val _context : Context, private val _approvalInt
 
     private fun getApprovalMenu(){
         isVisibleApprovalUI.set(true)
-        var listApprovalMenu = mutableListOf<ApprovalModel>()
+        val listApprovalMenu = mutableListOf<ApprovalModel>()
         var _approvalModel = ApprovalModel("Travel", R.mipmap.ic_train, 2, "Last request by Andika about an hour ago")
         listApprovalMenu.add(_approvalModel)
         _approvalModel = ApprovalModel("Leave", R.mipmap.ic_edit_user, 0, "You got none")

@@ -27,7 +27,7 @@ class ViewPagerActivityAdapter(fragmentManager : FragmentManager) : FragmentPage
     override fun getPageTitle(position: Int): CharSequence? {
         return when(position) {
             0 -> "Plan"
-            1 -> "Actual"
+            1 -> "OnGoing"
             else -> "Completed"
         }
     }

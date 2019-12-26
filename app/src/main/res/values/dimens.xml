@@ -6,6 +6,7 @@
     <dimen name="large2">20dp</dimen>
 
     <dimen name="spacing_huge">50dp</dimen>
+    <dimen name="spacing_huge_2">80dp</dimen>
     <dimen name="spacing_very_huge">100dp</dimen>
     <dimen name="spacing_very_huge_1">120dp</dimen>
     <dimen name="spacing_very_huge_2">150dp</dimen>

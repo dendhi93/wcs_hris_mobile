@@ -52,13 +52,9 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
                 holder.btnPlan.isEnabled = true
                 holder.btnPlan.setBackgroundResource(R.drawable.ic_light_green_button)
             }
-            ConstantObject.vConfirmedTask -> {
-                holder.btnPlan.isEnabled = true
-                holder.btnPlan.setBackgroundResource(R.drawable.ic_green_button)
-            }
             else -> {
-                holder.btnPlan.isEnabled = true
-                holder.btnPlan.setBackgroundResource(R.drawable.ic_red_button)
+                holder.btnPlan.isEnabled = false
+                holder.btnPlan.setBackgroundResource(R.drawable.ic_green_button)
             }
         }
 

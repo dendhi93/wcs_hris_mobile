@@ -35,7 +35,7 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
             "PT Sukanda",
             "08:00",
             "11:00",
-            "Confirmed",
+            "Confirm",
             "20/12/2019")
         listActual.add(_actualModel)
         _actualModel = ContentTaskModel("Sales",
