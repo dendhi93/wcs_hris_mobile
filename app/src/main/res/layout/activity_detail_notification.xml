@@ -1,0 +1,77 @@
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.wcs.mobilehris.feature.dtlnotification.DtlNotificationViewModel" />
+    </data>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/colorPrimary">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="1dp"
+                android:layout_margin="@dimen/spacing_tiny"
+                android:padding="1dp"
+                android:elevation="2dp"
+                app:cardMaxElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/cardview_light_background"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/spacing_tiny">
+
+                    <ImageView
+                        android:id="@+id/imgV_custom_notif"
+                        android:layout_marginTop="@dimen/padding_medium"
+                        android:layout_gravity="center"
+                        android:layout_width="@dimen/icon_huge"
+                        android:layout_height="@dimen/icon_huge"
+                        android:src="@mipmap/ic_user_black"/>
+
+                    <TextView
+                        android:id="@+id/tv_dtl_createDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/icon_medium"
+                        android:textSize="@dimen/alph_size_small"
+                        android:textStyle="bold"
+                        android:text="@{viewModel.stCreateDate}"/>
+
+                    <TextView
+                        android:id="@+id/tv_dtl_titleContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/padding_medium2"
+                        android:text="@{viewModel.stTitleContent}"
+                        android:textSize="@dimen/alph_size_small"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tv_dtl_dtlContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/padding_medium2"
+                        android:layout_marginStart="@dimen/spacing_tiny_2"
+                        android:layout_marginEnd="@dimen/spacing_tiny_2"
+                        android:text="@{viewModel.stDtlContent}"
+                        android:textSize="@dimen/alph_size_small_2" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+</layout>
