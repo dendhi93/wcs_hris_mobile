@@ -44,7 +44,8 @@ class NotificationFragment : Fragment(), NotificationInterface {
         for(i in vListDash.indices ){
             arrNotifList.add(NotificationModel(vListDash[i].createdUser.trim(),
                 vListDash[i].notifContent.trim(),
-                vListDash[i].createdDate.trim()))
+                vListDash[i].createdDate.trim(),
+                vListDash[i].dtlContent.trim()))
         }
         notificationAdapter.notifyDataSetChanged()
         bindingNotification.viewModel?.isVisibleUI?.set(false)

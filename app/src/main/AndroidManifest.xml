@@ -30,24 +30,22 @@
         android:roundIcon="@mipmap/ic_hris_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".feature.preparation.permission.PermissionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".feature.profile.ProfileActivity" />
-
         <activity
-            android:name="com.wcs.mobilehris.feature.menu.MenuActivity"
+            android:name=".feature.menu.MenuActivity"
             android:label="@string/title_activity_menu"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".feature.login.LoginActivity" />
-
         <activity android:name=".feature.preparation.splash.SplashActivity" />
+        <activity android:name=".feature.dtlnotification.DetailNotificationActivity"
+            android:label="@string/dtl_notification_activity"/>
     </application>
 
 </manifest>

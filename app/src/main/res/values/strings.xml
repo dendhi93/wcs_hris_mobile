@@ -39,6 +39,7 @@
 
     <!--activity label-->
     <string name="profile_activity">Profile</string>
+    <string name="dtl_notification_activity">Detail Notification</string>
 
     <!--permission form-->
     <string name="permission_button">IZINKAN</string>

@@ -1,13 +1,17 @@
 package com.wcs.mobilehris.feature.notification
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.feature.dtlnotification.DetailNotificationActivity
+import com.wcs.mobilehris.feature.dtlnotification.DtlNotificationViewModel
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
@@ -26,8 +30,13 @@ class CustomNotificationAdapter(private val context : Context, private val notif
         holder.tvCustomNotifTitle.text = model.createdUser.trim()
         holder.tvCustomNotifContent.text = model.notifContent.trim()
         holder.tvCustomNotifDate.text = model.createdDate.trim()
-        holder.lnCustomNotif.setOnClickListener {
-            MessageUtils.toastMessage(context, "Coba", ConstantObject.vToastInfo)
+        holder.cvCustomNotif.setOnClickListener {
+            val intent = Intent(context, DetailNotificationActivity::class.java)
+            intent.putExtra(DetailNotificationActivity.INTENT_DATE, model.createdDate)
+            intent.putExtra(DetailNotificationActivity.INTENT_TITLE, model.notifContent)
+            intent.putExtra(DetailNotificationActivity.INTENT_CONTENT, model.dtlContent)
+            context.startActivity(intent)
+//            MessageUtils.toastMessage(context,"" +model.notifContent.trim(), ConstantObject.vToastInfo)
         }
     }
 
@@ -35,7 +44,7 @@ class CustomNotificationAdapter(private val context : Context, private val notif
         var  tvCustomNotifTitle : TextView = view.findViewById(R.id. tv_custom_notification_title)
         var  tvCustomNotifContent : TextView = view.findViewById(R.id. tv_custom_notification_content)
         var  tvCustomNotifDate : TextView = view.findViewById(R.id. tv_custom_notification_date)
-        var lnCustomNotif : LinearLayout = view.findViewById(R.id.ln_customNotif)
+        var cvCustomNotif : CardView = view.findViewById(R.id.cv_custom_notif)
     }
 
 }

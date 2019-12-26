@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/cv_custom_dashboard"
+    android:id="@+id/cv_custom_notif"
     app:cardCornerRadius="10dp"
     app:cardElevation="1dp"
     android:padding="1dp"
@@ -15,7 +15,6 @@
     app:cardUseCompatPadding="true">
 
     <LinearLayout
-        android:id="@+id/ln_customNotif"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

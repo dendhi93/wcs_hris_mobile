@@ -27,11 +27,16 @@ class NotificationViewModel(private var context : Context, private var notificat
         val listNotif = mutableListOf<NotificationModel>()
         var notifModel = NotificationModel("Fransiska Martatuli",
             "Pendaftaran Email dan handphone Grab",
-            "26/12/2019")
+            "26/12/2019","Dear All\n\nMohon diinfokan alamat email dan handphone yang digunakan di aplikasi Grab melalui email\n\nRegards\nSiska")
         listNotif.add(notifModel)
         notifModel = NotificationModel("Nidya Sari",
             "Pakta Integritas",
-            "27/12/2019")
+            "27/12/2019","Dear All\n" +
+                    "\n" +
+                    "Mohon mengikutin acara Pakta Integritas pada hari ini pukul 13.00 - 15.00\n" +
+                    "\n" +
+                    "Regards\n" +
+                    "Siska")
         listNotif.add(notifModel)
 
         Handler().postDelayed({
