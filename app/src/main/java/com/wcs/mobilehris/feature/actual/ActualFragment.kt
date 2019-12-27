@@ -65,6 +65,7 @@ class ActualFragment : Fragment(), ActualInterface {
     override fun onErrorMessage(message: String, messageType: Int) {
         when(messageType){
             ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message,ConstantObject.vToastError)
+            ConstantObject.vToastInfo -> MessageUtils.toastMessage(requireContext(), message,ConstantObject.vToastInfo)
         }
     }
 

@@ -44,6 +44,20 @@
             android:textSize="@dimen/alph_size_small_2"
             android:text="@string/empty_data" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/colorWhite"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/icon_medium"
+            android:layout_marginEnd="@dimen/icon_medium"
+            android:onClick="@{() -> viewModel.fabCompletedClick()}"
+            android:id="@+id/fab_plan"
+            android:src="@mipmap/ic_plus_48"
+            app:elevation="6dp"
+            app:fabSize="normal"/>
+
     </RelativeLayout>
 
 </layout>

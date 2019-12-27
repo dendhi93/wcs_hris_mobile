@@ -63,4 +63,8 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
             _actualnterface.onDisplayList(listActual, typeLoading)
         }, 2000)
     }
+
+    fun fabActualClick(){
+        _actualnterface.onErrorMessage("Test", ConstantObject.vToastInfo)
+    }
 }

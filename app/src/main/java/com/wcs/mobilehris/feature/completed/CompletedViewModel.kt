@@ -43,6 +43,9 @@ class CompletedViewModel(private val _context : Context, private val _completedI
         }, 2000)
     }
 
+    fun fabCompletedClick(){
+        _completedInterface.onErrorMessage("Test", ConstantObject.vToastInfo)
+    }
 
 
 }
