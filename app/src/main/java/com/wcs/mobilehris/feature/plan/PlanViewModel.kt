@@ -37,7 +37,7 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
             "Plan",
             "20/12/2019")
         listPlan.add(_planModel)
-        _planModel = ContentTaskModel("Sales",
+        _planModel = ContentTaskModel("PreSales",
             "Windy",
             "19/12/2019 11.24",
             "Jakarta Selatan",

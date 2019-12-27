@@ -13,7 +13,6 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
     val stErrDownload = ObservableField<String>("")
     val isPrgBarVisible = ObservableField<Boolean>(false)
     val isBtnVisible = ObservableField<Boolean>(false)
-//    private val TAG = "SplashViewModel"
 
     fun retryDownload(){
         when{
