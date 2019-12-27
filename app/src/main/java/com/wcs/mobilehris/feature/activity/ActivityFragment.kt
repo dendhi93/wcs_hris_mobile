@@ -28,20 +28,20 @@ class ActivityFragment : Fragment() {
         activityBinding.tlActivity.setTabTextColors(Color.parseColor("#BDBDBD"), Color.parseColor("#000000"))
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_activity_create_task, menu);
-
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.mnu_activity_create_task -> {
-                MessageUtils.toastMessage(requireContext(), "Test", ConstantObject.vToastInfo)
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        inflater.inflate(R.menu.menu_activity_create_task, menu);
+//
+//        super.onCreateOptionsMenu(menu, inflater)
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//            R.id.mnu_activity_create_task -> {
+//                MessageUtils.toastMessage(requireContext(), "Test", ConstantObject.vToastInfo)
+//                return true
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
 }

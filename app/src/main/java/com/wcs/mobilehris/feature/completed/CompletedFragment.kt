@@ -36,7 +36,6 @@ class CompletedFragment : Fragment(), CompletedInterface {
         fragmentCompletedBinding.viewModel?.initCompleted(LOAD_WITH_PROGRESSBAR)
         fragmentCompletedBinding.swCompleted.setOnRefreshListener {
             fragmentCompletedBinding.viewModel?.initCompleted(LOAD_WITHOUT_PROGRESSBAR)
-            fragmentCompletedBinding.swCompleted.isRefreshing = false
         }
     }
 
@@ -57,6 +56,7 @@ class CompletedFragment : Fragment(), CompletedInterface {
         completedAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
+        fragmentCompletedBinding.swCompleted.isRefreshing = false
 
         when(typeLoading){
             ActualFragment.LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)

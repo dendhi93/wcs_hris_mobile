@@ -35,7 +35,6 @@ class ActualFragment : Fragment(), ActualInterface {
         actualFragmentBinding.viewModel?.initActual(LOAD_WITH_PROGRESSBAR)
         actualFragmentBinding.swActual.setOnRefreshListener {
             actualFragmentBinding.viewModel?.initActual(LOAD_WITHOUT_PROGRESSBAR)
-            actualFragmentBinding.swActual.isRefreshing = false
         }
     }
 
@@ -56,6 +55,7 @@ class ActualFragment : Fragment(), ActualInterface {
         actualAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
+        actualFragmentBinding.swActual.isRefreshing = false
 
         when(typeLoading){
             LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)

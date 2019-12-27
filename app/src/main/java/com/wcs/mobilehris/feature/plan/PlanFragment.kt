@@ -34,7 +34,6 @@ class PlanFragment : Fragment(), PlanInterface {
         planFragmentBinding.viewModel?.initPlan(LOAD_WITH_PROGRESSBAR)
         planFragmentBinding.swPlan.setOnRefreshListener {
             planFragmentBinding.viewModel?.initPlan(LOAD_WITHOUT_PROGRESSBAR)
-            planFragmentBinding.swPlan.isRefreshing = false
         }
     }
 
@@ -55,6 +54,7 @@ class PlanFragment : Fragment(), PlanInterface {
         planAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
+        planFragmentBinding.swPlan.isRefreshing = false
 
         when(typeLoading){
             LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
@@ -64,6 +64,7 @@ class PlanFragment : Fragment(), PlanInterface {
     override fun onErrorMessage(message: String, messageType: Int) {
         when(messageType){
             ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message,ConstantObject.vToastError)
+            ConstantObject.vToastInfo -> MessageUtils.toastMessage(requireContext(), message,ConstantObject.vToastInfo)
         }
     }
 

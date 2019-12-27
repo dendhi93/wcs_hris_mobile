@@ -33,7 +33,6 @@ class TeamFragment : Fragment(), TeamInterface {
         fragmentTeamBinding.viewModel?.initDataTeam(LOAD_WITH_PROGRESSBAR)
         fragmentTeamBinding.swTeam.setOnRefreshListener {
             fragmentTeamBinding.viewModel?.initDataTeam(LOAD_WITHOUT_PROGRESSBAR)
-            fragmentTeamBinding.swTeam.isRefreshing = false
         }
     }
 
@@ -48,6 +47,7 @@ class TeamFragment : Fragment(), TeamInterface {
         teamAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
+        fragmentTeamBinding.swTeam.isRefreshing = false
 
         when(typeLoading){
             LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)

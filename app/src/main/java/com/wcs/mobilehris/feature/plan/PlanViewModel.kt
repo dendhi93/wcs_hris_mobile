@@ -52,4 +52,8 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
             _planInterface.onLoadList(listPlan, typeLoading)
         }, 2000)
     }
+
+    fun fabPlanClick(){
+        _planInterface.onErrorMessage("coba", ConstantObject.vToastInfo)
+    }
 }

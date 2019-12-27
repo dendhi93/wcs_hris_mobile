@@ -1,5 +1,5 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <import type="android.view.View" />
@@ -11,8 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimary"
-        android:orientation="vertical">
+        android:background="?attr/colorPrimary">
 
         <ProgressBar
             android:id="@+id/pb_plan"
@@ -44,6 +43,20 @@
             android:textStyle="bold"
             android:textSize="@dimen/alph_size_small_2"
             android:text="@string/empty_data" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/colorWhite"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/icon_medium"
+            android:layout_marginEnd="@dimen/icon_medium"
+            android:onClick="@{() -> viewModel.fabPlanClick()}"
+            android:id="@+id/fab_plan"
+            android:src="@mipmap/ic_plus_48"
+            app:elevation="6dp"
+            app:fabSize="normal"/>
     </RelativeLayout>
 
 
