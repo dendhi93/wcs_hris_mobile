@@ -1,7 +1,6 @@
 package com.wcs.mobilehris.feature.plan
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -10,7 +9,6 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.util.ConstantObject
