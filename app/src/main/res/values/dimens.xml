@@ -46,6 +46,7 @@
     <dimen name="space_04">20dp</dimen>
     <dimen name="space_05">24dp</dimen>
     <dimen name="space_06">26dp</dimen>
+    <dimen name="space_07">32dp</dimen>
 
     <!--Button-->
     <dimen name="button_height">44dp</dimen>

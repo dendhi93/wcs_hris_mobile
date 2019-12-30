@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <color name="colorPrimary">#ECE9E6</color>
+    <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">@color/colorGray200</color>
     <color name="colorAccent">#B71C1C</color>
 
@@ -29,6 +29,7 @@
     <color name="colorGray300">#E0E0E0</color>
     <color name="colorGray200">#EEEEEE</color>
     <color name="colorBlueMantab">#003D79</color>
+    <color name="colorLightGreen">#FFA500</color>
 
     <!--Text Fields-->
     <color name="text_fields_box_color">#43C6AC</color>

@@ -1,23 +1,16 @@
 package com.wcs.mobilehris.feature.dashboard
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentDashboardBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import com.wcs.mobilehris.util.ConstantObject
-import com.wcs.mobilehris.util.MessageUtils
-
 
 class DashboardFragment : Fragment(), DashboardInterface {
     private lateinit var dashboardBinding : FragmentDashboardBinding
@@ -81,12 +74,12 @@ class DashboardFragment : Fragment(), DashboardInterface {
 
     override fun hideUI(typeUI: Int) {
         when(typeUI){
-            ConstantObject.vRecylerViewUI -> dashboardBinding.rcDashboard.visibility = View.GONE
-            ConstantObject.vProgresBarUI -> dashboardBinding.pbDashboard.visibility = View.GONE
-            TEXTVIEW_UI -> dashboardBinding.tvDashboardEmpty.visibility = View.GONE
+            ConstantObject.vRecylerViewUI -> dashboardBinding.rcDashboard.visibility = View.INVISIBLE
+            ConstantObject.vProgresBarUI -> dashboardBinding.pbDashboard.visibility = View.INVISIBLE
+            TEXTVIEW_UI -> dashboardBinding.tvDashboardEmpty.visibility = View.INVISIBLE
             else -> {
-                dashboardBinding.btnDashboardLate.visibility = View.GONE
-                dashboardBinding.btnDashboardLeave.visibility = View.GONE
+                dashboardBinding.btnDashboardLate.visibility = View.INVISIBLE
+                dashboardBinding.btnDashboardLeave.visibility = View.INVISIBLE
             }
         }
     }

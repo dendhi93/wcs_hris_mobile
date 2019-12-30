@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -41,13 +42,13 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         menuBinding = DataBindingUtil.setContentView(this, R.layout.activity_menu)
         val header = menuBinding.navView.inflateHeaderView(R.layout.nav_header_menu)
         tvHeaderMenu = header.findViewById(R.id.tv_nav_header_bottom)
         lnHeader = header.findViewById(R.id.ln_nav_header)
         setSupportActionBar(menuBinding.toolbar)
         supportActionBar?.let {
-//            it.title = Html.fromHtml("<font color='#000000'>WcsHR System</font>")
             it.title = getString(R.string.app_name_label)
         }
 
@@ -213,7 +214,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             EXTRA_FLAG_LOGOUT -> {
                 keyDialogActive = DIALOG_LOG_OUT
-               MessageUtils.alertDialogOkCancel("Are you sure want to exit Apps ?", ConstantObject.vAlertDialogConfirmation, MenuActivity@this, this)
+                MessageUtils.alertDialogOkCancel("Are you sure want to exit Apps ?", ConstantObject.vAlertDialogConfirmation, MenuActivity@this, this)
             }
         }
         frTransaction.commit()
@@ -247,6 +248,5 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         const val EXTRA_CALLER_ACTIVITY_FLAG = "hris_activity"
         const val DIALOG_LOG_OUT = 12
     }
-
 
 }

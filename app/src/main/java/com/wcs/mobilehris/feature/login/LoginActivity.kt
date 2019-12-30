@@ -91,8 +91,8 @@ class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
 
     override fun hideUI(typeUI: Int) {
         when (typeUI) {
-            ConstantObject.vButtonUI -> bindingLogin.btnLoginLogIn.visibility = View.GONE
-            ConstantObject.vProgresBarUI -> bindingLogin.pbLogin.visibility = View.GONE
+            ConstantObject.vButtonUI -> bindingLogin.btnLoginLogIn.visibility = View.INVISIBLE
+            ConstantObject.vProgresBarUI -> bindingLogin.pbLogin.visibility = View.INVISIBLE
         }
     }
 

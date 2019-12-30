@@ -76,5 +76,4 @@ class CustomDashboardAdapter(private val _context : Context, private val dashLis
         var tvDashboardContent : TextView = view.findViewById(R.id.tv_custom_dash_content)
     }
 
-
 }
