@@ -11,6 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorPrimary"
         android:orientation="vertical">
 
         <ProgressBar
@@ -18,11 +19,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/permission_button_margin_vertical"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:visibility="gone"
+            android:visibility="@{viewModel.isVisibleApprovalUI ? View.VISIBLE : View.GONE}"
             android:indeterminate="true" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rc_approval"
+            android:visibility="@{viewModel.isVisibleApprovalUI ? View.GONE : View.VISIBLE}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

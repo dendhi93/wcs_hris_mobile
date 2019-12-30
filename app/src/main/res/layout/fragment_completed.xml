@@ -2,10 +2,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <import type="android.view.View" />
+        z<variable
+            name="viewModel"
+            type="com.wcs.mobilehris.feature.completed.CompletedViewModel" />
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="?attr/colorPrimary">
 
         <ProgressBar
             android:id="@+id/pb_completed"
@@ -14,6 +20,19 @@
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:visibility="gone"
             android:indeterminate="true" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/sw_completed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rc_completed"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <TextView
             android:id="@+id/tv_completed_empty"
@@ -25,11 +44,20 @@
             android:textSize="@dimen/alph_size_small_2"
             android:text="@string/empty_data" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rc_completed"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/colorWhite"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/icon_medium"
+            android:layout_marginEnd="@dimen/icon_medium"
+            android:onClick="@{() -> viewModel.fabCompletedClick()}"
+            android:id="@+id/fab_plan"
+            android:src="@mipmap/ic_plus_48"
+            app:elevation="6dp"
+            app:fabSize="normal"/>
+
     </RelativeLayout>
 
 </layout>

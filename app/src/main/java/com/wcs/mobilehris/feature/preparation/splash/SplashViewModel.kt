@@ -11,7 +11,8 @@ import com.wcs.mobilehris.util.ConstantObject
 class SplashViewModel(private var _context : Context, private var _splashInterface: SplashInterface) : ViewModel() {
 
     val stErrDownload = ObservableField<String>("")
-//    private val TAG = "SplashViewModel"
+    val isPrgBarVisible = ObservableField<Boolean>(false)
+    val isBtnVisible = ObservableField<Boolean>(false)
 
     fun retryDownload(){
         when{
@@ -24,8 +25,8 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
     }
 
     fun processDownload(){
+        isPrgBarVisible.set(true)
         Handler().postDelayed({
-            _splashInterface.showUI(ConstantObject.vProgresBarUI)
             _splashInterface.successSplash()
         }, 2000)
     }

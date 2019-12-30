@@ -9,21 +9,25 @@ import com.wcs.mobilehris.feature.plan.PlanFragment
 
 class ViewPagerActivityAdapter(fragmentManager : FragmentManager) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
 
-    private val itemPages =
-        listOf(PlanFragment(),
-        ActualFragment(),
-        CompletedFragment())
+//    private val itemPages =
+//        listOf(PlanFragment(),
+//        ActualFragment(),
+//        CompletedFragment())
 
     override fun getItem(position: Int): Fragment {
-        return itemPages[position]
+        return when(position) {
+            0 -> PlanFragment()
+            1 -> ActualFragment()
+            else -> CompletedFragment()
+        }
     }
 
-    override fun getCount(): Int { return itemPages.size }
+    override fun getCount(): Int = 3
 
     override fun getPageTitle(position: Int): CharSequence? {
         return when(position) {
             0 -> "Plan"
-            1 -> "Actual"
+            1 -> "OnGoing"
             else -> "Completed"
         }
     }

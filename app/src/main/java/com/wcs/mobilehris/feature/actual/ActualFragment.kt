@@ -35,27 +35,27 @@ class ActualFragment : Fragment(), ActualInterface {
         actualFragmentBinding.viewModel?.initActual(LOAD_WITH_PROGRESSBAR)
         actualFragmentBinding.swActual.setOnRefreshListener {
             actualFragmentBinding.viewModel?.initActual(LOAD_WITHOUT_PROGRESSBAR)
-            actualFragmentBinding.swActual.isRefreshing = false
         }
     }
 
-    override fun onDisplayList(planList: List<ContentTaskModel>, typeLoading: Int) {
+    override fun onDisplayList(actualList: List<ContentTaskModel>, typeLoading: Int) {
         arrActualList.clear()
-        for(i in planList.indices){
+        for(i in actualList.indices){
             arrActualList.add(
-                ContentTaskModel(planList[i].taskType ,
-                    planList[i].userCreate,
-                    planList[i].createDate,
-                    planList[i].locationTask,
-                    planList[i].companyName,
-                    planList[i].beginTaskTime,
-                    planList[i].endTaskTime,
-                    planList[i].flagTask,
-                    planList[i].taskDate))
+                ContentTaskModel(actualList[i].taskType ,
+                    actualList[i].userCreate,
+                    actualList[i].createDate,
+                    actualList[i].locationTask,
+                    actualList[i].companyName,
+                    actualList[i].beginTaskTime,
+                    actualList[i].endTaskTime,
+                    actualList[i].flagTask,
+                    actualList[i].taskDate))
         }
         actualAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
+        actualFragmentBinding.swActual.isRefreshing = false
 
         when(typeLoading){
             LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
@@ -65,6 +65,7 @@ class ActualFragment : Fragment(), ActualInterface {
     override fun onErrorMessage(message: String, messageType: Int) {
         when(messageType){
             ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message,ConstantObject.vToastError)
+            ConstantObject.vToastInfo -> MessageUtils.toastMessage(requireContext(), message,ConstantObject.vToastInfo)
         }
     }
 

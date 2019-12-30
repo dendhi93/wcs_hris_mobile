@@ -11,8 +11,6 @@ object ConstantObject {
     const val vSnackBarNoButton = 2
 
     //alertDialog
-    const val vAlertDialogDismiss = 1
-    const val vAlertDialogOkCancel = 2
     const val vAlertDialogNoConnection = "No Connection"
     const val vAlertDialogConfirmation = "Confirmation"
 
@@ -20,10 +18,12 @@ object ConstantObject {
     const val vButtonUI = 1
     const val vProgresBarUI = 2
     const val vEditTextUI = 3
-    const val vGlobalUI = 4
+    const val vGlobalUI = 99
     const val vRecylerViewUI = 5
 
     //type flagTask Type
     const val vPlanTask = "Plan"
+    const val vConfirmTask = "Confirm"
+    const val vConfirmedTask = "Confirmed"
 
 }

@@ -4,7 +4,7 @@ interface ActionInterface{
     fun enableUI(typeUI : Int)
     fun disableUI(typeUI : Int)
 
-    interface showHideUI{
+    interface ShowHideUI{
         fun hideUI(typeUI : Int)
         fun showUI(typeUI : Int)
     }

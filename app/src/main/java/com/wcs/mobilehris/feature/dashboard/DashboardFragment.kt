@@ -35,7 +35,6 @@ class DashboardFragment : Fragment(), DashboardInterface {
         dashboardBinding.viewModel?.initDataDashboard()
         dashboardBinding.swDashboard.setOnRefreshListener{
             dashboardBinding.viewModel?.onInitDashboardMenu()
-            dashboardBinding.swDashboard.isRefreshing = false
         }
     }
 
@@ -56,6 +55,8 @@ class DashboardFragment : Fragment(), DashboardInterface {
         }
         hideUI(TEXTVIEW_UI)
         showUI(ConstantObject.vRecylerViewUI)
+        showUI(ConstantObject.vGlobalUI)
+        dashboardBinding.swDashboard.isRefreshing = false
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {

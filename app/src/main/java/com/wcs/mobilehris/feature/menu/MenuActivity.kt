@@ -49,6 +49,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         lnHeader = header.findViewById(R.id.ln_nav_header)
         setSupportActionBar(menuBinding.toolbar)
         supportActionBar?.let {
+//            it.title = Html.fromHtml("<font color='#000000'>WcsHR System</font>")
             it.title = getString(R.string.app_name_label)
         }
 
@@ -65,7 +66,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onStart() {
         super.onStart()
-        tvHeaderMenu.text = preference.getUn().trim()
+        tvHeaderMenu.text = preference.getName().trim()
         lnHeader.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }

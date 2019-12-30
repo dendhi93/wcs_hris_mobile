@@ -2,6 +2,7 @@ package com.wcs.mobilehris.feature.approval
 
 import android.content.Context
 import android.os.Handler
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
@@ -9,6 +10,7 @@ import com.wcs.mobilehris.util.ConstantObject
 
 
 class ApprovalViewModel(private val _context : Context, private val _approvalInterface : ApprovalInterface) : ViewModel(){
+    val isVisibleApprovalUI = ObservableField<Boolean>(false)
 
     fun approvalInitMenu(){
         when{
@@ -21,9 +23,8 @@ class ApprovalViewModel(private val _context : Context, private val _approvalInt
     }
 
     private fun getApprovalMenu(){
-        _approvalInterface.showUI(ConstantObject.vProgresBarUI)
-        _approvalInterface.hideUI(ConstantObject.vRecylerViewUI)
-        var listApprovalMenu = mutableListOf<ApprovalModel>()
+        isVisibleApprovalUI.set(true)
+        val listApprovalMenu = mutableListOf<ApprovalModel>()
         var _approvalModel = ApprovalModel("Travel", R.mipmap.ic_train, 2, "Last request by Andika about an hour ago")
         listApprovalMenu.add(_approvalModel)
         _approvalModel = ApprovalModel("Leave", R.mipmap.ic_edit_user, 0, "You got none")

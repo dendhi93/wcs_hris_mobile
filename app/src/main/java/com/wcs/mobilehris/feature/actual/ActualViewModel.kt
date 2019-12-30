@@ -28,17 +28,17 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
         _actualnterface.hideUI(ConstantObject.vRecylerViewUI)
         _actualnterface.showUI(ConstantObject.vGlobalUI)
         var listActual = mutableListOf<ContentTaskModel>()
-        var _ActualModel = ContentTaskModel("Prospect",
+        var _actualModel = ContentTaskModel("Prospect",
             "Michael",
             "18/12/2019 11.24",
             "Cibitung",
             "PT Sukanda",
             "08:00",
             "11:00",
-            "Confirmed",
+            "Confirm",
             "20/12/2019")
-        listActual.add(_ActualModel)
-        _ActualModel = ContentTaskModel("Sales",
+        listActual.add(_actualModel)
+        _actualModel = ContentTaskModel("PreSales",
             "Windy",
             "19/12/2019 11.24",
             "Jakarta Selatan",
@@ -47,8 +47,8 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
             "17:00",
             "Confirm",
             "20/12/2019")
-        listActual.add(_ActualModel)
-        _ActualModel = ContentTaskModel("Project",
+        listActual.add(_actualModel)
+        _actualModel = ContentTaskModel("Project",
             "Deddy",
             "20/12/2019 11.24",
             "Jakarta Selatan",
@@ -57,10 +57,14 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
             "17:30",
             "Confirm",
             "20/12/2019")
-        listActual.add(_ActualModel)
+        listActual.add(_actualModel)
 
         Handler().postDelayed({
             _actualnterface.onDisplayList(listActual, typeLoading)
         }, 2000)
+    }
+
+    fun fabActualClick(){
+        _actualnterface.onErrorMessage("Test", ConstantObject.vToastInfo)
     }
 }

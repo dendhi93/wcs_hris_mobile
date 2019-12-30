@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/cv_custom"
+    android:id="@+id/cv_custom_notif"
     app:cardCornerRadius="10dp"
     app:cardElevation="1dp"
     android:padding="1dp"
@@ -18,43 +18,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_margin="@dimen/spacing_small"
+        android:layout_margin="@dimen/spacing_tiny"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_margin="@dimen/spacing_tiny"
-            android:id="@+id/imgV_custom"
-            android:layout_width="45dp"
             android:layout_gravity="center_vertical"
+            android:id="@+id/imgV_custom_notif"
+            android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@mipmap/ic_benefit"/>
+            android:src="@mipmap/ic_user_black"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_gravity="center_vertical"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/spacing_tiny_3"
             android:orientation="vertical">
 
             <TextView
-                android:layout_marginTop="@dimen/spacing_tiny"
-                android:id="@+id/tv_custom"
+                android:id="@+id/tv_custom_notification_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textSize="@dimen/alph_size_small_2"
-                android:textStyle="bold"
-                android:layout_marginStart="@dimen/spacing_tiny" />
+                android:textSize="@dimen/alph_size_small"
+                android:textStyle="bold" />
 
             <TextView
-                android:layout_marginTop="@dimen/spacing_tiny"
-                android:id="@+id/tv_custom_content"
+                android:id="@+id/tv_custom_notification_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/colorGray"
-                android:layout_marginStart="@dimen/spacing_tiny"
-                android:text=""/>
+                android:textSize="@dimen/alph_size_small_2" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tv_custom_notification_date"
+            android:layout_width="@dimen/spacing_huge_2"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:textSize="@dimen/alph_size_small_2" />
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

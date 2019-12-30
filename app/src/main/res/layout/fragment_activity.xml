@@ -11,7 +11,7 @@
             android:id="@+id/tl_activity"
             android:layout_width="match_parent"
             app:tabMode="fixed"
-            android:background="@color/colorWhite"
+            android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             app:tabTextColor="@color/colorBlack"
             app:tabSelectedTextColor="@color/colorGray"

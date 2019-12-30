@@ -12,8 +12,8 @@ class ProfileViewModel(private var _context : Context) : ViewModel() {
     private val preference = Preference(_context)
 
     fun loadProfile(){
-        stProfileName.set(preference.getUn().trim())
-        stProfilePhone.set("0878900679")
-        stProfileMail.set("admin-id@id.wilmar-intl.com")
+        stProfileName.set(preference.getName().trim())
+        stProfilePhone.set(preference.getPhone().trim())
+        stProfileMail.set(preference.getEmail().trim())
     }
 }

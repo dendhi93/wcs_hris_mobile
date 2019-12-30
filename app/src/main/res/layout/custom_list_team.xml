@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/cv_custom_team"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="1dp"
+    android:padding="1dp"
+    android:elevation="2dp"
+    app:cardMaxElevation="0dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/cardview_light_background"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/spacing_tiny"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_margin="@dimen/spacing_small_1"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/imgV_custom_team"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@mipmap/ic_user_black"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/spacing_tiny_3"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_custom_team_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/spacing_tiny"
+                android:layout_marginBottom="@dimen/spacing_tiny"
+                android:textSize="@dimen/alph_size_small"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/padding_medium2"
+                    android:layout_height="@dimen/padding_medium2"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="@dimen/spacing_tiny_2"
+                    android:layout_marginBottom="@dimen/spacing_tiny_2"
+                    android:src="@mipmap/ic_phone"/>
+
+                <TextView
+                    android:id="@+id/tv_custom_team_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="@dimen/spacing_tiny_2"
+                    android:layout_marginBottom="@dimen/spacing_tiny_2"
+                    android:layout_marginStart="@dimen/spacing_tiny_2"
+                    android:textSize="@dimen/alph_size_small_2"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/padding_medium2"
+                    android:layout_height="@dimen/padding_medium2"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/spacing_tiny_2"
+                    android:layout_marginTop="@dimen/spacing_tiny_2"
+                    android:layout_marginBottom="@dimen/spacing_tiny"
+                    android:src="@mipmap/ic_mail"/>
+
+                <TextView
+                    android:id="@+id/tv_custom_team_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/spacing_tiny_2"
+                    android:layout_marginTop="@dimen/spacing_tiny_2"
+                    android:layout_marginBottom="@dimen/spacing_tiny"
+                    android:textSize="@dimen/alph_size_small_2"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -22,17 +22,18 @@
             android:layout_height="@dimen/permission_button_margin_vertical"
             android:layout_alignParentTop="true"
             android:indeterminate="true"
-            android:visibility="invisible" />
+            android:visibility="@{viewModel.isVisibleProgress ? View.VISIBLE : View.GONE}" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/imgV_login"-->
-<!--            android:layout_width="@dimen/spacing_very_huge"-->
-<!--            android:layout_height="@dimen/spacing_very_huge"-->
-<!--            android:layout_below="@+id/pb_login"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:layout_marginTop="@dimen/spacing_very_huge_2"-->
-<!--            android:layout_marginBottom="@dimen/spacing_very_huge"-->
-<!--            android:src="@mipmap/ic_logo_wcs" />-->
+        <ImageView
+            android:id="@+id/imgV_login"
+            android:layout_width="@dimen/spacing_very_huge"
+            android:layout_height="@dimen/spacing_very_huge"
+            android:layout_below="@+id/pb_login"
+            android:visibility="invisible"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/spacing_very_huge_2"
+            android:layout_marginBottom="@dimen/spacing_very_huge"
+            android:src="@mipmap/ic_logo_wcs" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,6 +101,7 @@
                 android:layout_marginTop="@dimen/space_06"
                 android:background="@drawable/log_in_button"
                 android:onClick="@{() -> viewModel.getLogin()}"
+                android:enabled="@{!viewModel.isVisibleProgress}"
                 android:text="@string/login"
                 android:textStyle="bold"
                 android:textSize="@dimen/button_text_size"
