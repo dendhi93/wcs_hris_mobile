@@ -39,9 +39,19 @@ class TeamViewModel (private val context : Context, private val teamInterface: T
             "michael.saputra@id.wilmar-intl.com")
         listTeam.add(teamModel)
 
-        Handler().postDelayed({
-            teamInterface.onLoadTeam(listTeam, typeLoading)
-        }, 2000)
+        when{
+            listTeam.size > 0 -> {
+                Handler().postDelayed({
+                    teamInterface.onLoadTeam(listTeam, typeLoading)
+                }, 2000)
+            }
+            else -> {
+                teamInterface.showUI(ConstantObject.vGlobalUI)
+                teamInterface.hideUI(ConstantObject.vRecylerViewUI)
+                teamInterface.onHideSwipeRefresh()
+            }
+        }
+
 
     }
 

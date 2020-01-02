@@ -39,9 +39,18 @@ class NotificationViewModel(private var context : Context, private var notificat
                     "Siska")
         listNotif.add(notifModel)
 
-        Handler().postDelayed({
-            notificationInterface.onLoadNotif(listNotif)
-        }, 2000)
+        when{
+            listNotif.size > 0 -> {
+                Handler().postDelayed({
+                    notificationInterface.onLoadNotif(listNotif)
+                }, 2000)
+            }
+            else -> {
+                notificationInterface.onErrorMessage(context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
+                isVisibleUI.set(false)
+            }
+        }
+
     }
 
 }

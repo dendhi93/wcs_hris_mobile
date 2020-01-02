@@ -55,6 +55,8 @@ class NotificationFragment : Fragment(), NotificationInterface {
         when(messageType){
             ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message,
                 ConstantObject.vToastError)
+            else -> MessageUtils.toastMessage(requireContext(), message,
+                ConstantObject.vToastInfo)
         }
     }
 

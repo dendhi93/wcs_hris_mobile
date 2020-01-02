@@ -47,7 +47,7 @@ class TeamFragment : Fragment(), TeamInterface {
         teamAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
-        fragmentTeamBinding.swTeam.isRefreshing = false
+        onHideSwipeRefresh()
 
         when(typeLoading){
             LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
@@ -58,6 +58,8 @@ class TeamFragment : Fragment(), TeamInterface {
         when(messageType){
             ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message,
                 ConstantObject.vToastError)
+            else -> MessageUtils.toastMessage(requireContext(), message,
+                ConstantObject.vToastInfo)
         }
     }
 
@@ -65,6 +67,10 @@ class TeamFragment : Fragment(), TeamInterface {
         when(intTypeActionAlert){
             ALERT_TEAM_NO_CONNECTION -> {MessageUtils.alertDialogDismiss(alertMessage, alertTitle, requireContext())}
         }
+    }
+
+    override fun onHideSwipeRefresh() {
+        fragmentTeamBinding.swTeam.isRefreshing = false
     }
 
     override fun hideUI(typeUI: Int) {
