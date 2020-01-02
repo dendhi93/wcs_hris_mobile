@@ -50,7 +50,7 @@ class DashboardFragment : Fragment(), DashboardInterface {
         }
         dashAdapter.notifyDataSetChanged()
         when(typeLoading){
-            LOAD_WITH_PROGRESBAR -> {
+            LOAD_WITH_PROGRESSBAR -> {
                 hideUI(ConstantObject.vProgresBarUI)
                 showUI(ConstantObject.vGlobalUI)
             }
@@ -58,13 +58,15 @@ class DashboardFragment : Fragment(), DashboardInterface {
         hideUI(TEXTVIEW_UI)
         showUI(ConstantObject.vRecylerViewUI)
         showUI(ConstantObject.vGlobalUI)
-        dashboardBinding.swDashboard.isRefreshing = false
+        hideSwipeRefreshLayout()
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {
         when(messageType){
             ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message,
                 ConstantObject.vToastError)
+            else ->  MessageUtils.toastMessage(requireContext(), message,
+            ConstantObject.vToastInfo)
         }
     }
 
@@ -73,6 +75,10 @@ class DashboardFragment : Fragment(), DashboardInterface {
             ALERT_DASH_NO_CONNECTION -> {
                 MessageUtils.alertDialogDismiss(alertMessage, alertTitle, requireContext())}
         }
+    }
+
+    override fun hideSwipeRefreshLayout() {
+        dashboardBinding.swDashboard.isRefreshing = false
     }
 
     override fun hideUI(typeUI: Int) {
@@ -101,8 +107,8 @@ class DashboardFragment : Fragment(), DashboardInterface {
 
     companion object{
         const val ALERT_DASH_NO_CONNECTION = 1
-        const val LOAD_WITH_PROGRESBAR = 2
-        const val LOAD_WITHOUT_PROGRESBAR = 3
+        const val LOAD_WITH_PROGRESSBAR = 2
+        const val LOAD_WITHOUT_PROGRESSBAR = 3
         const val TEXTVIEW_UI = 4
     }
 }

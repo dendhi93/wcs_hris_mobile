@@ -33,6 +33,7 @@
 
     <!--global content-->
     <string name="empty_data">Empty Data</string>
+    <string name="no_data_found">No Data Found</string>
     <string name="btn_plan">Plan</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -60,6 +61,19 @@
 
     <!--profile content form-->
     <string name="position">Position</string>
+
+    <!--Detail task content form-->
+    <string name="charge_code">Charge Code</string>
+    <string name="company_name">Company Name</string>
+    <string name="date">Date</string>
+    <string name="from">From</string>
+    <string name="into">To</string>
+    <string name="contact_person">Contact Person</string>
+    <string name="description">Description</string>
+    <string name="no_solman">No Solman</string>
+    <string name="project_manager">Project Manager</string>
+    <string name="on_site">On Site</string>
+    <string name="off_site">Off Site</string>
 
 
 </resources>
