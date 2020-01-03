@@ -26,4 +26,8 @@ object ConstantObject {
     const val vConfirmTask = "Confirm"
     const val vConfirmedTask = "Confirmed"
 
+    //type progressBar
+    const val LOAD_WITH_PROGRESSBAR = 11
+    const val LOAD_WITHOUT_PROGRESSBAR = 22
+
 }

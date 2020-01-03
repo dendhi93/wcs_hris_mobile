@@ -7,4 +7,5 @@ interface CompletedInterface : ActionInterface.ShowHideUI {
     fun onDisplayCompletedList(completedList : List<ContentTaskModel>, typeLoading : Int)
     fun onErrorMessage(message : String, messageType : Int)
     fun onAlertCompleted(alertMessage : String, alertTitle : String, intTypeActionAlert : Int)
+    fun onHideSwipeRefresh()
 }

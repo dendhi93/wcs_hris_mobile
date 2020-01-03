@@ -21,12 +21,12 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
 
     private fun getPlanData(typeLoading : Int){
         when(typeLoading){
-            PlanFragment.LOAD_WITH_PROGRESSBAR -> _planInterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.LOAD_WITH_PROGRESSBAR -> _planInterface.showUI(ConstantObject.vProgresBarUI)
         }
 
         _planInterface.hideUI(ConstantObject.vRecylerViewUI)
         _planInterface.showUI(ConstantObject.vGlobalUI)
-        var listPlan = mutableListOf<ContentTaskModel>()
+        val listPlan = mutableListOf<ContentTaskModel>()
         var _planModel = ContentTaskModel("Prospect",
             "Michael",
             "18/12/2019 11.24",
@@ -48,9 +48,24 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
             "20/12/2019")
         listPlan.add(_planModel)
 
-        Handler().postDelayed({
-            _planInterface.onLoadList(listPlan, typeLoading)
-        }, 2000)
+        when{
+            listPlan.size > 0 -> {
+                Handler().postDelayed({
+                    _planInterface.onLoadList(listPlan, typeLoading)
+                }, 2000)
+            }
+            else -> {
+                _planInterface.showUI(ConstantObject.vGlobalUI)
+                _planInterface.hideUI(ConstantObject.vRecylerViewUI)
+
+                when(typeLoading){
+                    ConstantObject.LOAD_WITH_PROGRESSBAR -> _planInterface.hideUI(ConstantObject.vProgresBarUI)
+                    else -> _planInterface.onHideSwipeRefresh()
+                }
+                _planInterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
+            }
+        }
+
     }
 
     fun fabPlanClick(){

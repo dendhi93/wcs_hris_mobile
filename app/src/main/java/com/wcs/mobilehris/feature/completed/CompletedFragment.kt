@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentCompletedBinding
-import com.wcs.mobilehris.feature.actual.ActualFragment
 import com.wcs.mobilehris.feature.plan.ContentTaskModel
 import com.wcs.mobilehris.feature.plan.CustomTaskAdapter
 import com.wcs.mobilehris.util.ConstantObject
@@ -33,9 +32,9 @@ class CompletedFragment : Fragment(), CompletedInterface {
         fragmentCompletedBinding.rcCompleted.setHasFixedSize(true)
         completedAdapter = CustomTaskAdapter(requireContext(), arrCompletedList)
         fragmentCompletedBinding.rcCompleted.adapter = completedAdapter
-        fragmentCompletedBinding.viewModel?.initCompleted(LOAD_WITH_PROGRESSBAR)
+        fragmentCompletedBinding.viewModel?.initCompleted(ConstantObject.LOAD_WITH_PROGRESSBAR)
         fragmentCompletedBinding.swCompleted.setOnRefreshListener {
-            fragmentCompletedBinding.viewModel?.initCompleted(LOAD_WITHOUT_PROGRESSBAR)
+            fragmentCompletedBinding.viewModel?.initCompleted(ConstantObject.LOAD_WITHOUT_PROGRESSBAR)
         }
     }
 
@@ -56,10 +55,9 @@ class CompletedFragment : Fragment(), CompletedInterface {
         completedAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
-        fragmentCompletedBinding.swCompleted.isRefreshing = false
-
         when(typeLoading){
-            ActualFragment.LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
+            else -> onHideSwipeRefresh()
         }
     }
 
@@ -74,6 +72,10 @@ class CompletedFragment : Fragment(), CompletedInterface {
         when(intTypeActionAlert){
             ALERT_COMPLETED_NO_CONNECTION -> { MessageUtils.alertDialogDismiss(alertMessage, alertTitle, requireContext())}
         }
+    }
+
+    override fun onHideSwipeRefresh() {
+        fragmentCompletedBinding.swCompleted.isRefreshing = false
     }
 
     override fun hideUI(typeUI: Int) {
@@ -94,8 +96,6 @@ class CompletedFragment : Fragment(), CompletedInterface {
 
     companion object{
         const val ALERT_COMPLETED_NO_CONNECTION = 1
-        const val LOAD_WITH_PROGRESSBAR = 2
-        const val LOAD_WITHOUT_PROGRESSBAR = 3
     }
 
 }

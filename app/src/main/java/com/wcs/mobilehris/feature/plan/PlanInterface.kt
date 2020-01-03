@@ -7,4 +7,5 @@ interface PlanInterface : ActionInterface.ShowHideUI{
     fun onLoadList(planList : List<ContentTaskModel>, typeLoading : Int)
     fun onErrorMessage(message : String, messageType : Int)
     fun onAlertPlan(alertMessage : String, alertTitle : String, intTypeActionAlert : Int)
+    fun onHideSwipeRefresh()
 }

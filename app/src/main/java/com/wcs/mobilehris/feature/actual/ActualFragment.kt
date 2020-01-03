@@ -32,9 +32,9 @@ class ActualFragment : Fragment(), ActualInterface {
         actualFragmentBinding.rcActual.setHasFixedSize(true)
         actualAdapter = CustomTaskAdapter(requireContext(), arrActualList)
         actualFragmentBinding.rcActual.adapter = actualAdapter
-        actualFragmentBinding.viewModel?.initActual(LOAD_WITH_PROGRESSBAR)
+        actualFragmentBinding.viewModel?.initActual(ConstantObject.LOAD_WITH_PROGRESSBAR)
         actualFragmentBinding.swActual.setOnRefreshListener {
-            actualFragmentBinding.viewModel?.initActual(LOAD_WITHOUT_PROGRESSBAR)
+            actualFragmentBinding.viewModel?.initActual(ConstantObject.LOAD_WITHOUT_PROGRESSBAR)
         }
     }
 
@@ -55,10 +55,10 @@ class ActualFragment : Fragment(), ActualInterface {
         actualAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
-        actualFragmentBinding.swActual.isRefreshing = false
 
         when(typeLoading){
-            LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
+            else -> onHideSwipeRefresh()
         }
     }
 
@@ -73,6 +73,10 @@ class ActualFragment : Fragment(), ActualInterface {
         when(intTypeActionAlert){
             ALERT_ACTUAL_NO_CONNECTION -> {MessageUtils.alertDialogDismiss(alertMessage, alertTitle, requireContext())}
         }
+    }
+
+    override fun onHideSwipeRefresh() {
+        actualFragmentBinding.swActual.isRefreshing = false
     }
 
     override fun hideUI(typeUI: Int) {
@@ -93,7 +97,5 @@ class ActualFragment : Fragment(), ActualInterface {
 
     companion object{
         const val ALERT_ACTUAL_NO_CONNECTION = 1
-        const val LOAD_WITH_PROGRESSBAR = 2
-        const val LOAD_WITHOUT_PROGRESSBAR = 3
     }
 }

@@ -10,6 +10,7 @@ import com.wcs.mobilehris.databinding.ActivityDetailNotificationBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class DetailNotificationActivity : AppCompatActivity() {
 
     private lateinit var dtlNotificationBinding : ActivityDetailNotificationBinding

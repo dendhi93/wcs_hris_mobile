@@ -30,9 +30,9 @@ class TeamFragment : Fragment(), TeamInterface {
         fragmentTeamBinding.rcTeam.setHasFixedSize(true)
         teamAdapter = CustomTeamAdapter(requireContext(), arrTeamList)
         fragmentTeamBinding.rcTeam.adapter = teamAdapter
-        fragmentTeamBinding.viewModel?.initDataTeam(LOAD_WITH_PROGRESSBAR)
+        fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.LOAD_WITH_PROGRESSBAR)
         fragmentTeamBinding.swTeam.setOnRefreshListener {
-            fragmentTeamBinding.viewModel?.initDataTeam(LOAD_WITHOUT_PROGRESSBAR)
+            fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.LOAD_WITHOUT_PROGRESSBAR)
         }
     }
 
@@ -47,19 +47,16 @@ class TeamFragment : Fragment(), TeamInterface {
         teamAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
-        onHideSwipeRefresh()
-
         when(typeLoading){
-            LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
+            else -> onHideSwipeRefresh()
         }
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {
         when(messageType){
-            ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message,
-                ConstantObject.vToastError)
-            else -> MessageUtils.toastMessage(requireContext(), message,
-                ConstantObject.vToastInfo)
+            ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message, ConstantObject.vToastError)
+            else -> MessageUtils.toastMessage(requireContext(), message, ConstantObject.vToastInfo)
         }
     }
 
@@ -91,8 +88,6 @@ class TeamFragment : Fragment(), TeamInterface {
 
     companion object{
         const val ALERT_TEAM_NO_CONNECTION = 1
-        const val LOAD_WITH_PROGRESSBAR = 2
-        const val LOAD_WITHOUT_PROGRESSBAR = 3
     }
 
 }

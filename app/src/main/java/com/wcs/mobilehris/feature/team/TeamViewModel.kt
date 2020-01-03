@@ -21,11 +21,11 @@ class TeamViewModel (private val context : Context, private val teamInterface: T
 
     private fun getTemData(typeLoading : Int){
         when(typeLoading){
-            TeamFragment.LOAD_WITH_PROGRESSBAR -> teamInterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.LOAD_WITH_PROGRESSBAR -> teamInterface.showUI(ConstantObject.vProgresBarUI)
         }
         teamInterface.hideUI(ConstantObject.vRecylerViewUI)
         teamInterface.showUI(ConstantObject.vGlobalUI)
-        var listTeam = mutableListOf<TeamModel>()
+        val listTeam = mutableListOf<TeamModel>()
         var teamModel = TeamModel("Andika Kurnia",
             "+620878945445",
             "andika.kurnia@id.wilmar-intl.com")
@@ -48,7 +48,11 @@ class TeamViewModel (private val context : Context, private val teamInterface: T
             else -> {
                 teamInterface.showUI(ConstantObject.vGlobalUI)
                 teamInterface.hideUI(ConstantObject.vRecylerViewUI)
-                teamInterface.onHideSwipeRefresh()
+                when(typeLoading){
+                    ConstantObject.LOAD_WITH_PROGRESSBAR -> teamInterface.hideUI(ConstantObject.vProgresBarUI)
+                    else -> teamInterface.onHideSwipeRefresh()
+                }
+                teamInterface.onErrorMessage(context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
             }
         }
 

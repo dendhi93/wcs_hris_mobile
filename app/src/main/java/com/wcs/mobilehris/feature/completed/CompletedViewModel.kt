@@ -22,12 +22,12 @@ class CompletedViewModel(private val _context : Context, private val _completedI
 
     private fun getCompletedData(typeLoading : Int){
         when(typeLoading){
-            CompletedFragment.LOAD_WITH_PROGRESSBAR -> _completedInterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.LOAD_WITH_PROGRESSBAR -> _completedInterface.showUI(ConstantObject.vProgresBarUI)
         }
         _completedInterface.hideUI(ConstantObject.vRecylerViewUI)
         _completedInterface.showUI(ConstantObject.vGlobalUI)
-        var listCompleted = mutableListOf<ContentTaskModel>()
-        var _completedModel = ContentTaskModel("Prospect",
+        val listCompleted = mutableListOf<ContentTaskModel>()
+        val _completedModel = ContentTaskModel("Prospect",
             "Michael",
             "18/12/2019 11.24",
             "Cibitung",
@@ -38,9 +38,21 @@ class CompletedViewModel(private val _context : Context, private val _completedI
             "20/12/2019")
         listCompleted.add(_completedModel)
 
-        Handler().postDelayed({
-            _completedInterface.onDisplayCompletedList(listCompleted, typeLoading)
-        }, 2000)
+        when{
+            listCompleted.size > 0 -> {
+                Handler().postDelayed({
+                    _completedInterface.onDisplayCompletedList(listCompleted, typeLoading)
+                }, 2000)
+            }
+            else -> {
+                _completedInterface.showUI(ConstantObject.vGlobalUI)
+                _completedInterface.hideUI(ConstantObject.vRecylerViewUI)
+                when(typeLoading){
+                    ConstantObject.LOAD_WITH_PROGRESSBAR -> _completedInterface.hideUI(ConstantObject.vProgresBarUI)
+                    else -> _completedInterface.onHideSwipeRefresh()
+                }
+            }
+        }
     }
 
     fun fabCompletedClick(){

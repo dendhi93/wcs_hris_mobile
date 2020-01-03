@@ -22,7 +22,7 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
 
     private fun getActualData(typeLoading : Int){
         when(typeLoading){
-            ActualFragment.LOAD_WITH_PROGRESSBAR -> _actualnterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.LOAD_WITH_PROGRESSBAR -> _actualnterface.showUI(ConstantObject.vProgresBarUI)
         }
 
         _actualnterface.hideUI(ConstantObject.vRecylerViewUI)
@@ -59,9 +59,22 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
             "20/12/2019")
         listActual.add(_actualModel)
 
-        Handler().postDelayed({
-            _actualnterface.onDisplayList(listActual, typeLoading)
-        }, 2000)
+        when{
+            listActual.size > 0 -> {
+                Handler().postDelayed({
+                    _actualnterface.onDisplayList(listActual, typeLoading)
+                }, 2000)
+            }
+            else -> {
+                _actualnterface.showUI(ConstantObject.vGlobalUI)
+                _actualnterface.hideUI(ConstantObject.vRecylerViewUI)
+                _actualnterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
+                when(typeLoading){
+                    ConstantObject.LOAD_WITH_PROGRESSBAR -> _actualnterface.hideUI(ConstantObject.vProgresBarUI)
+                    else -> _actualnterface.onHideSwipeRefresh()
+                }
+            }
+        }
     }
 
     fun fabActualClick(){
