@@ -320,6 +320,38 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_marginStart="@dimen/spacing_tiny_3"
+                        android:layout_marginEnd="@dimen/spacing_tiny_3"
+                        android:layout_marginBottom="@dimen/spacing_small_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/text_fields_height"
+                        app:boxStrokeWidth="@dimen/text_fields_box_width"
+                        android:visibility="@{viewModel.isHiddenSolmanTv ? View.GONE : View.VISIBLE}"
+                        app:boxStrokeColor="@color/text_fields_box_color"
+                        app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                        app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                        app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                        app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_dtlTask_solmanNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                            android:enabled="false"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/colorBlack"
+                            android:textColorHint="@color/colorBlack"
+                            android:hint="@string/no_solman"
+                            android:text="@={viewModel.stDtlSolmanNo}"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textSize="@dimen/text_fields_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_marginStart="@dimen/spacing_tiny_3"
                             android:layout_marginEnd="@dimen/spacing_tiny_3"
@@ -327,7 +359,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/text_fields_height"
                             app:boxStrokeWidth="@dimen/text_fields_box_width"
-                            android:visibility="@{viewModel.isHiddenEt ? View.GONE : View.VISIBLE}"
+                            android:visibility="@{viewModel.isHiddenProjectManager ? View.GONE : View.VISIBLE}"
                             app:boxStrokeColor="@color/text_fields_box_color"
                             app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
                             app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
@@ -335,7 +367,7 @@
                             app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/txt_dtlTask_freeET"
+                                android:id="@+id/txt_dtlTask_pm"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
@@ -343,7 +375,8 @@
                                 android:gravity="center_vertical"
                                 android:textColor="@color/colorBlack"
                                 android:textColorHint="@color/colorBlack"
-                                android:text="@={viewModel.stDtlFreeET}"
+                                android:hint="@string/project_manager"
+                                android:text="@={viewModel.stDtlProjectManager}"
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:textSize="@dimen/text_fields_text_size" />

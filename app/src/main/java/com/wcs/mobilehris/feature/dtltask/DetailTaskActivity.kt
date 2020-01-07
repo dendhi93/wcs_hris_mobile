@@ -2,7 +2,6 @@ package com.wcs.mobilehris.feature.dtltask
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -82,9 +81,6 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
         }
     }
 
-    override fun onSetHintFreeEt(hintTitle: String) {
-        dtlTaskBinding.txtDtlTaskFreeET.hint = hintTitle.trim()
-    }
 
     override fun onSetCheckedRadio(isOnsite: Boolean) {
         dtlTaskBinding.rgDtlTaskIsOnsite.clearCheck()

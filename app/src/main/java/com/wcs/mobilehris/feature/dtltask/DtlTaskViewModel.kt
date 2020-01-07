@@ -18,13 +18,14 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
     val stDtlTaskTimeInto = ObservableField<String>("")
     val stDtlContactPerson = ObservableField<String>("")
     val stDtlDescription = ObservableField<String>("")
-    val stDtlFreeET = ObservableField<String>("")
+    val stDtlSolmanNo = ObservableField<String>("")
+    val stDtlProjectManager = ObservableField<String>("")
     val isProgressDtl = ObservableField<Boolean>(false)
     val isHiddenRv = ObservableField<Boolean>(false)
-    val isHiddenEt = ObservableField<Boolean>(false)
+    val isHiddenSolmanTv = ObservableField<Boolean>(false)
+    val isHiddenProjectManager = ObservableField<Boolean>(false)
     private var stIntentTaskId : String = ""
     private var stIntentTypeTask : String = ""
-    private var stFreeText : String = ""
 
     fun initDataDtl(taskId : String, typeTask : String){
         stIntentTaskId = taskId.trim()
@@ -52,24 +53,18 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
             stDtlContactPerson.set("17:00")
             stDtlDescription.set("Test")
             dtlTaskInterface.onSetCheckedRadio(true)
-            when  {
-                stIntentTypeTask.trim() == ConstantObject.supportTask ||
-                        stIntentTypeTask.trim() == ConstantObject.projectTask -> {
-                    isHiddenEt.set(false)
-                    when(stIntentTypeTask.trim()) {
-                        ConstantObject.supportTask -> {
-                            dtlTaskInterface.onSetHintFreeEt(context.getString(R.string.no_solman))
-                            stFreeText = "845894900"
-                        }
-                        ConstantObject.projectTask -> {
-                            dtlTaskInterface.onSetHintFreeEt(context.getString(R.string.project_manager))
-                            stFreeText = "Pak Rojak"
-                        }
-                    }
-                    stDtlFreeET.set(stFreeText.trim())
+            when(stIntentTypeTask.trim()) {
+                ConstantObject.supportTask -> {
+                    isHiddenProjectManager.set(true)
+                    stDtlSolmanNo.set("845894900")
                 }
-                else ->{
-                    isHiddenEt.set(true)
+                ConstantObject.projectTask -> {
+                    isHiddenSolmanTv.set(true)
+                    stDtlProjectManager.set("Pak Rojak")
+                }
+                else->{
+                    isHiddenSolmanTv.set(true)
+                    isHiddenProjectManager.set(true)
                 }
             }
         }, 2000)
@@ -77,10 +72,10 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
 
     private fun initListTeam(){
         val listFriend = mutableListOf<FriendModel>()
-//        var friendModel = FriendModel("Windy", "Free", false)
-//        listFriend.add(friendModel)
-//        friendModel = FriendModel("Michael Saputra", "Conflict With Heinz ABC", true)
-//        listFriend.add(friendModel)
+        var friendModel = FriendModel("Windy", "Free", false)
+        listFriend.add(friendModel)
+        friendModel = FriendModel("Michael Saputra", "Conflict With Heinz ABC", true)
+        listFriend.add(friendModel)
 
         Handler().postDelayed({
             dtlTaskInterface.loadTeam(listFriend)
