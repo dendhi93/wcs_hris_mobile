@@ -21,7 +21,7 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
 
     private fun getPlanData(typeLoading : Int){
         when(typeLoading){
-            ConstantObject.LOAD_WITH_PROGRESSBAR -> _planInterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.loadWithProgressBar -> _planInterface.showUI(ConstantObject.vProgresBarUI)
         }
 
         _planInterface.hideUI(ConstantObject.vRecylerViewUI)
@@ -35,7 +35,8 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
             "08:00",
             "11:00",
             "Plan",
-            "20/12/2019")
+            "20/12/2019",
+            "40")
         listPlan.add(_planModel)
         _planModel = ContentTaskModel("PreSales",
             "Windy",
@@ -45,7 +46,8 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
             "13:00",
             "17:00",
             "Plan",
-            "20/12/2019")
+            "20/12/2019",
+            "41")
         listPlan.add(_planModel)
 
         when{
@@ -59,7 +61,7 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
                 _planInterface.hideUI(ConstantObject.vRecylerViewUI)
 
                 when(typeLoading){
-                    ConstantObject.LOAD_WITH_PROGRESSBAR -> _planInterface.hideUI(ConstantObject.vProgresBarUI)
+                    ConstantObject.loadWithProgressBar -> _planInterface.hideUI(ConstantObject.vProgresBarUI)
                     else -> _planInterface.onHideSwipeRefresh()
                 }
                 _planInterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)

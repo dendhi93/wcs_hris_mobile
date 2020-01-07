@@ -1,0 +1,365 @@
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.wcs.mobilehris.feature.dtltask.DtlTaskViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorPrimary">
+
+        <ProgressBar
+            android:id="@+id/pb_dtlTask"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/permission_button_margin_vertical"
+            android:visibility="@{viewModel.isProgressDtl ? View.VISIBLE : View.GONE}"
+            android:indeterminate="true" />
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_below="@+id/pb_dtlTask"
+            android:layout_margin="@dimen/spacing_tiny_2"
+            android:id="@+id/rl_dtl_top">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.isProgressDtl ? View.GONE : View.VISIBLE}"
+                android:id="@+id/cv_dtlTask"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="1dp"
+                android:padding="1dp"
+                android:elevation="2dp"
+                app:cardMaxElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/cardview_light_background"
+                app:cardUseCompatPadding="true">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/spacing_tiny_2"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/text_fields_height"
+                            android:layout_margin="@dimen/spacing_tiny_3"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_dtlTask_chargeCode"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                android:maxLength="25"
+                                android:enabled="false"
+                                android:gravity="center_vertical"
+                                android:hint="@string/charge_code"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorBlack"
+                                android:text="@={viewModel.stChargeCode}"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_fields_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_margin="@dimen/spacing_tiny_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/text_fields_height"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_dtlTask_companyName"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                android:enabled="false"
+                                android:gravity="center_vertical"
+                                android:hint="@string/company_name"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorBlack"
+                                android:inputType="text"
+                                android:text="@={viewModel.stCompanyName}"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_fields_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_margin="@dimen/spacing_tiny_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_huge_2"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_dtlTask_address"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                android:gravity="center_vertical"
+                                android:enabled="false"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorBlack"
+                                android:hint="@string/address"
+                                android:text="@={viewModel.stCompanyAddress}"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_fields_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_margin="@dimen/spacing_tiny_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/text_fields_height"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_dtlTask_dateTask"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                android:enabled="false"
+                                android:gravity="center_vertical"
+                                android:hint="@string/date"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorBlack"
+                                android:text="@={viewModel.stDtlTaskDate}"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_fields_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_margin="@dimen/spacing_tiny_3"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/text_fields_height"
+                                android:layout_weight="1"
+                                app:boxStrokeWidth="@dimen/text_fields_box_width"
+                                app:boxStrokeColor="@color/text_fields_box_color"
+                                app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                                app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                                app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                                app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/txt_dtlTask_dateFrom"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                    android:enabled="false"
+                                    android:textColor="@color/colorBlack"
+                                    android:textColorHint="@color/colorBlack"
+                                    android:gravity="center_vertical"
+                                    android:hint="@string/from"
+                                    android:text="@={viewModel.stDtlTaskTimeFrom}"
+                                    android:inputType="text"
+                                    android:maxLines="1"
+                                    android:textSize="@dimen/text_fields_text_size" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_margin="@dimen/spacing_tiny_3"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/text_fields_height"
+                                android:layout_weight="1"
+                                app:boxStrokeWidth="@dimen/text_fields_box_width"
+                                app:boxStrokeColor="@color/text_fields_box_color"
+                                app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                                app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                                app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                                app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/txt_dtlTask_dateInto"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                    android:enabled="false"
+                                    android:gravity="center_vertical"
+                                    android:textColor="@color/colorBlack"
+                                    android:textColorHint="@color/colorBlack"
+                                    android:text="@={viewModel.stDtlTaskTimeInto}"
+                                    android:hint="@string/into"
+                                    android:inputType="text"
+                                    android:maxLines="1"
+                                    android:textSize="@dimen/text_fields_text_size" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_margin="@dimen/spacing_tiny_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/text_fields_height"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_dtlTask_contactPerson"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                android:enabled="false"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorBlack"
+                                android:hint="@string/contact_person"
+                                android:inputType="text"
+                                android:text="@={viewModel.stDtlContactPerson}"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_fields_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rg_dtlTask_isOnsite"
+                            android:layout_margin="@dimen/spacing_tiny_3"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rb_dtltask_onSite"
+                                android:text="@string/on_site"
+                                android:layout_marginEnd="@dimen/spacing_huge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <RadioButton
+                                android:id="@+id/rb_dtltask_offSite"
+                                android:text="@string/off_site"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </RadioGroup>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_marginTop="@dimen/spacing_tiny_3"
+                            android:layout_marginStart="@dimen/spacing_tiny_3"
+                            android:layout_marginEnd="@dimen/spacing_tiny_3"
+                            android:layout_marginBottom="@dimen/spacing_small_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_huge_2"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_dtlTask_description"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                android:enabled="false"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorBlack"
+                                android:text="@={viewModel.stDtlDescription}"
+                                android:hint="@string/description"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_fields_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_marginStart="@dimen/spacing_tiny_3"
+                            android:layout_marginEnd="@dimen/spacing_tiny_3"
+                            android:layout_marginBottom="@dimen/spacing_small_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/text_fields_height"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            android:visibility="@{viewModel.isHiddenEt ? View.GONE : View.VISIBLE}"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_dtlTask_freeET"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                android:enabled="false"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorBlack"
+                                android:text="@={viewModel.stDtlFreeET}"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_fields_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+                </ScrollView>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rc_dtlTask"
+            android:visibility="@{viewModel.isHiddenRv ? View.GONE : View.VISIBLE}"
+            android:layout_below="@+id/rl_dtl_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+</layout>

@@ -25,6 +25,7 @@
 
     <style name="CustomTextToolBarStyle" parent="@style/Widget.AppCompat.Toolbar">
         <item name="titleTextColor">@color/colorBlack</item>
+        <item name="subtitleTextColor">@color/colorBlack</item>
         <item name="android:textColorSecondary">@color/colorBlack</item>
     </style>
 </resources>

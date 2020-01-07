@@ -74,6 +74,7 @@
     <string name="project_manager">Project Manager</string>
     <string name="on_site">On Site</string>
     <string name="off_site">Off Site</string>
+    <string name="address">Address</string>
 
 
 </resources>

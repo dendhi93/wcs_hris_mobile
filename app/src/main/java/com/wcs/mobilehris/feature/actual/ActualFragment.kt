@@ -32,9 +32,9 @@ class ActualFragment : Fragment(), ActualInterface {
         actualFragmentBinding.rcActual.setHasFixedSize(true)
         actualAdapter = CustomTaskAdapter(requireContext(), arrActualList)
         actualFragmentBinding.rcActual.adapter = actualAdapter
-        actualFragmentBinding.viewModel?.initActual(ConstantObject.LOAD_WITH_PROGRESSBAR)
+        actualFragmentBinding.viewModel?.initActual(ConstantObject.loadWithProgressBar)
         actualFragmentBinding.swActual.setOnRefreshListener {
-            actualFragmentBinding.viewModel?.initActual(ConstantObject.LOAD_WITHOUT_PROGRESSBAR)
+            actualFragmentBinding.viewModel?.initActual(ConstantObject.loadWithoutProgressBar)
         }
     }
 
@@ -50,14 +50,15 @@ class ActualFragment : Fragment(), ActualInterface {
                     actualList[i].beginTaskTime,
                     actualList[i].endTaskTime,
                     actualList[i].flagTask,
-                    actualList[i].taskDate))
+                    actualList[i].taskDate,
+                    actualList[i].taskId))
         }
         actualAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
 
         when(typeLoading){
-            ConstantObject.LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
             else -> onHideSwipeRefresh()
         }
     }

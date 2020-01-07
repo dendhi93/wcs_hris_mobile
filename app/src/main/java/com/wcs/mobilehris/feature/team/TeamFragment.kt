@@ -30,9 +30,9 @@ class TeamFragment : Fragment(), TeamInterface {
         fragmentTeamBinding.rcTeam.setHasFixedSize(true)
         teamAdapter = CustomTeamAdapter(requireContext(), arrTeamList)
         fragmentTeamBinding.rcTeam.adapter = teamAdapter
-        fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.LOAD_WITH_PROGRESSBAR)
+        fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.loadWithProgressBar)
         fragmentTeamBinding.swTeam.setOnRefreshListener {
-            fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.LOAD_WITHOUT_PROGRESSBAR)
+            fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.loadWithoutProgressBar)
         }
     }
 
@@ -48,7 +48,7 @@ class TeamFragment : Fragment(), TeamInterface {
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
         when(typeLoading){
-            ConstantObject.LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
             else -> onHideSwipeRefresh()
         }
     }

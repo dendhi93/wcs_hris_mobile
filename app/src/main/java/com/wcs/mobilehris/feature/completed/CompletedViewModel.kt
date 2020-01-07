@@ -22,7 +22,7 @@ class CompletedViewModel(private val _context : Context, private val _completedI
 
     private fun getCompletedData(typeLoading : Int){
         when(typeLoading){
-            ConstantObject.LOAD_WITH_PROGRESSBAR -> _completedInterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.loadWithProgressBar -> _completedInterface.showUI(ConstantObject.vProgresBarUI)
         }
         _completedInterface.hideUI(ConstantObject.vRecylerViewUI)
         _completedInterface.showUI(ConstantObject.vGlobalUI)
@@ -35,7 +35,8 @@ class CompletedViewModel(private val _context : Context, private val _completedI
             "08:00",
             "11:00",
             "Completed",
-            "20/12/2019")
+            "20/12/2019",
+            "60")
         listCompleted.add(_completedModel)
 
         when{
@@ -48,7 +49,7 @@ class CompletedViewModel(private val _context : Context, private val _completedI
                 _completedInterface.showUI(ConstantObject.vGlobalUI)
                 _completedInterface.hideUI(ConstantObject.vRecylerViewUI)
                 when(typeLoading){
-                    ConstantObject.LOAD_WITH_PROGRESSBAR -> _completedInterface.hideUI(ConstantObject.vProgresBarUI)
+                    ConstantObject.loadWithProgressBar -> _completedInterface.hideUI(ConstantObject.vProgresBarUI)
                     else -> _completedInterface.onHideSwipeRefresh()
                 }
             }

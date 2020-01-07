@@ -35,7 +35,7 @@
             android:layout_width="@dimen/spacing_very_huge_1"
             android:layout_height="@dimen/spacing_large"
             android:text="@={viewModel.stLeaveQty}"
-            android:background="@drawable/ic_yelow_button"/>
+            android:background="@drawable/bg_yelow_button"/>
         
         <View
             android:layout_width="@dimen/padding_medium2"
@@ -48,7 +48,7 @@
             android:layout_width="@dimen/spacing_very_huge_1"
             android:layout_height="@dimen/spacing_large"
             android:text="@={viewModel.stLateQty}"
-            android:background="@drawable/ic_yelow_button"/>
+            android:background="@drawable/bg_yelow_button"/>
     </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

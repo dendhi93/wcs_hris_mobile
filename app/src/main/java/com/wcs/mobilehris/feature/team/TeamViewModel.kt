@@ -21,7 +21,7 @@ class TeamViewModel (private val context : Context, private val teamInterface: T
 
     private fun getTemData(typeLoading : Int){
         when(typeLoading){
-            ConstantObject.LOAD_WITH_PROGRESSBAR -> teamInterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.loadWithProgressBar -> teamInterface.showUI(ConstantObject.vProgresBarUI)
         }
         teamInterface.hideUI(ConstantObject.vRecylerViewUI)
         teamInterface.showUI(ConstantObject.vGlobalUI)
@@ -49,7 +49,7 @@ class TeamViewModel (private val context : Context, private val teamInterface: T
                 teamInterface.showUI(ConstantObject.vGlobalUI)
                 teamInterface.hideUI(ConstantObject.vRecylerViewUI)
                 when(typeLoading){
-                    ConstantObject.LOAD_WITH_PROGRESSBAR -> teamInterface.hideUI(ConstantObject.vProgresBarUI)
+                    ConstantObject.loadWithProgressBar -> teamInterface.hideUI(ConstantObject.vProgresBarUI)
                     else -> teamInterface.onHideSwipeRefresh()
                 }
                 teamInterface.onErrorMessage(context.getString(R.string.no_data_found), ConstantObject.vToastInfo)

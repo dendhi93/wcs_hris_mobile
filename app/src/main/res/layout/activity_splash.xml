@@ -54,7 +54,7 @@
                 android:onClick="@{() -> viewModel.retryDownload()}"
                 android:visibility="@{viewModel.isBtnVisible ? View.VISIBLE : View.GONE}"
                 android:textColor="@color/colorWhite"
-                android:background="@drawable/ic_blue_button" />
+                android:background="@drawable/bg_blue_button" />
         </LinearLayout>
 
 

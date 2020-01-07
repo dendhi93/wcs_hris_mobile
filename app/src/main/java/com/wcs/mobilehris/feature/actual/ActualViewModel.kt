@@ -22,7 +22,7 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
 
     private fun getActualData(typeLoading : Int){
         when(typeLoading){
-            ConstantObject.LOAD_WITH_PROGRESSBAR -> _actualnterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.loadWithProgressBar -> _actualnterface.showUI(ConstantObject.vProgresBarUI)
         }
 
         _actualnterface.hideUI(ConstantObject.vRecylerViewUI)
@@ -36,7 +36,8 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
             "08:00",
             "11:00",
             "Confirm",
-            "20/12/2019")
+            "20/12/2019",
+            "50")
         listActual.add(_actualModel)
         _actualModel = ContentTaskModel("PreSales",
             "Windy",
@@ -46,7 +47,8 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
             "13:00",
             "17:00",
             "Confirm",
-            "20/12/2019")
+            "20/12/2019",
+            "51")
         listActual.add(_actualModel)
         _actualModel = ContentTaskModel("Project",
             "Deddy",
@@ -56,7 +58,8 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
             "08:00",
             "17:30",
             "Confirm",
-            "20/12/2019")
+            "20/12/2019",
+            "52")
         listActual.add(_actualModel)
 
         when{
@@ -70,7 +73,7 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
                 _actualnterface.hideUI(ConstantObject.vRecylerViewUI)
                 _actualnterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
                 when(typeLoading){
-                    ConstantObject.LOAD_WITH_PROGRESSBAR -> _actualnterface.hideUI(ConstantObject.vProgresBarUI)
+                    ConstantObject.loadWithProgressBar -> _actualnterface.hideUI(ConstantObject.vProgresBarUI)
                     else -> _actualnterface.onHideSwipeRefresh()
                 }
             }

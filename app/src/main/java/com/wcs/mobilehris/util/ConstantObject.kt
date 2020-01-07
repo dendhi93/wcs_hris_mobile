@@ -27,7 +27,11 @@ object ConstantObject {
     const val vConfirmedTask = "Confirmed"
 
     //type progressBar
-    const val LOAD_WITH_PROGRESSBAR = 11
-    const val LOAD_WITHOUT_PROGRESSBAR = 22
+    const val loadWithProgressBar = 11
+    const val loadWithoutProgressBar = 22
+
+    //type task
+    const val supportTask = "Support"
+    const val projectTask = "Project"
 
 }

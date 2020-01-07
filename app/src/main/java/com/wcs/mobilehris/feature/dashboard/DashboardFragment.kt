@@ -53,7 +53,7 @@ class DashboardFragment : Fragment(), DashboardInterface {
         showUI(ConstantObject.vRecylerViewUI)
         showUI(ConstantObject.vGlobalUI)
         when(typeLoading){
-            ConstantObject.LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
             else ->  hideSwipeRefreshLayout()
         }
     }

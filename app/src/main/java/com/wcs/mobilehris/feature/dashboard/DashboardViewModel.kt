@@ -30,13 +30,13 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
                     ConstantObject.vAlertDialogNoConnection,
                     DashboardFragment.ALERT_DASH_NO_CONNECTION)
             }
-            else ->getDashboardList(ConstantObject.LOAD_WITHOUT_PROGRESSBAR)
+            else ->getDashboardList(ConstantObject.loadWithoutProgressBar)
         }
     }
 
     private fun getDashboardList(typeLoading : Int){
         when(typeLoading){
-            ConstantObject.LOAD_WITH_PROGRESSBAR -> {
+            ConstantObject.loadWithProgressBar -> {
                 _dashboardInterface.showUI(ConstantObject.vProgresBarUI)
             }
         }
@@ -67,7 +67,7 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
                 _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
 
                 when(typeLoading){
-                    ConstantObject.LOAD_WITH_PROGRESSBAR -> {
+                    ConstantObject.loadWithProgressBar -> {
                         _dashboardInterface.hideUI(ConstantObject.vProgresBarUI)
                     }
                     else -> _dashboardInterface.hideSwipeRefreshLayout()
@@ -95,7 +95,7 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
             getLateness()
-            getDashboardList(ConstantObject.LOAD_WITH_PROGRESSBAR)
+            getDashboardList(ConstantObject.loadWithProgressBar)
         }
     }
 

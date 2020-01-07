@@ -30,6 +30,7 @@
         android:roundIcon="@mipmap/ic_hris_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".feature.dtltask.DetailTaskActivity"></activity>
         <activity android:name=".feature.preparation.permission.PermissionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,8 +45,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".feature.login.LoginActivity" />
         <activity android:name=".feature.preparation.splash.SplashActivity" />
-        <activity android:name=".feature.dtlnotification.DetailNotificationActivity"
-            android:label="@string/dtl_notification_activity"/>
+        <activity
+            android:name=".feature.dtlnotification.DetailNotificationActivity"
+            android:label="@string/dtl_notification_activity" />
     </application>
 
 </manifest>

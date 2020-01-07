@@ -31,9 +31,9 @@ class PlanFragment : Fragment(), PlanInterface {
         planFragmentBinding.rcPlan.setHasFixedSize(true)
         planAdapter = CustomTaskAdapter(requireContext(), arrPlanList)
         planFragmentBinding.rcPlan.adapter = planAdapter
-        planFragmentBinding.viewModel?.initPlan(ConstantObject.LOAD_WITH_PROGRESSBAR)
+        planFragmentBinding.viewModel?.initPlan(ConstantObject.loadWithProgressBar)
         planFragmentBinding.swPlan.setOnRefreshListener {
-            planFragmentBinding.viewModel?.initPlan(ConstantObject.LOAD_WITHOUT_PROGRESSBAR)
+            planFragmentBinding.viewModel?.initPlan(ConstantObject.loadWithoutProgressBar)
         }
     }
 
@@ -49,14 +49,15 @@ class PlanFragment : Fragment(), PlanInterface {
                     planList[i].beginTaskTime,
                     planList[i].endTaskTime,
                     planList[i].flagTask ,
-                    planList[i].taskDate))
+                    planList[i].taskDate,
+                    planList[i].taskId))
         }
         planAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
 
         when(typeLoading){
-            ConstantObject.LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
             else -> onHideSwipeRefresh()
         }
     }

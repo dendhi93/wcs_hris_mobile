@@ -5,15 +5,11 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.feature.dtlnotification.DetailNotificationActivity
-import com.wcs.mobilehris.feature.dtlnotification.DtlNotificationViewModel
-import com.wcs.mobilehris.util.ConstantObject
-import com.wcs.mobilehris.util.MessageUtils
 
 class CustomNotificationAdapter(private val context : Context, private val notifList : MutableList<NotificationModel>):
     RecyclerView.Adapter<CustomNotificationAdapter.ViewHolder>() {

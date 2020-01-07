@@ -116,7 +116,7 @@
             android:id="@+id/btn_permission_all"
             android:onClick="onAllPermissionsButtonClicked"
             android:textColor="@android:color/white"
-            android:background="@drawable/ic_blue_button"
+            android:background="@drawable/bg_blue_button"
             android:layout_height="45dp" />
     </RelativeLayout>
 
