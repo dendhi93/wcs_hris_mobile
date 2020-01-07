@@ -62,9 +62,9 @@ class TeamFragment : Fragment(), TeamInterface {
         when{
             arrListTeamList.isNotEmpty() -> {
                 for(itemTeam in arrListTeamList) {
-                    if (itemTeam.name?.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
-                        || itemTeam.email?.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
-                        || itemTeam.phone?.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))){
+                    if (itemTeam.name.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
+                        || itemTeam.email.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
+                        || itemTeam.phone.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))){
                         arrListfilteredTeam.add(itemTeam)
                     }
                 }
