@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -12,6 +13,8 @@ import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentTeamBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TeamFragment : Fragment(), TeamInterface {
     private lateinit var fragmentTeamBinding: FragmentTeamBinding
@@ -34,6 +37,41 @@ class TeamFragment : Fragment(), TeamInterface {
         fragmentTeamBinding.swTeam.setOnRefreshListener {
             fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.loadWithoutProgressBar)
         }
+        searchTeam()
+    }
+
+    private fun searchTeam(){
+        fragmentTeamBinding.svTeam.queryHint = "Search Team"
+        fragmentTeamBinding.svTeam.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterteamName(newText.toString().trim())
+                return true
+            }
+
+        })
+    }
+
+    private fun filterteamName(textFilter : String){
+        val arrListfilteredTeam: ArrayList<TeamModel> = ArrayList()
+        val arrListTeamList : ArrayList<TeamModel> = arrTeamList
+        when{
+            arrListTeamList.isNotEmpty() -> {
+                for(itemTeam in arrListTeamList) {
+                    if (itemTeam.name?.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
+                        || itemTeam.email?.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
+                        || itemTeam.phone?.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))){
+                        arrListfilteredTeam.add(itemTeam)
+                    }
+                }
+                teamAdapter.filterListTeam(arrListfilteredTeam)
+            }
+        }
+
     }
 
     override fun onLoadTeam(teamList: List<TeamModel>, typeLoading: Int) {
@@ -89,5 +127,6 @@ class TeamFragment : Fragment(), TeamInterface {
     companion object{
         const val ALERT_TEAM_NO_CONNECTION = 1
     }
-
 }
+
+

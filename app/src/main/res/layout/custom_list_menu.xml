@@ -5,6 +5,8 @@
     android:layout_height="wrap_content"
     android:id="@+id/cv_custom"
     app:cardCornerRadius="10dp"
+    android:layout_marginStart="@dimen/spacing_tiny_2"
+    android:layout_marginEnd="@dimen/spacing_tiny_2"
     app:cardElevation="1dp"
     android:padding="1dp"
     android:elevation="2dp"

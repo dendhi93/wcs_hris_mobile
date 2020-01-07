@@ -8,10 +8,8 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
-import com.wcs.mobilehris.util.ConstantObject
-import com.wcs.mobilehris.util.MessageUtils
 
-class CustomTeamAdapter(private val _context : Context, private val teamList : MutableList<TeamModel>):
+class CustomTeamAdapter(private val _context : Context, private var teamList : MutableList<TeamModel>):
     RecyclerView.Adapter<CustomTeamAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,5 +31,10 @@ class CustomTeamAdapter(private val _context : Context, private val teamList : M
         var tvTeamName : TextView = view.findViewById(R.id.tv_custom_team_name)
         var tvTeamPhone : TextView = view.findViewById(R.id.tv_custom_team_phone)
         var tvTeamMail : TextView = view.findViewById(R.id.tv_custom_team_email)
+    }
+
+    fun filterListTeam(filterListteam : ArrayList<TeamModel>){
+        teamList = filterListteam
+        notifyDataSetChanged()
     }
 }

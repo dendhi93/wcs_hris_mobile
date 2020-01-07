@@ -19,7 +19,39 @@
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:indeterminate="true" />
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cv_team"
+            android:layout_below="@+id/pb_team"
+            android:layout_marginTop="@dimen/spacing_tiny_3"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="1dp"
+            android:padding="1dp"
+            android:elevation="2dp"
+            app:cardMaxElevation="0dp"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/cardview_light_background"
+            app:cardUseCompatPadding="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/spacing_tiny"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.SearchView
+                        android:background="@color/colorWhite"
+                        android:layout_margin="@dimen/spacing_tiny_2"
+                        android:id="@+id/sv_team"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/text_fields_height" />
+                </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_below="@+id/cv_team"
             android:id="@+id/sw_team"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
