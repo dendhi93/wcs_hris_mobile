@@ -43,6 +43,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/spacing_tiny"
                 android:layout_marginBottom="@dimen/spacing_tiny"
+                android:textColor="@color/dark_background"
                 android:textSize="@dimen/alph_size_small"
                 android:textStyle="bold" />
 
@@ -67,6 +68,7 @@
                     android:layout_marginTop="@dimen/spacing_tiny_2"
                     android:layout_marginBottom="@dimen/spacing_tiny_2"
                     android:layout_marginStart="@dimen/spacing_tiny_2"
+                    android:textColor="@color/dark_background"
                     android:textSize="@dimen/alph_size_small_2"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -93,6 +95,7 @@
                     android:layout_marginStart="@dimen/spacing_tiny_2"
                     android:layout_marginTop="@dimen/spacing_tiny_2"
                     android:layout_marginBottom="@dimen/spacing_tiny"
+                    android:textColor="@color/dark_background"
                     android:textSize="@dimen/alph_size_small_2"
                     android:textStyle="bold" />
             </LinearLayout>

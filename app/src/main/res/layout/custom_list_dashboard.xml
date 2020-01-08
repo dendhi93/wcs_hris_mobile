@@ -24,10 +24,10 @@
             android:layout_margin="@dimen/spacing_tiny"
             android:textStyle="bold"
             android:id="@+id/tv_custom_dash_title"
+            android:textColor="@color/dark_background"
             android:layout_width="wrap_content"
             android:textSize="@dimen/alph_size_small"
-            android:layout_height="wrap_content"
-            android:text="test"/>
+            android:layout_height="wrap_content"/>
 
         <View
             android:layout_marginTop="@dimen/spacing_tiny"
@@ -39,9 +39,9 @@
             android:layout_margin="@dimen/spacing_tiny"
             android:id="@+id/tv_custom_dash_content"
             android:layout_width="wrap_content"
+            android:textColor="@color/dark_background"
             android:textSize="@dimen/alph_size_small_2"
-            android:layout_height="wrap_content"
-            android:text="test"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

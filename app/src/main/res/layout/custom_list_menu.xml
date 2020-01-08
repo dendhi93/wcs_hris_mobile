@@ -42,6 +42,7 @@
                 android:id="@+id/tv_custom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/dark_background"
                 android:layout_gravity="center_vertical"
                 android:textSize="@dimen/alph_size_small_2"
                 android:textStyle="bold"
@@ -53,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/dark_background"
                 android:layout_marginStart="@dimen/spacing_tiny"
                 android:text=""/>
         </LinearLayout>

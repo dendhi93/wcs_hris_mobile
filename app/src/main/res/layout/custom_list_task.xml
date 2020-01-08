@@ -56,6 +56,7 @@
                     android:layout_marginStart="@dimen/spacing_tiny_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/dark_background"
                     android:layout_gravity="center_vertical"
                     android:id="@+id/tv_customPlan_created_user"/>
             </LinearLayout>
@@ -73,6 +74,7 @@
                     android:layout_marginStart="@dimen/spacing_tiny_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/dark_background"
                     android:layout_gravity="center_vertical"
                     android:id="@+id/tv_customPlan_companyName"/>
             </LinearLayout>
@@ -90,6 +92,7 @@
                     android:layout_marginStart="@dimen/spacing_tiny_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/dark_background"
                     android:layout_gravity="center_vertical"
                     android:id="@+id/tv_customPlan_Location"/>
             </LinearLayout>
@@ -107,6 +110,7 @@
                     android:layout_marginStart="@dimen/spacing_tiny_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/dark_background"
                     android:layout_gravity="center_vertical"
                     android:id="@+id/tv_customPlan_date"/>
             </LinearLayout>
@@ -128,6 +132,7 @@
                     android:layout_marginStart="@dimen/spacing_tiny_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/dark_background"
                     android:layout_gravity="center_vertical"
                     android:id="@+id/tv_customPlan_time"/>
             </LinearLayout>

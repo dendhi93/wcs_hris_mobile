@@ -42,6 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:textColor="@color/dark_background"
                 android:textSize="@dimen/alph_size_small"
                 android:textStyle="bold" />
 
@@ -49,6 +50,7 @@
                 android:id="@+id/tv_custom_notification_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/dark_background"
                 android:layout_gravity="center_vertical"
                 android:textSize="@dimen/alph_size_small_2" />
         </LinearLayout>
@@ -57,6 +59,7 @@
             android:id="@+id/tv_custom_notification_date"
             android:layout_width="@dimen/spacing_huge_2"
             android:layout_height="wrap_content"
+            android:textColor="@color/dark_background"
             android:layout_gravity="center_vertical|right"
             android:textSize="@dimen/alph_size_small_2" />
     </LinearLayout>
