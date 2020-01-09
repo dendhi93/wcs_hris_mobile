@@ -79,6 +79,7 @@ class CompletedFragment : Fragment(), CompletedInterface {
         fragmentCompletedBinding.swCompleted.isRefreshing = false
     }
 
+
     override fun hideUI(typeUI: Int) {
         when(typeUI){
             ConstantObject.vProgresBarUI -> fragmentCompletedBinding.pbCompleted.visibility = View.GONE

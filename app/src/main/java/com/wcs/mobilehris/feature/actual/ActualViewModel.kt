@@ -1,10 +1,13 @@
 package com.wcs.mobilehris.feature.actual
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
+import com.wcs.mobilehris.feature.createtask.CreateTaskActivity
+import com.wcs.mobilehris.feature.dtltask.DetailTaskActivity
 import com.wcs.mobilehris.feature.plan.ContentTaskModel
 import com.wcs.mobilehris.util.ConstantObject
 
@@ -81,6 +84,6 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
     }
 
     fun fabActualClick(){
-        _actualnterface.onErrorMessage("Test", ConstantObject.vToastInfo)
+        _context.startActivity(Intent(_context, CreateTaskActivity::class.java))
     }
 }

@@ -37,7 +37,7 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
         when{
             intentTaskChargeCode != "" && intentTaskTypeTask != "" ->{
                 dtlTaskBinding.viewModel?.initDataDtl(intentTaskChargeCode.toString().trim(), intentTaskTypeTask.toString().trim())
-                supportActionBar?.title = "Detail Task"
+                supportActionBar?.title = getString(R.string.dtl_task_activity)
                 supportActionBar?.subtitle = intentTaskTypeTask.toString().trim()
             }
         }
@@ -75,12 +75,11 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
         }
     }
 
-    override fun onAlertCompleted(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
+    override fun onAlertDtlTask(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
         when(intTypeActionAlert){
             ALERT_DTL_TASK_NO_CONNECTION -> { MessageUtils.alertDialogDismiss(alertMessage, alertTitle, this)}
         }
     }
-
 
     override fun onSetCheckedRadio(isOnsite: Boolean) {
         dtlTaskBinding.rgDtlTaskIsOnsite.clearCheck()
@@ -88,6 +87,8 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
             true -> dtlTaskBinding.rbDtltaskOnSite.isChecked = true
             else -> dtlTaskBinding.rbDtltaskOffSite.isChecked = true
         }
+        dtlTaskBinding.rbDtltaskOnSite.isEnabled = false
+        dtlTaskBinding.rbDtltaskOffSite.isEnabled = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

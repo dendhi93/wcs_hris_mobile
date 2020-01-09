@@ -1,10 +1,13 @@
 package com.wcs.mobilehris.feature.completed
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
+import com.wcs.mobilehris.feature.createtask.CreateTaskActivity
+import com.wcs.mobilehris.feature.dtltask.DetailTaskActivity
 import com.wcs.mobilehris.feature.plan.ContentTaskModel
 import com.wcs.mobilehris.util.ConstantObject
 
@@ -57,7 +60,7 @@ class CompletedViewModel(private val _context : Context, private val _completedI
     }
 
     fun fabCompletedClick(){
-        _completedInterface.onErrorMessage("Test", ConstantObject.vToastInfo)
+        _context.startActivity(Intent(_context, CreateTaskActivity::class.java))
     }
 
 

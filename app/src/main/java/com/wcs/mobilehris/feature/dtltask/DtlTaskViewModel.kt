@@ -32,7 +32,7 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
         stIntentTypeTask = typeTask.trim()
         when {
             !ConnectionObject.isNetworkAvailable(context) -> {
-                dtlTaskInterface.onAlertCompleted(context.getString(R.string.alert_no_connection), ConstantObject.vAlertDialogNoConnection,
+                dtlTaskInterface.onAlertDtlTask(context.getString(R.string.alert_no_connection), ConstantObject.vAlertDialogNoConnection,
                     DetailTaskActivity.ALERT_DTL_TASK_NO_CONNECTION
                 )
             }
