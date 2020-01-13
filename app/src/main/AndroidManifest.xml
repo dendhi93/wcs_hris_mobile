@@ -30,9 +30,11 @@
         android:roundIcon="@mipmap/ic_hris_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".feature.createtask.CreateTaskActivity"
+        <activity android:name=".feature.team.TeamActivity"></activity>
+        <activity
+            android:name=".feature.createtask.CreateTaskActivity"
             android:label="@string/create_task_activity"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".feature.dtltask.DetailTaskActivity" />
         <activity android:name=".feature.preparation.permission.PermissionActivity">
             <intent-filter>

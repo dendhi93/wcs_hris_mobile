@@ -26,15 +26,15 @@ class TeamViewModel (private val context : Context, private val teamInterface: T
         teamInterface.hideUI(ConstantObject.vRecylerViewUI)
         teamInterface.showUI(ConstantObject.vGlobalUI)
         val listTeam = mutableListOf<TeamModel>()
-        var teamModel = TeamModel("Andika Kurnia",
+        var teamModel = TeamModel("62909090","Andika Kurnia",
             "+620878945445",
             "andika.kurnia@id.wilmar-intl.com")
         listTeam.add(teamModel)
-        teamModel = TeamModel("Claudia",
+        teamModel = TeamModel("62909091","Claudia",
             "+620878945489",
             "claudia@id.wilmar-intl.com")
         listTeam.add(teamModel)
-        teamModel = TeamModel("Michael Saputra",
+        teamModel = TeamModel("62909092","Michael Saputra",
             "+62087894547878",
             "michael.saputra@id.wilmar-intl.com")
         listTeam.add(teamModel)
@@ -55,8 +55,5 @@ class TeamViewModel (private val context : Context, private val teamInterface: T
                 teamInterface.onErrorMessage(context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
             }
         }
-
-
     }
-
 }

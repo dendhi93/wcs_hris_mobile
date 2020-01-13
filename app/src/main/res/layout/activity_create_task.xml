@@ -52,17 +52,11 @@
                         android:layout_margin="@dimen/spacing_tiny_2"
                         android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="0dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="@dimen/text_fields_height"
                                 android:layout_margin="@dimen/spacing_tiny_3"
-                                android:layout_weight="1"
                                 app:boxStrokeWidth="@dimen/text_fields_box_width"
                                 app:boxStrokeColor="@color/text_fields_box_color"
                                 app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
@@ -70,31 +64,19 @@
                                 app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
                                 app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
 
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/txt_createTask_chargeCode"
+                                <AutoCompleteTextView
+                                    android:id="@+id/act_createTask_chargeCode"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
-                                    android:maxLength="25"
-                                    android:enabled="false"
+                                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!?- "
                                     android:gravity="center_vertical"
                                     android:hint="@string/charge_code"
                                     android:textColor="@color/colorBlack"
                                     android:textColorHint="@color/colorBlack"
                                     android:inputType="text"
-                                    android:maxLines="1"
                                     android:textSize="@dimen/text_fields_text_size" />
 
                             </com.google.android.material.textfield.TextInputLayout>
-
-                            <ImageButton
-                                android:id="@+id/imgB_createTask_chargeCode"
-                                android:layout_gravity="center_vertical"
-                                android:layout_width="@dimen/spacing_large"
-                                android:layout_height="@dimen/spacing_large"
-                                android:src="@mipmap/ic_search_32"
-                                android:background="@drawable/bg_blue_button"/>
-                        </LinearLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -113,11 +95,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
-                                android:enabled="false"
+                                android:enabled="@{viewModel.isEnableCompanyNameTv}"
                                 android:gravity="center_vertical"
                                 android:hint="@string/company_name"
                                 android:textColor="@color/colorBlack"
                                 android:textColorHint="@color/colorBlack"
+                                android:text="@{viewModel.stCompanyName}"
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:textSize="@dimen/text_fields_text_size" />
@@ -145,6 +128,7 @@
                                 android:maxLength="100"
                                 android:textColor="@color/colorBlack"
                                 android:textColorHint="@color/colorBlack"
+                                android:text="@{viewModel.stCompanyAddress}"
                                 android:hint="@string/address"
                                 android:inputType="text"
                                 android:textSize="@dimen/text_fields_text_size" />
@@ -301,6 +285,7 @@
                                 android:hint="@string/contact_person"
                                 android:inputType="text"
                                 android:maxLength="50"
+                                android:text="@{viewModel.stContactPerson}"
                                 android:maxLines="1"
                                 android:textColor="@color/colorBlack"
                                 android:textColorHint="@color/colorBlack"
@@ -353,6 +338,7 @@
                                 android:textColor="@color/colorBlack"
                                 android:textColorHint="@color/colorBlack"
                                 android:hint="@string/description"
+                                android:text="@{viewModel.stDescriptionTask}"
                                 android:inputType="text"
                                 android:maxLength="100"
                                 android:textSize="@dimen/text_fields_text_size" />
@@ -383,6 +369,7 @@
                                 android:textColor="@color/colorBlack"
                                 android:textColorHint="@color/colorBlack"
                                 android:hint="@string/no_solman"
+                                android:text="@{viewModel.stSolmanNoTask}"
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:textSize="@dimen/text_fields_text_size" />
@@ -414,6 +401,8 @@
                                 android:textColorHint="@color/colorBlack"
                                 android:hint="@string/project_manager"
                                 android:inputType="text"
+                                android:text="@{viewModel.stPMTask}"
+                                android:maxLength="50"
                                 android:maxLines="1"
                                 android:textSize="@dimen/text_fields_text_size" />
 
@@ -448,9 +437,7 @@
                                 android:onClick="@{() -> viewModel.validateTask()}"
                                 android:text="@string/save_and_generate"
                                 android:background="@drawable/bg_blue_button"/>
-
                         </LinearLayout>
-
                     </LinearLayout>
                 </ScrollView>
             </androidx.cardview.widget.CardView>

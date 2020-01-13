@@ -8,4 +8,6 @@ interface CreateTaskInterface {
     fun onMessage(message : String, messageType : Int)
     fun onAlertCreateTask(alertMessage : String, alertTitle : String, intTypeActionAlert : Int)
     fun onResizeLayout(resizeType : Int)
+    fun onLoadChargeCode(listChargeCode : List<ChargeCodeModel>)
+    fun getTeamData()
 }

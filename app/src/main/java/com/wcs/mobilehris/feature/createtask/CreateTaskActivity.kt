@@ -1,11 +1,14 @@
 package com.wcs.mobilehris.feature.createtask
 
 import android.R.layout.simple_spinner_item
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
-import android.widget.RadioGroup.OnCheckedChangeListener
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.RadioButton
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +16,7 @@ import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.ActivityCreateTaskBinding
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
 import com.wcs.mobilehris.feature.dtltask.FriendModel
+import com.wcs.mobilehris.feature.team.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
@@ -21,7 +25,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
     private lateinit var activityCreateTaskBinding: ActivityCreateTaskBinding
     private lateinit var dtlTaskAdapter : CustomDetailTaskAdapter
     private var arrTeamTaskList = ArrayList<FriendModel>()
-    private var selectedTask : String = ""
+    private var arrChargeCode = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +46,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
         activityCreateTaskBinding.viewModel?.initUI()
         loadTaskSpinner()
         initRadio()
+        activityCreateTaskBinding.viewModel?.initDataChargeCode()
     }
 
     private fun loadTaskSpinner(){
@@ -51,21 +56,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
         activityCreateTaskBinding.spCreateTaskTypeTask.adapter = adapter
         activityCreateTaskBinding.spCreateTaskTypeTask.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>,view: View,position: Int,id: Long) {
-                selectedTask = adapter.getItem(position).toString()
-                    when(selectedTask.trim()){
-                        projectTask -> {
-                            activityCreateTaskBinding.viewModel?.isHiddenSolmanTv?.set(true)
-                            activityCreateTaskBinding.viewModel?.isHiddenPMTv?.set(false)
-                        }
-                        supportTask -> {
-                            activityCreateTaskBinding.viewModel?.isHiddenSolmanTv?.set(false)
-                            activityCreateTaskBinding.viewModel?.isHiddenPMTv?.set(true)
-                        }
-                        else -> {
-                            activityCreateTaskBinding.viewModel?.isHiddenSolmanTv?.set(true)
-                            activityCreateTaskBinding.viewModel?.isHiddenPMTv?.set(true)
-                        }
-                    }
+                activityCreateTaskBinding.viewModel?.getTypeTask(adapter.getItem(position).toString())
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
@@ -82,7 +73,15 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
     }
 
     override fun onLoadTeam(listTeam: List<FriendModel>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        for(i in listTeam.indices){
+            arrTeamTaskList.add(
+                FriendModel(listTeam[i].friendId,
+                    listTeam[i].teamName ,
+                    listTeam[i].descriptionTeam,
+                    listTeam[i].isConflict))
+        }
+        dtlTaskAdapter.notifyDataSetChanged()
+        onResizeLayout(noMatchParentSize)
     }
 
     override fun onMessage(message: String, messageType: Int) {
@@ -102,13 +101,47 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
     override fun onResizeLayout(resizeType : Int) {
         when(resizeType){
             matchParentSize -> {
-                val lp = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 450)
-                activityCreateTaskBinding.rlCreateTaskTop.layoutParams = lp
-            }
-            else ->{
                 val lp = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
                 activityCreateTaskBinding.rlCreateTaskTop.layoutParams = lp
             }
+            else ->{
+                val scale: Float = this.resources.displayMetrics.density
+                val pixelHeight = 450 * scale + 0.5f
+                val lp = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, pixelHeight.toInt())
+                activityCreateTaskBinding.rlCreateTaskTop.layoutParams = lp
+            }
+        }
+    }
+
+    override fun onLoadChargeCode(listChargeCode: List<ChargeCodeModel>) {
+        arrChargeCode.clear()
+        for(i in listChargeCode.indices){
+            arrChargeCode.add(listChargeCode[i].chargeCodeNo+" "+listChargeCode[i].descriptionChargeCode)
+        }
+        val chargeCodeAdapter = ArrayAdapter<String>(this,
+            android.R.layout.simple_dropdown_item_1line,
+            arrChargeCode
+        )
+        activityCreateTaskBinding.actCreateTaskChargeCode.setAdapter(chargeCodeAdapter)
+        activityCreateTaskBinding.actCreateTaskChargeCode.threshold = 1
+        activityCreateTaskBinding.actCreateTaskChargeCode.onItemClickListener = AdapterView.OnItemClickListener{
+                parent,view,position,id->
+            val selectedItem = parent.getItemAtPosition(position).toString()
+            val selectedModel : ChargeCodeModel = listChargeCode[position]
+            activityCreateTaskBinding.viewModel?.getChargeCode(selectedItem, selectedModel.companyName)
+        }
+    }
+
+    override fun getTeamData() { startActivityForResult(Intent(this, TeamActivity::class.java), RESULT_SUCCESS_CODE) }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+                RESULT_SUCCESS_CODE -> {
+                    val intentTeamName : String = data?.getStringExtra(RESULT_EXTRA_TEAM_NAME).toString()
+                    val intentTeamUserId : String = data?.getStringExtra(RESULT_EXTRA_TEAM_USER_ID).toString()
+                    activityCreateTaskBinding.viewModel?.validateTeam(intentTeamUserId, intentTeamName)
+                }
         }
     }
 
@@ -125,7 +158,11 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
     companion object{
         const val ALERT_CREATE_TASK_NO_CONNECTION = 1
         const val matchParentSize = 2
+        const val noMatchParentSize = 4
         const val projectTask = "Project"
         const val supportTask = "Support"
+        const val RESULT_SUCCESS_CODE = 3
+        const val RESULT_EXTRA_TEAM_NAME = "team_name"
+        const val RESULT_EXTRA_TEAM_USER_ID = "team_user_id"
     }
 }

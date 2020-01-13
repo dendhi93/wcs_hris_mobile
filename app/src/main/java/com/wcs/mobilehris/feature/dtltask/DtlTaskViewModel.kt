@@ -72,9 +72,9 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
 
     private fun initListTeam(){
         val listFriend = mutableListOf<FriendModel>()
-        var friendModel = FriendModel("Windy", "Free", false)
+        var friendModel = FriendModel("62664930","Windy", "Free", false)
         listFriend.add(friendModel)
-        friendModel = FriendModel("Michael Saputra", "Conflict With Heinz ABC", true)
+        friendModel = FriendModel("62405890","Michael Saputra", "Conflict With Heinz ABC", true)
         listFriend.add(friendModel)
 
         Handler().postDelayed({

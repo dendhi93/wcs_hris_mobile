@@ -1,14 +1,17 @@
 package com.wcs.mobilehris.feature.createtask
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
+import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.util.ConstantObject
 import java.util.*
 
@@ -20,10 +23,19 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     val isHiddenSolmanTv = ObservableField<Boolean>(false)
     val isHiddenPMTv = ObservableField<Boolean>(false)
     val isOnsiteTask = ObservableField<Boolean>(true)
+    val isEnableCompanyNameTv = ObservableField<Boolean>(false)
     val stDateTask = ObservableField<String>("")
     val stDateTimeFrom = ObservableField<String>("")
     val stDateTimeInto = ObservableField<String>("")
-    val calendar : Calendar = Calendar.getInstance()
+    val stCompanyName = ObservableField<String>("")
+    val stCompanyAddress = ObservableField<String>("")
+    val stContactPerson = ObservableField<String>("")
+    val stDescriptionTask = ObservableField<String>("")
+    val stSolmanNoTask = ObservableField<String>("")
+    val stPMTask = ObservableField<String>("")
+    private val calendar : Calendar = Calendar.getInstance()
+    private var mChargeCode : String = ""
+    private var mTypeTask : String = ""
     private var mYear : Int = 0
     private var mMonth : Int = 0
     private var mDay : Int = 0
@@ -71,9 +83,7 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
         timePickerDialog.show()
     }
 
-    fun onAddTeam(){
-        createTaskInterface.onMessage("Coba", ConstantObject.vToastInfo)
-    }
+    fun onAddTeam(){ createTaskInterface.getTeamData() }
 
     fun validateTask(){
         when{
@@ -85,4 +95,93 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
         }
     }
 
+    fun initDataChargeCode(){
+        val listDataChargeCode = mutableListOf<ChargeCodeModel>()
+        var chargeCodeModel  = ChargeCodeModel("A-1003-096",
+        "BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
+        "PT Wilmar Consultancy Services")
+        listDataChargeCode.add(chargeCodeModel)
+        chargeCodeModel  = ChargeCodeModel("A-1003-097",
+            "HCM DEMO FOR PRESALES ACTIVITY",
+            "PT Wilmar Consultancy Services")
+        listDataChargeCode.add(chargeCodeModel)
+        chargeCodeModel  = ChargeCodeModel("B-1014-001",
+            "TRAINING FOR FRESH GRADUATE",
+            "PT Wilmar Consultancy Services")
+        listDataChargeCode.add(chargeCodeModel)
+
+        chargeCodeModel  = ChargeCodeModel("B-1014-006",
+            "TRAINING SAP - OUTSYSTEM",
+            "")
+        listDataChargeCode.add(chargeCodeModel)
+        chargeCodeModel  = ChargeCodeModel("C-1003-006",
+            "GENERAL MANAGEMENT INTL",
+            "PT Wilmar Consultancy Services")
+        listDataChargeCode.add(chargeCodeModel)
+        chargeCodeModel  = ChargeCodeModel("C-1014-001",
+            "GENERAL MANAGEMENT INTL - SALES FILLING AND DOCUMENTATION",
+            "PT Wilmar Consultancy Services")
+        listDataChargeCode.add(chargeCodeModel)
+        chargeCodeModel  = ChargeCodeModel("D-1001-002",
+            "ANNUAL LEAVE",
+            "")
+        listDataChargeCode.add(chargeCodeModel)
+        chargeCodeModel  = ChargeCodeModel("D-1001-003",
+            "SICK LEAVE",
+            "")
+        listDataChargeCode.add(chargeCodeModel)
+        chargeCodeModel  = ChargeCodeModel("D-1001-003",
+            "SICK LEAVE",
+            "")
+        listDataChargeCode.add(chargeCodeModel)
+        chargeCodeModel  = ChargeCodeModel("F-0014-017",
+            "MILLS MOBILITY APPLICATION",
+            "PT Heinz ABC")
+        listDataChargeCode.add(chargeCodeModel)
+        chargeCodeModel  = ChargeCodeModel("F-0014-018",
+            "SAP IMPLEMENTATION TO LION SUPER INDO",
+            "PT SUPER INDO")
+        listDataChargeCode.add(chargeCodeModel)
+        when{listDataChargeCode.isNotEmpty() -> createTaskInterface.onLoadChargeCode(listDataChargeCode) }
+    }
+
+    fun getChargeCode(code : String, compName : String){
+        mChargeCode = code
+        when{
+            compName.isNotEmpty() ->{
+                isEnableCompanyNameTv.set(false)
+                stCompanyName.set(compName)
+            }
+            else ->isEnableCompanyNameTv.set(true)
+        }
+    }
+
+    fun getTypeTask(selectedType : String){
+        when(selectedType.trim()){
+            CreateTaskActivity.projectTask -> {
+                isHiddenSolmanTv.set(true)
+                isHiddenPMTv.set(false)
+            }
+            CreateTaskActivity.supportTask -> {
+                isHiddenSolmanTv.set(false)
+                isHiddenPMTv.set(true)
+            }
+            else -> {
+                isHiddenSolmanTv.set(true)
+                isHiddenPMTv.set(true)
+            }
+        }
+        mTypeTask = selectedType
+    }
+
+    fun validateTeam(itemUserId : String, itemName : String){
+        if (itemUserId != "null" && itemName != "null"){
+            val listSelectedTeam = mutableListOf<FriendModel>()
+            val itemFriendModel = FriendModel(itemUserId, itemName, "Free", false)
+
+            listSelectedTeam.add(itemFriendModel)
+            createTaskInterface.onLoadTeam(listSelectedTeam)
+        }
+
+    }
 }
