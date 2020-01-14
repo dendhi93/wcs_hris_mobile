@@ -40,19 +40,8 @@ class ActualFragment : Fragment(), ActualInterface {
 
     override fun onDisplayList(actualList: List<ContentTaskModel>, typeLoading: Int) {
         arrActualList.clear()
-        for(i in actualList.indices){
-            arrActualList.add(
-                ContentTaskModel(actualList[i].taskType ,
-                    actualList[i].userCreate,
-                    actualList[i].createDate,
-                    actualList[i].locationTask,
-                    actualList[i].companyName,
-                    actualList[i].beginTaskTime,
-                    actualList[i].endTaskTime,
-                    actualList[i].flagTask,
-                    actualList[i].taskDate,
-                    actualList[i].taskId))
-        }
+        arrActualList.addAll(actualList)
+
         actualAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)

@@ -40,20 +40,9 @@ class CompletedFragment : Fragment(), CompletedInterface {
 
     override fun onDisplayCompletedList(completedList: List<ContentTaskModel>, typeLoading: Int) {
         arrCompletedList.clear()
-        for(i in completedList.indices){
-            arrCompletedList.add(
-                ContentTaskModel(completedList[i].taskType ,
-                    completedList[i].userCreate,
-                    completedList[i].createDate,
-                    completedList[i].locationTask,
-                    completedList[i].companyName,
-                    completedList[i].beginTaskTime,
-                    completedList[i].endTaskTime,
-                    completedList[i].flagTask,
-                    completedList[i].taskDate,
-                    completedList[i].taskId))
-        }
+        arrCompletedList.addAll(completedList)
         completedAdapter.notifyDataSetChanged()
+
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
         when(typeLoading){

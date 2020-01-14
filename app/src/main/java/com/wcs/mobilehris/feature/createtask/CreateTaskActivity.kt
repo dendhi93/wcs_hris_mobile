@@ -73,14 +73,9 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
     }
 
     override fun onLoadTeam(listTeam: List<FriendModel>) {
-        for(i in listTeam.indices){
-            arrTeamTaskList.add(
-                FriendModel(listTeam[i].friendId,
-                    listTeam[i].teamName ,
-                    listTeam[i].descriptionTeam,
-                    listTeam[i].isConflict))
-        }
+        arrTeamTaskList.addAll(listTeam)
         dtlTaskAdapter.notifyDataSetChanged()
+        
         onResizeLayout(noMatchParentSize)
     }
 

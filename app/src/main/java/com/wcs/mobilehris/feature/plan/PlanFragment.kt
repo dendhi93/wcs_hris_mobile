@@ -39,20 +39,9 @@ class PlanFragment : Fragment(), PlanInterface {
 
     override fun onLoadList(planList: List<ContentTaskModel>, typeLoading : Int) {
         arrPlanList.clear()
-        for(i in planList.indices){
-            arrPlanList.add(
-                ContentTaskModel(planList[i].taskType ,
-                    planList[i].userCreate,
-                    planList[i].createDate,
-                    planList[i].locationTask,
-                    planList[i].companyName,
-                    planList[i].beginTaskTime,
-                    planList[i].endTaskTime,
-                    planList[i].flagTask ,
-                    planList[i].taskDate,
-                    planList[i].taskId))
-        }
+        arrPlanList.addAll(planList)
         planAdapter.notifyDataSetChanged()
+
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
 

@@ -51,14 +51,9 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
         when{
             listTeam.isNotEmpty() -> {
                 arrTeamTaskList.clear()
-                for(i in listTeam.indices){
-                    arrTeamTaskList.add(FriendModel(listTeam[i].friendId,
-                        listTeam[i].teamName,
-                        listTeam[i].descriptionTeam,
-                        listTeam[i].isConflict))
-                }
-
+                arrTeamTaskList.addAll(listTeam)
                 dtlTaskAdapter.notifyDataSetChanged()
+
                 dtlTaskBinding.viewModel?.isHiddenRv?.set(false)
             }
             else -> {

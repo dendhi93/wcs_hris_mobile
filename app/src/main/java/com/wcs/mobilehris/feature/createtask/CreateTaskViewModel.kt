@@ -150,7 +150,7 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     fun getChargeCode(code : String, compName : String){
         mChargeCode = code
         when{
-            compName.isNotEmpty() ->{
+            compName != "" -> {
                 isEnableCompanyNameTv.set(false)
                 stCompanyName.set(compName)
             }

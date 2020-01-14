@@ -34,9 +34,11 @@ class RequestFragment : Fragment(), RequestInterface {
 
     override fun loadMenu(requestMenuList: List<RequestModel>) {
         arrList.clear()
-        for(i in requestMenuList.indices){
-            arrList.add(RequestModel(requestMenuList[i].itemMenu, requestMenuList[i].imgItemMenu))
-        }
+        arrList.addAll(requestMenuList)
+
+//        for(i in requestMenuList.indices){
+//            arrList.add(RequestModel(requestMenuList[i].itemMenu, requestMenuList[i].imgItemMenu))
+//        }
         requestAdapter.notifyDataSetChanged()
     }
 }

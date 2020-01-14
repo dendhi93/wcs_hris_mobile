@@ -12,6 +12,7 @@ import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentDashboardBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
+import kotlin.collections.toMutableList as toMutableList1
 
 
 class DashboardFragment : Fragment(), DashboardInterface {
@@ -42,12 +43,8 @@ class DashboardFragment : Fragment(), DashboardInterface {
 
     override fun onLoadList(vListDash: List<DashboardModel>, typeLoading : Int) {
         arrDashList.clear()
-        for(i in vListDash.indices){
-            arrDashList.add(
-                DashboardModel(vListDash[i].vtitleContent,
-                vListDash[i].vcontentDashboard)
-            )
-        }
+        arrDashList.addAll(vListDash)
+
         dashAdapter.notifyDataSetChanged()
         hideUI(TEXTVIEW_UI)
         showUI(ConstantObject.vRecylerViewUI)

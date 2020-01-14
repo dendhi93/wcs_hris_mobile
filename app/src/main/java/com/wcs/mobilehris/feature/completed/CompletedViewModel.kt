@@ -51,6 +51,7 @@ class CompletedViewModel(private val _context : Context, private val _completedI
             else -> {
                 _completedInterface.showUI(ConstantObject.vGlobalUI)
                 _completedInterface.hideUI(ConstantObject.vRecylerViewUI)
+                _completedInterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
                 when(typeLoading){
                     ConstantObject.loadWithProgressBar -> _completedInterface.hideUI(ConstantObject.vProgresBarUI)
                     else -> _completedInterface.onHideSwipeRefresh()
