@@ -6,6 +6,7 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
+import android.os.Handler
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
@@ -91,7 +92,8 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                 createTaskInterface.onAlertCreateTask(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, CreateTaskActivity.ALERT_CREATE_TASK_NO_CONNECTION)
             }
-            else -> createTaskInterface.onMessage("Coba 2", ConstantObject.vToastInfo)
+            !validateSubmitTask() -> createTaskInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vToastInfo)
+            else -> submitTask()
         }
     }
 
@@ -175,13 +177,37 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     }
 
     fun validateTeam(itemUserId : String, itemName : String){
-        if (itemUserId != "null" && itemName != "null"){
+        if (itemUserId != "null" && itemName != "null" || itemUserId != "" && itemName != ""){
             val listSelectedTeam = mutableListOf<FriendModel>()
             val itemFriendModel = FriendModel(itemUserId, itemName, "Free", false)
 
             listSelectedTeam.add(itemFriendModel)
             createTaskInterface.onLoadTeam(listSelectedTeam)
         }
+    }
+    
+    private fun validateSubmitTask():Boolean{
+        when{
+                stDateTimeFrom.get().equals("")
+                || stDateTimeInto.get().equals("")
+                || stCompanyName.get().equals("")
+                || stCompanyAddress.get().equals("")
+                || stDateTask.get().equals("")
+                || stContactPerson.get().equals("")
+                || stDescriptionTask.get().equals("")
+                || mTypeTask == "" -> return false
+            mTypeTask == CreateTaskActivity.supportTask -> { when{stSolmanNoTask.get().equals("") -> return false } }
+            mTypeTask == CreateTaskActivity.projectTask -> { when{stPMTask.get().equals("") -> return false } }
+        }
+        return true
+    }
+
+    private fun submitTask(){
+        isProgressCreateTask.set(true)
+        Handler().postDelayed({
+            createTaskInterface.onMessage("Task Success", ConstantObject.vSnackBarWithButton)
+            isProgressCreateTask.set(false)
+        }, 2000)
 
     }
 }
