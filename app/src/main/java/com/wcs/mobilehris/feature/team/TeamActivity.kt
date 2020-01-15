@@ -107,7 +107,6 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
             .getIdentifier("android:id/search_button", null, null)
         val searchIcon: ImageView = searchView.findViewById<View>(searchIconId) as ImageView
         searchIcon.setImageResource(R.mipmap.ic_black_search_24)
-        searchView.queryHint = "Search Team"
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
