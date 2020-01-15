@@ -83,8 +83,9 @@
     <string name="add_team">Add Team</string>
     <string name="save_and_generate">Save Generate</string>
 
-    <!--alert-->
+    <!--alert / menu-->
     <string name="fill_in_the_blank">Please Fill in the Blank</string>
+    <string name="menu_search_team_content">Search Team</string>
 
 
 </resources>

@@ -3,7 +3,9 @@
     xmlns:appcompat="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/mnu_search_team"
-        android:title="Search Team"
+        android:title="@string/menu_search_team_content"
+        android:icon="@mipmap/ic_black_search_24"
+        appcompat:iconTint="@color/colorBlack"
         appcompat:actionViewClass="android.widget.SearchView"
         appcompat:showAsAction="always"/>
 </menu>
