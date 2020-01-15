@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuItemCompat
@@ -102,6 +103,10 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
         inflater.inflate(R.menu.menu_search_friend, menu)
         val item: MenuItem? = menu?.findItem(R.id.mnu_search_team)
         val searchView = MenuItemCompat.getActionView(item) as SearchView
+        val searchIconId = searchView.context.resources
+            .getIdentifier("android:id/search_button", null, null)
+        val searchIcon: ImageView = searchView.findViewById<View>(searchIconId) as ImageView
+        searchIcon.setImageResource(R.mipmap.ic_black_search_24)
         searchView.queryHint = "Search Team"
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
