@@ -43,6 +43,7 @@
     <string name="dtl_notification_activity">Detail Notification</string>
     <string name="dtl_task_activity">Detail Task</string>
     <string name="create_task_activity">Create Task</string>
+    <string name="search_team_activity">Search Team</string>
 
     <!--permission form-->
     <string name="permission_button">IZINKAN</string>

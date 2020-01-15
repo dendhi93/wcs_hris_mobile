@@ -1,5 +1,6 @@
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <import type="android.view.View" />
@@ -28,6 +29,7 @@
             app:cardCornerRadius="10dp"
             app:cardElevation="1dp"
             android:padding="1dp"
+            android:visibility="@{viewModel.isHiddenSearch ? View.GONE : View.VISIBLE }"
             android:elevation="2dp"
             app:cardMaxElevation="0dp"
             xmlns:app="http://schemas.android.com/apk/res-auto"

@@ -2,12 +2,14 @@ package com.wcs.mobilehris.feature.team
 
 import android.content.Context
 import android.os.Handler
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.util.ConstantObject
 
 class TeamViewModel (private val context : Context, private val teamInterface: TeamInterface) : ViewModel(){
+    val isHiddenSearch = ObservableField<Boolean>(false)
 
     fun initDataTeam(typeOfLoading : Int){
         when{

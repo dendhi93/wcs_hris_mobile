@@ -1,10 +1,13 @@
 package com.wcs.mobilehris.feature.team
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuItemCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
@@ -15,6 +18,8 @@ import com.wcs.mobilehris.util.MessageUtils
 import java.util.*
 import kotlin.collections.ArrayList
 
+
+@Suppress("DEPRECATION")
 class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
     private lateinit var fragmentTeamBinding: FragmentTeamBinding
     private var arrTeamList = ArrayList<TeamModel>()
@@ -38,43 +43,7 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
         fragmentTeamBinding.swTeam.setOnRefreshListener {
             fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.loadWithoutProgressBar)
         }
-        searchTeam()
-    }
-
-    private fun searchTeam(){
-        fragmentTeamBinding.svTeam.queryHint = "Search Team"
-        fragmentTeamBinding.svTeam.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                filterTeamName(newText.toString().trim())
-                return true
-            }
-
-        })
-    }
-
-    private fun filterTeamName(textFilter : String){
-        val arrListfilteredTeam: ArrayList<TeamModel> = ArrayList()
-        val arrListTeamList : ArrayList<TeamModel> = arrTeamList
-        when{
-            arrListTeamList.isNotEmpty() -> {
-                for(itemTeam in arrListTeamList) {
-                    if (itemTeam.name.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(
-                            Locale.getDefault()))
-                        || itemTeam.email.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(
-                            Locale.getDefault()))
-                        || itemTeam.phone.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(
-                            Locale.getDefault()))){
-                        arrListfilteredTeam.add(itemTeam)
-                    }
-                }
-                teamAdapter.filterListTeam(arrListfilteredTeam)
-            }
-        }
+        fragmentTeamBinding.viewModel?.isHiddenSearch?.set(true)
     }
 
     override fun onLoadTeam(teamList: List<TeamModel>, typeLoading: Int) {
@@ -125,6 +94,48 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
             ConstantObject.vProgresBarUI -> fragmentTeamBinding.pbTeam.visibility = View.VISIBLE
             ConstantObject.vRecylerViewUI -> fragmentTeamBinding.rcTeam.visibility = View.VISIBLE
             ConstantObject.vGlobalUI -> fragmentTeamBinding.tvTeamEmpty.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_search_friend, menu)
+        val item: MenuItem? = menu?.findItem(R.id.mnu_search_team)
+        val searchView = MenuItemCompat.getActionView(item) as SearchView
+        searchView.queryHint = "Search Team"
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterTeamName(newText.toString().trim())
+                return true
+            }
+
+        })
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun filterTeamName(textFilter : String){
+        val arrListFilteredTeam: ArrayList<TeamModel> = ArrayList()
+        val arrListTeamList : ArrayList<TeamModel> = arrTeamList
+        when{
+            arrListTeamList.isNotEmpty() -> {
+                for(itemTeam in arrListTeamList) {
+                    if (itemTeam.name.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(
+                            Locale.getDefault()))
+                        || itemTeam.email.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(
+                            Locale.getDefault()))
+                        || itemTeam.phone.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(
+                            Locale.getDefault()))){
+                        arrListFilteredTeam.add(itemTeam)
+                    }
+                }
+                teamAdapter.filterListTeam(arrListFilteredTeam)
+            }
         }
     }
 

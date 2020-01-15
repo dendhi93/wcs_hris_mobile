@@ -177,7 +177,7 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     }
 
     fun validateTeam(itemUserId : String, itemName : String){
-        if (itemUserId != "null" && itemName != "null" || itemUserId != "" && itemName != ""){
+        if (itemUserId != "null" && itemName != "null"){
             val listSelectedTeam = mutableListOf<FriendModel>()
             val itemFriendModel = FriendModel(itemUserId, itemName, "Free", false)
 

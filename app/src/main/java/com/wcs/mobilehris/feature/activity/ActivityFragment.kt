@@ -29,7 +29,7 @@ class ActivityFragment : Fragment() {
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.menu_activity_create_task, menu);
+//        inflater.inflate(R.menu.menu_search_friend, menu);
 //
 //        super.onCreateOptionsMenu(menu, inflater)
 //    }

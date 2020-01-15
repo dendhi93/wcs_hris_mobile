@@ -12,7 +12,6 @@ import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentDashboardBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
-import kotlin.collections.toMutableList as toMutableList1
 
 
 class DashboardFragment : Fragment(), DashboardInterface {
