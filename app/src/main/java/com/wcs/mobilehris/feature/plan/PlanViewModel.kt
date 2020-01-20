@@ -14,10 +14,10 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
 
     fun initPlan(typeOfLoading : Int){
         when{
-            !ConnectionObject.isNetworkAvailable(_context) -> {
+            !ConnectionObject.isNetworkAvailable(_context) ->
                 _planInterface.onAlertPlan(_context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, PlanFragment.ALERT_PLAN_NO_CONNECTION)
-            }
+
             else -> getPlanData(typeOfLoading)
         }
     }
@@ -39,7 +39,10 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
             "11:00",
             "Plan",
             "20/12/2019",
-            "40")
+            "40",
+            0,
+            true,
+            "")
         listPlan.add(_planModel)
         _planModel = ContentTaskModel("PreSales",
             "Windy",
@@ -50,7 +53,10 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
             "17:00",
             "Plan",
             "20/12/2019",
-            "41")
+            "41",
+            0,
+            true,
+            "")
         listPlan.add(_planModel)
 
         when{

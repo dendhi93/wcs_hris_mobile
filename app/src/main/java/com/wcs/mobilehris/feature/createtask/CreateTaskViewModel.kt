@@ -93,7 +93,9 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                     ConstantObject.vAlertDialogNoConnection, CreateTaskActivity.ALERT_CREATE_TASK_NO_CONNECTION)
             }
             !validateSubmitTask() -> createTaskInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vToastInfo)
-            else -> submitTask()
+//            else -> submitTask()
+            else -> createTaskInterface.onAlertCreateTask(context.getString(R.string.transaction_alert_confirmation),
+                ConstantObject.vAlertDialogConfirmation, CreateTaskActivity.ALERT_CREATE_TASK_CONFIRMATION)
         }
     }
 
@@ -160,11 +162,11 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
 
     fun getTypeTask(selectedType : String){
         when(selectedType.trim()){
-            CreateTaskActivity.projectTask -> {
+            ConstantObject.projectTask -> {
                 isHiddenSolmanTv.set(true)
                 isHiddenPMTv.set(false)
             }
-            CreateTaskActivity.supportTask -> {
+            ConstantObject.supportTask -> {
                 isHiddenSolmanTv.set(false)
                 isHiddenPMTv.set(true)
             }
@@ -196,16 +198,16 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                 || stContactPerson.get().equals("")
                 || stDescriptionTask.get().equals("")
                 || mTypeTask == "" -> return false
-            mTypeTask == CreateTaskActivity.supportTask -> { when{stSolmanNoTask.get().equals("") -> return false } }
-            mTypeTask == CreateTaskActivity.projectTask -> { when{stPMTask.get().equals("") -> return false } }
+            mTypeTask == ConstantObject.supportTask -> { when{stSolmanNoTask.get().equals("") -> return false } }
+            mTypeTask == ConstantObject.projectTask -> { when{stPMTask.get().equals("") -> return false } }
         }
         return true
     }
 
-    private fun submitTask(){
+    fun submitTask(){
         isProgressCreateTask.set(true)
         Handler().postDelayed({
-            createTaskInterface.onMessage("Task Success", ConstantObject.vSnackBarWithButton)
+            createTaskInterface.onMessage(context.getString(R.string.alert_transaction_success), ConstantObject.vSnackBarWithButton)
             isProgressCreateTask.set(false)
         }, 2000)
 

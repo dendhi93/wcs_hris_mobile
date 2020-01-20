@@ -30,7 +30,9 @@
         android:roundIcon="@mipmap/ic_hris_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".feature.confirmtask.ConfirmTaskActivity"/>
+        <activity android:name=".feature.confirmtask.ConfirmTaskActivity"
+            android:label="@string/confirm_task_activity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".feature.team.TeamActivity"
             android:label="@string/search_team_activity"/>
         <activity

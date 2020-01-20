@@ -4,11 +4,16 @@
     <string name="app_name">Mobile WCS HRIS</string>
     <string name="app_name_label">Mobile WCS HR System</string>
 
-    <!--dialog-->
+    <!--dialog / menu-->
     <string name="title">Title</string>
     <string name="message">Message</string>
     <string name="alert_no_connection">Your device is not connected. Please check your connection device</string>
     <string name="title_activity_menu">MenuActivity</string>
+    <string name="transaction_alert_confirmation">Are you sure you want to proceed with the transaction</string>
+    <string name="fill_in_the_blank">Please Fill in the Blank</string>
+    <string name="alert_transaction_success">Transaction Success</string>
+    <string name="menu_search_team_content">Search Team</string>
+
 
     <!--navigation drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -44,6 +49,7 @@
     <string name="dtl_task_activity">Detail Task</string>
     <string name="create_task_activity">Create Task</string>
     <string name="search_team_activity">Search Team</string>
+    <string name="confirm_task_activity">Confirm Task</string>
 
     <!--permission form-->
     <string name="permission_button">IZINKAN</string>
@@ -83,9 +89,9 @@
     <string name="add_team">Add Team</string>
     <string name="save_and_generate">Save Generate</string>
 
-    <!--alert / menu-->
-    <string name="fill_in_the_blank">Please Fill in the Blank</string>
-    <string name="menu_search_team_content">Search Team</string>
-
+    <!--confirm task content form-->
+    <string name="activity_hour">Act. Hour</string>
+    <string name="activity_description">Act. Description</string>
+    <string name="confirm_save">Confirm</string>
 
 </resources>

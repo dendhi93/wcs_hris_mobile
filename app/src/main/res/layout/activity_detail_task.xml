@@ -384,7 +384,6 @@
                                 android:textSize="@dimen/text_fields_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-
                     </LinearLayout>
                 </ScrollView>
             </androidx.cardview.widget.CardView>

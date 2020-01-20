@@ -22,7 +22,7 @@
     <dimen name="spacing_medium_image">40dp</dimen>
     <dimen name="padding_medium">10dp</dimen>
     <dimen name="padding_medium2">20dp</dimen>
-    <dimen name="padding_medium3">15dp</dimen>d
+    <dimen name="padding_medium3">15dp</dimen>
     <dimen name="icon_medium">30dp</dimen>
     <dimen name="icon_huge">60dp</dimen>
     <dimen name="permission_button_margin_vertical">10dp</dimen>

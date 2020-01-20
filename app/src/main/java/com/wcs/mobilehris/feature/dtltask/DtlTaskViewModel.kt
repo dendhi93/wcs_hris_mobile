@@ -50,7 +50,7 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
             stDtlTaskDate.set("15/01/2020")
             stDtlTaskTimeFrom.set("08:00")
             stDtlTaskTimeInto.set("17:00")
-            stDtlContactPerson.set("17:00")
+            stDtlContactPerson.set("Denny Rambakila")
             stDtlDescription.set("Test")
             dtlTaskInterface.onSetCheckedRadio(true)
             when(stIntentTypeTask.trim()) {

@@ -19,13 +19,15 @@ import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.feature.team.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
+import com.wcs.mobilehris.utilinterface.DialogInterface
 
 
-class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
+class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, DialogInterface {
     private lateinit var activityCreateTaskBinding: ActivityCreateTaskBinding
     private lateinit var dtlTaskAdapter : CustomDetailTaskAdapter
     private var arrTeamTaskList = ArrayList<FriendModel>()
     private var arrChargeCode = ArrayList<String>()
+    private var keyDialogActive = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +52,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
     }
 
     private fun loadTaskSpinner(){
-        val arrTaskType = arrayOf("Type Task","Prospect","Pre Sales", projectTask, supportTask)
+        val arrTaskType = arrayOf("Type Task",ConstantObject.prospectTask,ConstantObject.preSalesTask, ConstantObject.projectTask, ConstantObject.supportTask)
         val adapter = ArrayAdapter(this, simple_spinner_item, arrTaskType)
         adapter.setDropDownViewResource(simple_spinner_item)
         activityCreateTaskBinding.spCreateTaskTypeTask.adapter = adapter
@@ -64,8 +66,8 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
 
     private fun initRadio(){
         activityCreateTaskBinding.rgCreateTaskIsOnsite.setOnCheckedChangeListener{ group, checkedId ->
-                val radio: RadioButton = findViewById(checkedId)
-                when("${radio.text}"){
+                val radio: RadioButton? = findViewById(checkedId)
+                when("${radio?.text}"){
                     getString(R.string.on_site) -> activityCreateTaskBinding.viewModel?.isOnsiteTask?.set(true)
                     else -> activityCreateTaskBinding.viewModel?.isOnsiteTask?.set(false)
                 }
@@ -89,7 +91,11 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
 
     override fun onAlertCreateTask(alertMessage: String,alertTitle: String,intTypeActionAlert: Int) {
         when(intTypeActionAlert){
-            ALERT_CREATE_TASK_NO_CONNECTION -> { MessageUtils.alertDialogDismiss(alertMessage, alertTitle, this)}
+            ALERT_CREATE_TASK_NO_CONNECTION ->  MessageUtils.alertDialogDismiss(alertMessage, alertTitle, this)
+            ALERT_CREATE_TASK_CONFIRMATION -> {
+                keyDialogActive = ALERT_CREATE_TASK_CONFIRMATION
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
         }
     }
 
@@ -154,10 +160,17 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
         const val ALERT_CREATE_TASK_NO_CONNECTION = 1
         const val matchParentSize = 2
         const val noMatchParentSize = 4
-        const val projectTask = "Project"
-        const val supportTask = "Support"
         const val RESULT_SUCCESS_CODE = 3
         const val RESULT_EXTRA_TEAM_NAME = "team_name"
         const val RESULT_EXTRA_TEAM_USER_ID = "team_user_id"
+        const val ALERT_CREATE_TASK_CONFIRMATION = 5
     }
+
+    override fun onPositiveClick(o: Any) {
+        when(keyDialogActive){
+            ALERT_CREATE_TASK_CONFIRMATION -> activityCreateTaskBinding.viewModel?.submitTask()
+        }
+    }
+
+    override fun onNegativeClick(o: Any) {}
 }
