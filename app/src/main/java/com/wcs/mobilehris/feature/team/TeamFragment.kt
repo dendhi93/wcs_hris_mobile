@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -12,6 +13,8 @@ import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentTeamBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TeamFragment : Fragment(), TeamInterface {
     private lateinit var fragmentTeamBinding: FragmentTeamBinding
@@ -30,34 +33,64 @@ class TeamFragment : Fragment(), TeamInterface {
         fragmentTeamBinding.rcTeam.setHasFixedSize(true)
         teamAdapter = CustomTeamAdapter(requireContext(), arrTeamList)
         fragmentTeamBinding.rcTeam.adapter = teamAdapter
-        fragmentTeamBinding.viewModel?.initDataTeam(LOAD_WITH_PROGRESSBAR)
+        fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.loadWithProgressBar)
         fragmentTeamBinding.swTeam.setOnRefreshListener {
-            fragmentTeamBinding.viewModel?.initDataTeam(LOAD_WITHOUT_PROGRESSBAR)
+            fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.loadWithoutProgressBar)
         }
+        searchTeam()
+    }
+
+    private fun searchTeam(){
+        fragmentTeamBinding.svTeam.queryHint = "Search Team"
+        fragmentTeamBinding.svTeam.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterteamName(newText.toString().trim())
+                return true
+            }
+
+        })
+    }
+
+    private fun filterteamName(textFilter : String){
+        val arrListfilteredTeam: ArrayList<TeamModel> = ArrayList()
+        val arrListTeamList : ArrayList<TeamModel> = arrTeamList
+        when{
+            arrListTeamList.isNotEmpty() -> {
+                for(itemTeam in arrListTeamList) {
+                    if (itemTeam.name.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
+                        || itemTeam.email.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
+                        || itemTeam.phone.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))){
+                        arrListfilteredTeam.add(itemTeam)
+                    }
+                }
+                teamAdapter.filterListTeam(arrListfilteredTeam)
+            }
+        }
+
     }
 
     override fun onLoadTeam(teamList: List<TeamModel>, typeLoading: Int) {
         arrTeamList.clear()
-        for(i in teamList.indices){
-            arrTeamList.add(
-                TeamModel(teamList[i].name ,
-                    teamList[i].phone,
-                    teamList[i].email))
-        }
+        arrTeamList.addAll(teamList)
         teamAdapter.notifyDataSetChanged()
+
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
-        fragmentTeamBinding.swTeam.isRefreshing = false
-
         when(typeLoading){
-            LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
+            else -> onHideSwipeRefresh()
         }
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {
         when(messageType){
-            ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message,
-                ConstantObject.vToastError)
+            ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message, ConstantObject.vToastError)
+            else -> MessageUtils.toastMessage(requireContext(), message, ConstantObject.vToastInfo)
         }
     }
 
@@ -65,6 +98,10 @@ class TeamFragment : Fragment(), TeamInterface {
         when(intTypeActionAlert){
             ALERT_TEAM_NO_CONNECTION -> {MessageUtils.alertDialogDismiss(alertMessage, alertTitle, requireContext())}
         }
+    }
+
+    override fun onHideSwipeRefresh() {
+        fragmentTeamBinding.swTeam.isRefreshing = false
     }
 
     override fun hideUI(typeUI: Int) {
@@ -85,8 +122,7 @@ class TeamFragment : Fragment(), TeamInterface {
 
     companion object{
         const val ALERT_TEAM_NO_CONNECTION = 1
-        const val LOAD_WITH_PROGRESSBAR = 2
-        const val LOAD_WITHOUT_PROGRESSBAR = 3
     }
-
 }
+
+

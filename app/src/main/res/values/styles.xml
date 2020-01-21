@@ -21,7 +21,7 @@
         <item name="android:titleTextColor">@color/toolbar_text_color</item>
         <item name="drawerArrowStyle">@style/CustomDrawerArrowStyle</item>
     </style>
-    
+
     <style name="CustomDrawerArrowStyle">
         <item name="android:color">@color/toolbar_drawer_color</item>
     </style>

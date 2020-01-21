@@ -30,13 +30,13 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
                     ConstantObject.vAlertDialogNoConnection,
                     DashboardFragment.ALERT_DASH_NO_CONNECTION)
             }
-            else ->getDashboardList(DashboardFragment.LOAD_WITHOUT_PROGRESBAR)
+            else ->getDashboardList(ConstantObject.loadWithoutProgressBar)
         }
     }
 
     private fun getDashboardList(typeLoading : Int){
         when(typeLoading){
-            DashboardFragment.LOAD_WITH_PROGRESBAR -> {
+            ConstantObject.loadWithProgressBar -> {
                 _dashboardInterface.showUI(ConstantObject.vProgresBarUI)
             }
         }
@@ -44,7 +44,7 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
         _dashboardInterface.showUI(DashboardFragment.TEXTVIEW_UI)
         _dashboardInterface.hideUI(ConstantObject.vRecylerViewUI)
         _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
-        var listDashboard = mutableListOf<DashboardModel>()
+        val listDashboard = mutableListOf<DashboardModel>()
         var dashBoardModel = DashboardModel("Activity","Metting at 13.00" +
                 "\nInterview new Candidate at  15.00" +
                 "\nand 2 others")
@@ -55,9 +55,27 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
                 "\nRequest by Alvin at December 19, about Travel")
         listDashboard.add(dashBoardModel)
 
-        Handler().postDelayed({
-            _dashboardInterface.onLoadList(listDashboard, typeLoading)
-        }, 2000)
+        when{
+            listDashboard.size > 0 -> {
+                Handler().postDelayed({
+                    _dashboardInterface.onLoadList(listDashboard, typeLoading)
+                }, 2000)
+            }
+            else -> {
+                _dashboardInterface.showUI(DashboardFragment.TEXTVIEW_UI)
+                _dashboardInterface.hideUI(ConstantObject.vRecylerViewUI)
+                _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
+
+                when(typeLoading){
+                    ConstantObject.loadWithProgressBar -> {
+                        _dashboardInterface.hideUI(ConstantObject.vProgresBarUI)
+                    }
+                    else -> _dashboardInterface.hideSwipeRefreshLayout()
+                }
+                _dashboardInterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
+            }
+        }
+
     }
 
     //by deddy for get lateness qty and leave qty data
@@ -77,7 +95,7 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
             getLateness()
-            getDashboardList(DashboardFragment.LOAD_WITH_PROGRESBAR)
+            getDashboardList(ConstantObject.loadWithProgressBar)
         }
     }
 

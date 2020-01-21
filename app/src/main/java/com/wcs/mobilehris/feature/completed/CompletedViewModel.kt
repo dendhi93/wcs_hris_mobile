@@ -1,10 +1,13 @@
 package com.wcs.mobilehris.feature.completed
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
+import com.wcs.mobilehris.feature.createtask.CreateTaskActivity
+import com.wcs.mobilehris.feature.dtltask.DetailTaskActivity
 import com.wcs.mobilehris.feature.plan.ContentTaskModel
 import com.wcs.mobilehris.util.ConstantObject
 
@@ -22,11 +25,11 @@ class CompletedViewModel(private val _context : Context, private val _completedI
 
     private fun getCompletedData(typeLoading : Int){
         when(typeLoading){
-            CompletedFragment.LOAD_WITH_PROGRESSBAR -> _completedInterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.loadWithProgressBar -> _completedInterface.showUI(ConstantObject.vProgresBarUI)
         }
         _completedInterface.hideUI(ConstantObject.vRecylerViewUI)
         _completedInterface.showUI(ConstantObject.vGlobalUI)
-        var listCompleted = mutableListOf<ContentTaskModel>()
+        val listCompleted = mutableListOf<ContentTaskModel>()
         var _completedModel = ContentTaskModel("Prospect",
             "Michael",
             "18/12/2019 11.24",
@@ -35,16 +38,47 @@ class CompletedViewModel(private val _context : Context, private val _completedI
             "08:00",
             "11:00",
             "Completed",
-            "20/12/2019")
+            "20/12/2019",
+            "60",
+            8,
+            true,
+            "")
+        listCompleted.add(_completedModel)
+        _completedModel = ContentTaskModel("Prospect",
+            "Windy",
+            "20/01/2020 11:24",
+            "Cibitung",
+            "PT KSL",
+            "08:30",
+            "12:00",
+            "Completed",
+            "20/12/2019",
+            "60",
+            4,
+            false,
+            "Task kurang dari 8 jam")
         listCompleted.add(_completedModel)
 
-        Handler().postDelayed({
-            _completedInterface.onDisplayCompletedList(listCompleted, typeLoading)
-        }, 2000)
+        when{
+            listCompleted.size > 0 -> {
+                Handler().postDelayed({
+                    _completedInterface.onDisplayCompletedList(listCompleted, typeLoading)
+                }, 2000)
+            }
+            else -> {
+                _completedInterface.showUI(ConstantObject.vGlobalUI)
+                _completedInterface.hideUI(ConstantObject.vRecylerViewUI)
+                _completedInterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
+                when(typeLoading){
+                    ConstantObject.loadWithProgressBar -> _completedInterface.hideUI(ConstantObject.vProgresBarUI)
+                    else -> _completedInterface.onHideSwipeRefresh()
+                }
+            }
+        }
     }
 
     fun fabCompletedClick(){
-        _completedInterface.onErrorMessage("Test", ConstantObject.vToastInfo)
+        _context.startActivity(Intent(_context, CreateTaskActivity::class.java))
     }
 
 

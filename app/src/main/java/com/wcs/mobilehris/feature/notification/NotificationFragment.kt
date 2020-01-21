@@ -41,13 +41,9 @@ class NotificationFragment : Fragment(), NotificationInterface {
 
     override fun onLoadNotif(vListDash: List<NotificationModel>) {
         arrNotifList.clear()
-        for(i in vListDash.indices ){
-            arrNotifList.add(NotificationModel(vListDash[i].createdUser.trim(),
-                vListDash[i].notifContent.trim(),
-                vListDash[i].createdDate.trim(),
-                vListDash[i].dtlContent.trim()))
-        }
+        arrNotifList.addAll(vListDash)
         notificationAdapter.notifyDataSetChanged()
+
         bindingNotification.viewModel?.isVisibleUI?.set(false)
     }
 
@@ -55,6 +51,8 @@ class NotificationFragment : Fragment(), NotificationInterface {
         when(messageType){
             ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message,
                 ConstantObject.vToastError)
+            else -> MessageUtils.toastMessage(requireContext(), message,
+                ConstantObject.vToastInfo)
         }
     }
 

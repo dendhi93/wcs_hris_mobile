@@ -33,6 +33,20 @@
         android:roundIcon="@mipmap/ic_hris_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".feature.requesttravellist.RequestTravelListActivity"
+            android:label="@string/req_travel_hist_activity"/>
+        <activity
+            android:name=".feature.confirmtask.ConfirmTaskActivity"
+            android:label="@string/confirm_task_activity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".feature.team.TeamActivity"
+            android:label="@string/search_team_activity" />
+        <activity
+            android:name=".feature.createtask.CreateTaskActivity"
+            android:label="@string/create_task_activity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".feature.dtltask.DetailTaskActivity" />
 
         <activity android:name=".feature.preparation.permission.PermissionActivity"
             android:screenOrientation="portrait"

@@ -31,33 +31,23 @@ class PlanFragment : Fragment(), PlanInterface {
         planFragmentBinding.rcPlan.setHasFixedSize(true)
         planAdapter = CustomTaskAdapter(requireContext(), arrPlanList)
         planFragmentBinding.rcPlan.adapter = planAdapter
-        planFragmentBinding.viewModel?.initPlan(LOAD_WITH_PROGRESSBAR)
+        planFragmentBinding.viewModel?.initPlan(ConstantObject.loadWithProgressBar)
         planFragmentBinding.swPlan.setOnRefreshListener {
-            planFragmentBinding.viewModel?.initPlan(LOAD_WITHOUT_PROGRESSBAR)
+            planFragmentBinding.viewModel?.initPlan(ConstantObject.loadWithoutProgressBar)
         }
     }
 
     override fun onLoadList(planList: List<ContentTaskModel>, typeLoading : Int) {
         arrPlanList.clear()
-        for(i in planList.indices){
-            arrPlanList.add(
-                ContentTaskModel(planList[i].taskType ,
-                    planList[i].userCreate,
-                    planList[i].createDate,
-                    planList[i].locationTask,
-                    planList[i].companyName,
-                    planList[i].beginTaskTime,
-                    planList[i].endTaskTime,
-                    planList[i].flagTask ,
-                    planList[i].taskDate))
-        }
+        arrPlanList.addAll(planList)
         planAdapter.notifyDataSetChanged()
+
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
-        planFragmentBinding.swPlan.isRefreshing = false
 
         when(typeLoading){
-            LOAD_WITH_PROGRESSBAR -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
+            else -> onHideSwipeRefresh()
         }
     }
 
@@ -73,6 +63,8 @@ class PlanFragment : Fragment(), PlanInterface {
             ALERT_PLAN_NO_CONNECTION -> {MessageUtils.alertDialogDismiss(alertMessage, alertTitle, requireContext())}
         }
     }
+
+    override fun onHideSwipeRefresh() { planFragmentBinding.swPlan.isRefreshing = false }
 
     override fun hideUI(typeUI: Int) {
        when(typeUI){
@@ -92,7 +84,5 @@ class PlanFragment : Fragment(), PlanInterface {
 
     companion object{
         const val ALERT_PLAN_NO_CONNECTION = 1
-        const val LOAD_WITH_PROGRESSBAR = 2
-        const val LOAD_WITHOUT_PROGRESSBAR = 3
     }
 }

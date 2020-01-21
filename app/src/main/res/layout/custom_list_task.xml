@@ -26,6 +26,8 @@
             android:textStyle="bold" />
 
         <ImageButton
+            android:layout_margin="@dimen/spacing_tiny"
+            android:background="@color/colorWhite"
             android:id="@+id/imgB_menu"
             android:layout_width="@dimen/spacing_large"
             android:layout_height="@dimen/spacing_large"
@@ -137,7 +139,32 @@
                     android:layout_marginStart="@dimen/spacing_tiny_3" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ln_custom_actHourTaken"
+                android:layout_marginBottom="@dimen/spacing_tiny_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/spacing_tiny"
+                    android:layout_width="@dimen/padding_medium2"
+                    android:layout_height="@dimen/padding_medium2"
+                    android:src="@mipmap/ic_time"/>
+
+                <TextView
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dark_background"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_customPlan_time_taken"/>
+            </LinearLayout>
+
             <View
+                android:id="@+id/view_customList"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spacing_tiny_4"
                 android:layout_marginTop="@dimen/spacing_tiny"
@@ -156,6 +183,36 @@
             android:background="@drawable/ic_red_button"
             android:padding="@dimen/spacing_tiny_3"
             android:textColor="@color/colorWhite" />
+        <RelativeLayout
+            android:id="@+id/rl_customList_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ln_customPlan">
+
+            <TextView
+                android:id="@+id/tv_custom_isCompleted"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/alph_size_small_2"
+                android:layout_marginEnd="@dimen/spacing_tiny"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_toStartOf="@+id/btn_customPlan"
+                android:layout_marginStart="@dimen/spacing_small"/>
+
+            <Button
+                android:padding="@dimen/spacing_tiny_3"
+                android:layout_marginTop="@dimen/spacing_tiny"
+                android:layout_marginBottom="@dimen/spacing_small_1"
+                android:layout_marginEnd="@dimen/spacing_tiny"
+                android:textColor="@color/colorWhite"
+                android:id="@+id/btn_customPlan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_red_button"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

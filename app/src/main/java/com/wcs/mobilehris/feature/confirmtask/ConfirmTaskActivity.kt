@@ -1,0 +1,106 @@
+package com.wcs.mobilehris.feature.confirmtask
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.MenuItem
+import android.widget.RadioButton
+import androidx.databinding.DataBindingUtil
+import com.wcs.mobilehris.R
+import com.wcs.mobilehris.databinding.ActivityConfirmTaskBinding
+import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.MessageUtils
+import com.wcs.mobilehris.utilinterface.DialogInterface
+
+class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInterface {
+    private lateinit var activityConfirmBinding : ActivityConfirmTaskBinding
+    private var intentConfirmTaskChargeCode : String? = ""
+    private var intentConfirmTaskTypeTask : String? = ""
+    private var confirmActiveDialog : Int? = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activityConfirmBinding = DataBindingUtil.setContentView(this, R.layout.activity_confirm_task)
+        activityConfirmBinding.viewModel = ConfirmTaskViewModel(this, this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        activityConfirmBinding.viewModel?.isProgressConfirmTask?.set(false)
+        supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
+        }
+        intentConfirmTaskChargeCode = intent.getStringExtra(intentExtraTaskId)
+        intentConfirmTaskTypeTask = intent.getStringExtra(intentExtraTypeTask)
+        when{
+            intentConfirmTaskChargeCode != "" && intentConfirmTaskTypeTask != "" ->{
+                supportActionBar?.subtitle = intentConfirmTaskTypeTask.toString().trim()
+                activityConfirmBinding.viewModel?.onLoadConfirmData(intentConfirmTaskChargeCode.toString().trim(),
+                    intentConfirmTaskTypeTask.toString().trim())
+            }
+        }
+        initConfirmRadio()
+    }
+
+    private fun initConfirmRadio(){
+        activityConfirmBinding.rgConfirmTaskIsOnsite.setOnCheckedChangeListener{ group, checkedId ->
+            val radio: RadioButton? = findViewById(checkedId)
+            when("${radio?.text}"){
+                getString(R.string.on_site) -> activityConfirmBinding.viewModel?.isOnSiteConfirmTask?.set(true)
+                else -> activityConfirmBinding.viewModel?.isOnSiteConfirmTask?.set(false)
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onAlertMessage(message: String, messageType: Int) {
+        when(messageType){
+            ConstantObject.vToastError -> MessageUtils.toastMessage(this, message, ConstantObject.vToastError)
+            ConstantObject.vToastInfo -> MessageUtils.toastMessage(this, message, ConstantObject.vToastInfo)
+            ConstantObject.vSnackBarWithButton -> MessageUtils.snackBarMessage(message,this, ConstantObject.vSnackBarWithButton)
+        }
+    }
+
+
+    override fun onAlertConfirmTask(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
+        when(intTypeActionAlert){
+            ALERT_CONFIRM_TASK_NO_CONNECTION -> MessageUtils.alertDialogDismiss(alertMessage, alertTitle, this)
+            ALERT_CONFIRM_TASK_CONFIRMATION -> {
+                confirmActiveDialog = ALERT_CONFIRM_TASK_CONFIRMATION
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
+        }
+    }
+
+    override fun onCheckConfirmRadio(isOnsite: Boolean) {
+        activityConfirmBinding.rgConfirmTaskIsOnsite.clearCheck()
+        when(isOnsite){
+            true -> activityConfirmBinding.rbConfirmTaskOnSite.isChecked = true
+            else -> activityConfirmBinding.rbConfirmTaskOffSite.isChecked = true
+        }
+    }
+
+    override fun onPositiveClick(o: Any) {
+        when(confirmActiveDialog){
+            ALERT_CONFIRM_TASK_CONFIRMATION ->activityConfirmBinding.viewModel?.submitConfirmTask()
+        }
+    }
+
+    override fun onNegativeClick(o: Any) {}
+
+    companion object{
+        const val ALERT_CONFIRM_TASK_NO_CONNECTION = 1
+        const val intentExtraTaskId = "extra_task_id"
+        const val intentExtraTypeTask = "extra_type_task"
+        const val ALERT_CONFIRM_TASK_CONFIRMATION = 3
+    }
+}

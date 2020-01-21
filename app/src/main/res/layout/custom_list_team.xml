@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_custom_team"
     app:cardCornerRadius="10dp"
     app:cardElevation="1dp"
@@ -12,6 +12,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/cardview_light_background"
+    tools:ignore="PrivateResource"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
@@ -43,6 +44,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/spacing_tiny"
                 android:layout_marginBottom="@dimen/spacing_tiny"
+                android:textColor="@color/dark_background"
                 android:textSize="@dimen/alph_size_small"
                 android:textStyle="bold" />
 
@@ -67,6 +69,7 @@
                     android:layout_marginTop="@dimen/spacing_tiny_2"
                     android:layout_marginBottom="@dimen/spacing_tiny_2"
                     android:layout_marginStart="@dimen/spacing_tiny_2"
+                    android:textColor="@color/dark_background"
                     android:textSize="@dimen/alph_size_small_2"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -93,6 +96,7 @@
                     android:layout_marginStart="@dimen/spacing_tiny_2"
                     android:layout_marginTop="@dimen/spacing_tiny_2"
                     android:layout_marginBottom="@dimen/spacing_tiny"
+                    android:textColor="@color/dark_background"
                     android:textSize="@dimen/alph_size_small_2"
                     android:textStyle="bold" />
             </LinearLayout>

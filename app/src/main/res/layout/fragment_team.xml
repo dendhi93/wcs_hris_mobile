@@ -1,5 +1,6 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <import type="android.view.View" />
@@ -19,7 +20,40 @@
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:indeterminate="true" />
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cv_team"
+            android:layout_below="@+id/pb_team"
+            android:layout_marginTop="@dimen/spacing_tiny_3"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="1dp"
+            android:padding="1dp"
+            android:visibility="@{viewModel.isHiddenSearch ? View.GONE : View.VISIBLE }"
+            android:elevation="2dp"
+            app:cardMaxElevation="0dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/cardview_light_background"
+            tools:ignore="PrivateResource"
+            app:cardUseCompatPadding="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/spacing_tiny"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.SearchView
+                        android:background="@color/colorWhite"
+                        android:layout_margin="@dimen/spacing_tiny_2"
+                        android:id="@+id/sv_team"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/text_fields_height" />
+                </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_below="@+id/cv_team"
             android:id="@+id/sw_team"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -27,6 +61,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rc_team"
                 android:visibility="gone"
+                android:layoutAnimation="@anim/layout_animation_up_to_down"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 

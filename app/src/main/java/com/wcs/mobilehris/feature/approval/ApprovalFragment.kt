@@ -35,12 +35,8 @@ class ApprovalFragment : Fragment(), ApprovalInterface {
     }
     override fun loadApprovalMenu(approvalMenuList: List<ApprovalModel>) {
         arrApprovalList.clear()
-        for(i in approvalMenuList.indices){
-            arrApprovalList.add(ApprovalModel(approvalMenuList[i].itemMenu,
-                approvalMenuList[i].imgItemMenu,
-                approvalMenuList[i].qtyApproval,
-                approvalMenuList[i].itemMenuContent))
-        }
+        arrApprovalList.addAll(approvalMenuList)
+
         approvalAdapter.notifyDataSetChanged()
         approvalBinding.viewModel?.isVisibleApprovalUI?.set(false)
     }

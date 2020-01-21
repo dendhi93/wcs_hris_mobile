@@ -9,5 +9,9 @@ data class ContentTaskModel(
     val beginTaskTime : String,
     val endTaskTime : String,
     val flagTask : String,
-    val taskDate : String
+    val taskDate : String,
+    val taskId : String,
+    val actHourTaken : Int,
+    val isCompleted : Boolean,
+    val completedDescription : String
 )

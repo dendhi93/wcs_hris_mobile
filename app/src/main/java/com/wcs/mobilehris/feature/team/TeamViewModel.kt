@@ -2,12 +2,14 @@ package com.wcs.mobilehris.feature.team
 
 import android.content.Context
 import android.os.Handler
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.util.ConstantObject
 
 class TeamViewModel (private val context : Context, private val teamInterface: TeamInterface) : ViewModel(){
+    val isHiddenSearch = ObservableField<Boolean>(false)
 
     fun initDataTeam(typeOfLoading : Int){
         when{
@@ -21,28 +23,39 @@ class TeamViewModel (private val context : Context, private val teamInterface: T
 
     private fun getTemData(typeLoading : Int){
         when(typeLoading){
-            TeamFragment.LOAD_WITH_PROGRESSBAR -> teamInterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.loadWithProgressBar -> teamInterface.showUI(ConstantObject.vProgresBarUI)
         }
         teamInterface.hideUI(ConstantObject.vRecylerViewUI)
         teamInterface.showUI(ConstantObject.vGlobalUI)
-        var listTeam = mutableListOf<TeamModel>()
-        var teamModel = TeamModel("Andika Kurnia",
+        val listTeam = mutableListOf<TeamModel>()
+        var teamModel = TeamModel("62909090","Andika Kurnia",
             "+620878945445",
             "andika.kurnia@id.wilmar-intl.com")
         listTeam.add(teamModel)
-        teamModel = TeamModel("Claudia",
+        teamModel = TeamModel("62909091","Claudia",
             "+620878945489",
             "claudia@id.wilmar-intl.com")
         listTeam.add(teamModel)
-        teamModel = TeamModel("Michael Saputra",
+        teamModel = TeamModel("62909092","Michael Saputra",
             "+62087894547878",
             "michael.saputra@id.wilmar-intl.com")
         listTeam.add(teamModel)
 
-        Handler().postDelayed({
-            teamInterface.onLoadTeam(listTeam, typeLoading)
-        }, 2000)
-
+        when{
+            listTeam.size > 0 -> {
+                Handler().postDelayed({
+                    teamInterface.onLoadTeam(listTeam, typeLoading)
+                }, 2000)
+            }
+            else -> {
+                teamInterface.showUI(ConstantObject.vGlobalUI)
+                teamInterface.hideUI(ConstantObject.vRecylerViewUI)
+                when(typeLoading){
+                    ConstantObject.loadWithProgressBar -> teamInterface.hideUI(ConstantObject.vProgresBarUI)
+                    else -> teamInterface.onHideSwipeRefresh()
+                }
+                teamInterface.onErrorMessage(context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
+            }
+        }
     }
-
 }

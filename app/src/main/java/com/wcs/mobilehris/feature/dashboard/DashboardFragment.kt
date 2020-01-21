@@ -40,29 +40,22 @@ class DashboardFragment : Fragment(), DashboardInterface {
 
     override fun onLoadList(vListDash: List<DashboardModel>, typeLoading : Int) {
         arrDashList.clear()
-        for(i in vListDash.indices){
-            arrDashList.add(
-                DashboardModel(vListDash[i].vtitleContent,
-                vListDash[i].vcontentDashboard)
-            )
-        }
+        arrDashList.addAll(vListDash)
+
         dashAdapter.notifyDataSetChanged()
-        when(typeLoading){
-            LOAD_WITH_PROGRESBAR -> {
-                hideUI(ConstantObject.vProgresBarUI)
-                showUI(ConstantObject.vGlobalUI)
-            }
-        }
         hideUI(TEXTVIEW_UI)
         showUI(ConstantObject.vRecylerViewUI)
         showUI(ConstantObject.vGlobalUI)
-        dashboardBinding.swDashboard.isRefreshing = false
+        when(typeLoading){
+            ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
+            else ->  hideSwipeRefreshLayout()
+        }
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {
         when(messageType){
-            ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message,
-                ConstantObject.vToastError)
+            ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message,ConstantObject.vToastError)
+            else ->  MessageUtils.toastMessage(requireContext(), message, ConstantObject.vToastInfo)
         }
     }
 
@@ -71,6 +64,10 @@ class DashboardFragment : Fragment(), DashboardInterface {
             ALERT_DASH_NO_CONNECTION -> {
                 MessageUtils.alertDialogDismiss(alertMessage, alertTitle, requireContext())}
         }
+    }
+
+    override fun hideSwipeRefreshLayout() {
+        dashboardBinding.swDashboard.isRefreshing = false
     }
 
     override fun hideUI(typeUI: Int) {
@@ -99,8 +96,6 @@ class DashboardFragment : Fragment(), DashboardInterface {
 
     companion object{
         const val ALERT_DASH_NO_CONNECTION = 1
-        const val LOAD_WITH_PROGRESBAR = 2
-        const val LOAD_WITHOUT_PROGRESBAR = 3
         const val TEXTVIEW_UI = 4
     }
 }

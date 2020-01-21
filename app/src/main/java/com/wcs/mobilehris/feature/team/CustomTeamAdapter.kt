@@ -8,11 +8,10 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
-import com.wcs.mobilehris.util.ConstantObject
-import com.wcs.mobilehris.util.MessageUtils
 
-class CustomTeamAdapter(private val _context : Context, private val teamList : MutableList<TeamModel>):
+class CustomTeamAdapter(private val _context : Context, private var teamList : MutableList<TeamModel>):
     RecyclerView.Adapter<CustomTeamAdapter.ViewHolder>(){
+    private var selectedInterface : SelectedTeamInterface? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_list_team,parent,false))
@@ -20,12 +19,17 @@ class CustomTeamAdapter(private val _context : Context, private val teamList : M
 
     override fun getItemCount(): Int = teamList.size
 
+    fun initSelectedCallBack(itemCallBack : SelectedTeamInterface){
+        this.selectedInterface = itemCallBack
+    }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val model : TeamModel = teamList[position]
         holder.tvTeamName.text = model.name.trim()
         holder.tvTeamPhone.text = model.phone.trim()
         holder.tvTeamMail.text = model.email.trim()
-        holder.cvTeam.setOnClickListener {}
+        holder.cvTeam.setOnClickListener {
+            selectedInterface?.selectedItemTeam(model)
+        }
     }
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
@@ -33,5 +37,10 @@ class CustomTeamAdapter(private val _context : Context, private val teamList : M
         var tvTeamName : TextView = view.findViewById(R.id.tv_custom_team_name)
         var tvTeamPhone : TextView = view.findViewById(R.id.tv_custom_team_phone)
         var tvTeamMail : TextView = view.findViewById(R.id.tv_custom_team_email)
+    }
+
+    fun filterListTeam(filterListteam : ArrayList<TeamModel>){
+        teamList = filterListteam
+        notifyDataSetChanged()
     }
 }

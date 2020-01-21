@@ -24,6 +24,21 @@ object ConstantObject {
     //type flagTask Type
     const val vPlanTask = "Plan"
     const val vConfirmTask = "Confirm"
-    const val vConfirmedTask = "Confirmed"
+
+    //type progressBar
+    const val loadWithProgressBar = 11
+    const val loadWithoutProgressBar = 22
+
+    //type task
+    const val supportTask = "Support"
+    const val projectTask = "Project"
+    const val prospectTask = "Prospect"
+    const val preSalesTask = "PreSales"
+
+    //menu request
+    const val travelMenu = "Travel"
+    const val leaveMenu = "Leave"
+    const val benefitMenu = "Benefit"
+    const val travelClaimMenu = "Benefit"
 
 }
