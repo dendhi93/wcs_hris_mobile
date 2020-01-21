@@ -29,6 +29,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rc_plan"
                 android:visibility="gone"
+                android:layoutAnimation="@anim/layout_animation_up_to_down"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 

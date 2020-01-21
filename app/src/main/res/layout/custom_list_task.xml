@@ -195,7 +195,7 @@
             <Button
                 android:padding="@dimen/spacing_tiny_3"
                 android:layout_marginTop="@dimen/spacing_tiny"
-                android:layout_marginBottom="@dimen/spacing_tiny"
+                android:layout_marginBottom="@dimen/spacing_small_1"
                 android:layout_marginEnd="@dimen/spacing_tiny"
                 android:textColor="@color/colorWhite"
                 android:id="@+id/btn_customPlan"

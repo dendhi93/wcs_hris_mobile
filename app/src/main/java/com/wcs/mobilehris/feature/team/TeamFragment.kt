@@ -76,14 +76,9 @@ class TeamFragment : Fragment(), TeamInterface {
 
     override fun onLoadTeam(teamList: List<TeamModel>, typeLoading: Int) {
         arrTeamList.clear()
-        for(i in teamList.indices){
-            arrTeamList.add(
-                TeamModel(teamList[i].userId,
-                    teamList[i].name ,
-                    teamList[i].phone,
-                    teamList[i].email))
-        }
+        arrTeamList.addAll(teamList)
         teamAdapter.notifyDataSetChanged()
+
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
         when(typeLoading){

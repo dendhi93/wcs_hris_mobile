@@ -14,7 +14,6 @@
     <string name="alert_transaction_success">Transaction Success</string>
     <string name="menu_search_team_content">Search Team</string>
 
-
     <!--navigation drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -50,6 +49,7 @@
     <string name="create_task_activity">Create Task</string>
     <string name="search_team_activity">Search Team</string>
     <string name="confirm_task_activity">Confirm Task</string>
+    <string name="req_travel_hist_activity">Request Travel History</string>
 
     <!--permission form-->
     <string name="permission_button">IZINKAN</string>

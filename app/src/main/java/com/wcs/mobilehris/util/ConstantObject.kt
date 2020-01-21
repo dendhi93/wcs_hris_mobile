@@ -35,4 +35,10 @@ object ConstantObject {
     const val prospectTask = "Prospect"
     const val preSalesTask = "PreSales"
 
+    //menu request
+    const val travelMenu = "Travel"
+    const val leaveMenu = "Leave"
+    const val benefitMenu = "Benefit"
+    const val travelClaimMenu = "Benefit"
+
 }

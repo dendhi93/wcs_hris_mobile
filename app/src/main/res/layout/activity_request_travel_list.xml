@@ -1,20 +1,20 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <import type="android.view.View" />
-        z<variable
+        <variable
             name="viewModel"
-            type="com.wcs.mobilehris.feature.completed.CompletedViewModel" />
+            type="com.wcs.mobilehris.feature.requesttravellist.RequestTravelListViewModel" />
     </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/colorPrimary">
 
         <ProgressBar
-            android:id="@+id/pb_completed"
+            android:id="@+id/pb_reqTravelList"
             android:layout_width="match_parent"
             android:layout_height="@dimen/permission_button_margin_vertical"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -22,12 +22,12 @@
             android:indeterminate="true" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/sw_completed"
+            android:id="@+id/sw_reqTravelList"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_completed"
+                android:id="@+id/rc_reqTravelList"
                 android:visibility="gone"
                 android:layoutAnimation="@anim/layout_animation_up_to_down"
                 android:layout_width="match_parent"
@@ -36,7 +36,7 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <TextView
-            android:id="@+id/tv_completed_empty"
+            android:id="@+id/tv_reqTravelList_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -53,8 +53,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="@dimen/icon_medium"
             android:layout_marginEnd="@dimen/icon_medium"
-            android:onClick="@{() -> viewModel.fabCompletedClick()}"
-            android:id="@+id/fab_plan"
+            android:onClick="@{() -> viewModel.fabClickRequest()}"
+            android:id="@+id/fab_reqTravelList"
             android:src="@mipmap/ic_plus_48"
             app:elevation="6dp"
             app:fabSize="normal"/>

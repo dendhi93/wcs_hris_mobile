@@ -64,9 +64,7 @@ class PlanFragment : Fragment(), PlanInterface {
         }
     }
 
-    override fun onHideSwipeRefresh() {
-        planFragmentBinding.swPlan.isRefreshing = false
-    }
+    override fun onHideSwipeRefresh() { planFragmentBinding.swPlan.isRefreshing = false }
 
     override fun hideUI(typeUI: Int) {
        when(typeUI){
