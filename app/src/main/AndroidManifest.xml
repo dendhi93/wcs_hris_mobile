@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.wcs.mobilehris">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -30,22 +33,40 @@
         android:roundIcon="@mipmap/ic_hris_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".feature.preparation.permission.PermissionActivity">
+
+        <activity android:name=".feature.preparation.permission.PermissionActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".feature.profile.ProfileActivity" />
-        <activity
-            android:name=".feature.menu.MenuActivity"
-            android:label="@string/title_activity_menu"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".feature.login.LoginActivity" />
-        <activity android:name=".feature.preparation.splash.SplashActivity" />
-        <activity android:name=".feature.dtlnotification.DetailNotificationActivity"
-            android:label="@string/dtl_notification_activity"/>
-    </application>
 
+        <activity android:name=".feature.profile.ProfileActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity android:name=".feature.menu.MenuActivity"
+            android:label="@string/title_activity_menu"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity android:name=".feature.login.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity android:name=".feature.preparation.splash.SplashActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity android:name=".feature.dtlnotification.DetailNotificationActivity"
+            android:label="@string/dtl_notification_activity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
+    </application>
 </manifest>

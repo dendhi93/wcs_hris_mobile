@@ -31,6 +31,20 @@
     <color name="colorBlueMantab">#003D79</color>
     <color name="colorLightGreen">#FFA500</color>
 
+    <!--Text Color-->
+    <color name="text_color">#080808</color>
+
+    <!--Background-->
+    <color name="backgroundApp">#FFFEEE</color>
+
+    <!--Tool Bar-->
+    <color name="toolbar_text_color">#080808</color>
+    <color name="toolbar_drawer_color">#080808</color>
+
+    <!--Tab Layout-->
+    <color name="tab_selected_text_color">#7559B3</color>
+    <color name="tab_text_color">#080808</color>
+
     <!--Text Fields-->
     <color name="text_fields_box_color">#43C6AC</color>
 
@@ -38,4 +52,8 @@
     <color name="logInButtonGradient1">#43C6AC</color>
     <color name="logInButtonGradient2">#F8FFAE</color>
     <color name="logInButtonGradientRipple">#52FFFFFF</color>
+
+    <!--Card View-->
+    <color name="card_view_background">#FFFFFF</color>
+    <color name="card_view_divider">@color/backgroundApp</color>
 </resources>

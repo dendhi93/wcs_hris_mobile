@@ -1,59 +1,56 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.wcs.mobilehris.feature.login.LoginViewModel" />
     </data>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:background="@color/backgroundApp"
+        android:fillViewport="true">
 
-        <ProgressBar
-            android:id="@+id/pb_login"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/permission_button_margin_vertical"
-            android:layout_alignParentTop="true"
-            android:indeterminate="true"
-            android:visibility="@{viewModel.isVisibleProgress ? View.VISIBLE : View.GONE}" />
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
-        <ImageView
-            android:id="@+id/imgV_login"
-            android:layout_width="@dimen/spacing_very_huge"
-            android:layout_height="@dimen/spacing_very_huge"
-            android:layout_below="@+id/pb_login"
-            android:visibility="invisible"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/spacing_very_huge_2"
-            android:layout_marginBottom="@dimen/spacing_very_huge"
-            android:src="@mipmap/ic_logo_wcs" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/pb_login"
-            android:gravity="center"
-            android:layout_marginStart="@dimen/space_04"
-            android:layout_marginEnd="@dimen/space_04"
-            android:orientation="vertical">
+            <ProgressBar
+                android:id="@+id/pb_login"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="@{viewModel.isVisibleProgress ? View.VISIBLE : View.INVISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tf_login_uid"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/text_fields_height"
-                app:boxStrokeWidth="@dimen/text_fields_box_width"
-                app:boxStrokeColor="@color/text_fields_box_color"
+                android:layout_marginStart="@dimen/space_08"
+                android:layout_marginEnd="@dimen/space_08"
                 app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
                 app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
                 app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
-                app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+                app:boxCornerRadiusTopStart="@dimen/text_fields_radius"
+                app:boxStrokeColor="@color/text_fields_box_color"
+                app:boxStrokeWidth="@dimen/text_fields_box_width"
+                app:layout_constraintBottom_toTopOf="@+id/tf_login_pass"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txt_login_uid"
@@ -62,24 +59,35 @@
                     android:digits="0123456789"
                     android:gravity="center_vertical"
                     android:hint="@string/user_id"
-                    android:inputType="number"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberPassword"
                     android:maxLines="1"
+                    android:paddingStart="@dimen/space_08"
+                    android:paddingEnd="@dimen/space_08"
                     android:text="@={viewModel.stUserId}"
                     android:textSize="@dimen/text_fields_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tf_login_pass"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/text_fields_height"
-                android:layout_marginTop="@dimen/space_04"
-                app:boxStrokeWidth="@dimen/text_fields_box_width"
-                app:boxStrokeColor="@color/text_fields_box_color"
+                android:layout_marginStart="@dimen/space_08"
+                android:layout_marginTop="@dimen/space_07"
+                android:layout_marginEnd="@dimen/space_08"
                 app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
                 app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
                 app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
                 app:boxCornerRadiusTopStart="@dimen/text_fields_radius"
+                app:boxStrokeColor="@color/text_fields_box_color"
+                app:boxStrokeWidth="@dimen/text_fields_box_width"
+                app:layout_constraintBottom_toTopOf="@+id/btn_login_log_in"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tf_login_uid"
+                app:layout_constraintVertical_chainStyle="packed"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -88,8 +96,11 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:hint="@string/password"
-                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
                     android:maxLines="1"
+                    android:paddingStart="@dimen/space_08"
+                    android:paddingEnd="@dimen/space_08"
                     android:text="@={viewModel.stPassword}"
                     android:textSize="@dimen/text_fields_text_size" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -98,34 +109,50 @@
                 android:id="@+id/btn_login_log_in"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
-                android:layout_marginTop="@dimen/space_06"
+                android:layout_marginStart="@dimen/space_08"
+                android:layout_marginTop="@dimen/space_08"
+                android:layout_marginEnd="@dimen/space_08"
                 android:background="@drawable/log_in_button"
-                android:onClick="@{() -> viewModel.getLogin()}"
                 android:enabled="@{!viewModel.isVisibleProgress}"
+                android:onClick="@{() -> viewModel.getLogin()}"
+                android:stateListAnimator="@null"
                 android:text="@string/login"
-                android:textStyle="bold"
                 android:textSize="@dimen/button_text_size"
-                android:stateListAnimator="@null"/>
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/txt_login_forgot"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tf_login_pass"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
+                android:id="@+id/txt_login_forgot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_02"
                 android:layout_gravity="start"
+                android:layout_marginStart="@dimen/space_08"
+                android:layout_marginTop="@dimen/space_06"
                 android:onClick="@{() -> viewModel.intentForgotPass()}"
                 android:text="@string/forgot_password"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/txt_login_version"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_login_log_in"
+                app:layout_constraintVertical_chainStyle="packed" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:padding="@dimen/spacing_tiny_3"
-            android:text="@={viewModel.stVersion}"
-            android:textColor="@color/colorBlack" />
+            <TextView
+                android:id="@+id/txt_login_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_05"
+                android:text="@={viewModel.stVersion}"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-    </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </layout>

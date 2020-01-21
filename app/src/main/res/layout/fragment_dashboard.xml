@@ -1,79 +1,102 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.wcs.mobilehris.feature.dashboard.DashboardViewModel" />
     </data>
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/colorPrimary">
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimary">
+        android:background="@color/backgroundApp"
+        android:fillViewport="true">
 
-        <ProgressBar
-            android:id="@+id/pb_dashboard"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/space_01"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:visibility="invisible"
-            android:layout_marginBottom="@dimen/space_01"
-            android:indeterminate="true" />
-
-        <LinearLayout
-            android:layout_below="@+id/pb_dashboard"
-            android:id="@+id/ln_dashboard_top"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginHorizontal="@dimen/space_02">
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
-            <Button
-                android:layout_marginEnd="@dimen/space_02"
-                android:id="@+id/btn_dashboard_leave"
-                android:layout_width="@dimen/spacing_very_huge_1"
-                android:layout_height="@dimen/spacing_large"
-                android:text="@={viewModel.stLeaveQty}"
-                android:background="@drawable/ic_yelow_button"/>
-
-            <Button
-                android:id="@+id/btn_dashboard_late"
-                android:layout_width="@dimen/spacing_very_huge_1"
-                android:layout_height="@dimen/spacing_large"
-                android:text="@={viewModel.stLateQty}"
-                android:background="@drawable/ic_yelow_button"/>
-        </LinearLayout>
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:layout_below="@+id/ln_dashboard_top"
-            android:id="@+id/sw_dashboard"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="@dimen/space_02"
-            android:layout_marginVertical="@dimen/space_01">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_dashboard"
-                android:visibility="gone"
+            <ProgressBar
+                android:id="@+id/pb_dashboard"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_dashboard_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:textStyle="bold"
-            android:textSize="@dimen/alph_size_small_2"
-            android:text="@string/empty_data" />
+            <LinearLayout
+                android:id="@+id/lo_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/space_07"
+                android:paddingBottom="@dimen/space_07"
+                app:layout_constraintBottom_toTopOf="@id/sw_dashboard"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pb_dashboard">
 
-</RelativeLayout>
+                <TextView
+                    android:id="@+id/btn_dashboard_late"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_yelow_button"
+                    android:paddingHorizontal="@dimen/space_07"
+                    android:paddingVertical="@dimen/space_05"
+                    android:text="@={viewModel.stLateQty}"
+                    android:textSize="@dimen/text_fields_text_size" />
+
+                <TextView
+                    android:id="@+id/btn_dashboard_leave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_07"
+                    android:background="@drawable/ic_yelow_button"
+                    android:paddingHorizontal="@dimen/space_07"
+                    android:paddingVertical="@dimen/space_05"
+                    android:text="@={viewModel.stLeaveQty}"
+                    android:textSize="@dimen/text_fields_text_size" />
+
+            </LinearLayout>
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/sw_dashboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/space_04"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lo_dashboard">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rc_dashboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <TextView
+                android:id="@+id/tv_dashboard_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/empty_data"
+                android:textSize="@dimen/text_fields_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lo_dashboard" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
 </layout>

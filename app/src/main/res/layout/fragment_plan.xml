@@ -2,62 +2,71 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.wcs.mobilehris.feature.plan.PlanViewModel" />
     </data>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimary">
+        android:background="@color/backgroundApp"
+        android:fillViewport="true">
 
-        <ProgressBar
-            android:id="@+id/pb_plan"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/permission_button_margin_vertical"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:visibility="gone"
-            android:indeterminate="true" />
+            android:layout_height="wrap_content">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/sw_plan"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_plan"
-                android:visibility="gone"
+            <ProgressBar
+                android:id="@+id/pb_plan"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="invisible" />
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/sw_plan"
+                android:paddingTop="@dimen/space_04"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_plan_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:textStyle="bold"
-            android:textSize="@dimen/alph_size_small_2"
-            android:text="@string/empty_data" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rc_plan"
+                    android:layout_marginVertical="@dimen/space_05"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:backgroundTint="@color/colorWhite"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="@dimen/icon_medium"
-            android:layout_marginEnd="@dimen/icon_medium"
-            android:onClick="@{() -> viewModel.fabPlanClick()}"
-            android:id="@+id/fab_plan"
-            android:src="@mipmap/ic_plus_48"
-            app:elevation="6dp"
-            app:fabSize="normal"/>
-    </RelativeLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+            <TextView
+                android:id="@+id/tv_plan_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/empty_data"
+                android:textSize="@dimen/text_fields_text_size" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_plan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="@dimen/icon_medium"
+                android:layout_marginBottom="@dimen/icon_medium"
+                android:onClick="@{() -> viewModel.fabPlanClick()}"
+                android:src="@mipmap/ic_plus_48"
+                app:backgroundTint="@color/colorWhite"
+                app:elevation="6dp"
+                app:fabSize="normal" />
+        </RelativeLayout>
+
+    </ScrollView>
 
 </layout>

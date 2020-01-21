@@ -76,7 +76,7 @@ class PlanFragment : Fragment(), PlanInterface {
 
     override fun hideUI(typeUI: Int) {
        when(typeUI){
-           ConstantObject.vProgresBarUI -> planFragmentBinding.pbPlan.visibility = View.GONE
+           ConstantObject.vProgresBarUI -> planFragmentBinding.pbPlan.visibility = View.INVISIBLE
            ConstantObject.vRecylerViewUI -> planFragmentBinding.rcPlan.visibility = View.GONE
            ConstantObject.vGlobalUI -> planFragmentBinding.tvPlanEmpty.visibility = View.GONE
        }

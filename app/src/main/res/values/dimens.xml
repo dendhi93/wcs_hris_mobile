@@ -40,17 +40,27 @@
     <dimen name="alph_size_large">40sp</dimen>
     <dimen name="alph_size_extra_large">50sp</dimen>
 
+    <!--Progress Bar-->
+    <dimen name="progress_bar_height">4dp</dimen>
+
+    <!--Tool Bar-->
+    <dimen name="toolbar_title_text_size">20dp</dimen>
+
     <!--Spacing-->
-    <dimen name="space_01">8dp</dimen>
-    <dimen name="space_02">12dp</dimen>
-    <dimen name="space_03">16dp</dimen>
-    <dimen name="space_04">20dp</dimen>
-    <dimen name="space_05">24dp</dimen>
-    <dimen name="space_06">26dp</dimen>
-    <dimen name="space_07">32dp</dimen>
+    <dimen name="space_01">1dp</dimen>
+    <dimen name="space_02">2dp</dimen>
+    <dimen name="space_03">3dp</dimen>
+    <dimen name="space_04">4dp</dimen>
+    <dimen name="space_05">8dp</dimen>
+    <dimen name="space_06">12dp</dimen>
+    <dimen name="space_07">16dp</dimen>
+    <dimen name="space_08">20dp</dimen>
+    <dimen name="space_09">24dp</dimen>
+    <dimen name="space_10">26dp</dimen>
+    <dimen name="space_11">32dp</dimen>
 
     <!--Button-->
-    <dimen name="button_height">44dp</dimen>
+    <dimen name="button_height">46dp</dimen>
     <dimen name="button_radius">12dp</dimen>
     <dimen name="button_text_size">14sp</dimen>
 
@@ -59,4 +69,13 @@
     <dimen name="text_fields_radius">12dp</dimen>
     <dimen name="text_fields_text_size">14sp</dimen>
     <dimen name="text_fields_box_width">0.5dp</dimen>
+
+    <!--Card View-->
+    <dimen name="card_view_title_text_size">16sp</dimen>
+    <dimen name="card_view_detail_text_size">14sp</dimen>
+    <dimen name="card_view_elevation">4dp</dimen>
+    <dimen name="card_view_radius">6dp</dimen>
+
+    <!--Tab-->
+    <dimen name="tab_text_size">16sp</dimen>
 </resources>

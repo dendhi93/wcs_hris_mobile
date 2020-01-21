@@ -12,14 +12,14 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
             app:elevation="0dp">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@color/backgroundApp"
+                app:titleTextAppearance="@style/Toolbar.TitleText"
                 android:theme="@style/CustomToolbarStyle"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 

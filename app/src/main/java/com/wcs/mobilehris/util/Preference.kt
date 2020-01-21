@@ -8,7 +8,7 @@ class Preference(private var _context : Context){
         _context.getSharedPreferences(_context.packageName + "_pref", Context.MODE_PRIVATE)
     private val editor: SharedPreferences.Editor
     private val TAG = "Preferences"
-    private val KEY_USERNAME = "usernama"
+    private val KEY_USERNAME = "username"
     private val KEY_NAMEPROFILE = "name"
     private val KEY_PHONEPROFILE = "phone"
     private val KEY_EMAILPROFILE = "email"
