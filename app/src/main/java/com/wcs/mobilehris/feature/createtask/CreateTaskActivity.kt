@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.database.entity.ChargeCodeEntity
 import com.wcs.mobilehris.databinding.ActivityCreateTaskBinding
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
 import com.wcs.mobilehris.feature.dtltask.FriendModel
@@ -26,7 +27,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, DialogInter
     private lateinit var activityCreateTaskBinding: ActivityCreateTaskBinding
     private lateinit var dtlTaskAdapter : CustomDetailTaskAdapter
     private var arrTeamTaskList = ArrayList<FriendModel>()
-    private var arrChargeCode = ArrayList<String>()
+    private var arrCompletedText = ArrayList<String>()
     private var keyDialogActive = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,22 +115,22 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, DialogInter
         }
     }
 
-    override fun onLoadChargeCode(listChargeCode: List<ChargeCodeModel>) {
-        arrChargeCode.clear()
+    override fun onLoadChargeCode(listChargeCode: List<ChargeCodeEntity>) {
+        arrCompletedText.clear()
         for(i in listChargeCode.indices){
-            arrChargeCode.add(listChargeCode[i].chargeCodeNo+" "+listChargeCode[i].descriptionChargeCode)
+            arrCompletedText.add(listChargeCode[i].mChargeCodeNo+"  "+listChargeCode[i].mDescriptionChargeCode)
         }
         val chargeCodeAdapter = ArrayAdapter<String>(this,
             android.R.layout.simple_dropdown_item_1line,
-            arrChargeCode
+            arrCompletedText
         )
         activityCreateTaskBinding.actCreateTaskChargeCode.setAdapter(chargeCodeAdapter)
         activityCreateTaskBinding.actCreateTaskChargeCode.threshold = 1
         activityCreateTaskBinding.actCreateTaskChargeCode.onItemClickListener = AdapterView.OnItemClickListener{
                 parent,view,position,id->
             val selectedItem = parent.getItemAtPosition(position).toString()
-            val selectedModel : ChargeCodeModel = listChargeCode[position]
-            activityCreateTaskBinding.viewModel?.getChargeCode(selectedItem, selectedModel.companyName)
+            val splitChargeCode = selectedItem.split("  ")[0]
+            activityCreateTaskBinding.viewModel?.findCompany(splitChargeCode)
         }
     }
 

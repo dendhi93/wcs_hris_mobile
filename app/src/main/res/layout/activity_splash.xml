@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:text="@string/retry_button"
-                android:onClick="@{() -> viewModel.retryDownload()}"
+                android:onClick="@{() -> viewModel.processDownload()}"
                 android:visibility="@{viewModel.isBtnVisible ? View.VISIBLE : View.GONE}"
                 android:textColor="@color/colorWhite"
                 android:background="@drawable/bg_blue_button" />

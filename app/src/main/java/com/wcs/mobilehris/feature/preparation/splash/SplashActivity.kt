@@ -3,12 +3,10 @@ package com.wcs.mobilehris.feature.preparation.splash
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.ActivitySplashBinding
 import com.wcs.mobilehris.feature.login.LoginActivity
-import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import com.wcs.mobilehris.utilinterface.DialogInterface
 
