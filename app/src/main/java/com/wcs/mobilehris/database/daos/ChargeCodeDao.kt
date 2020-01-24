@@ -10,7 +10,7 @@ interface ChargeCodeDao{
     fun getAllChargeCode() : List<ChargeCodeEntity>
 
     @Query("SELECT max(id) FROM mCharge_code")
-    fun getMaxId() : Int
+    fun getChargeCodeMaxId() : Int
 
     @Query("SELECT count(id) FROM mCharge_code")
     fun getCountChargeCode() : Int
