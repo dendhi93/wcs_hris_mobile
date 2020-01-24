@@ -47,9 +47,10 @@ class SplashActivity : AppCompatActivity(), SplashInterface, DialogInterface {
     }
 
     override fun successSplash() {
+        bindingSplash.viewModel?.isPrgBarVisible?.set(false)
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
-        bindingSplash.viewModel?.isPrgBarVisible?.set(false)
+
     }
 
     companion object{

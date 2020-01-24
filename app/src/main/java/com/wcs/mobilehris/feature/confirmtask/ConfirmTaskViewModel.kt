@@ -2,7 +2,6 @@ package com.wcs.mobilehris.feature.confirmtask
 
 import android.content.Context
 import android.os.Handler
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -27,6 +26,7 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
     val isHiddenSolmanNoTv = ObservableField<Boolean>(false)
     val isHiddenPMTv = ObservableField<Boolean>(false)
     private var stTypeTask : String? = ""
+    private var stIntentTaskId : String = ""
 
     fun onClickConfirm(){
         when{
@@ -39,11 +39,12 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
         }
     }
 
-    fun onLoadConfirmData(intentChargeCode : String, intentTypeTask : String){
+    fun onLoadConfirmData(intentTaskId : String, intentTypeTask : String){
+        stIntentTaskId = intentTaskId
         isProgressConfirmTask.set(true)
         stTypeTask = intentTypeTask
         Handler().postDelayed({
-            stConfirmChargeCode.set(intentChargeCode.trim())
+            stConfirmChargeCode.set("A-1003-096")
             stConfirmCompName.set("PT ABCD")
             stConfirmCompAddress.set("Jakarta")
             stConfirmCP.set("Michael Saputra")

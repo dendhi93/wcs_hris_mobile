@@ -17,6 +17,7 @@ import com.wcs.mobilehris.database.entity.UpdateMasterEntity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.DateTimeUtils
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 
 class SplashViewModel(private var _context : Context, private var _splashInterface: SplashInterface) : ViewModel() {
@@ -29,6 +30,7 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
     private val arrJsonUpdateMaster = mutableListOf<UpdateMasterEntity>()
     private val arrJsonChargeCode = mutableListOf<ChargeCodeEntity>()
     private val arrMasterDataTable = ArrayList<UpdateMasterEntity>()
+    private var countData = 0
 
     fun processDownload(){
         when{
@@ -40,9 +42,7 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
         }
     }
 
-    private fun successDownload(){
-        _splashInterface.successSplash()
-    }
+    private fun successDownload(){ _splashInterface.successSplash() }
 
     private fun validateMaster(){
         isPrgBarVisible.set(true)
@@ -115,13 +115,16 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
                                     insertChargeCode(false)
                                 }
                             }
-                            else -> Log.d("###","ke else looping")
+                            else -> Log.d("###","ke else")
                         }
                     }
                 }
             }
         }
-        successDownload()
+        doAsync {
+            countData = mChargeCodeDao.getCountChargeCode()
+            uiThread { when{countData > 0  -> successDownload() } }
+        }
     }
 
     private fun insertChargeCode(isFirstInsert : Boolean){
@@ -134,10 +137,13 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
                 arrJsonChargeCode[i].mUpdateDate.trim())
             mChargeCodeDao.insertChargeCode(insertChargeCodeModel)
         }
-        var countData = 0
-        doAsync { countData = mChargeCodeDao.getCountChargeCode() }
-        when{
-            countData > 0 && isFirstInsert -> successDownload()
+        doAsync {
+            countData = mChargeCodeDao.getCountChargeCode()
+            uiThread {
+                when{
+                    countData > 0 && isFirstInsert -> successDownload()
+                }
+            }
         }
     }
 }
