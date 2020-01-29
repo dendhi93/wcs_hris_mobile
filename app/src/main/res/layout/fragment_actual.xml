@@ -8,56 +8,63 @@
             type="com.wcs.mobilehris.feature.actual.ActualViewModel" />
     </data>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimary">
+        android:background="@color/backgroundApp"
+        android:fillViewport="true">
 
-        <ProgressBar
-            android:id="@+id/pb_actual"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/permission_button_margin_vertical"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:visibility="gone"
-            android:indeterminate="true" />
+            android:layout_height="wrap_content">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/sw_actual"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_actual"
-                android:visibility="gone"
-                android:layoutAnimation="@anim/layout_animation_up_to_down"
+            <ProgressBar
+                android:id="@+id/pb_actual"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="@dimen/permission_button_margin_vertical"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:visibility="gone"
+                android:indeterminate="true" />
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/sw_actual"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_actual_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:textStyle="bold"
-            android:textSize="@dimen/alph_size_small_2"
-            android:text="@string/empty_data" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rc_actual"
+                    android:visibility="gone"
+                    android:layoutAnimation="@anim/layout_animation_up_to_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:backgroundTint="@color/colorWhite"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="@dimen/icon_medium"
-            android:layout_marginEnd="@dimen/icon_medium"
-            android:onClick="@{() -> viewModel.fabActualClick()}"
-            android:id="@+id/fab_plan"
-            android:src="@mipmap/ic_plus_48"
-            app:elevation="6dp"
-            app:fabSize="normal"/>
-    </RelativeLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <TextView
+                android:id="@+id/tv_actual_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:textSize="@dimen/alph_size_small_2"
+                android:text="@string/empty_data" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/colorWhite"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="@dimen/icon_medium"
+                android:layout_marginEnd="@dimen/icon_medium"
+                android:onClick="@{() -> viewModel.fabActualClick()}"
+                android:id="@+id/fab_plan"
+                android:src="@mipmap/ic_plus_48"
+                app:elevation="6dp"
+                app:fabSize="normal"/>
+        </RelativeLayout>
+
+    </ScrollView>
 
 </layout>

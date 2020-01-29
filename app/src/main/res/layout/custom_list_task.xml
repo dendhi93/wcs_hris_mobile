@@ -32,7 +32,6 @@
             android:layout_width="@dimen/spacing_large"
             android:layout_height="@dimen/spacing_large"
             android:layout_alignParentEnd="true"
-            android:background="@color/colorWhite"
             android:src="@mipmap/ic_three_dot" />
 
         <LinearLayout
@@ -172,17 +171,6 @@
                 android:background="@color/colorGray400" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_customPlan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ln_customPlan"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/spacing_tiny"
-            android:layout_marginBottom="@dimen/spacing_tiny"
-            android:background="@drawable/ic_red_button"
-            android:padding="@dimen/spacing_tiny_3"
-            android:textColor="@color/colorWhite" />
         <RelativeLayout
             android:id="@+id/rl_customList_bottom"
             android:layout_width="match_parent"
@@ -193,7 +181,7 @@
                 android:id="@+id/tv_custom_isCompleted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorBlack"
                 android:textSize="@dimen/alph_size_small_2"
                 android:layout_marginEnd="@dimen/spacing_tiny"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
