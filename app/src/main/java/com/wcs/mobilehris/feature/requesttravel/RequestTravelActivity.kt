@@ -185,7 +185,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
         startActivityForResult(intent, RESULT_SUCCESS_DESTINATION_INTO)
     }
 
-    override fun onSuccessRequestTransport() {
+    override fun onSuccessRequestTravel() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

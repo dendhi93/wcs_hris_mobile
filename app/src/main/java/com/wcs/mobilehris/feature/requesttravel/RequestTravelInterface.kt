@@ -14,5 +14,5 @@ interface RequestTravelInterface : DialogInterface {
     fun getTeamData()
     fun getDataDepart()
     fun getDataReturn()
-    fun onSuccessRequestTransport()
+    fun onSuccessRequestTravel()
 }

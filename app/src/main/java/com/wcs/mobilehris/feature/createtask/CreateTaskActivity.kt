@@ -175,6 +175,8 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
         const val RESULT_EXTRA_TEAM_NAME = "team_name"
         const val RESULT_EXTRA_TEAM_USER_ID = "team_user_id"
         const val ALERT_CREATE_TASK_CONFIRMATION = 5
+        const val chooseTimeFrom = "time_from"
+        const val chooseTimeInto = "time_into"
     }
 
     override fun onPositiveClick(o: Any) {

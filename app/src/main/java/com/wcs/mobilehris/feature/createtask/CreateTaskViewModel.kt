@@ -5,8 +5,6 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
-import android.os.Handler
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -15,6 +13,7 @@ import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.database.daos.ChargeCodeDao
 import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.DateTimeUtils
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.util.*
@@ -69,7 +68,10 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
         datePickerDialog.show()
     }
 
-    fun initTime(){
+    fun onAddTeam(){ createTaskInterface.getTeamData() }
+    fun initTimeFrom(){ initTime(CreateTaskActivity.chooseTimeFrom) }
+    fun initTimeInto(){ initTime(CreateTaskActivity.chooseTimeInto) }
+    private fun initTime(chooseTime : String){
         mHour = calendar.get(Calendar.HOUR_OF_DAY)
         mMinute = calendar.get(Calendar.MINUTE)
         mSecond = calendar.get(Calendar.SECOND)
@@ -80,16 +82,28 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                 selectedHour = if (hourOfDay < 10) { "0$hourOfDay" } else { hourOfDay.toString() }
                 selectedMinutes = if (minute < 10) { "0$minute" } else { minute.toString() }
                 selectedSecond = if (mSecond < 10) { "0$mSecond" } else { mSecond.toString() }
-                when{
-                    stDateTimeFrom.get().isNullOrEmpty() -> stDateTimeFrom.set("$selectedHour:$selectedMinutes:$selectedSecond")
-                    else -> stDateTimeInto.set("$selectedHour:$selectedMinutes:$selectedSecond")
+                when(chooseTime){
+                    CreateTaskActivity.chooseTimeFrom -> stDateTimeFrom.set("$selectedHour:$selectedMinutes:$selectedSecond")
+                    CreateTaskActivity.chooseTimeInto -> validateEndTime("$selectedHour:$selectedMinutes:$selectedSecond")
                 }
             }, mHour, mMinute, true
         )
         timePickerDialog.show()
     }
 
-    fun onAddTeam(){ createTaskInterface.getTeamData() }
+    private fun validateEndTime(endTime : String){
+        when(stDateTimeFrom.get()){
+            "" -> createTaskInterface.onMessage("Please fill Time from ", ConstantObject.vSnackBarWithButton)
+            else -> {
+                val intDiff = DateTimeUtils.getDifferentHours(stDateTimeFrom.get().toString(), endTime)
+                when{
+                    intDiff < 0 -> createTaskInterface.onMessage("End Time less then Start Time, Please fill again ", ConstantObject.vSnackBarWithButton)
+                    intDiff < 1 -> createTaskInterface.onMessage("End Time less then one hour, Please fill again ", ConstantObject.vSnackBarWithButton)
+                    else -> stDateTimeInto.set(endTime.trim())
+                }
+            }
+        }
+    }
 
     fun validateTask(){
         when{
