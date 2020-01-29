@@ -9,7 +9,7 @@
     <string name="message">Message</string>
     <string name="alert_no_connection">Your device is not connected. Please check your connection device</string>
     <string name="title_activity_menu">MenuActivity</string>
-    <string name="transaction_alert_confirmation">Are you sure you want to proceed with the transaction</string>
+    <string name="transaction_alert_confirmation">Are you sure you want to proceed this transaction</string>
     <string name="fill_in_the_blank">Please Fill in the Blank</string>
     <string name="alert_transaction_success">Transaction Success</string>
     <string name="menu_search_team_content">Search Team</string>
@@ -50,6 +50,8 @@
     <string name="search_team_activity">Search Team</string>
     <string name="confirm_task_activity">Confirm Task</string>
     <string name="req_travel_hist_activity">Request Travel History</string>
+    <string name="req_travel_activity">Request Travel</string>
+    <string name="search_city_activity">Search City</string>
 
     <!--permission form-->
     <string name="permission_button">IZINKAN</string>
@@ -91,7 +93,13 @@
 
     <!--confirm task content form-->
     <string name="activity_hour">Act. Hour</string>
-    <string name="activity_description">Act. Description</string>
+    <string name="activity_description">Action</string>
     <string name="confirm_save">Confirm</string>
+
+    <!--req Travel content form-->
+    <string name="depart_date">Depart Date</string>
+    <string name="return_date">Return Date</string>
+    <string name="multiple_way">Multiple Way</string>
+    <string name="one_way">One Way</string>
 
 </resources>

@@ -1,19 +1,21 @@
 package com.wcs.mobilehris.feature.createtask
 
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
-import android.os.Handler
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.application.WcsHrisApps
 import com.wcs.mobilehris.connection.ConnectionObject
+import com.wcs.mobilehris.database.daos.ChargeCodeDao
 import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.DateTimeUtils
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.util.*
 
 
@@ -23,8 +25,8 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     val isHiddenRv = ObservableField<Boolean>(false)
     val isHiddenSolmanTv = ObservableField<Boolean>(false)
     val isHiddenPMTv = ObservableField<Boolean>(false)
-    val isOnsiteTask = ObservableField<Boolean>(true)
     val isEnableCompanyNameTv = ObservableField<Boolean>(false)
+    val stTypeOnsite = ObservableField<String>("")
     val stDateTask = ObservableField<String>("")
     val stDateTimeFrom = ObservableField<String>("")
     val stDateTimeInto = ObservableField<String>("")
@@ -43,12 +45,14 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     private var mHour : Int = 0
     private var mMinute : Int = 0
     private var mSecond : Int = 0
+    private lateinit var mChargeCodeDao : ChargeCodeDao
 
     fun initUI(){
         isProgressCreateTask.set(false)
         isHiddenRv.set(true)
         isHiddenSolmanTv.set(true)
         isHiddenPMTv.set(true)
+        mChargeCodeDao = WcsHrisApps.database.chargeCodeDao()
     }
 
     fun initDate(){
@@ -64,7 +68,10 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
         datePickerDialog.show()
     }
 
-    fun initTime(){
+    fun onAddTeam(){ createTaskInterface.getTeamData() }
+    fun initTimeFrom(){ initTime(CreateTaskActivity.chooseTimeFrom) }
+    fun initTimeInto(){ initTime(CreateTaskActivity.chooseTimeInto) }
+    private fun initTime(chooseTime : String){
         mHour = calendar.get(Calendar.HOUR_OF_DAY)
         mMinute = calendar.get(Calendar.MINUTE)
         mSecond = calendar.get(Calendar.SECOND)
@@ -75,16 +82,28 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                 selectedHour = if (hourOfDay < 10) { "0$hourOfDay" } else { hourOfDay.toString() }
                 selectedMinutes = if (minute < 10) { "0$minute" } else { minute.toString() }
                 selectedSecond = if (mSecond < 10) { "0$mSecond" } else { mSecond.toString() }
-                when{
-                    stDateTimeFrom.get().isNullOrEmpty() -> stDateTimeFrom.set("$selectedHour:$selectedMinutes:$selectedSecond")
-                    else -> stDateTimeInto.set("$selectedHour:$selectedMinutes:$selectedSecond")
+                when(chooseTime){
+                    CreateTaskActivity.chooseTimeFrom -> stDateTimeFrom.set("$selectedHour:$selectedMinutes:$selectedSecond")
+                    CreateTaskActivity.chooseTimeInto -> validateEndTime("$selectedHour:$selectedMinutes:$selectedSecond")
                 }
             }, mHour, mMinute, true
         )
         timePickerDialog.show()
     }
 
-    fun onAddTeam(){ createTaskInterface.getTeamData() }
+    private fun validateEndTime(endTime : String){
+        when(stDateTimeFrom.get()){
+            "" -> createTaskInterface.onMessage("Please fill Time from ", ConstantObject.vSnackBarWithButton)
+            else -> {
+                val intDiff = DateTimeUtils.getDifferentHours(stDateTimeFrom.get().toString(), endTime)
+                when{
+                    intDiff < 0 -> createTaskInterface.onMessage("End Time less then Start Time, Please fill again ", ConstantObject.vSnackBarWithButton)
+                    intDiff < 1 -> createTaskInterface.onMessage("End Time less then one hour, Please fill again ", ConstantObject.vSnackBarWithButton)
+                    else -> stDateTimeInto.set(endTime.trim())
+                }
+            }
+        }
+    }
 
     fun validateTask(){
         when{
@@ -92,71 +111,38 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                 createTaskInterface.onAlertCreateTask(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, CreateTaskActivity.ALERT_CREATE_TASK_NO_CONNECTION)
             }
-            !validateSubmitTask() -> createTaskInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vToastInfo)
-//            else -> submitTask()
+            !validateSubmitTask() -> createTaskInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
             else -> createTaskInterface.onAlertCreateTask(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, CreateTaskActivity.ALERT_CREATE_TASK_CONFIRMATION)
         }
     }
 
     fun initDataChargeCode(){
-        val listDataChargeCode = mutableListOf<ChargeCodeModel>()
-        var chargeCodeModel  = ChargeCodeModel("A-1003-096",
-        "BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
-        "PT Wilmar Consultancy Services")
-        listDataChargeCode.add(chargeCodeModel)
-        chargeCodeModel  = ChargeCodeModel("A-1003-097",
-            "HCM DEMO FOR PRESALES ACTIVITY",
-            "PT Wilmar Consultancy Services")
-        listDataChargeCode.add(chargeCodeModel)
-        chargeCodeModel  = ChargeCodeModel("B-1014-001",
-            "TRAINING FOR FRESH GRADUATE",
-            "PT Wilmar Consultancy Services")
-        listDataChargeCode.add(chargeCodeModel)
-
-        chargeCodeModel  = ChargeCodeModel("B-1014-006",
-            "TRAINING SAP - OUTSYSTEM",
-            "")
-        listDataChargeCode.add(chargeCodeModel)
-        chargeCodeModel  = ChargeCodeModel("C-1003-006",
-            "GENERAL MANAGEMENT INTL",
-            "PT Wilmar Consultancy Services")
-        listDataChargeCode.add(chargeCodeModel)
-        chargeCodeModel  = ChargeCodeModel("C-1014-001",
-            "GENERAL MANAGEMENT INTL - SALES FILLING AND DOCUMENTATION",
-            "PT Wilmar Consultancy Services")
-        listDataChargeCode.add(chargeCodeModel)
-        chargeCodeModel  = ChargeCodeModel("D-1001-002",
-            "ANNUAL LEAVE",
-            "")
-        listDataChargeCode.add(chargeCodeModel)
-        chargeCodeModel  = ChargeCodeModel("D-1001-003",
-            "SICK LEAVE",
-            "")
-        listDataChargeCode.add(chargeCodeModel)
-        chargeCodeModel  = ChargeCodeModel("D-1001-003",
-            "SICK LEAVE",
-            "")
-        listDataChargeCode.add(chargeCodeModel)
-        chargeCodeModel  = ChargeCodeModel("F-0014-017",
-            "MILLS MOBILITY APPLICATION",
-            "PT Heinz ABC")
-        listDataChargeCode.add(chargeCodeModel)
-        chargeCodeModel  = ChargeCodeModel("F-0014-018",
-            "SAP IMPLEMENTATION TO LION SUPER INDO",
-            "PT SUPER INDO")
-        listDataChargeCode.add(chargeCodeModel)
-        when{listDataChargeCode.isNotEmpty() -> createTaskInterface.onLoadChargeCode(listDataChargeCode) }
+        doAsync {
+            val listTableChargeCode = mChargeCodeDao.getAllChargeCode()
+            uiThread {
+                when{listTableChargeCode.isNotEmpty() -> createTaskInterface.onLoadChargeCode(listTableChargeCode) }
+            }
+        }
     }
 
-    fun getChargeCode(code : String, compName : String){
+    fun findCompany(code : String){
         mChargeCode = code
-        when{
-            compName != "" -> {
-                isEnableCompanyNameTv.set(false)
-                stCompanyName.set(compName)
+        var compName : String
+        doAsync {
+            compName  = mChargeCodeDao.getCompName(code.trim())
+            uiThread {
+                        when{
+                            compName.isEmpty() -> {
+                                isEnableCompanyNameTv.set(false)
+                                stCompanyName.set(compName)
+                            }
+                            else ->{
+                                isEnableCompanyNameTv.set(true)
+                                stCompanyName.set("")
+                            }
+                        }
             }
-            else ->isEnableCompanyNameTv.set(true)
         }
     }
 
@@ -191,13 +177,14 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     private fun validateSubmitTask():Boolean{
         when{
                 stDateTimeFrom.get().equals("")
-                || stDateTimeInto.get().equals("")
-                || stCompanyName.get().equals("")
-                || stCompanyAddress.get().equals("")
-                || stDateTask.get().equals("")
-                || stContactPerson.get().equals("")
-                || stDescriptionTask.get().equals("")
-                || mTypeTask == "" -> return false
+                        || stDateTimeInto.get().equals("")
+                        || stCompanyName.get().equals("")
+                        || stCompanyAddress.get().equals("")
+                        || stDateTask.get().equals("")
+                        || stContactPerson.get().equals("")
+                        || stDescriptionTask.get().equals("")
+                        || stTypeOnsite.get().equals("")
+                        || mTypeTask == "" -> return false
             mTypeTask == ConstantObject.supportTask -> { when{stSolmanNoTask.get().equals("") -> return false } }
             mTypeTask == ConstantObject.projectTask -> { when{stPMTask.get().equals("") -> return false } }
         }
@@ -206,10 +193,6 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
 
     fun submitTask(){
         isProgressCreateTask.set(true)
-        Handler().postDelayed({
-            createTaskInterface.onMessage(context.getString(R.string.alert_transaction_success), ConstantObject.vSnackBarWithButton)
-            isProgressCreateTask.set(false)
-        }, 2000)
-
+        createTaskInterface.onSuccessCreateTask()
     }
 }

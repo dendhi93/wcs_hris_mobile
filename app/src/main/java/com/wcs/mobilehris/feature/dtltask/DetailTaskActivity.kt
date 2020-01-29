@@ -16,7 +16,7 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
     private lateinit var dtlTaskBinding : ActivityDetailTaskBinding
     private lateinit var dtlTaskAdapter : CustomDetailTaskAdapter
     private var arrTeamTaskList = ArrayList<FriendModel>()
-    private var intentTaskChargeCode : String? = ""
+    private var intentTaskId : String? = ""
     private var intentTaskTypeTask : String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,12 +31,12 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
         dtlTaskBinding.rcDtlTask.setHasFixedSize(true)
         dtlTaskAdapter = CustomDetailTaskAdapter(this, arrTeamTaskList)
         dtlTaskBinding.rcDtlTask.adapter = dtlTaskAdapter
-        intentTaskChargeCode = intent.getStringExtra(extraTaskId)
+        intentTaskId = intent.getStringExtra(extraTaskId)
         intentTaskTypeTask = intent.getStringExtra(extraTypeTask)
 
         when{
-            intentTaskChargeCode != "" && intentTaskTypeTask != "" ->{
-                dtlTaskBinding.viewModel?.initDataDtl(intentTaskChargeCode.toString().trim(), intentTaskTypeTask.toString().trim())
+            intentTaskId != "" && intentTaskTypeTask != "" ->{
+                dtlTaskBinding.viewModel?.initDataDtl(intentTaskId.toString().trim(), intentTaskTypeTask.toString().trim())
                 supportActionBar?.title = getString(R.string.dtl_task_activity)
                 supportActionBar?.subtitle = intentTaskTypeTask.toString().trim()
             }

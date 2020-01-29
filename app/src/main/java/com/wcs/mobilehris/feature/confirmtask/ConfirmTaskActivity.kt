@@ -2,6 +2,7 @@ package com.wcs.mobilehris.feature.confirmtask
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import android.widget.RadioButton
 import androidx.databinding.DataBindingUtil
@@ -13,7 +14,7 @@ import com.wcs.mobilehris.utilinterface.DialogInterface
 
 class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInterface {
     private lateinit var activityConfirmBinding : ActivityConfirmTaskBinding
-    private var intentConfirmTaskChargeCode : String? = ""
+    private var intentConfirmTaskId : String? = ""
     private var intentConfirmTaskTypeTask : String? = ""
     private var confirmActiveDialog : Int? = 0
 
@@ -30,12 +31,12 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
         }
-        intentConfirmTaskChargeCode = intent.getStringExtra(intentExtraTaskId)
+        intentConfirmTaskId = intent.getStringExtra(intentExtraTaskId)
         intentConfirmTaskTypeTask = intent.getStringExtra(intentExtraTypeTask)
         when{
-            intentConfirmTaskChargeCode != "" && intentConfirmTaskTypeTask != "" ->{
+            intentConfirmTaskId != "" && intentConfirmTaskTypeTask != "" ->{
                 supportActionBar?.subtitle = intentConfirmTaskTypeTask.toString().trim()
-                activityConfirmBinding.viewModel?.onLoadConfirmData(intentConfirmTaskChargeCode.toString().trim(),
+                activityConfirmBinding.viewModel?.onLoadConfirmData(intentConfirmTaskId.toString().trim(),
                     intentConfirmTaskTypeTask.toString().trim())
             }
         }
@@ -66,7 +67,8 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
         when(messageType){
             ConstantObject.vToastError -> MessageUtils.toastMessage(this, message, ConstantObject.vToastError)
             ConstantObject.vToastInfo -> MessageUtils.toastMessage(this, message, ConstantObject.vToastInfo)
-            ConstantObject.vSnackBarWithButton -> MessageUtils.snackBarMessage(message,this, ConstantObject.vSnackBarWithButton)
+            ConstantObject.vSnackBarWithButton -> MessageUtils.snackBarMessage(message, this, ConstantObject.vSnackBarWithButton)
+            else -> MessageUtils.toastMessage(this, message, ConstantObject.vToastSuccess)
         }
     }
 
@@ -87,6 +89,14 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
             true -> activityConfirmBinding.rbConfirmTaskOnSite.isChecked = true
             else -> activityConfirmBinding.rbConfirmTaskOffSite.isChecked = true
         }
+    }
+
+    override fun onSuccessConfirm() {
+        Handler().postDelayed({
+            onAlertMessage("Transaction Success", ConstantObject.vToastSuccess)
+            activityConfirmBinding.viewModel?.isProgressConfirmTask?.set(false)
+            finish()
+        }, 2000)
     }
 
     override fun onPositiveClick(o: Any) {

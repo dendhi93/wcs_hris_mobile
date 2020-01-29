@@ -7,8 +7,8 @@ object ConstantObject {
     const val vToastInfo = 3
 
     //snack bar
-    const val vSnackBarWithButton = 1
-    const val vSnackBarNoButton = 2
+    const val vSnackBarWithButton = 11
+    const val vSnackBarNoButton = 22
 
     //alertDialog
     const val vAlertDialogNoConnection = "No Connection"
@@ -41,4 +41,8 @@ object ConstantObject {
     const val benefitMenu = "Benefit"
     const val travelClaimMenu = "Benefit"
 
+    //type intent
+    const val extra_intent = "extra_intent"
+    const val extra_fromIntentCreateTask = "CreateTask"
+    const val extra_fromIntentCreateTravel = "CreateTravel"
 }

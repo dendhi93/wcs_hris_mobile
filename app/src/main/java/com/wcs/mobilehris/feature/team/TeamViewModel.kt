@@ -17,11 +17,11 @@ class TeamViewModel (private val context : Context, private val teamInterface: T
                 teamInterface.onAlertTeam(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, TeamFragment.ALERT_TEAM_NO_CONNECTION)
             }
-            else -> getTemData(typeOfLoading)
+            else -> getTeamData(typeOfLoading)
         }
     }
 
-    private fun getTemData(typeLoading : Int){
+    private fun getTeamData(typeLoading : Int){
         when(typeLoading){
             ConstantObject.loadWithProgressBar -> teamInterface.showUI(ConstantObject.vProgresBarUI)
         }

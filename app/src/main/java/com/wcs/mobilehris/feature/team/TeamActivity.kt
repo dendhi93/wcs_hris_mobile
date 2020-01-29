@@ -14,18 +14,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentTeamBinding
 import com.wcs.mobilehris.feature.createtask.CreateTaskActivity
+import com.wcs.mobilehris.feature.requesttravel.RequestTravelActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-@Suppress("DEPRECATION")
+@Suppress("DEPRECATION", "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
     private lateinit var fragmentTeamBinding: FragmentTeamBinding
     private var arrTeamList = ArrayList<TeamModel>()
     private lateinit var teamAdapter: CustomTeamAdapter
     private var backIntent : Intent? = null
+    private lateinit var intentFrom : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,16 +47,13 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
             fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.loadWithoutProgressBar)
         }
         fragmentTeamBinding.viewModel?.isHiddenSearch?.set(true)
+        intentFrom = intent.getStringExtra(ConstantObject.extra_intent).toString()
     }
 
     override fun onLoadTeam(teamList: List<TeamModel>, typeLoading: Int) {
         arrTeamList.clear()
-        for(i in teamList.indices){
-            arrTeamList.add(
-                TeamModel(teamList[i].userId,teamList[i].name ,
-                    teamList[i].phone,
-                    teamList[i].email))
-        }
+        arrTeamList.addAll(teamList)
+
         teamAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
@@ -118,7 +117,6 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
                 filterTeamName(newText.toString().trim())
                 return true
             }
-
         })
         return super.onCreateOptionsMenu(menu)
     }
@@ -148,12 +146,24 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
     }
 
     override fun selectedItemTeam(teamModel: TeamModel) {
-        //todo back to activity create task
-        backIntent = Intent(this, CreateTaskActivity::class.java)
-        backIntent?.putExtra(CreateTaskActivity.RESULT_EXTRA_TEAM_NAME, teamModel.name)
-        backIntent?.putExtra(CreateTaskActivity.RESULT_EXTRA_TEAM_USER_ID, teamModel.userId)
-        setResult(CreateTaskActivity.RESULT_SUCCESS_CODE, backIntent)
-        finish()
+        //todo back to activity create task / request travel
+        when(intentFrom){
+            ConstantObject.extra_fromIntentCreateTask -> {
+                backIntent = Intent(this, CreateTaskActivity::class.java)
+                backIntent?.putExtra(CreateTaskActivity.RESULT_EXTRA_TEAM_NAME, teamModel.name)
+                backIntent?.putExtra(CreateTaskActivity.RESULT_EXTRA_TEAM_USER_ID, teamModel.userId)
+                setResult(CreateTaskActivity.RESULT_SUCCESS_CODE, backIntent)
+                finish()
+            }
+            ConstantObject.extra_fromIntentCreateTravel -> {
+                backIntent = Intent(this, RequestTravelActivity::class.java)
+                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA_TRAVEL_TEAM_NAME, teamModel.name)
+                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA__TRAVEL_TEAM_USER_ID, teamModel.userId)
+                setResult(RequestTravelActivity.RESULT_SUCCESS_CODE_TEAM, backIntent)
+                finish()
+            }
+        }
+
     }
 
     override fun onBackPressed() {

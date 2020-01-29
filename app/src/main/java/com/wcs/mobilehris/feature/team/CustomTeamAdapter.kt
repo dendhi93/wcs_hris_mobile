@@ -11,7 +11,7 @@ import com.wcs.mobilehris.R
 
 class CustomTeamAdapter(private val _context : Context, private var teamList : MutableList<TeamModel>):
     RecyclerView.Adapter<CustomTeamAdapter.ViewHolder>(){
-    private var selectedInterface : SelectedTeamInterface? = null
+    private lateinit var selectedInterface : SelectedTeamInterface
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_list_team,parent,false))

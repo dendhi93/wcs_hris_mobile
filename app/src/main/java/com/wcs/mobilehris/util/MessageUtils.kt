@@ -10,7 +10,6 @@ import com.wcs.mobilehris.utilinterface.DialogInterface
 import es.dmoral.toasty.Toasty
 
 object MessageUtils {
-//    private var dialogClick : DialogInterface? = null
 
     fun toastMessage(context : Context, message: String, type : Int) {
         when (type) {

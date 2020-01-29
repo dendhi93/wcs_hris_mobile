@@ -2,7 +2,6 @@ package com.wcs.mobilehris.feature.confirmtask
 
 import android.content.Context
 import android.os.Handler
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -27,23 +26,25 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
     val isHiddenSolmanNoTv = ObservableField<Boolean>(false)
     val isHiddenPMTv = ObservableField<Boolean>(false)
     private var stTypeTask : String? = ""
+    private var stIntentTaskId : String = ""
 
     fun onClickConfirm(){
         when{
             !ConnectionObject.isNetworkAvailable(context) ->
                 confirmTaskInterface.onAlertConfirmTask(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, ConfirmTaskActivity.ALERT_CONFIRM_TASK_NO_CONNECTION)
-            !isSubmitConfirm() -> confirmTaskInterface.onAlertMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vToastInfo)
+            !isSubmitConfirm() -> confirmTaskInterface.onAlertMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
             else -> confirmTaskInterface.onAlertConfirmTask(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, ConfirmTaskActivity.ALERT_CONFIRM_TASK_CONFIRMATION)
         }
     }
 
-    fun onLoadConfirmData(intentChargeCode : String, intentTypeTask : String){
+    fun onLoadConfirmData(intentTaskId : String, intentTypeTask : String){
+        stIntentTaskId = intentTaskId
         isProgressConfirmTask.set(true)
         stTypeTask = intentTypeTask
         Handler().postDelayed({
-            stConfirmChargeCode.set(intentChargeCode.trim())
+            stConfirmChargeCode.set("A-1003-096")
             stConfirmCompName.set("PT ABCD")
             stConfirmCompAddress.set("Jakarta")
             stConfirmCP.set("Michael Saputra")
@@ -85,9 +86,6 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
 
     fun submitConfirmTask(){
         isProgressConfirmTask.set(true)
-        Handler().postDelayed({
-            confirmTaskInterface.onAlertMessage("Transaction Success", ConstantObject.vSnackBarWithButton)
-            isProgressConfirmTask.set(false)
-        }, 2000)
+        confirmTaskInterface.onSuccessConfirm()
     }
 }

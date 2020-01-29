@@ -137,6 +137,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <LinearLayout
+                            android:baselineAligned="false"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
@@ -160,8 +161,9 @@
                                     android:layout_height="match_parent"
                                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
                                     android:maxLength="25"
-                                    android:enabled="false"
                                     android:text="@={viewModel.stDateTask}"
+                                    android:onClick="@{() -> viewModel.initDate()}"
+                                    android:focusable="false"
                                     android:gravity="center_vertical"
                                     android:hint="@string/date"
                                     android:textColor="@color/colorBlack"
@@ -172,14 +174,6 @@
 
                             </com.google.android.material.textfield.TextInputLayout>
 
-                            <ImageButton
-                                android:id="@+id/imgB_createTask_date"
-                                android:layout_gravity="center_vertical"
-                                android:onClick="@{() -> viewModel.initDate()}"
-                                android:layout_width="@dimen/spacing_large"
-                                android:layout_height="@dimen/spacing_large"
-                                android:src="@mipmap/ic_search_32"
-                                android:background="@drawable/bg_blue_button"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -206,10 +200,11 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
-                                    android:enabled="false"
                                     android:textColor="@color/colorBlack"
                                     android:textColorHint="@color/colorBlack"
                                     android:gravity="center_vertical"
+                                    android:focusable="false"
+                                    android:onClick="@{() -> viewModel.initTimeFrom()}"
                                     android:hint="@string/from"
                                     android:text="@={viewModel.stDateTimeFrom}"
                                     android:inputType="text"
@@ -236,26 +231,19 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
-                                    android:enabled="false"
                                     android:gravity="center_vertical"
                                     android:textColor="@color/colorBlack"
                                     android:textColorHint="@color/colorBlack"
                                     android:text="@={viewModel.stDateTimeInto}"
                                     android:hint="@string/into"
+                                    android:focusable="false"
+                                    android:onClick="@{() -> viewModel.initTimeInto()}"
                                     android:inputType="text"
                                     android:maxLines="1"
                                     android:textSize="@dimen/text_fields_text_size" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
-                            <ImageButton
-                                android:id="@+id/imgB_createTask_time"
-                                android:layout_gravity="center_vertical"
-                                android:layout_width="@dimen/spacing_large"
-                                android:layout_height="@dimen/spacing_large"
-                                android:onClick="@{() -> viewModel.initTime()}"
-                                android:src="@mipmap/ic_search_32"
-                                android:background="@drawable/bg_blue_button"/>
                         </LinearLayout>
 
                         <Spinner
