@@ -2,6 +2,7 @@ package com.wcs.mobilehris.feature.confirmtask
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import android.widget.RadioButton
 import androidx.databinding.DataBindingUtil
@@ -66,7 +67,8 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
         when(messageType){
             ConstantObject.vToastError -> MessageUtils.toastMessage(this, message, ConstantObject.vToastError)
             ConstantObject.vToastInfo -> MessageUtils.toastMessage(this, message, ConstantObject.vToastInfo)
-            ConstantObject.vSnackBarWithButton -> MessageUtils.snackBarMessage(message,this, ConstantObject.vSnackBarWithButton)
+            ConstantObject.vSnackBarWithButton -> MessageUtils.snackBarMessage(message, this, ConstantObject.vSnackBarWithButton)
+            else -> MessageUtils.toastMessage(this, message, ConstantObject.vToastSuccess)
         }
     }
 
@@ -87,6 +89,14 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
             true -> activityConfirmBinding.rbConfirmTaskOnSite.isChecked = true
             else -> activityConfirmBinding.rbConfirmTaskOffSite.isChecked = true
         }
+    }
+
+    override fun onSuccessConfirm() {
+        Handler().postDelayed({
+            onAlertMessage("Transaction Success", ConstantObject.vToastSuccess)
+            activityConfirmBinding.viewModel?.isProgressConfirmTask?.set(false)
+            finish()
+        }, 2000)
     }
 
     override fun onPositiveClick(o: Any) {

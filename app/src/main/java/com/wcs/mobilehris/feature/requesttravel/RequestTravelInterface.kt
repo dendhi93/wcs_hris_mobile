@@ -1,17 +1,18 @@
-package com.wcs.mobilehris.feature.createtask
+package com.wcs.mobilehris.feature.requesttravel
 
 import com.wcs.mobilehris.database.entity.ChargeCodeEntity
 import com.wcs.mobilehris.database.entity.TransportTypeEntity
 import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.utilinterface.DialogInterface
 
-interface CreateTaskInterface : DialogInterface {
-
+interface RequestTravelInterface : DialogInterface {
     fun onLoadTeam(listTeam : List<FriendModel>)
     fun onMessage(message : String, messageType : Int)
-    fun onAlertCreateTask(alertMessage : String, alertTitle : String, intTypeActionAlert : Int)
-    fun onResizeLayout(resizeType : Int)
+    fun onAlertReqTravel(alertMessage : String, alertTitle : String, intTypeActionAlert : Int)
     fun onLoadChargeCode(listChargeCode : List<ChargeCodeEntity>)
+    fun onLoadTransport(listTransport : List<TransportTypeEntity>)
     fun getTeamData()
-    fun onSuccessCreateTask()
+    fun getDataDepart()
+    fun getDataReturn()
+    fun onSuccessRequestTransport()
 }

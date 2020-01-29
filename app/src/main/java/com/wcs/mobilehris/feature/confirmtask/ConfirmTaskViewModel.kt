@@ -33,7 +33,7 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
             !ConnectionObject.isNetworkAvailable(context) ->
                 confirmTaskInterface.onAlertConfirmTask(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, ConfirmTaskActivity.ALERT_CONFIRM_TASK_NO_CONNECTION)
-            !isSubmitConfirm() -> confirmTaskInterface.onAlertMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vToastInfo)
+            !isSubmitConfirm() -> confirmTaskInterface.onAlertMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
             else -> confirmTaskInterface.onAlertConfirmTask(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, ConfirmTaskActivity.ALERT_CONFIRM_TASK_CONFIRMATION)
         }
@@ -86,9 +86,6 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
 
     fun submitConfirmTask(){
         isProgressConfirmTask.set(true)
-        Handler().postDelayed({
-            confirmTaskInterface.onAlertMessage("Transaction Success", ConstantObject.vSnackBarWithButton)
-            isProgressConfirmTask.set(false)
-        }, 2000)
+        confirmTaskInterface.onSuccessConfirm()
     }
 }

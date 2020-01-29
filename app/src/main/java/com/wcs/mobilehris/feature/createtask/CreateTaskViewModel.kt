@@ -26,8 +26,8 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     val isHiddenRv = ObservableField<Boolean>(false)
     val isHiddenSolmanTv = ObservableField<Boolean>(false)
     val isHiddenPMTv = ObservableField<Boolean>(false)
-    val isOnsiteTask = ObservableField<Boolean>(true)
     val isEnableCompanyNameTv = ObservableField<Boolean>(false)
+    val stTypeOnsite = ObservableField<String>("")
     val stDateTask = ObservableField<String>("")
     val stDateTimeFrom = ObservableField<String>("")
     val stDateTimeInto = ObservableField<String>("")
@@ -97,7 +97,7 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                 createTaskInterface.onAlertCreateTask(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, CreateTaskActivity.ALERT_CREATE_TASK_NO_CONNECTION)
             }
-            !validateSubmitTask() -> createTaskInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vToastInfo)
+            !validateSubmitTask() -> createTaskInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
             else -> createTaskInterface.onAlertCreateTask(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, CreateTaskActivity.ALERT_CREATE_TASK_CONFIRMATION)
         }
@@ -114,12 +114,12 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
 
     fun findCompany(code : String){
         mChargeCode = code
-        var compName = ""
+        var compName : String
         doAsync {
             compName  = mChargeCodeDao.getCompName(code.trim())
             uiThread {
                         when{
-                            compName != "" -> {
+                            compName.isEmpty() -> {
                                 isEnableCompanyNameTv.set(false)
                                 stCompanyName.set(compName)
                             }
@@ -163,13 +163,14 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     private fun validateSubmitTask():Boolean{
         when{
                 stDateTimeFrom.get().equals("")
-                || stDateTimeInto.get().equals("")
-                || stCompanyName.get().equals("")
-                || stCompanyAddress.get().equals("")
-                || stDateTask.get().equals("")
-                || stContactPerson.get().equals("")
-                || stDescriptionTask.get().equals("")
-                || mTypeTask == "" -> return false
+                        || stDateTimeInto.get().equals("")
+                        || stCompanyName.get().equals("")
+                        || stCompanyAddress.get().equals("")
+                        || stDateTask.get().equals("")
+                        || stContactPerson.get().equals("")
+                        || stDescriptionTask.get().equals("")
+                        || stTypeOnsite.get().equals("")
+                        || mTypeTask == "" -> return false
             mTypeTask == ConstantObject.supportTask -> { when{stSolmanNoTask.get().equals("") -> return false } }
             mTypeTask == ConstantObject.projectTask -> { when{stPMTask.get().equals("") -> return false } }
         }
@@ -178,10 +179,6 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
 
     fun submitTask(){
         isProgressCreateTask.set(true)
-        Handler().postDelayed({
-            createTaskInterface.onMessage(context.getString(R.string.alert_transaction_success), ConstantObject.vSnackBarWithButton)
-            isProgressCreateTask.set(false)
-        }, 2000)
-
+        createTaskInterface.onSuccessCreateTask()
     }
 }

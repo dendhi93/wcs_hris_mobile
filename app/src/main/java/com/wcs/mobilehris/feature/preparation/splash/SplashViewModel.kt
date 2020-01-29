@@ -110,7 +110,7 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
     }
     //insert first time
     private fun insertDataMaster(){
-        var tableMasters : UpdateMasterEntity? = null
+        var tableMasters : UpdateMasterEntity
         for(i in arrJsonUpdateMaster.indices){
             tableMasters = UpdateMasterEntity(arrJsonUpdateMaster[i].id
                 , arrJsonTransType[i].mTransTypeDescription.trim(),
@@ -154,8 +154,8 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
     }
 
     private fun insertTableData(isFirstInsert : Boolean){
-        var insertChargeCodeModel : ChargeCodeEntity? = null
-        var insertTransTypeModel : TransportTypeEntity? = null
+        var insertChargeCodeModel : ChargeCodeEntity
+        var insertTransTypeModel : TransportTypeEntity
         //insert charge code
         for(i in arrJsonChargeCode.indices){
             insertChargeCodeModel = ChargeCodeEntity(arrJsonChargeCode[i].id,

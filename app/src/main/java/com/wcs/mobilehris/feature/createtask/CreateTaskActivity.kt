@@ -3,6 +3,7 @@ package com.wcs.mobilehris.feature.createtask
 import android.R.layout.simple_spinner_item
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
@@ -20,12 +21,11 @@ import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.feature.team.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
-import com.wcs.mobilehris.utilinterface.DialogInterface
 
 
-class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, DialogInterface {
+class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
     private lateinit var activityCreateTaskBinding: ActivityCreateTaskBinding
-    private lateinit var dtlTaskAdapter : CustomDetailTaskAdapter
+    private lateinit var createTaskAdapter : CustomDetailTaskAdapter
     private var arrTeamTaskList = ArrayList<FriendModel>()
     private var arrCompletedText = ArrayList<String>()
     private var keyDialogActive = 0
@@ -40,8 +40,8 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, DialogInter
     override fun onStart() {
         super.onStart()
         activityCreateTaskBinding.rcCreateTask.setHasFixedSize(true)
-        dtlTaskAdapter = CustomDetailTaskAdapter(this, arrTeamTaskList)
-        activityCreateTaskBinding.rcCreateTask.adapter = dtlTaskAdapter
+        createTaskAdapter = CustomDetailTaskAdapter(this, arrTeamTaskList)
+        activityCreateTaskBinding.rcCreateTask.adapter = createTaskAdapter
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
@@ -68,16 +68,13 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, DialogInter
     private fun initRadio(){
         activityCreateTaskBinding.rgCreateTaskIsOnsite.setOnCheckedChangeListener{ group, checkedId ->
                 val radio: RadioButton? = findViewById(checkedId)
-                when("${radio?.text}"){
-                    getString(R.string.on_site) -> activityCreateTaskBinding.viewModel?.isOnsiteTask?.set(true)
-                    else -> activityCreateTaskBinding.viewModel?.isOnsiteTask?.set(false)
-                }
+                activityCreateTaskBinding.viewModel?.stTypeOnsite?.set(radio?.text.toString())
             }
     }
 
     override fun onLoadTeam(listTeam: List<FriendModel>) {
         arrTeamTaskList.addAll(listTeam)
-        dtlTaskAdapter.notifyDataSetChanged()
+        createTaskAdapter.notifyDataSetChanged()
         
         onResizeLayout(noMatchParentSize)
     }
@@ -86,7 +83,8 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, DialogInter
         when(messageType){
             ConstantObject.vToastError -> MessageUtils.toastMessage(this, message, ConstantObject.vToastError)
             ConstantObject.vToastInfo -> MessageUtils.toastMessage(this, message, ConstantObject.vToastInfo)
-            ConstantObject.vSnackBarWithButton -> MessageUtils.snackBarMessage(message,this, ConstantObject.vSnackBarWithButton)
+            ConstantObject.vToastSuccess -> MessageUtils.toastMessage(this, message, ConstantObject.vToastSuccess)
+            else -> MessageUtils.snackBarMessage(message,this, ConstantObject.vSnackBarWithButton)
         }
     }
 
@@ -134,7 +132,19 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, DialogInter
         }
     }
 
-    override fun getTeamData() { startActivityForResult(Intent(this, TeamActivity::class.java), RESULT_SUCCESS_CODE) }
+    override fun getTeamData() {
+        val intent = Intent(this, TeamActivity::class.java)
+        intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentCreateTask)
+        startActivityForResult(intent, RESULT_SUCCESS_CODE)
+    }
+
+    override fun onSuccessCreateTask() {
+        Handler().postDelayed({
+            onMessage(getString(R.string.alert_transaction_success), ConstantObject.vToastSuccess)
+            activityCreateTaskBinding.viewModel?.isProgressCreateTask?.set(false)
+            finish()
+        }, 2000)
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
