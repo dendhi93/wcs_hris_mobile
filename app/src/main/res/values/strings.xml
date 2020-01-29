@@ -93,7 +93,7 @@
 
     <!--confirm task content form-->
     <string name="activity_hour">Act. Hour</string>
-    <string name="activity_description">Act. Description</string>
+    <string name="activity_description">Action</string>
     <string name="confirm_save">Confirm</string>
 
     <!--req Travel content form-->
