@@ -70,7 +70,13 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
 
     fun onAddTeam(){ createTaskInterface.getTeamData() }
     fun initTimeFrom(){ initTime(CreateTaskActivity.chooseTimeFrom) }
-    fun initTimeInto(){ initTime(CreateTaskActivity.chooseTimeInto) }
+    fun initTimeInto(){
+        when{
+            stDateTimeFrom.get().equals("") -> createTaskInterface.onMessage("Please fill Time from ", ConstantObject.vSnackBarWithButton)
+            else -> initTime(CreateTaskActivity.chooseTimeInto)
+        }
+    }
+
     private fun initTime(chooseTime : String){
         mHour = calendar.get(Calendar.HOUR_OF_DAY)
         mMinute = calendar.get(Calendar.MINUTE)
@@ -92,16 +98,11 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     }
 
     private fun validateEndTime(endTime : String){
-        when(stDateTimeFrom.get()){
-            "" -> createTaskInterface.onMessage("Please fill Time from ", ConstantObject.vSnackBarWithButton)
-            else -> {
-                val intDiff = DateTimeUtils.getDifferentHours(stDateTimeFrom.get().toString(), endTime)
-                when{
-                    intDiff < 0 -> createTaskInterface.onMessage("End Time less then Start Time, Please fill again ", ConstantObject.vSnackBarWithButton)
-                    intDiff < 1 -> createTaskInterface.onMessage("End Time less then one hour, Please fill again ", ConstantObject.vSnackBarWithButton)
-                    else -> stDateTimeInto.set(endTime.trim())
-                }
-            }
+        val intDiff = DateTimeUtils.getDifferentHours(stDateTimeFrom.get().toString(), endTime)
+        when{
+            intDiff < 0 -> createTaskInterface.onMessage("End Time less then Start Time, Please fill again ", ConstantObject.vSnackBarWithButton)
+            intDiff < 1 -> createTaskInterface.onMessage("End Time less then one hour, Please fill again ", ConstantObject.vSnackBarWithButton)
+            else -> stDateTimeInto.set(endTime.trim())
         }
     }
 

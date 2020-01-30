@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
@@ -186,12 +187,15 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
     }
 
     override fun onSuccessRequestTravel() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Handler().postDelayed({
+            onMessage(getString(R.string.alert_transaction_success), ConstantObject.vToastInfo)
+            activityRequestTravelBinding.viewModel?.isProgressReqTravel?.set(false)
+        }, 2000)
     }
 
     override fun onPositiveClick(o: Any) {
         when(keyDialogActive){
-            ALERT_REQ_TRAVEL_CONFIRMATION -> onMessage("Test", ConstantObject.vToastInfo)
+            ALERT_REQ_TRAVEL_CONFIRMATION -> activityRequestTravelBinding.viewModel?.actionSubmitTravel()
         }
     }
 
