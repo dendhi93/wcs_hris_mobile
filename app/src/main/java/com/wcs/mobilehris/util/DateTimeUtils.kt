@@ -41,7 +41,6 @@ object DateTimeUtils {
 
             val timeStart = Time(startTimeHour, startTimeMinutes, startTimeSeconds)
             val timeStop = Time(endTimeHour, endTimeMinutes, endTimeSeconds)
-            Log.d("###", "timeStart " + timeStart.hours + " ~ timeStop " + timeStop.hours)
             val longDiff : Long = timeStop.hours.toLong() - timeStart.hours.toLong()
 
             return longDiff.toInt()

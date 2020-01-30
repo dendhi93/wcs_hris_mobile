@@ -132,16 +132,16 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
         doAsync {
             compName  = mChargeCodeDao.getCompName(code.trim())
             uiThread {
-                        when{
-                            compName.isEmpty() -> {
-                                isEnableCompanyNameTv.set(false)
-                                stCompanyName.set(compName)
-                            }
-                            else ->{
-                                isEnableCompanyNameTv.set(true)
-                                stCompanyName.set("")
-                            }
-                        }
+                when{
+                    compName.isNotEmpty() -> {
+                        isEnableCompanyNameTv.set(false)
+                        stCompanyName.set(compName)
+                    }
+                    else ->{
+                        isEnableCompanyNameTv.set(true)
+                        stCompanyName.set("")
+                    }
+                }
             }
         }
     }
