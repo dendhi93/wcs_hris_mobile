@@ -52,6 +52,7 @@
     <string name="req_travel_hist_activity">Request Travel History</string>
     <string name="req_travel_activity">Request Travel</string>
     <string name="search_city_activity">Search City</string>
+    <string name="list_destination_activity">List Destination</string>
 
     <!--permission form-->
     <string name="permission_button">IZINKAN</string>
@@ -101,5 +102,6 @@
     <string name="return_date">Return Date</string>
     <string name="multiple_destination">Multiple Destination</string>
     <string name="one_way">One Way</string>
+    <string name="add_destination">Add Destination</string>
 
 </resources>

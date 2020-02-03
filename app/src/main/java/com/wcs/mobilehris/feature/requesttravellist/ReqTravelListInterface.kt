@@ -7,4 +7,5 @@ interface ReqTravelListInterface : ActionInterface.ShowHideUI {
     fun onErrorMessage(message : String, messageType : Int)
     fun onAlertReqTravelList(alertMessage : String, alertTitle : String, intTypeActionAlert : Int)
     fun onHideSwipeTravelList()
+    fun intentToRequest()
 }

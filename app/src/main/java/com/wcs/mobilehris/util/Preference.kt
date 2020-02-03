@@ -24,6 +24,7 @@ class Preference(private var _context : Context){
         editor.putString(KEY_EMAILPROFILE, email)
         editor.apply()
     }
+
     fun getUn(): String { return sharedPreferences.getString(KEY_USERNAME, "").toString() }
     fun getName(): String { return sharedPreferences.getString(KEY_NAMEPROFILE, "").toString() }
     fun getPhone(): String { return sharedPreferences.getString(KEY_PHONEPROFILE, "").toString() }

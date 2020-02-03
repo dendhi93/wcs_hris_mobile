@@ -1,7 +1,5 @@
 package com.wcs.mobilehris.feature.requesttravel
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -10,19 +8,25 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioButton
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.application.WcsHrisApps
+import com.wcs.mobilehris.database.daos.TravelRequestDao
 import com.wcs.mobilehris.database.entity.ChargeCodeEntity
 import com.wcs.mobilehris.database.entity.TransportTypeEntity
 import com.wcs.mobilehris.databinding.ActivityRequestTravelBinding
+import com.wcs.mobilehris.feature.multipletrip.MultipleTripActivity
 import com.wcs.mobilehris.feature.city.CityActivity
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
 import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.feature.team.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 
 class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
@@ -33,6 +37,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
     private var arrChargeCode = ArrayList<String>()
     private var arrDescTransType = ArrayList<String>()
     private var arrTransTypeCode = ArrayList<String>()
+    private lateinit var travelRequestDao : TravelRequestDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,12 +61,17 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
         activityRequestTravelBinding.rcReqTravel.setHasFixedSize(true)
         travelAdapter = CustomDetailTaskAdapter(this, arrTeamTravel)
         activityRequestTravelBinding.rcReqTravel.adapter = travelAdapter
+        travelRequestDao = WcsHrisApps.database.travelReqDao()
     }
 
     private fun initRadioTravel(){
         activityRequestTravelBinding.rgReqTravelTypeWay.setOnCheckedChangeListener{ group, checkedId ->
             val radio: RadioButton? = findViewById(checkedId)
             activityRequestTravelBinding.viewModel?.stTypeTrip?.set(radio?.text.toString())
+            when(radio?.text){
+                getString(R.string.multiple_destination) -> activityRequestTravelBinding.viewModel?.isAddDestination?.set(true)
+                else -> activityRequestTravelBinding.viewModel?.isAddDestination?.set(false)
+            }
         }
     }
 
@@ -193,10 +203,44 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
         }, 2000)
     }
 
+    override fun onIntentMultipleDestination() {
+        val intent = Intent(this, MultipleTripActivity::class.java)
+        intent.putExtra(extra_intentChargeCode, activityRequestTravelBinding.viewModel?.stChargeCode?.get().toString())
+        startActivity(intent)
+        finish()
+    }
+
+    override fun onTravelClearRadio() { activityRequestTravelBinding.rgReqTravelTypeWay.clearCheck() }
+
     override fun onPositiveClick(o: Any) {
         when(keyDialogActive){
             ALERT_REQ_TRAVEL_CONFIRMATION -> activityRequestTravelBinding.viewModel?.actionSubmitTravel()
         }
+    }
+
+    override fun onBackPressed() {
+        AlertDialog.Builder(this).setTitle(getString(R.string.confirmation_menu))
+            .setMessage("Are you sure do you want to exit this transaction ? ")
+            .setPositiveButton(android.R.string.ok){
+                    dialog, _ ->
+                when(activityRequestTravelBinding.viewModel?.stTypeTrip.toString()){
+                    getString(R.string.multiple_destination) -> {
+                        doAsync {
+                            travelRequestDao.deleteTravelReq(activityRequestTravelBinding.viewModel?.stChargeCode?.get().toString())
+                            uiThread { finish() }
+                        }
+                    }
+                    else -> finish()
+                }
+                super.onBackPressed()
+                dialog.dismiss()
+            }
+            .setNegativeButton(android.R.string.cancel){
+                    dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 
     override fun onNegativeClick(o: Any) {}
@@ -216,6 +260,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
         const val extra_city_intent = "extra_city_intent"
         const val extra_city_intentDepart = "extra_city_intent_depart"
         const val extra_city_intentReturn = "extra_city_intent_return"
+        const val extra_intentChargeCode = "extra_charge_code"
 
         const val chooseDateFrom = "date_from"
         const val chooseDateInto = "date_into"

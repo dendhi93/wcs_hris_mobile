@@ -264,16 +264,29 @@
                             android:layout_marginBottom="@dimen/spacing_small"
                             android:layout_marginStart="@dimen/spacing_tiny_3"
                             android:layout_marginEnd="@dimen/spacing_tiny_3"
-                            android:orientation="vertical">
+                            android:orientation="horizontal">
 
                             <Button
                                 android:id="@+id/btn_createTask_addFriend"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="@dimen/button_height"
                                 android:text="@string/add_team"
                                 android:onClick="@{() -> viewModel.addTeamTravel()}"
                                 android:layout_marginEnd="@dimen/spacing_tiny_4"
                                 android:background="@drawable/bg_transparent_button"/>
+
+                            <Button
+                                android:id="@+id/btn_createTask_addCity"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:visibility="@{viewModel.isAddDestination ? View.VISIBLE : View.GONE}"
+                                android:textColor="@color/colorWhite"
+                                android:layout_height="@dimen/button_height"
+                                android:text="@string/add_destination"
+                                android:onClick="@{() -> viewModel.addDestination()}"
+                                android:layout_marginEnd="@dimen/spacing_tiny_4"
+                                android:background="@drawable/bg_blue_button"/>
                         </LinearLayout>
                     </LinearLayout>
                 </ScrollView>

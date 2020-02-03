@@ -1,5 +1,6 @@
 package com.wcs.mobilehris.feature.requesttravellist
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -8,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.ActivityRequestTravelListBinding
+import com.wcs.mobilehris.feature.requesttravel.RequestTravelActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
@@ -20,6 +22,8 @@ class RequestTravelListActivity : AppCompatActivity(), ReqTravelListInterface {
         super.onCreate(savedInstanceState)
         activityRequestTravelListBinding = DataBindingUtil.setContentView(this, R.layout.activity_request_travel_list)
         activityRequestTravelListBinding.viewModel = RequestTravelListViewModel(this, this)
+        activityRequestTravelListBinding.rcReqTravelList.layoutManager = LinearLayoutManager(this)
+        activityRequestTravelListBinding.rcReqTravelList.setHasFixedSize(true)
     }
 
     override fun onStart() {
@@ -28,8 +32,6 @@ class RequestTravelListActivity : AppCompatActivity(), ReqTravelListInterface {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
         }
-        activityRequestTravelListBinding.rcReqTravelList.layoutManager = LinearLayoutManager(this)
-        activityRequestTravelListBinding.rcReqTravelList.setHasFixedSize(true)
         requestTravelListAdapter = CustomTravelListAdapter(this, arrReqTravel)
         activityRequestTravelListBinding.rcReqTravelList.adapter = requestTravelListAdapter
         activityRequestTravelListBinding.viewModel?.initDataTravel(ConstantObject.loadWithProgressBar)
@@ -65,6 +67,11 @@ class RequestTravelListActivity : AppCompatActivity(), ReqTravelListInterface {
     }
 
     override fun onHideSwipeTravelList() { activityRequestTravelListBinding.swReqTravelList.isRefreshing = false }
+
+    override fun intentToRequest() {
+        startActivity(Intent(this, RequestTravelActivity::class.java))
+        finish()
+    }
 
     override fun hideUI(typeUI: Int) {
         when(typeUI){

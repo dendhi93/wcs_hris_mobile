@@ -146,7 +146,7 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
     }
 
     override fun selectedItemTeam(teamModel: TeamModel) {
-        //todo back to activity create task / request travel
+        //back to activity create task / request travel
         when(intentFrom){
             ConstantObject.extra_fromIntentCreateTask -> {
                 backIntent = Intent(this, CreateTaskActivity::class.java)

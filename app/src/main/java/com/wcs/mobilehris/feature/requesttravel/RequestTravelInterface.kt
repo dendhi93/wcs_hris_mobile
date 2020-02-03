@@ -15,4 +15,6 @@ interface RequestTravelInterface : DialogInterface {
     fun getDataDepart()
     fun getDataReturn()
     fun onSuccessRequestTravel()
+    fun onIntentMultipleDestination()
+    fun onTravelClearRadio()
 }

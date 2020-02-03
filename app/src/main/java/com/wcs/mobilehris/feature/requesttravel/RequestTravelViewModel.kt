@@ -10,6 +10,8 @@ import com.wcs.mobilehris.application.WcsHrisApps
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.database.daos.ChargeCodeDao
 import com.wcs.mobilehris.database.daos.TransTypeDao
+import com.wcs.mobilehris.database.daos.TravelRequestDao
+import com.wcs.mobilehris.database.entity.TravelRequestEntity
 import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.DateTimeUtils
@@ -26,8 +28,11 @@ class RequestTravelViewModel (private val context : Context, private val request
     val stTypeTrip = ObservableField<String>("")
     val stChargeCode = ObservableField<String>("")
     val stTransTypeCode = ObservableField<String>("")
+    val isAddDestination = ObservableField<Boolean>(false)
+    private val listSelectedTeam = mutableListOf<FriendModel>()
     private lateinit var mTransTypeDao : TransTypeDao
     private lateinit var mChargeCodeDao : ChargeCodeDao
+    private lateinit var travelRequestDao : TravelRequestDao
     private val calendar : Calendar = Calendar.getInstance()
     private var mYear : Int = 0
     private var mMonth : Int = 0
@@ -66,6 +71,7 @@ class RequestTravelViewModel (private val context : Context, private val request
 
     fun initDataChargeCode(){
         mChargeCodeDao = WcsHrisApps.database.chargeCodeDao()
+        travelRequestDao = WcsHrisApps.database.travelReqDao()
         doAsync {
             val listTableChargeCode = mChargeCodeDao.getAllChargeCode()
             uiThread {
@@ -88,7 +94,6 @@ class RequestTravelViewModel (private val context : Context, private val request
 
     fun validateTravelTeam(itemUserId : String, itemName : String){
         if (itemUserId != "null" && itemName != "null"){
-            val listSelectedTeam = mutableListOf<FriendModel>()
             val itemFriendModel = FriendModel(itemUserId, itemName, "Free", false)
 
             listSelectedTeam.add(itemFriendModel)
@@ -97,27 +102,75 @@ class RequestTravelViewModel (private val context : Context, private val request
     }
 
     fun addTeamTravel(){requestTravelInterface.getTeamData()}
+    fun addDestination(){
+        when{
+            !ConnectionObject.isNetworkAvailable(context) -> requestTravelInterface.onAlertReqTravel(context.getString(R.string.alert_no_connection),
+                ConstantObject.vAlertDialogNoConnection, RequestTravelActivity.ALERT_REQ_TRAVEL_NO_CONNECTION)
+            !validateTravel() -> requestTravelInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
+            else -> saveDestination()
+        }
+    }
+
+    private fun saveDestination(){
+        isProgressReqTravel.set(true)
+        doAsync {
+            var stFriend : String? = ""
+            val maxDestinationId = travelRequestDao.getTravelMaxId() + 1
+            when(listSelectedTeam.size){
+                0 -> stFriend = ""
+                else -> {
+                    for(i in listSelectedTeam.indices){
+                        stFriend = if (i == 0) listSelectedTeam[i].teamName +"-"+listSelectedTeam[i].friendId
+                        else stFriend + "|"+listSelectedTeam[i].teamName +"-"+listSelectedTeam[i].friendId
+                    }
+                }
+            }
+            val model = TravelRequestEntity(maxDestinationId, stChargeCode.get().toString(),
+                stDepartDate.get().toString(), stReturnDate.get().toString(),
+                stDepartFrom.get().toString(), stTravelInto.get().toString(),stFriend.toString().trim())
+            travelRequestDao.insertTravel(model)
+
+            stDepartDate.set("")
+            stReturnDate.set("")
+            stDepartFrom.set("")
+            stTravelInto.set("")
+            stTypeTrip.set("")
+            requestTravelInterface.onTravelClearRadio()
+            uiThread {
+                requestTravelInterface.onMessage(context.getString(R.string.alert_transaction_success), ConstantObject.vToastSuccess)
+                isProgressReqTravel.set(false)
+            }
+        }
+    }
 
     fun submitTravel(){
         when{
-            !ConnectionObject.isNetworkAvailable(context) -> {
-                requestTravelInterface.onAlertReqTravel(context.getString(R.string.alert_no_connection),
+            !ConnectionObject.isNetworkAvailable(context) -> requestTravelInterface.onAlertReqTravel(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, RequestTravelActivity.ALERT_REQ_TRAVEL_NO_CONNECTION)
+            !validateTravel() && stTypeTrip.get().toString() == context.getString(R.string.one_way) -> requestTravelInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
+            else -> {
+                when(stTypeTrip.get().toString()){
+                    context.getString(R.string.multiple_destination) -> {
+                        doAsync{
+                            val countData = travelRequestDao.getCountTravel(stChargeCode.get().toString())
+                            uiThread {
+                                when{
+                                    countData <= 1 -> requestTravelInterface.onMessage("Please choose Add Destination before you save travel", ConstantObject.vSnackBarWithButton)
+                                    else -> requestTravelInterface.onIntentMultipleDestination()
+                                }
+                            }
+                        }
+                    }
+                    else ->  requestTravelInterface.onAlertReqTravel(context.getString(R.string.transaction_alert_confirmation),
+                        ConstantObject.vAlertDialogConfirmation, RequestTravelActivity.ALERT_REQ_TRAVEL_CONFIRMATION)
+                }
             }
-            !validateTravel() -> requestTravelInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
-            else -> requestTravelInterface.onAlertReqTravel(context.getString(R.string.transaction_alert_confirmation),
-                ConstantObject.vAlertDialogConfirmation, RequestTravelActivity.ALERT_REQ_TRAVEL_CONFIRMATION)
         }
     }
 
     fun actionSubmitTravel(){
-        when(stTypeTrip.get().toString()){
-            context.getString(R.string.multiple_destination) -> requestTravelInterface.onMessage("Test", ConstantObject.vToastInfo)
-            else -> {
-                isProgressReqTravel.set(true)
-                requestTravelInterface.onSuccessRequestTravel()
-            }
-        }
+        isProgressReqTravel.set(true)
+        requestTravelInterface.onSuccessRequestTravel()
     }
 
     fun onClickDepart(){requestTravelInterface.getDataDepart()}
@@ -147,7 +200,4 @@ class RequestTravelViewModel (private val context : Context, private val request
         }
         return true
     }
-
-
-
 }
