@@ -53,13 +53,14 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
     override fun onLoadTeam(teamList: List<TeamModel>, typeLoading: Int) {
         arrTeamList.clear()
         arrTeamList.addAll(teamList)
-
-        teamAdapter.notifyDataSetChanged()
-        hideUI(ConstantObject.vGlobalUI)
-        showUI(ConstantObject.vRecylerViewUI)
         when(typeLoading){
             ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
-            else -> onHideSwipeRefresh()
+            else -> {
+                onHideSwipeRefresh()
+                teamAdapter.notifyDataSetChanged()
+                hideUI(ConstantObject.vGlobalUI)
+                showUI(ConstantObject.vRecylerViewUI)
+            }
         }
     }
 
@@ -124,6 +125,8 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
     private fun filterTeamName(textFilter : String){
         val arrListFilteredTeam: ArrayList<TeamModel> = ArrayList()
         val arrListTeamList : ArrayList<TeamModel> = arrTeamList
+        hideUI(ConstantObject.vGlobalUI)
+        showUI(ConstantObject.vRecylerViewUI)
         when{
             arrListTeamList.isNotEmpty() -> {
                 for(itemTeam in arrListTeamList) {

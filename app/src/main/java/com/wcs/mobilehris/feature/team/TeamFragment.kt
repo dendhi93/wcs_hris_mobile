@@ -57,18 +57,20 @@ class TeamFragment : Fragment(), TeamInterface {
     }
 
     private fun filterteamName(textFilter : String){
-        val arrListfilteredTeam: ArrayList<TeamModel> = ArrayList()
+        val arrListFilteredTeam: ArrayList<TeamModel> = ArrayList()
         val arrListTeamList : ArrayList<TeamModel> = arrTeamList
+        hideUI(ConstantObject.vGlobalUI)
+        showUI(ConstantObject.vRecylerViewUI)
         when{
             arrListTeamList.isNotEmpty() -> {
                 for(itemTeam in arrListTeamList) {
                     if (itemTeam.name.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
                         || itemTeam.email.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
                         || itemTeam.phone.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))){
-                        arrListfilteredTeam.add(itemTeam)
+                        arrListFilteredTeam.add(itemTeam)
                     }
                 }
-                teamAdapter.filterListTeam(arrListfilteredTeam)
+                teamAdapter.filterListTeam(arrListFilteredTeam)
             }
         }
 
@@ -77,13 +79,14 @@ class TeamFragment : Fragment(), TeamInterface {
     override fun onLoadTeam(teamList: List<TeamModel>, typeLoading: Int) {
         arrTeamList.clear()
         arrTeamList.addAll(teamList)
-        teamAdapter.notifyDataSetChanged()
-
-        hideUI(ConstantObject.vGlobalUI)
-        showUI(ConstantObject.vRecylerViewUI)
         when(typeLoading){
             ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
-            else -> onHideSwipeRefresh()
+            else -> {
+                teamAdapter.notifyDataSetChanged()
+                hideUI(ConstantObject.vGlobalUI)
+                showUI(ConstantObject.vRecylerViewUI)
+                onHideSwipeRefresh()
+            }
         }
     }
 
@@ -100,9 +103,7 @@ class TeamFragment : Fragment(), TeamInterface {
         }
     }
 
-    override fun onHideSwipeRefresh() {
-        fragmentTeamBinding.swTeam.isRefreshing = false
-    }
+    override fun onHideSwipeRefresh() { fragmentTeamBinding.swTeam.isRefreshing = false }
 
     override fun hideUI(typeUI: Int) {
         when(typeUI){

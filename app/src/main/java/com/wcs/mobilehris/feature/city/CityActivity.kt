@@ -52,13 +52,14 @@ class CityActivity : AppCompatActivity(), CityInterface, SelectedCityInterface {
     override fun onLoadCity(cityList: List<CityModel>, typeLoading: Int) {
         arrCity.clear()
         arrCity.addAll(cityList)
-
-        cityAdapter.notifyDataSetChanged()
-        hideUI(ConstantObject.vGlobalUI)
-        showUI(ConstantObject.vRecylerViewUI)
         when(typeLoading){
             ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
-            else -> onHideSwipeRefreshCity()
+            else -> {
+                onHideSwipeRefreshCity()
+                cityAdapter.notifyDataSetChanged()
+                hideUI(ConstantObject.vGlobalUI)
+                showUI(ConstantObject.vRecylerViewUI)
+            }
         }
     }
 
@@ -121,7 +122,8 @@ class CityActivity : AppCompatActivity(), CityInterface, SelectedCityInterface {
     private fun filterCity(textFilter : String){
         val arrListFilteredCity: ArrayList<CityModel> = ArrayList()
         val arrListCityList : ArrayList<CityModel> = arrCity
-
+        hideUI(ConstantObject.vGlobalUI)
+        showUI(ConstantObject.vRecylerViewUI)
         when{
             arrListCityList.isNotEmpty() -> {
                 for(itemCity in arrListCityList) {
