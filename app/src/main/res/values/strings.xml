@@ -101,7 +101,8 @@
     <string name="depart_date">Depart Date</string>
     <string name="return_date">Return Date</string>
     <string name="multiple_destination">Multiple Trip</string>
-    <string name="one_way">One Trip</string>
+    <string name="round_trip">Round Trip</string>
+    <string name="one_way">One Way</string>
     <string name="add_destination">Add Destination</string>
 
 </resources>
