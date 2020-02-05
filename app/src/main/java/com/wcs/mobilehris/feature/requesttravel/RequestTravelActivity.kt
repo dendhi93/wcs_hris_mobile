@@ -64,8 +64,6 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
         travelAdapter = CustomDetailTaskAdapter(this, arrTeamTravel)
         activityRequestTravelBinding.rcReqTravel.adapter = travelAdapter
         travelRequestDao = WcsHrisApps.database.travelReqDao()
-        enableUI(ConstantObject.vGlobalUI)
-        enableUI(ConstantObject.vEditTextUI)
     }
 
     private fun initRadioTravel(){
@@ -258,6 +256,17 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
             }
             .create()
             .show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val travelTypeTrip = activityRequestTravelBinding.viewModel?.stTypeTrip?.get().toString()
+        when{
+            travelTypeTrip.isEmpty() || travelTypeTrip == "" -> {
+                enableUI(ConstantObject.vGlobalUI)
+                enableUI(ConstantObject.vEditTextUI)
+            }
+        }
     }
 
     override fun onNegativeClick(o: Any) {}
