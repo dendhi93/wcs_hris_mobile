@@ -45,8 +45,8 @@
     <!--activity label-->
     <string name="profile_activity">Profile</string>
     <string name="dtl_notification_activity">Detail Notification</string>
-    <string name="dtl_task_activity">Detail Task</string>
-    <string name="create_task_activity">Create Task</string>
+    <string name="dtl_task_activity">Detail Activity</string>
+    <string name="create_task_activity">Create Activity</string>
     <string name="search_team_activity">Search Team</string>
     <string name="confirm_task_activity">Confirm Task</string>
     <string name="req_travel_hist_activity">Request Travel History</string>
@@ -84,8 +84,8 @@
     <string name="description">Description</string>
     <string name="no_solman">No Solman</string>
     <string name="project_manager">Project Manager</string>
-    <string name="on_site">On Site</string>
-    <string name="off_site">Off Site</string>
+    <string name="travel_business">Travel Business</string>
+    <string name="not_travel_business">Not Travel Business</string>
     <string name="address">Address</string>
 
     <!--create task content form-->

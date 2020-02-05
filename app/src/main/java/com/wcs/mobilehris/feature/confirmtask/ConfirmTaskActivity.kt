@@ -47,7 +47,7 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
         activityConfirmBinding.rgConfirmTaskIsOnsite.setOnCheckedChangeListener{ group, checkedId ->
             val radio: RadioButton? = findViewById(checkedId)
             when("${radio?.text}"){
-                getString(R.string.on_site) -> activityConfirmBinding.viewModel?.isOnSiteConfirmTask?.set(true)
+                getString(R.string.travel_business) -> activityConfirmBinding.viewModel?.isOnSiteConfirmTask?.set(true)
                 else -> activityConfirmBinding.viewModel?.isOnSiteConfirmTask?.set(false)
             }
         }

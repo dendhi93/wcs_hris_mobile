@@ -13,7 +13,6 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
     val isOnSiteConfirmTask = ObservableField<Boolean>(false)
     val stConfirmChargeCode = ObservableField<String>("")
     val stConfirmCompName = ObservableField<String>("")
-    val stConfirmCompAddress = ObservableField<String>("")
     val stConfirmTaskDate = ObservableField<String>("")
     val stConfirmTaskTimeFrom = ObservableField<String>("")
     val stConfirmTaskTimeInto = ObservableField<String>("")
@@ -46,7 +45,6 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
         Handler().postDelayed({
             stConfirmChargeCode.set("A-1003-096")
             stConfirmCompName.set("PT ABCD")
-            stConfirmCompAddress.set("Jakarta")
             stConfirmCP.set("Michael Saputra")
             stConfirmTaskDate.set("17/01/2020")
             stConfirmTaskTimeFrom.set("08:00")

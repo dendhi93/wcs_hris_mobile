@@ -12,7 +12,6 @@ import com.wcs.mobilehris.util.ConstantObject
 class DtlTaskViewModel(private val context : Context, private val dtlTaskInterface : DtlTaskInterface) :ViewModel(){
     val stChargeCode = ObservableField<String>("")
     val stCompanyName = ObservableField<String>("")
-    val stCompanyAddress = ObservableField<String>("")
     val stDtlTaskDate = ObservableField<String>("")
     val stDtlTaskTimeFrom = ObservableField<String>("")
     val stDtlTaskTimeInto = ObservableField<String>("")
@@ -31,11 +30,8 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
         stIntentTaskId = taskId.trim()
         stIntentTypeTask = typeTask.trim()
         when {
-            !ConnectionObject.isNetworkAvailable(context) -> {
-                dtlTaskInterface.onAlertDtlTask(context.getString(R.string.alert_no_connection), ConstantObject.vAlertDialogNoConnection,
-                    DetailTaskActivity.ALERT_DTL_TASK_NO_CONNECTION
-                )
-            }
+            !ConnectionObject.isNetworkAvailable(context) -> dtlTaskInterface.onAlertDtlTask(context.getString(R.string.alert_no_connection), ConstantObject.vAlertDialogNoConnection,
+                    DetailTaskActivity.ALERT_DTL_TASK_NO_CONNECTION)
             else -> AsyncDtlTask().execute()
         }
     }
@@ -46,7 +42,6 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
         Handler().postDelayed({
             stChargeCode.set("F1001-1003-1001")
             stCompanyName.set("PT Sukanda")
-            stCompanyAddress.set("Cibitung")
             stDtlTaskDate.set("15/01/2020")
             stDtlTaskTimeFrom.set("08:00")
             stDtlTaskTimeInto.set("17:00")

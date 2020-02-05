@@ -4,7 +4,6 @@ data class ContentTaskModel(
     val taskType : String,
     val userCreate : String,
     val createDate : String,
-    val locationTask : String,
     val companyName : String,
     val beginTaskTime : String,
     val endTaskTime : String,
