@@ -1,10 +1,12 @@
 package com.wcs.mobilehris.feature.requesttravel
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioButton
@@ -18,10 +20,10 @@ import com.wcs.mobilehris.database.daos.TravelRequestDao
 import com.wcs.mobilehris.database.entity.ChargeCodeEntity
 import com.wcs.mobilehris.database.entity.TransportTypeEntity
 import com.wcs.mobilehris.databinding.ActivityRequestTravelBinding
-import com.wcs.mobilehris.feature.multipletrip.MultipleTripActivity
 import com.wcs.mobilehris.feature.city.CityActivity
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
 import com.wcs.mobilehris.feature.dtltask.FriendModel
+import com.wcs.mobilehris.feature.multipletrip.MultipleTripActivity
 import com.wcs.mobilehris.feature.team.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
@@ -62,6 +64,8 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
         travelAdapter = CustomDetailTaskAdapter(this, arrTeamTravel)
         activityRequestTravelBinding.rcReqTravel.adapter = travelAdapter
         travelRequestDao = WcsHrisApps.database.travelReqDao()
+        enableUI(ConstantObject.vGlobalUI)
+        enableUI(ConstantObject.vEditTextUI)
     }
 
     private fun initRadioTravel(){
@@ -148,6 +152,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
                     position > 0 -> {
                         val code = arrTransTypeCode[position].trim()
                         activityRequestTravelBinding.viewModel?.stTransTypeCode?.set(code)
+                        onHideSoftKeyboard()
                     }
                 }
             }
@@ -178,7 +183,9 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
             RESULT_SUCCESS_DESTINATION_INTO -> {
                 val intentCityReturn : String = data?.getStringExtra(RESULT_EXTRA__TRAVEL_CITY_DESC).toString()
                 when{
-                    intentCityReturn != "null" -> activityRequestTravelBinding.viewModel?.validateCityReturn(intentCityReturn)
+                    intentCityReturn != "null" -> {
+                        activityRequestTravelBinding.viewModel?.validateCityReturn(intentCityReturn)
+                    }
                 }
             }
         }
@@ -200,6 +207,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
         Handler().postDelayed({
             onMessage(getString(R.string.alert_transaction_success), ConstantObject.vToastInfo)
             activityRequestTravelBinding.viewModel?.isProgressReqTravel?.set(false)
+            finish()
         }, 2000)
     }
 
@@ -210,7 +218,16 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
         finish()
     }
 
-    override fun onTravelClearRadio() { activityRequestTravelBinding.rgReqTravelTypeWay.clearCheck() }
+    override fun onClearListTeam() {
+        arrTeamTravel.clear()
+        travelAdapter.notifyDataSetChanged()
+    }
+
+    override fun onHideSoftKeyboard() {
+        val inputManager:InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+
 
     override fun onPositiveClick(o: Any) {
         when(keyDialogActive){
@@ -244,6 +261,29 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
     }
 
     override fun onNegativeClick(o: Any) {}
+    override fun enableUI(typeUI: Int) {
+        when(typeUI){
+            ConstantObject.vGlobalUI -> {
+                activityRequestTravelBinding.rbReqTravelMultipleWay.isEnabled = true
+                activityRequestTravelBinding.rbReqTravelOneWay.isEnabled = true
+            }
+            ConstantObject.vEditTextUI -> activityRequestTravelBinding.actReqTravelChargeCode.isEnabled = true
+        }
+
+    }
+    override fun disableUI(typeUI: Int) {
+        when(typeUI){
+            ConstantObject.vGlobalUI -> {
+                activityRequestTravelBinding.rbReqTravelMultipleWay.isEnabled = false
+                activityRequestTravelBinding.rbReqTravelOneWay.isEnabled = false
+            }
+            ConstantObject.vEditTextUI -> {
+                activityRequestTravelBinding.actReqTravelChargeCode.isEnabled = false
+                activityRequestTravelBinding.actReqTravelChargeCode.isFocusable = false
+            }
+        }
+
+    }
 
     companion object{
         const val ALERT_REQ_TRAVEL_NO_CONNECTION = 1

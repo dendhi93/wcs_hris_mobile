@@ -45,4 +45,6 @@ object ConstantObject {
     const val extra_intent = "extra_intent"
     const val extra_fromIntentCreateTask = "CreateTask"
     const val extra_fromIntentCreateTravel = "CreateTravel"
+    const val extra_fromIntentTeam = "team_fragment"
+    const val extra_fromIntentProfile = "profile_activity"
 }

@@ -66,7 +66,9 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onStart()
         tvHeaderMenu.text = preference.getName().trim()
         lnHeader.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
+            val intent = Intent(this, ProfileActivity::class.java)
+            intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentProfile)
+            startActivity(intent)
         }
         loadFragment()
     }

@@ -2,7 +2,6 @@ package com.wcs.mobilehris.feature.requesttravel
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -130,13 +129,15 @@ class RequestTravelViewModel (private val context : Context, private val request
                 stDepartFrom.get().toString(), stTravelInto.get().toString(),stFriend.toString().trim())
             travelRequestDao.insertTravel(model)
 
-            stDepartDate.set("")
-            stReturnDate.set("")
-            stDepartFrom.set("")
-            stTravelInto.set("")
-            stTypeTrip.set("")
-            requestTravelInterface.onTravelClearRadio()
             uiThread {
+                stDepartDate.set("")
+                stReturnDate.set("")
+                stDepartFrom.set("")
+                stTravelInto.set("")
+                listSelectedTeam.clear()
+                requestTravelInterface.onClearListTeam()
+                requestTravelInterface.disableUI(ConstantObject.vGlobalUI)
+                requestTravelInterface.disableUI(ConstantObject.vEditTextUI)
                 requestTravelInterface.onMessage(context.getString(R.string.alert_transaction_success), ConstantObject.vToastSuccess)
                 isProgressReqTravel.set(false)
             }
@@ -147,7 +148,6 @@ class RequestTravelViewModel (private val context : Context, private val request
         when{
             !ConnectionObject.isNetworkAvailable(context) -> requestTravelInterface.onAlertReqTravel(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, RequestTravelActivity.ALERT_REQ_TRAVEL_NO_CONNECTION)
-            !validateTravel() && stTypeTrip.get().toString() == context.getString(R.string.one_way) -> requestTravelInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
             else -> {
                 when(stTypeTrip.get().toString()){
                     context.getString(R.string.multiple_destination) -> {
@@ -161,8 +161,13 @@ class RequestTravelViewModel (private val context : Context, private val request
                             }
                         }
                     }
-                    else ->  requestTravelInterface.onAlertReqTravel(context.getString(R.string.transaction_alert_confirmation),
-                        ConstantObject.vAlertDialogConfirmation, RequestTravelActivity.ALERT_REQ_TRAVEL_CONFIRMATION)
+                    else ->  {
+                        when{
+                            !validateTravel() -> requestTravelInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
+                            else -> requestTravelInterface.onAlertReqTravel(context.getString(R.string.transaction_alert_confirmation),
+                                ConstantObject.vAlertDialogConfirmation, RequestTravelActivity.ALERT_REQ_TRAVEL_CONFIRMATION)
+                        }
+                    }
                 }
             }
         }
@@ -179,6 +184,7 @@ class RequestTravelViewModel (private val context : Context, private val request
     fun validateCityReturn(cityReturn : String){
         when{
             !stDepartFrom.get().equals("") -> {
+                requestTravelInterface.onHideSoftKeyboard()
                 when(cityReturn){
                     stDepartFrom.get() -> requestTravelInterface.onMessage("The city cannot be the same ", ConstantObject.vSnackBarWithButton)
                     else -> stTravelInto.set(cityReturn.trim())
