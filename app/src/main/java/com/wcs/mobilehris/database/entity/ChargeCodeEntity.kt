@@ -10,5 +10,6 @@ data class ChargeCodeEntity(
     @ColumnInfo(name = "mChargeCodeNo") var mChargeCodeNo : String,
     @ColumnInfo(name = "mDescriptionChargeCode") var mDescriptionChargeCode :String,
     @ColumnInfo(name = "mCompanyName") var mCompanyName : String,
+    @ColumnInfo(name = "mProjectManager") var mProjectManager : String,
     @ColumnInfo(name = "mUpdateDate") var mUpdateDate : String
     )

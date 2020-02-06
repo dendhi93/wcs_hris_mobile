@@ -56,34 +56,34 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
         //arraylist master chargecode dari json
         arrJsonChargeCode.add(ChargeCodeEntity(1, "A-1003-096",
             "BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
-            "PT Wilmar Consultancy Services", transTime))
+            "PT Wilmar Consultancy Services", "",transTime))
         arrJsonChargeCode.add(ChargeCodeEntity(2, "A-1003-097",
             "HCM DEMO FOR PRESALES ACTIVITY",
-            "PT Wilmar Consultancy Services", transTime))
+            "PT Wilmar Consultancy Services", "",transTime))
         arrJsonChargeCode.add(ChargeCodeEntity(3, "B-1014-001",
             "TRAINING FOR FRESH GRADUATE",
-            "PT Wilmar Consultancy Services", transTime))
+            "PT Wilmar Consultancy Services", "",transTime))
         arrJsonChargeCode.add(ChargeCodeEntity(4, "B-1014-006",
             "TRAINING SAP - OUTSYSTEM",
-            "", transTime))
+            "","", transTime))
         arrJsonChargeCode.add(ChargeCodeEntity(5, "C-1003-006",
             "GENERAL MANAGEMENT INTL",
-            "PT Wilmar Consultancy Services", transTime))
+            "PT Wilmar Consultancy Services", "",transTime))
         arrJsonChargeCode.add(ChargeCodeEntity(6, "C-1014-001",
             "GENERAL MANAGEMENT INTL - SALES FILLING AND DOCUMENTATION",
-            "PT Wilmar Consultancy Services", transTime))
+            "PT Wilmar Consultancy Services", "",transTime))
         arrJsonChargeCode.add(ChargeCodeEntity(7, "D-1001-002",
             "ANNUAL LEAVE",
-            "", transTime))
+            "", "",transTime))
         arrJsonChargeCode.add(ChargeCodeEntity(8, "D-1001-003",
             "SICK LEAVE",
-            "", transTime))
+            "", "",transTime))
         arrJsonChargeCode.add(ChargeCodeEntity(9, "F-0014-017",
             "MILLS MOBILITY APPLICATION",
-            "PT Heinz ABC", transTime))
+            "PT Heinz ABC", "Johnson",transTime))
         arrJsonChargeCode.add(ChargeCodeEntity(10, "F-0014-018",
             "SAP IMPLEMENTATION TO LION SUPER INDO",
-            "PT SUPER INDO", transTime))
+            "PT SUPER INDO", "Jesaja Waterkamp",transTime))
 
         //arraylist master transtype from json
         arrJsonTransType.add(TransportTypeEntity(1, "BS", "BUS", transTime))
@@ -147,8 +147,8 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
         doAsync {
             countDataChargeCode = mChargeCodeDao.getCountChargeCode()
             countDataTransType = mTransTypeDao.getCountTransType()
-            Log.d("###", "chargeCode $countDataChargeCode")
-            Log.d("###", "transType $countDataTransType")
+            Log.d("###", "chargeCode qty  $countDataChargeCode")
+            Log.d("###", "transType qty $countDataTransType")
             uiThread { when{countDataChargeCode > 0 && countDataTransType > 0  -> successDownload() } }
         }
     }
@@ -162,6 +162,7 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
                 arrJsonChargeCode[i].mChargeCodeNo.trim(),
                 arrJsonChargeCode[i].mDescriptionChargeCode.trim(),
                 arrJsonChargeCode[i].mCompanyName.trim(),
+                arrJsonChargeCode[i].mProjectManager.trim(),
                 arrJsonChargeCode[i].mUpdateDate.trim())
             mChargeCodeDao.insertChargeCode(insertChargeCodeModel)
         }

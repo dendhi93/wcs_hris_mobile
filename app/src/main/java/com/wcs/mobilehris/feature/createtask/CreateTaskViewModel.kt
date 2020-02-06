@@ -25,7 +25,8 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     val isHiddenRv = ObservableField<Boolean>(false)
     val isHiddenSolmanTv = ObservableField<Boolean>(false)
     val isHiddenPMTv = ObservableField<Boolean>(false)
-    val isEnableCompanyNameTv = ObservableField<Boolean>(false)
+    val isEnableCompanyNameTxt = ObservableField<Boolean>(false)
+    val isEnablePMTxt = ObservableField<Boolean>(false)
     val stTypeOnsite = ObservableField<String>("")
     val stDateTask = ObservableField<String>("")
     val stDateTimeFrom = ObservableField<String>("")
@@ -126,28 +127,9 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
         }
     }
 
-    fun findCompany(code : String){
+    fun findDataCreateTask(code : String){
         mChargeCode = code
-        var compName : String
-        doAsync {
-            compName  = mChargeCodeDao.getCompName(code.trim())
-            uiThread {
-                when{
-                    compName.isNotEmpty() -> {
-                        isEnableCompanyNameTv.set(false)
-                        stCompanyName.set(compName)
-                    }
-                    else ->{
-                        isEnableCompanyNameTv.set(true)
-                        stCompanyName.set("")
-                    }
-                }
-            }
-        }
-    }
-
-    fun getTypeTask(selectedChargeCode : String){
-        when(selectedChargeCode.substring(0, 1)){
+        when(code.substring(0, 1)){
             "F" -> {
                 mTypeTask = ConstantObject.projectTask
                 isHiddenSolmanTv.set(true)
@@ -161,6 +143,37 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
             else -> {
                 isHiddenSolmanTv.set(true)
                 isHiddenPMTv.set(true)
+            }
+        }
+
+        doAsync {
+            val listDtlChargeCode  = mChargeCodeDao.getDetailChargeCode(code.trim())
+            uiThread {
+                when{
+                    listDtlChargeCode.isNotEmpty() ->{
+                        val compName = listDtlChargeCode[0].mCompanyName.trim()
+                        when{
+                            compName.isNotEmpty() -> {
+                                stCompanyName.set(compName)
+                                isEnableCompanyNameTxt.set(false)
+                            }
+                            else -> isEnableCompanyNameTxt.set(true)
+                        }
+
+                        when(mTypeTask){
+                            ConstantObject.projectTask -> {
+                                val stDataPM = listDtlChargeCode[0].mProjectManager.trim()
+                                when{
+                                    stDataPM.isNotEmpty() -> {
+                                        stPMTask.set(stDataPM.trim())
+                                        isEnablePMTxt.set(false)
+                                    }
+                                    else -> isEnablePMTxt.set(true)
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

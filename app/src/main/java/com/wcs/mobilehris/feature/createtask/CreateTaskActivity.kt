@@ -112,8 +112,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
                 parent,view,position,id->
             val selectedItem = parent.getItemAtPosition(position).toString()
             val splitChargeCode = selectedItem.split("  ")[0]
-            activityCreateTaskBinding.viewModel?.findCompany(splitChargeCode)
-            activityCreateTaskBinding.viewModel?.getTypeTask(splitChargeCode)
+            activityCreateTaskBinding.viewModel?.findDataCreateTask(splitChargeCode)
         }
     }
 
