@@ -31,7 +31,7 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
         _actualnterface.hideUI(ConstantObject.vRecylerViewUI)
         _actualnterface.showUI(ConstantObject.vGlobalUI)
         val listActual = mutableListOf<ContentTaskModel>()
-        var _actualModel = ContentTaskModel("Prospect",
+        var _actualModel = ContentTaskModel("F-0014-018|MILLS MOBILITY APPLICATION",
             "Michael",
             "18/12/2019 11.24",
             "PT Sukanda",
@@ -44,7 +44,7 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
             true,
             "")
         listActual.add(_actualModel)
-        _actualModel = ContentTaskModel("PreSales",
+        _actualModel = ContentTaskModel("A-1003-096|BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
             "Windy",
             "19/12/2019 11.24",
             "PT Heinz ABC",
@@ -57,7 +57,7 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
             true,
             "")
         listActual.add(_actualModel)
-        _actualModel = ContentTaskModel("Project",
+        _actualModel = ContentTaskModel("A-1003-096|BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
             "Deddy",
             "20/12/2019 11.24",
             "PT Yakult",

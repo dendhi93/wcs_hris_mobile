@@ -1,11 +1,9 @@
 package com.wcs.mobilehris.feature.createtask
 
-import android.R.layout.simple_spinner_item
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
-import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioButton
@@ -47,22 +45,8 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
         }
         activityCreateTaskBinding.viewModel?.initUI()
-        loadTaskSpinner()
         initRadio()
         activityCreateTaskBinding.viewModel?.initDataChargeCode()
-    }
-
-    private fun loadTaskSpinner(){
-        val arrTaskType = arrayOf("Type Task",ConstantObject.prospectTask,ConstantObject.preSalesTask, ConstantObject.projectTask, ConstantObject.supportTask)
-        val adapter = ArrayAdapter(this, simple_spinner_item, arrTaskType)
-        adapter.setDropDownViewResource(simple_spinner_item)
-        activityCreateTaskBinding.spCreateTaskTypeTask.adapter = adapter
-        activityCreateTaskBinding.spCreateTaskTypeTask.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>,view: View,position: Int,id: Long) {
-                activityCreateTaskBinding.viewModel?.getTypeTask(adapter.getItem(position).toString())
-            }
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
     }
 
     private fun initRadio(){
@@ -129,6 +113,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
             val selectedItem = parent.getItemAtPosition(position).toString()
             val splitChargeCode = selectedItem.split("  ")[0]
             activityCreateTaskBinding.viewModel?.findCompany(splitChargeCode)
+            activityCreateTaskBinding.viewModel?.getTypeTask(splitChargeCode)
         }
     }
 

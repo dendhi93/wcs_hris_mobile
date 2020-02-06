@@ -2,6 +2,7 @@ package com.wcs.mobilehris.feature.confirmtask
 
 import android.content.Context
 import android.os.Handler
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -38,12 +39,11 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
         }
     }
 
-    fun onLoadConfirmData(intentTaskId : String, intentTypeTask : String){
+    fun onLoadConfirmData(intentTaskId : String, intentChargeCode : String){
         stIntentTaskId = intentTaskId
         isProgressConfirmTask.set(true)
-        stTypeTask = intentTypeTask
         Handler().postDelayed({
-            stConfirmChargeCode.set("A-1003-096")
+            stConfirmChargeCode.set(intentChargeCode.trim())
             stConfirmCompName.set("PT ABCD")
             stConfirmCP.set("Michael Saputra")
             stConfirmTaskDate.set("17/01/2020")
@@ -51,7 +51,13 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
             stConfirmTaskTimeInto.set("17:00")
             stConfirmDescription.set("Buat Mobile Hris")
             confirmTaskInterface.onCheckConfirmRadio(true)
-            when(intentTypeTask){
+            //FIND PREFIX CHARGE CODE and decide type project substring first in intentChargeCode
+            when(intentChargeCode.substring(0, 1)){
+                "F" -> stTypeTask = ConstantObject.projectTask
+                "E" -> stTypeTask = ConstantObject.supportTask
+                "A" -> stTypeTask = ConstantObject.preSalesTask
+            }
+            when(stTypeTask){
                 ConstantObject.projectTask -> {
                     isHiddenPMTv.set(false)
                     isHiddenSolmanNoTv.set(true)

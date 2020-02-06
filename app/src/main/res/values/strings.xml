@@ -48,7 +48,7 @@
     <string name="dtl_task_activity">Detail Activity</string>
     <string name="create_task_activity">Create Activity</string>
     <string name="search_team_activity">Search Team</string>
-    <string name="confirm_task_activity">Confirm Task</string>
+    <string name="confirm_task_activity">Confirm Activity</string>
     <string name="req_travel_hist_activity">Request Travel History</string>
     <string name="req_travel_activity">Request Travel</string>
     <string name="search_city_activity">Search City</string>

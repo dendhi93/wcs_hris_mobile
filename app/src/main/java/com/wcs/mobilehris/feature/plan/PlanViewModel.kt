@@ -30,7 +30,7 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
         _planInterface.hideUI(ConstantObject.vRecylerViewUI)
         _planInterface.showUI(ConstantObject.vGlobalUI)
         val listPlan = mutableListOf<ContentTaskModel>()
-        var _planModel = ContentTaskModel("Prospect",
+        var _planModel = ContentTaskModel("A-1003-096|BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
             "Michael",
             "18/12/2019 11.24",
             "PT Sukanda",
@@ -43,7 +43,7 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
             true,
             "")
         listPlan.add(_planModel)
-        _planModel = ContentTaskModel("PreSales",
+        _planModel = ContentTaskModel("A-1003-096|BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
             "Windy",
             "19/12/2019 11.24",
             "PT Heinz ABC",

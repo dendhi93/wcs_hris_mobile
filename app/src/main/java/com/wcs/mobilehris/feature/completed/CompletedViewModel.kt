@@ -30,7 +30,7 @@ class CompletedViewModel(private val _context : Context, private val _completedI
         _completedInterface.hideUI(ConstantObject.vRecylerViewUI)
         _completedInterface.showUI(ConstantObject.vGlobalUI)
         val listCompleted = mutableListOf<ContentTaskModel>()
-        var _completedModel = ContentTaskModel("Prospect",
+        var _completedModel = ContentTaskModel("F-0014-018|MILLS MOBILITY APPLICATION",
             "Michael",
             "18/12/2019 11.24",
             "PT Sukanda",
@@ -43,7 +43,7 @@ class CompletedViewModel(private val _context : Context, private val _completedI
             true,
             "")
         listCompleted.add(_completedModel)
-        _completedModel = ContentTaskModel("Prospect",
+        _completedModel = ContentTaskModel("A-1003-096|BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
             "Windy",
             "20/01/2020 11:24",
             "PT KSL",

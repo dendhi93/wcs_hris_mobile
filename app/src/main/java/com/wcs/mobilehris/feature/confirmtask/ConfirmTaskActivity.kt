@@ -15,7 +15,7 @@ import com.wcs.mobilehris.utilinterface.DialogInterface
 class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInterface {
     private lateinit var activityConfirmBinding : ActivityConfirmTaskBinding
     private var intentConfirmTaskId : String? = ""
-    private var intentConfirmTaskTypeTask : String? = ""
+    private var intentConfirmTaskChargeCode : String? = ""
     private var confirmActiveDialog : Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,12 +32,12 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
         }
         intentConfirmTaskId = intent.getStringExtra(intentExtraTaskId)
-        intentConfirmTaskTypeTask = intent.getStringExtra(intentExtraTypeTask)
+        intentConfirmTaskChargeCode = intent.getStringExtra(intentExtraChargeCode)
         when{
-            intentConfirmTaskId != "" && intentConfirmTaskTypeTask != "" ->{
-                supportActionBar?.subtitle = intentConfirmTaskTypeTask.toString().trim()
+            intentConfirmTaskId != "" && intentConfirmTaskChargeCode != "" ->{
+                val confirmTaskSplitChargeCode = intentConfirmTaskChargeCode.toString().trim().split("|")
                 activityConfirmBinding.viewModel?.onLoadConfirmData(intentConfirmTaskId.toString().trim(),
-                    intentConfirmTaskTypeTask.toString().trim())
+                    confirmTaskSplitChargeCode[0].trim())
             }
         }
         initConfirmRadio()
@@ -110,7 +110,7 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
     companion object{
         const val ALERT_CONFIRM_TASK_NO_CONNECTION = 1
         const val intentExtraTaskId = "extra_task_id"
-        const val intentExtraTypeTask = "extra_type_task"
+        const val intentExtraChargeCode = "extra_charge_code"
         const val ALERT_CONFIRM_TASK_CONFIRMATION = 3
     }
 }

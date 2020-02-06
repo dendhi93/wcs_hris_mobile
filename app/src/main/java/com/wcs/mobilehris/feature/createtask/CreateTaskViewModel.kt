@@ -146,13 +146,15 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
         }
     }
 
-    fun getTypeTask(selectedType : String){
-        when(selectedType.trim()){
-            ConstantObject.projectTask -> {
+    fun getTypeTask(selectedChargeCode : String){
+        when(selectedChargeCode.substring(0, 1)){
+            "F" -> {
+                mTypeTask = ConstantObject.projectTask
                 isHiddenSolmanTv.set(true)
                 isHiddenPMTv.set(false)
             }
-            ConstantObject.supportTask -> {
+            "E" -> {
+                mTypeTask = ConstantObject.supportTask
                 isHiddenSolmanTv.set(false)
                 isHiddenPMTv.set(true)
             }
@@ -161,7 +163,6 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                 isHiddenPMTv.set(true)
             }
         }
-        mTypeTask = selectedType
     }
 
     fun validateTeam(itemUserId : String, itemName : String){

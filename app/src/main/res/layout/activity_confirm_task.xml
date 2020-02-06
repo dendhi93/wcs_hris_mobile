@@ -41,19 +41,19 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/spacing_tiny_2">
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_tiny_2"
                     android:orientation="vertical">
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/text_fields_height"
-                        android:layout_margin="@dimen/spacing_tiny_3"
+                        android:layout_margin="@dimen/spacing_tiny_2"
                         app:boxStrokeWidth="@dimen/text_fields_box_width"
                         app:boxStrokeColor="@color/text_fields_box_color"
                         app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
@@ -81,7 +81,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_margin="@dimen/spacing_tiny_3"
+                        android:layout_margin="@dimen/spacing_tiny_2"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/text_fields_height"
                         app:boxStrokeWidth="@dimen/text_fields_box_width"
@@ -110,7 +110,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_margin="@dimen/spacing_tiny_3"
+                        android:layout_margin="@dimen/spacing_tiny_2"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/text_fields_height"
                         app:boxStrokeWidth="@dimen/text_fields_box_width"
@@ -144,7 +144,7 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_margin="@dimen/spacing_tiny_3"
+                            android:layout_margin="@dimen/spacing_tiny_2"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/text_fields_height"
                             android:layout_weight="1"
@@ -174,7 +174,7 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_margin="@dimen/spacing_tiny_3"
+                            android:layout_margin="@dimen/spacing_tiny_2"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/text_fields_height"
                             android:layout_weight="1"
@@ -205,7 +205,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_margin="@dimen/spacing_tiny_3"
+                        android:layout_margin="@dimen/spacing_tiny_2"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/text_fields_height"
                         app:boxStrokeWidth="@dimen/text_fields_box_width"
@@ -237,7 +237,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:id="@+id/rg_confirmTask_isOnsite"
-                        android:layout_margin="@dimen/spacing_tiny_3"
+                        android:layout_marginEnd="@dimen/spacing_tiny_2"
+                        android:layout_marginStart="@dimen/spacing_tiny_2"
+                        android:layout_marginTop="@dimen/padding_medium2"
+                        android:layout_marginBottom="@dimen/spacing_tiny_2"
                         android:orientation="horizontal">
 
                         <RadioButton
@@ -258,9 +261,9 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_marginTop="@dimen/spacing_tiny_3"
-                        android:layout_marginStart="@dimen/spacing_tiny_3"
-                        android:layout_marginEnd="@dimen/spacing_tiny_3"
+                        android:layout_marginTop="@dimen/spacing_tiny_2"
+                        android:layout_marginStart="@dimen/spacing_tiny_2"
+                        android:layout_marginEnd="@dimen/spacing_tiny_2"
                         android:layout_marginBottom="@dimen/spacing_small_1"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/spacing_huge_2"
@@ -289,8 +292,8 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_marginStart="@dimen/spacing_tiny_3"
-                        android:layout_marginEnd="@dimen/spacing_tiny_3"
+                        android:layout_marginStart="@dimen/spacing_tiny_2"
+                        android:layout_marginEnd="@dimen/spacing_tiny_2"
                         android:layout_marginBottom="@dimen/spacing_small_1"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/text_fields_height"
@@ -321,8 +324,8 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_marginStart="@dimen/spacing_tiny_3"
-                        android:layout_marginEnd="@dimen/spacing_tiny_3"
+                        android:layout_marginStart="@dimen/spacing_tiny_2"
+                        android:layout_marginEnd="@dimen/spacing_tiny_2"
                         android:layout_marginBottom="@dimen/spacing_small_1"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/text_fields_height"
@@ -353,8 +356,8 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_marginStart="@dimen/spacing_tiny_3"
-                        android:layout_marginEnd="@dimen/spacing_tiny_3"
+                        android:layout_marginStart="@dimen/spacing_tiny_2"
+                        android:layout_marginEnd="@dimen/spacing_tiny_2"
                         android:layout_marginBottom="@dimen/spacing_small_1"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/text_fields_height"
@@ -384,9 +387,9 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_marginTop="@dimen/spacing_tiny_3"
-                        android:layout_marginStart="@dimen/spacing_tiny_3"
-                        android:layout_marginEnd="@dimen/spacing_tiny_3"
+                        android:layout_marginTop="@dimen/spacing_tiny_2"
+                        android:layout_marginStart="@dimen/spacing_tiny_2"
+                        android:layout_marginEnd="@dimen/spacing_tiny_2"
                         android:layout_marginBottom="@dimen/spacing_small_1"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/spacing_huge_2"

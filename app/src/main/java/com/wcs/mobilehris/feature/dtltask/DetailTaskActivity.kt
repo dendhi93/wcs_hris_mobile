@@ -17,7 +17,7 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
     private lateinit var dtlTaskAdapter : CustomDetailTaskAdapter
     private var arrTeamTaskList = ArrayList<FriendModel>()
     private var intentTaskId : String? = ""
-    private var intentTaskTypeTask : String? = ""
+    private var intentDtlTaskChargeCode : String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,13 +32,13 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
         dtlTaskAdapter = CustomDetailTaskAdapter(this, arrTeamTaskList)
         dtlTaskBinding.rcDtlTask.adapter = dtlTaskAdapter
         intentTaskId = intent.getStringExtra(extraTaskId)
-        intentTaskTypeTask = intent.getStringExtra(extraTypeTask)
+        intentDtlTaskChargeCode = intent.getStringExtra(extraCode)
 
         when{
-            intentTaskId != "" && intentTaskTypeTask != "" ->{
-                dtlTaskBinding.viewModel?.initDataDtl(intentTaskId.toString().trim(), intentTaskTypeTask.toString().trim())
+            intentTaskId != "" && intentDtlTaskChargeCode != "" ->{
+                val dtlTaskSplitChargeCode = intentDtlTaskChargeCode.toString().trim().split("|")
+                dtlTaskBinding.viewModel?.initDataDtl(intentTaskId.toString().trim(), dtlTaskSplitChargeCode[0].trim())
                 supportActionBar?.title = getString(R.string.dtl_task_activity)
-                supportActionBar?.subtitle = intentTaskTypeTask.toString().trim()
             }
         }
         supportActionBar?.let {
@@ -100,7 +100,7 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
     companion object{
         const val ALERT_DTL_TASK_NO_CONNECTION = 1
         const val extraTaskId = "extra_task_id"
-        const val extraTypeTask = "extra_type_task"
+        const val extraCode = "extra_charge_code"
     }
 }
 
