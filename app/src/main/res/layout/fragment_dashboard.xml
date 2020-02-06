@@ -33,40 +33,48 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:id="@+id/lo_dashboard"
-                android:layout_width="match_parent"
+            <HorizontalScrollView
+                android:id="@+id/hsv_dashboard"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="@dimen/space_07"
-                android:paddingBottom="@dimen/space_07"
                 app:layout_constraintBottom_toTopOf="@id/sw_dashboard"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/pb_dashboard">
 
-                <TextView
-                    android:id="@+id/btn_dashboard_late"
+                <LinearLayout
+                    android:id="@+id/lo_dashboard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_yelow_button"
+                    android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/space_07"
-                    android:paddingVertical="@dimen/space_05"
-                    android:text="@={viewModel.stLateQty}"
-                    android:textSize="@dimen/text_fields_text_size" />
+                    android:paddingBottom="@dimen/space_07">
 
-                <TextView
-                    android:id="@+id/btn_dashboard_leave"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/space_07"
-                    android:background="@drawable/bg_yelow_button"
-                    android:paddingHorizontal="@dimen/space_07"
-                    android:paddingVertical="@dimen/space_05"
-                    android:text="@={viewModel.stLeaveQty}"
-                    android:textSize="@dimen/text_fields_text_size" />
+                    <TextView
+                        android:id="@+id/btn_dashboard_late"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_yelow_button"
+                        android:paddingHorizontal="@dimen/space_07"
+                        android:paddingVertical="@dimen/space_05"
+                        android:text="@={viewModel.stLateQty}"
+                        android:textSize="@dimen/text_fields_text_size" />
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/btn_dashboard_leave"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_07"
+                        android:background="@drawable/bg_yelow_button"
+                        android:paddingHorizontal="@dimen/space_07"
+                        android:paddingVertical="@dimen/space_05"
+                        android:text="@={viewModel.stLeaveQty}"
+                        android:textSize="@dimen/text_fields_text_size" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/sw_dashboard"
@@ -75,7 +83,7 @@
                 android:paddingTop="@dimen/space_04"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lo_dashboard">
+                app:layout_constraintTop_toBottomOf="@id/hsv_dashboard">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rc_dashboard"
@@ -93,7 +101,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lo_dashboard" />
+                app:layout_constraintTop_toBottomOf="@+id/hsv_dashboard" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

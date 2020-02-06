@@ -45,7 +45,7 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
         _dashboardInterface.hideUI(ConstantObject.vRecylerViewUI)
         _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
         val listDashboard = mutableListOf<DashboardModel>()
-        var dashBoardModel = DashboardModel("Activity","Metting at 13.00" +
+        var dashBoardModel = DashboardModel("Activity","Meeting at 13.00" +
                 "\nInterview new Candidate at  15.00" +
                 "\nand 2 others")
         listDashboard.add(dashBoardModel)
@@ -82,8 +82,8 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
     private fun getLateness(){
         _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
         Handler().postDelayed({
-            stLeaveQty.set("Leave 10")
-            stLateQty.set("Lateness 2")
+            stLeaveQty.set("Remaining Leave 10")
+            stLateQty.set("Current Month's Lateness 2")
         }, 1000)
     }
 
