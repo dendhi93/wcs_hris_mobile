@@ -1,0 +1,61 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.wcs.mobilehris.feature.multipletrip.MultipleTripViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorPrimary">
+
+        <ProgressBar
+            android:id="@+id/pb_reqMultipleTrip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/permission_button_margin_vertical"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:visibility="@{viewModel.isProgressMultipleTrip ? View.VISIBLE : View.GONE}"
+            android:indeterminate="true" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rc_reqMultipleTrip"
+            android:visibility="@{viewModel.isLoadData ? View.VISIBLE : View.GONE}"
+            android:layoutAnimation="@anim/layout_animation_up_to_down"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/tv_reqTravelList_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.isLoadData ? View.GONE : View.VISIBLE}"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:textSize="@dimen/alph_size_small_2"
+            android:text="@string/empty_data" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/spacing_tiny"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/btn_reqMultipleTrip_save"
+                android:enabled="@{!viewModel.isProgressMultipleTrip}"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginStart="@dimen/spacing_tiny_4"
+                android:onClick="@{() -> viewModel.saveMultipleTrip()}"
+                android:textColor="@color/colorWhite"
+                android:text="@string/save_and_generate"
+                android:background="@drawable/bg_blue_button"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

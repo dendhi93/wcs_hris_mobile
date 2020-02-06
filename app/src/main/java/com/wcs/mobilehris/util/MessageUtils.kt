@@ -3,6 +3,8 @@ package com.wcs.mobilehris.util
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
+import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
@@ -12,11 +14,14 @@ import es.dmoral.toasty.Toasty
 object MessageUtils {
 
     fun toastMessage(context : Context, message: String, type : Int) {
+        lateinit var toast: Toast
         when (type) {
-            ConstantObject.vToastSuccess -> Toasty.success(context, message, Toast.LENGTH_LONG).show()
-            ConstantObject.vToastError -> Toasty.error(context, message, Toast.LENGTH_LONG).show()
-            ConstantObject.vToastInfo -> Toasty.info(context, message, Toast.LENGTH_LONG).show()
+            ConstantObject.vToastSuccess -> toast = Toasty.success(context, message, Toast.LENGTH_LONG)
+            ConstantObject.vToastError -> toast = Toasty.error(context, message, Toast.LENGTH_LONG)
+            ConstantObject.vToastInfo -> toast = Toasty.info(context, message, Toast.LENGTH_LONG)
         }
+        toast.setGravity(Gravity.CENTER, 0,0)
+        toast.show()
     }
 
     fun snackBarMessage(snackMessage: String, activity: Activity, action: Int) {
@@ -24,6 +29,7 @@ object MessageUtils {
         when(action) {
             ConstantObject.vSnackBarWithButton -> {
                 val snackBar = Snackbar.make(rootView, snackMessage, Snackbar.LENGTH_INDEFINITE)
+                snackBar.setActionTextColor(Color.WHITE)
                 snackBar.setAction("OK") {
                     snackBar.dismiss()
                 }
@@ -31,6 +37,7 @@ object MessageUtils {
             }
             else -> {
                 val snackBar = Snackbar.make(rootView, snackMessage, Snackbar.LENGTH_LONG)
+                snackBar.setActionTextColor(Color.WHITE)
                 snackBar.show()
             }
         }

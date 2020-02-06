@@ -2,21 +2,20 @@
 
 package com.wcs.mobilehris.util
 
-import android.util.Log
+import android.app.Activity
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
 import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 object DateTimeUtils {
 
-    fun getCurrentTime(): String {
-        return SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-    }
+    fun getCurrentTime(): String { return SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()) }
 
-    fun getCurrentDate(): String {
-        return SimpleDateFormat("yyy-MM-dd", Locale.getDefault()).format(Date())
-    }
+    fun getCurrentDate(): String { return SimpleDateFormat("yyy-MM-dd", Locale.getDefault()).format(Date()) }
 
     fun getChangeDateFormat(dateTime: String?): String? {
         return try {
@@ -41,10 +40,21 @@ object DateTimeUtils {
 
             val timeStart = Time(startTimeHour, startTimeMinutes, startTimeSeconds)
             val timeStop = Time(endTimeHour, endTimeMinutes, endTimeSeconds)
-            Log.d("###", "timeStart " + timeStart.hours + " ~ timeStop " + timeStop.hours)
             val longDiff : Long = timeStop.hours.toLong() - timeStart.hours.toLong()
 
             return longDiff.toInt()
         }catch (e : java.lang.Exception){0}
     }
+
+    fun getDifferentDate(startDate : String, endDate : String) : Int{
+        return try{
+            val sdf = SimpleDateFormat("yyy-MM-dd", Locale.getDefault())
+            val date1 = sdf.parse(startDate)
+            val date2 = sdf.parse(endDate)
+            val diff: Long = date2.time - date1.time
+            val diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
+            diffDays.toInt()
+        }catch (e : Exception){ 0 }
+    }
+
 }

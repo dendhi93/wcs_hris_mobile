@@ -17,6 +17,7 @@
             android:id="@+id/pb_team"
             android:layout_width="match_parent"
             android:layout_height="@dimen/padding_medium3"
+            android:visibility="gone"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:indeterminate="true" />
 

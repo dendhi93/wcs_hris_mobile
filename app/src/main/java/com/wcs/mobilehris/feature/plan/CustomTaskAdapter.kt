@@ -34,7 +34,6 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
         val stActHour: String?
         holder.tvCreatedUser.text = stCreated
         holder.tvCustomCompanyName.text = model.companyName.trim()
-        holder.tvCustomLocation.text = model.locationTask.trim()
         holder.tvCustomTime.text = stTaskTime.trim()
         holder.tvCustomDate.text = model.taskDate.trim()
         holder.tvCustomTitle.text = model.taskType.trim()
@@ -89,7 +88,6 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
         var tvCustomTitle : TextView = view.findViewById(R.id.tv_custom_plan)
         var tvCreatedUser : TextView = view.findViewById(R.id.tv_customPlan_created_user)
         var tvCustomCompanyName : TextView = view.findViewById(R.id.tv_customPlan_companyName)
-        var tvCustomLocation : TextView = view.findViewById(R.id.tv_customPlan_Location)
         var tvCustomDate : TextView = view.findViewById(R.id.tv_customPlan_date)
         var tvCustomTime : TextView = view.findViewById(R.id.tv_customPlan_time)
         var tvCustomIsCompleted : TextView = view.findViewById(R.id.tv_custom_isCompleted)

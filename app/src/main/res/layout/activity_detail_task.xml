@@ -24,7 +24,7 @@
         
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/pb_dtlTask"
             android:layout_margin="@dimen/spacing_tiny_2"
             android:id="@+id/rl_dtl_top">
@@ -50,7 +50,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_margin="@dimen/spacing_tiny_2"
                         android:orientation="vertical">
 
@@ -109,34 +109,6 @@
                                 android:inputType="text"
                                 android:text="@={viewModel.stCompanyName}"
                                 android:maxLines="1"
-                                android:textSize="@dimen/text_fields_text_size" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_margin="@dimen/spacing_tiny_3"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/spacing_huge_2"
-                            app:boxStrokeWidth="@dimen/text_fields_box_width"
-                            app:boxStrokeColor="@color/text_fields_box_color"
-                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
-                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
-                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
-                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/txt_dtlTask_address"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
-                                android:gravity="center_vertical"
-                                android:enabled="false"
-                                android:textColor="@color/colorBlack"
-                                android:textColorHint="@color/colorBlack"
-                                android:hint="@string/address"
-                                android:text="@={viewModel.stCompanyAddress}"
-                                android:inputType="text"
                                 android:textSize="@dimen/text_fields_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -276,7 +248,7 @@
 
                             <RadioButton
                                 android:id="@+id/rb_dtltask_onSite"
-                                android:text="@string/on_site"
+                                android:text="@string/travel_business"
                                 android:layout_marginEnd="@dimen/spacing_huge"
                                 android:textColor="@color/colorBlack"
                                 android:layout_width="wrap_content"
@@ -284,7 +256,7 @@
 
                             <RadioButton
                                 android:id="@+id/rb_dtltask_offSite"
-                                android:text="@string/off_site"
+                                android:text="@string/not_travel_business"
                                 android:textColor="@color/colorBlack"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>

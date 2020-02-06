@@ -3,9 +3,10 @@ package com.wcs.mobilehris.feature.requesttravel
 import com.wcs.mobilehris.database.entity.ChargeCodeEntity
 import com.wcs.mobilehris.database.entity.TransportTypeEntity
 import com.wcs.mobilehris.feature.dtltask.FriendModel
+import com.wcs.mobilehris.utilinterface.ActionInterface
 import com.wcs.mobilehris.utilinterface.DialogInterface
 
-interface RequestTravelInterface : DialogInterface {
+interface RequestTravelInterface : DialogInterface, ActionInterface {
     fun onLoadTeam(listTeam : List<FriendModel>)
     fun onMessage(message : String, messageType : Int)
     fun onAlertReqTravel(alertMessage : String, alertTitle : String, intTypeActionAlert : Int)
@@ -15,4 +16,7 @@ interface RequestTravelInterface : DialogInterface {
     fun getDataDepart()
     fun getDataReturn()
     fun onSuccessRequestTravel()
+    fun onIntentMultipleDestination()
+    fun onClearListTeam()
+    fun onHideSoftKeyboard()
 }

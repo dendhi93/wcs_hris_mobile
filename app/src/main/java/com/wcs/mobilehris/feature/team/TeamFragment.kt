@@ -1,5 +1,6 @@
 package com.wcs.mobilehris.feature.team
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,12 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentTeamBinding
+import com.wcs.mobilehris.feature.profile.ProfileActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import java.util.*
 import kotlin.collections.ArrayList
 
-class TeamFragment : Fragment(), TeamInterface {
+class TeamFragment : Fragment(), TeamInterface, SelectedTeamInterface {
     private lateinit var fragmentTeamBinding: FragmentTeamBinding
     private var arrTeamList = ArrayList<TeamModel>()
     private lateinit var teamAdapter: CustomTeamAdapter
@@ -32,6 +34,7 @@ class TeamFragment : Fragment(), TeamInterface {
         fragmentTeamBinding.rcTeam.layoutManager = LinearLayoutManager(requireContext())
         fragmentTeamBinding.rcTeam.setHasFixedSize(true)
         teamAdapter = CustomTeamAdapter(requireContext(), arrTeamList)
+        teamAdapter.initSelectedCallBack(this)
         fragmentTeamBinding.rcTeam.adapter = teamAdapter
         fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.loadWithProgressBar)
         fragmentTeamBinding.swTeam.setOnRefreshListener {
@@ -49,26 +52,28 @@ class TeamFragment : Fragment(), TeamInterface {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                filterteamName(newText.toString().trim())
+                filterTeamName(newText.toString().trim())
                 return true
             }
 
         })
     }
 
-    private fun filterteamName(textFilter : String){
-        val arrListfilteredTeam: ArrayList<TeamModel> = ArrayList()
+    private fun filterTeamName(textFilter : String){
+        val arrListFilteredTeam: ArrayList<TeamModel> = ArrayList()
         val arrListTeamList : ArrayList<TeamModel> = arrTeamList
+        hideUI(ConstantObject.vGlobalUI)
+        showUI(ConstantObject.vRecylerViewUI)
         when{
             arrListTeamList.isNotEmpty() -> {
                 for(itemTeam in arrListTeamList) {
                     if (itemTeam.name.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
                         || itemTeam.email.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
                         || itemTeam.phone.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))){
-                        arrListfilteredTeam.add(itemTeam)
+                        arrListFilteredTeam.add(itemTeam)
                     }
                 }
-                teamAdapter.filterListTeam(arrListfilteredTeam)
+                teamAdapter.filterListTeam(arrListFilteredTeam)
             }
         }
 
@@ -77,13 +82,14 @@ class TeamFragment : Fragment(), TeamInterface {
     override fun onLoadTeam(teamList: List<TeamModel>, typeLoading: Int) {
         arrTeamList.clear()
         arrTeamList.addAll(teamList)
-        teamAdapter.notifyDataSetChanged()
-
-        hideUI(ConstantObject.vGlobalUI)
-        showUI(ConstantObject.vRecylerViewUI)
         when(typeLoading){
             ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
-            else -> onHideSwipeRefresh()
+            else -> {
+                teamAdapter.notifyDataSetChanged()
+                hideUI(ConstantObject.vGlobalUI)
+                showUI(ConstantObject.vRecylerViewUI)
+                onHideSwipeRefresh()
+            }
         }
     }
 
@@ -100,9 +106,7 @@ class TeamFragment : Fragment(), TeamInterface {
         }
     }
 
-    override fun onHideSwipeRefresh() {
-        fragmentTeamBinding.swTeam.isRefreshing = false
-    }
+    override fun onHideSwipeRefresh() { fragmentTeamBinding.swTeam.isRefreshing = false }
 
     override fun hideUI(typeUI: Int) {
         when(typeUI){
@@ -120,8 +124,20 @@ class TeamFragment : Fragment(), TeamInterface {
         }
     }
 
+    override fun selectedItemTeam(teamModel: TeamModel) {
+        val intent = Intent(requireContext(), ProfileActivity::class.java)
+        intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentTeam)
+        intent.putExtra(extraTeamName, teamModel.name)
+        intent.putExtra(extraTeamPhone, teamModel.phone)
+        intent.putExtra(extraTeamEmail, teamModel.email)
+        startActivity(intent)
+    }
+
     companion object{
         const val ALERT_TEAM_NO_CONNECTION = 1
+        const val extraTeamName = "team_name"
+        const val extraTeamPhone = "team_phone"
+        const val extraTeamEmail = "team_email"
     }
 }
 

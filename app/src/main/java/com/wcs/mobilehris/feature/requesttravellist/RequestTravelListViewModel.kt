@@ -6,7 +6,6 @@ import android.os.Handler
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
-import com.wcs.mobilehris.feature.requesttravel.RequestTravelActivity
 import com.wcs.mobilehris.util.ConstantObject
 
 class RequestTravelListViewModel (private val context : Context, private val requestTravalListInterface: ReqTravelListInterface) : ViewModel(){
@@ -55,5 +54,5 @@ class RequestTravelListViewModel (private val context : Context, private val req
         }
     }
 
-    fun fabClickRequest(){ context.startActivity(Intent(context, RequestTravelActivity::class.java)) }
+    fun fabClickRequest(){ requestTravalListInterface.intentToRequest() }
 }

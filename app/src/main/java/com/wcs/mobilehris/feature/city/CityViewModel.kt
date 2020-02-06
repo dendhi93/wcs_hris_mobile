@@ -19,9 +19,9 @@ class CityViewModel (private val context : Context, private val cityInterface: C
     }
 
     private fun getDataCity(typeLoading : Int){
-        when(typeLoading){
-            ConstantObject.loadWithProgressBar -> cityInterface.showUI(ConstantObject.vProgresBarUI)
-        }
+//        when(typeLoading){
+//            ConstantObject.loadWithProgressBar -> cityInterface.showUI(ConstantObject.vProgresBarUI)
+//        }
         cityInterface.hideUI(ConstantObject.vRecylerViewUI)
         cityInterface.showUI(ConstantObject.vGlobalUI)
         val listCity = mutableListOf<CityModel>()

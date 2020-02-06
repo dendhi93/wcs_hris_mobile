@@ -181,7 +181,7 @@
                 android:id="@+id/tv_custom_isCompleted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/alph_size_small_2"
                 android:layout_marginEnd="@dimen/spacing_tiny"
                 android:layout_marginTop="@dimen/activity_vertical_margin"

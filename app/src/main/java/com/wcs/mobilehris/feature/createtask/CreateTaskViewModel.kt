@@ -31,7 +31,6 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     val stDateTimeFrom = ObservableField<String>("")
     val stDateTimeInto = ObservableField<String>("")
     val stCompanyName = ObservableField<String>("")
-    val stCompanyAddress = ObservableField<String>("")
     val stContactPerson = ObservableField<String>("")
     val stDescriptionTask = ObservableField<String>("")
     val stSolmanNoTask = ObservableField<String>("")
@@ -70,7 +69,13 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
 
     fun onAddTeam(){ createTaskInterface.getTeamData() }
     fun initTimeFrom(){ initTime(CreateTaskActivity.chooseTimeFrom) }
-    fun initTimeInto(){ initTime(CreateTaskActivity.chooseTimeInto) }
+    fun initTimeInto(){
+        when{
+            stDateTimeFrom.get().equals("") -> createTaskInterface.onMessage("Please fill Time from ", ConstantObject.vSnackBarWithButton)
+            else -> initTime(CreateTaskActivity.chooseTimeInto)
+        }
+    }
+
     private fun initTime(chooseTime : String){
         mHour = calendar.get(Calendar.HOUR_OF_DAY)
         mMinute = calendar.get(Calendar.MINUTE)
@@ -92,16 +97,11 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     }
 
     private fun validateEndTime(endTime : String){
-        when(stDateTimeFrom.get()){
-            "" -> createTaskInterface.onMessage("Please fill Time from ", ConstantObject.vSnackBarWithButton)
-            else -> {
-                val intDiff = DateTimeUtils.getDifferentHours(stDateTimeFrom.get().toString(), endTime)
-                when{
-                    intDiff < 0 -> createTaskInterface.onMessage("End Time less then Start Time, Please fill again ", ConstantObject.vSnackBarWithButton)
-                    intDiff < 1 -> createTaskInterface.onMessage("End Time less then one hour, Please fill again ", ConstantObject.vSnackBarWithButton)
-                    else -> stDateTimeInto.set(endTime.trim())
-                }
-            }
+        val intDiff = DateTimeUtils.getDifferentHours(stDateTimeFrom.get().toString(), endTime)
+        when{
+            intDiff < 0 -> createTaskInterface.onMessage("End Time less then Start Time, Please fill again ", ConstantObject.vSnackBarWithButton)
+            intDiff < 1 -> createTaskInterface.onMessage("End Time less then one hour, Please fill again ", ConstantObject.vSnackBarWithButton)
+            else -> stDateTimeInto.set(endTime.trim())
         }
     }
 
@@ -132,16 +132,16 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
         doAsync {
             compName  = mChargeCodeDao.getCompName(code.trim())
             uiThread {
-                        when{
-                            compName.isEmpty() -> {
-                                isEnableCompanyNameTv.set(false)
-                                stCompanyName.set(compName)
-                            }
-                            else ->{
-                                isEnableCompanyNameTv.set(true)
-                                stCompanyName.set("")
-                            }
-                        }
+                when{
+                    compName.isNotEmpty() -> {
+                        isEnableCompanyNameTv.set(false)
+                        stCompanyName.set(compName)
+                    }
+                    else ->{
+                        isEnableCompanyNameTv.set(true)
+                        stCompanyName.set("")
+                    }
+                }
             }
         }
     }
@@ -179,7 +179,6 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                 stDateTimeFrom.get().equals("")
                         || stDateTimeInto.get().equals("")
                         || stCompanyName.get().equals("")
-                        || stCompanyAddress.get().equals("")
                         || stDateTask.get().equals("")
                         || stContactPerson.get().equals("")
                         || stDescriptionTask.get().equals("")

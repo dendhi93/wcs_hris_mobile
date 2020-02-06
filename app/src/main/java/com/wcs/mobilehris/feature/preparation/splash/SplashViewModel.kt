@@ -131,7 +131,7 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
                     jsonTableDesc -> {
                         when{
                             updatedDate != jsonUpdatedDate -> {
-                                //todo delete and insert data master
+                                //delete and insert data master
                                 doAsync {
                                     mChargeCodeDao.deleteAllChargeCode()
                                     mTransTypeDao.deleteAllTransType()

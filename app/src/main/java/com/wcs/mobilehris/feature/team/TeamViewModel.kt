@@ -22,9 +22,9 @@ class TeamViewModel (private val context : Context, private val teamInterface: T
     }
 
     private fun getTeamData(typeLoading : Int){
-        when(typeLoading){
-            ConstantObject.loadWithProgressBar -> teamInterface.showUI(ConstantObject.vProgresBarUI)
-        }
+//        when(typeLoading){
+//            ConstantObject.loadWithProgressBar -> teamInterface.showUI(ConstantObject.vProgresBarUI)
+//        }
         teamInterface.hideUI(ConstantObject.vRecylerViewUI)
         teamInterface.showUI(ConstantObject.vGlobalUI)
         val listTeam = mutableListOf<TeamModel>()
