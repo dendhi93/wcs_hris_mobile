@@ -108,10 +108,8 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
 
     fun validateTask(){
         when{
-            !ConnectionObject.isNetworkAvailable(context) -> {
-                createTaskInterface.onAlertCreateTask(context.getString(R.string.alert_no_connection),
+            !ConnectionObject.isNetworkAvailable(context) -> createTaskInterface.onAlertCreateTask(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, CreateTaskActivity.ALERT_CREATE_TASK_NO_CONNECTION)
-            }
             !validateSubmitTask() -> createTaskInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
             else -> createTaskInterface.onAlertCreateTask(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, CreateTaskActivity.ALERT_CREATE_TASK_CONFIRMATION)

@@ -13,7 +13,7 @@ class CustomDetailTaskAdapter(private val context : Context, private val dtlTask
     RecyclerView.Adapter<CustomDetailTaskAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_list_menu,parent,false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_global_list,parent,false))
     }
 
     override fun getItemCount(): Int = dtlTaskList.size

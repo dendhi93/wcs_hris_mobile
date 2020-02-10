@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:id="@+id/cv_confirmTask"
             app:cardCornerRadius="10dp"
-            android:visibility="@{viewModel.isProgressConfirmTask ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.isHideCardView ? View.GONE : View.VISIBLE}"
             app:cardElevation="1dp"
             android:padding="1dp"
             android:elevation="2dp"
@@ -417,6 +417,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Button
+                        style="?android:attr/buttonBarButtonStyle"
                         android:id="@+id/btn_confirmTask_save"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/button_height"

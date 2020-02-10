@@ -15,7 +15,6 @@ class RequestTravelListViewModel (private val context : Context, private val req
             !ConnectionObject.isNetworkAvailable(context) ->
                 requestTravalListInterface.onAlertReqTravelList(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, RequestTravelListActivity.ALERT_REQ_TRAVEL_HIST_NO_CONNECTION)
-
             else -> getTravelData(typeOfLoading)
         }
     }
@@ -27,13 +26,13 @@ class RequestTravelListViewModel (private val context : Context, private val req
 
         val listTravelList = mutableListOf<TravelListModel>()
         var travelModel = TravelListModel("01","Jakarta",
-            "Malaysia","27/01/2020","31/01/2020","Waiting")
+            "Malaysia","27/01/2020","31/01/2020","Waiting", false)
         listTravelList.add(travelModel)
         travelModel = TravelListModel("02","Jakarta",
-            "Solo","03/02/2020","14/02/2020","True")
+            "Solo","03/02/2020","14/02/2020","True", true)
         listTravelList.add(travelModel)
         travelModel = TravelListModel("02","Solo",
-            "Medan","17/02/2020","28/02/2020","False")
+            "Medan","17/02/2020","28/02/2020","False", false)
         listTravelList.add(travelModel)
 
         when{

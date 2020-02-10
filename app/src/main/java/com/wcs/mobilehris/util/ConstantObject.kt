@@ -15,9 +15,9 @@ object ConstantObject {
     const val vAlertDialogConfirmation = "Confirmation"
 
     //UI type
-    const val vButtonUI = 1
-    const val vProgresBarUI = 2
-    const val vEditTextUI = 3
+    const val vButtonUI = 10
+    const val vProgresBarUI = 20
+    const val vEditTextUI = 30
     const val vGlobalUI = 99
     const val vRecylerViewUI = 5
 
@@ -47,4 +47,6 @@ object ConstantObject {
     const val extra_fromIntentCreateTravel = "CreateTravel"
     const val extra_fromIntentTeam = "team_fragment"
     const val extra_fromIntentProfile = "profile_activity"
+    const val extra_fromIntentDtlTravel = "Detail Travel"
+    const val extra_fromIntentConfirmTravel = "Confirm Travel"
 }

@@ -31,8 +31,10 @@
         android:roundIcon="@mipmap/ic_hris_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.wcs.mobilehris.feature.multipletrip.MultipleTripActivity"
-            android:label="@string/list_destination_activity"/>
+        <activity android:name=".feature.dtlreqtravel.DtlRequestTravelActivity"></activity>
+        <activity
+            android:name=".feature.multipletrip.MultipleTripActivity"
+            android:label="@string/list_destination_activity" />
         <activity
             android:name=".feature.city.CityActivity"
             android:label="@string/search_city_activity" />

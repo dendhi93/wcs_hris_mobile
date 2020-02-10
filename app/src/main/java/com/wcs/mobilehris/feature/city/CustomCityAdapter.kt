@@ -9,15 +9,13 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
-import com.wcs.mobilehris.util.ConstantObject
-import com.wcs.mobilehris.util.MessageUtils
 
 class CustomCityAdapter (private val context : Context, private var cityMutableList : MutableList<CityModel>):
     RecyclerView.Adapter<CustomCityAdapter.ViewHolder>(){
     private lateinit var selectedCityInterface: SelectedCityInterface
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_list_menu,parent,false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_global_list,parent,false))
     }
 
     override fun getItemCount(): Int = cityMutableList.size

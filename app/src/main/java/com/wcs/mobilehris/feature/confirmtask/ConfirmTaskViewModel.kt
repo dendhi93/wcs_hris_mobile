@@ -11,6 +11,7 @@ import com.wcs.mobilehris.util.ConstantObject
 
 class ConfirmTaskViewModel (private val context : Context, private val confirmTaskInterface: ConfirmTaskInterface) : ViewModel(){
     val isProgressConfirmTask = ObservableField<Boolean>(false)
+    val isHideCardView = ObservableField<Boolean>(false)
     val isOnSiteConfirmTask = ObservableField<Boolean>(false)
     val stConfirmChargeCode = ObservableField<String>("")
     val stConfirmCompName = ObservableField<String>("")
@@ -42,6 +43,7 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
     fun onLoadConfirmData(intentTaskId : String, intentChargeCode : String){
         stIntentTaskId = intentTaskId
         isProgressConfirmTask.set(true)
+        isHideCardView.set(true)
         Handler().postDelayed({
             stConfirmChargeCode.set(intentChargeCode.trim())
             stConfirmCompName.set("PT ABCD")

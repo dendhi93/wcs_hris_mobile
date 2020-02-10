@@ -13,10 +13,8 @@ class TeamViewModel (private val context : Context, private val teamInterface: T
 
     fun initDataTeam(typeOfLoading : Int){
         when{
-            !ConnectionObject.isNetworkAvailable(context) -> {
-                teamInterface.onAlertTeam(context.getString(R.string.alert_no_connection),
+            !ConnectionObject.isNetworkAvailable(context) -> teamInterface.onAlertTeam(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, TeamFragment.ALERT_TEAM_NO_CONNECTION)
-            }
             else -> getTeamData(typeOfLoading)
         }
     }

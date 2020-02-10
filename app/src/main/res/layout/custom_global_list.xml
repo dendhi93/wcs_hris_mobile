@@ -25,6 +25,7 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:contentDescription="@string/content_description_image"
             android:layout_margin="@dimen/spacing_tiny"
             android:id="@+id/imgV_custom"
             android:layout_width="45dp"
@@ -62,9 +63,19 @@
 
         <ImageView
             android:layout_margin="@dimen/spacing_tiny"
+            android:id="@+id/imgV_custom_wayTravel"
+            android:layout_width="@dimen/icon_medium"
+            android:visibility="gone"
+            android:contentDescription="@string/content_description_image"
+            android:layout_gravity="center_vertical"
+            android:layout_height="45dp"/>
+
+        <ImageView
+            android:layout_margin="@dimen/spacing_tiny"
             android:id="@+id/imgV_custom_isConflict"
             android:layout_width="@dimen/icon_medium"
             android:visibility="gone"
+            android:contentDescription="@string/content_description_image"
             android:layout_gravity="center_vertical"
             android:layout_height="45dp"/>
 

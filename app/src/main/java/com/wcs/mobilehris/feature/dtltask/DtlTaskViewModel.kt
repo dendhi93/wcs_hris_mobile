@@ -73,7 +73,9 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
         listFriend.add(friendModel)
 
         Handler().postDelayed({
-            dtlTaskInterface.loadTeam(listFriend)
+            when{
+                listFriend.isNotEmpty() -> dtlTaskInterface.loadTeam(listFriend)
+            }
         },1000)
     }
 

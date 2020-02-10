@@ -17,7 +17,7 @@ class CustomApprovalAdapter (private val _context : Context, private val approva
     RecyclerView.Adapter<CustomApprovalAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_list_menu,parent,false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_global_list,parent,false))
     }
 
     override fun getItemCount(): Int = approvalList.size
