@@ -63,21 +63,21 @@
 
         <ImageView
             android:layout_margin="@dimen/spacing_tiny"
-            android:id="@+id/imgV_custom_wayTravel"
+            android:id="@+id/imgV_custom_2"
             android:layout_width="@dimen/icon_medium"
             android:visibility="gone"
             android:contentDescription="@string/content_description_image"
             android:layout_gravity="center_vertical"
-            android:layout_height="45dp"/>
+            android:layout_height="@dimen/icon_medium"/>
 
         <ImageView
             android:layout_margin="@dimen/spacing_tiny"
-            android:id="@+id/imgV_custom_isConflict"
+            android:id="@+id/imgV_custom_1"
             android:layout_width="@dimen/icon_medium"
             android:visibility="gone"
             android:contentDescription="@string/content_description_image"
             android:layout_gravity="center_vertical"
-            android:layout_height="45dp"/>
+            android:layout_height="@dimen/icon_medium"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

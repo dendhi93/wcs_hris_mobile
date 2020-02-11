@@ -2,7 +2,6 @@ package com.wcs.mobilehris.feature.confirmtask
 
 import android.content.Context
 import android.os.Handler
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -55,17 +54,17 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
             confirmTaskInterface.onCheckConfirmRadio(true)
             //FIND PREFIX CHARGE CODE and decide type project substring first in intentChargeCode
             when(intentChargeCode.substring(0, 1)){
-                "F" -> stTypeTask = ConstantObject.projectTask
-                "E" -> stTypeTask = ConstantObject.supportTask
-                "A" -> stTypeTask = ConstantObject.preSalesTask
+                "F" -> stTypeTask = ConstantObject.vProjectTask
+                "E" -> stTypeTask = ConstantObject.vSupportTask
+                "A" -> stTypeTask = ConstantObject.vPreSalesTask
             }
             when(stTypeTask){
-                ConstantObject.projectTask -> {
+                ConstantObject.vProjectTask -> {
                     isHiddenPMTv.set(false)
                     isHiddenSolmanNoTv.set(true)
                     stConfirmPM.set("Edo Saputra")
                 }
-                ConstantObject.supportTask -> {
+                ConstantObject.vSupportTask -> {
                     isHiddenPMTv.set(true)
                     isHiddenSolmanNoTv.set(false)
                     stConfirmSolmanNo.set("A001-001")
@@ -76,13 +75,14 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
                 }
             }
             isProgressConfirmTask.set(false)
+            isHideCardView.set(false)
         }, 2000)
     }
 
     private fun isSubmitConfirm() : Boolean {
-        if(stTypeTask == ConstantObject.preSalesTask ||
-            stTypeTask == ConstantObject.prospectTask ||
-            stTypeTask == ConstantObject.projectTask){
+        if(stTypeTask == ConstantObject.vPreSalesTask ||
+            stTypeTask == ConstantObject.vProspectTask ||
+            stTypeTask == ConstantObject.vProjectTask){
                 if(stConfirmActHour.get() == "" || stConfirmActDescription.get() == "") return false
         }else {
             if(stConfirmActHour.get() == "") return false

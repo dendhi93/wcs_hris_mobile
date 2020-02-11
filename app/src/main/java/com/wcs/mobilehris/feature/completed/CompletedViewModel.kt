@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.feature.createtask.CreateTaskActivity
-import com.wcs.mobilehris.feature.dtltask.DetailTaskActivity
 import com.wcs.mobilehris.feature.plan.ContentTaskModel
 import com.wcs.mobilehris.util.ConstantObject
 
@@ -25,7 +24,7 @@ class CompletedViewModel(private val _context : Context, private val _completedI
 
     private fun getCompletedData(typeLoading : Int){
         when(typeLoading){
-            ConstantObject.loadWithProgressBar -> _completedInterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.vLoadWithProgressBar -> _completedInterface.showUI(ConstantObject.vProgresBarUI)
         }
         _completedInterface.hideUI(ConstantObject.vRecylerViewUI)
         _completedInterface.showUI(ConstantObject.vGlobalUI)
@@ -68,7 +67,7 @@ class CompletedViewModel(private val _context : Context, private val _completedI
                 _completedInterface.hideUI(ConstantObject.vRecylerViewUI)
                 _completedInterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
                 when(typeLoading){
-                    ConstantObject.loadWithProgressBar -> _completedInterface.hideUI(ConstantObject.vProgresBarUI)
+                    ConstantObject.vLoadWithProgressBar -> _completedInterface.hideUI(ConstantObject.vProgresBarUI)
                     else -> _completedInterface.onHideSwipeRefresh()
                 }
             }

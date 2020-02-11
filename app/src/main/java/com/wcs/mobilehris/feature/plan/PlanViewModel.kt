@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.feature.createtask.CreateTaskActivity
-import com.wcs.mobilehris.feature.dtltask.DetailTaskActivity
 import com.wcs.mobilehris.util.ConstantObject
 
 class PlanViewModel (var _context : Context, var _planInterface : PlanInterface ) : ViewModel(){
@@ -24,7 +23,7 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
 
     private fun getPlanData(typeLoading : Int){
         when(typeLoading){
-            ConstantObject.loadWithProgressBar -> _planInterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.vLoadWithProgressBar -> _planInterface.showUI(ConstantObject.vProgresBarUI)
         }
 
         _planInterface.hideUI(ConstantObject.vRecylerViewUI)
@@ -68,7 +67,7 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
                 _planInterface.hideUI(ConstantObject.vRecylerViewUI)
 
                 when(typeLoading){
-                    ConstantObject.loadWithProgressBar -> _planInterface.hideUI(ConstantObject.vProgresBarUI)
+                    ConstantObject.vLoadWithProgressBar -> _planInterface.hideUI(ConstantObject.vProgresBarUI)
                     else -> _planInterface.onHideSwipeRefresh()
                 }
                 _planInterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)

@@ -26,14 +26,16 @@ object ConstantObject {
     const val vConfirmTask = "Confirm"
 
     //type progressBar
-    const val loadWithProgressBar = 11
-    const val loadWithoutProgressBar = 22
+    const val vLoadWithProgressBar = 11
+    const val vLoadWithoutProgressBar = 22
 
     //type task
-    const val supportTask = "Support"
-    const val projectTask = "Project"
-    const val prospectTask = "Prospect"
-    const val preSalesTask = "PreSales"
+    const val vSupportTask = "Support"
+    const val vProjectTask = "Project"
+    const val vProspectTask = "Prospect"
+    const val vPreSalesTask = "PreSales"
+    const val vCreateEdit = "createEdit"
+    const val vNotCreateEdit = "globalTask"
 
     //menu request
     const val travelMenu = "Travel"

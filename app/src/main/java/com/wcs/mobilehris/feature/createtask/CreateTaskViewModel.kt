@@ -129,12 +129,12 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
         mChargeCode = code
         when(code.substring(0, 1)){
             "F" -> {
-                mTypeTask = ConstantObject.projectTask
+                mTypeTask = ConstantObject.vProjectTask
                 isHiddenSolmanTv.set(true)
                 isHiddenPMTv.set(false)
             }
             "E" -> {
-                mTypeTask = ConstantObject.supportTask
+                mTypeTask = ConstantObject.vSupportTask
                 isHiddenSolmanTv.set(false)
                 isHiddenPMTv.set(true)
             }
@@ -159,7 +159,7 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                         }
 
                         when(mTypeTask){
-                            ConstantObject.projectTask -> {
+                            ConstantObject.vProjectTask -> {
                                 val stDataPM = listDtlChargeCode[0].mProjectManager.trim()
                                 when{
                                     stDataPM.isNotEmpty() -> {
@@ -196,8 +196,8 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                         || stDescriptionTask.get().equals("")
                         || stTypeOnsite.get().equals("")
                         || mTypeTask == "" -> return false
-            mTypeTask == ConstantObject.supportTask -> { when{stSolmanNoTask.get().equals("") -> return false } }
-            mTypeTask == ConstantObject.projectTask -> { when{stPMTask.get().equals("") -> return false } }
+            mTypeTask == ConstantObject.vSupportTask -> { when{stSolmanNoTask.get().equals("") -> return false } }
+            mTypeTask == ConstantObject.vProjectTask -> { when{stPMTask.get().equals("") -> return false } }
         }
         return true
     }

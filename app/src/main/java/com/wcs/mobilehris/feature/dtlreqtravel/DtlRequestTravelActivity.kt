@@ -53,7 +53,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface {
 
         dtlTravelActivityBinding.viewModel?.getDataTransport()
         initRadioDtlTravel()
-        dtlTravelAdapter = CustomDetailTaskAdapter(this, arrListTeamTravel)
+        dtlTravelAdapter = CustomDetailTaskAdapter(this, arrListTeamTravel, ConstantObject.vNotCreateEdit)
         dtlTravelActivityBinding.rcDtlReqTravel.adapter = dtlTravelAdapter
     }
 
@@ -174,7 +174,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface {
 
     private fun hidingKeyboard(){
         val inputManager: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     companion object{

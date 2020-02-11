@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.feature.dtlreqtravel.DtlRequestTravelActivity
 import com.wcs.mobilehris.util.ConstantObject
-import com.wcs.mobilehris.util.MessageUtils
 
 class CustomTravelListAdapter  (private val context : Context, private val reqTravelList : MutableList<TravelListModel>):
     RecyclerView.Adapter<CustomTravelListAdapter.ViewHolder>(){
@@ -56,8 +55,8 @@ class CustomTravelListAdapter  (private val context : Context, private val reqTr
         var tvTravelDestination : TextView = view.findViewById(R.id.tv_custom)
         var imgCustom : ImageView = view.findViewById(R.id.imgV_custom)
         var tvTravelTime : TextView = view.findViewById(R.id.tv_custom_content)
-        var imgVIconIsConflick : ImageView = view.findViewById(R.id.imgV_custom_isConflict)
-        var imgVWayTravel : ImageView = view.findViewById(R.id.imgV_custom_wayTravel)
+        var imgVIconIsConflick : ImageView = view.findViewById(R.id.imgV_custom_1)
+        var imgVWayTravel : ImageView = view.findViewById(R.id.imgV_custom_2)
     }
 
 }

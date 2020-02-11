@@ -1,10 +1,12 @@
 package com.wcs.mobilehris.feature.team
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -42,9 +44,9 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
         teamAdapter = CustomTeamAdapter(this, arrTeamList)
         teamAdapter.initSelectedCallBack(this)
         fragmentTeamBinding.rcTeam.adapter = teamAdapter
-        fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.loadWithProgressBar)
+        fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.vLoadWithProgressBar)
         fragmentTeamBinding.swTeam.setOnRefreshListener {
-            fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.loadWithoutProgressBar)
+            fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.vLoadWithoutProgressBar)
         }
         fragmentTeamBinding.viewModel?.isHiddenSearch?.set(true)
         intentFrom = intent.getStringExtra(ConstantObject.extra_intent).toString()
@@ -54,7 +56,7 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
         arrTeamList.clear()
         arrTeamList.addAll(teamList)
         when(typeLoading){
-            ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.vLoadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
             else -> {
                 onHideSwipeRefresh()
                 teamAdapter.notifyDataSetChanged()
@@ -166,11 +168,17 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
                 finish()
             }
         }
+        hideCreateTaskKeyboard()
+    }
 
+    private fun hideCreateTaskKeyboard(){
+        val inputManager: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
+        hideCreateTaskKeyboard()
         finish()
     }
 }

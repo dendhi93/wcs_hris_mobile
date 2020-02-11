@@ -40,7 +40,7 @@ class CustomCityAdapter (private val context : Context, private var cityMutableL
         var tvCity : TextView = view.findViewById(R.id.tv_custom)
         var imgCustom : ImageView = view.findViewById(R.id.imgV_custom)
         var tvCountry : TextView = view.findViewById(R.id.tv_custom_content)
-        var imgVIconIsConflick : ImageView = view.findViewById(R.id.imgV_custom_isConflict)
+        var imgVIconIsConflick : ImageView = view.findViewById(R.id.imgV_custom_1)
     }
 
     fun filterListCities(filterListCity : ArrayList<CityModel>){

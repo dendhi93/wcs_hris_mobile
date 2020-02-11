@@ -29,7 +29,7 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
     override fun onStart() {
         super.onStart()
         dtlTaskBinding.rcDtlTask.setHasFixedSize(true)
-        dtlTaskAdapter = CustomDetailTaskAdapter(this, arrTeamTaskList)
+        dtlTaskAdapter = CustomDetailTaskAdapter(this, arrTeamTaskList, ConstantObject.vNotCreateEdit)
         dtlTaskBinding.rcDtlTask.adapter = dtlTaskAdapter
         intentTaskId = intent.getStringExtra(extraTaskId)
         intentDtlTaskChargeCode = intent.getStringExtra(extraCode)

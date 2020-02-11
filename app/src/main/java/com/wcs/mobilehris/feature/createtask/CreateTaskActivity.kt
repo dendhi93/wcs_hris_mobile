@@ -1,9 +1,12 @@
 package com.wcs.mobilehris.feature.createtask
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioButton
@@ -19,9 +22,11 @@ import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.feature.team.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
+class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFriendInterface {
     private lateinit var activityCreateTaskBinding: ActivityCreateTaskBinding
     private lateinit var createTaskAdapter : CustomDetailTaskAdapter
     private var arrTeamTaskList = ArrayList<FriendModel>()
@@ -38,7 +43,8 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
     override fun onStart() {
         super.onStart()
         activityCreateTaskBinding.rcCreateTask.setHasFixedSize(true)
-        createTaskAdapter = CustomDetailTaskAdapter(this, arrTeamTaskList)
+        createTaskAdapter = CustomDetailTaskAdapter(this, arrTeamTaskList, ConstantObject.vCreateEdit)
+        createTaskAdapter.initSelectedTeamCallback(this)
         activityCreateTaskBinding.rcCreateTask.adapter = createTaskAdapter
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
@@ -57,10 +63,25 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
     }
 
     override fun onLoadTeam(listTeam: List<FriendModel>) {
-        arrTeamTaskList.addAll(listTeam)
-        createTaskAdapter.notifyDataSetChanged()
-        
-        onResizeLayout(noMatchParentSize)
+        when(arrTeamTaskList.size){
+            0 -> {
+                arrTeamTaskList.addAll(listTeam)
+                createTaskAdapter.notifyDataSetChanged()
+                onResizeLayout(noMatchParentSize)
+            }
+            else -> {
+                val selectedFriendModel = listTeam[0]
+                //ngecek data yang sama di array
+                val isMatch = arrTeamTaskList.contains(selectedFriendModel)
+                if(isMatch){
+                    onMessage("Data already on the list", ConstantObject.vToastInfo)
+                }else{
+                        arrTeamTaskList.addAll(listTeam)
+                        createTaskAdapter.notifyDataSetChanged()
+                        onResizeLayout(noMatchParentSize)
+                }
+            }
+        }
     }
 
     override fun onMessage(message: String, messageType: Int) {
@@ -170,4 +191,9 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
     }
 
     override fun onNegativeClick(o: Any) {}
+
+    override fun selectedItemFriend(friendModel: FriendModel) {
+        arrTeamTaskList.remove(friendModel)
+        createTaskAdapter.notifyDataSetChanged()
+    }
 }

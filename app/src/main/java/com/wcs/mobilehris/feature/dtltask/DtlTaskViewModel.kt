@@ -49,11 +49,11 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
             stDtlDescription.set("Test")
             dtlTaskInterface.onSetCheckedRadio(true)
             when(stIntentTypeTask.trim()) {
-                ConstantObject.supportTask -> {
+                ConstantObject.vSupportTask -> {
                     isHiddenProjectManager.set(true)
                     stDtlSolmanNo.set("845894900")
                 }
-                ConstantObject.projectTask -> {
+                ConstantObject.vProjectTask -> {
                     isHiddenSolmanTv.set(true)
                     stDtlProjectManager.set("Pak Rojak")
                 }

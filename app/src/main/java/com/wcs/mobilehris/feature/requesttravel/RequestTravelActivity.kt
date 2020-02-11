@@ -21,6 +21,7 @@ import com.wcs.mobilehris.database.entity.ChargeCodeEntity
 import com.wcs.mobilehris.database.entity.TransportTypeEntity
 import com.wcs.mobilehris.databinding.ActivityRequestTravelBinding
 import com.wcs.mobilehris.feature.city.CityActivity
+import com.wcs.mobilehris.feature.createtask.SelectedFriendInterface
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
 import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.feature.multipletrip.MultipleTripActivity
@@ -31,7 +32,7 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
 
-class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
+class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, SelectedFriendInterface {
     private lateinit var activityRequestTravelBinding : ActivityRequestTravelBinding
     private lateinit var travelAdapter : CustomDetailTaskAdapter
     private var arrTeamTravel = ArrayList<FriendModel>()
@@ -61,7 +62,8 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
         initRadioTravel()
         activityRequestTravelBinding.viewModel?.initDataChargeCode()
         activityRequestTravelBinding.rcReqTravel.setHasFixedSize(true)
-        travelAdapter = CustomDetailTaskAdapter(this, arrTeamTravel)
+        travelAdapter = CustomDetailTaskAdapter(this, arrTeamTravel, ConstantObject.vCreateEdit)
+        travelAdapter.initSelectedTeamCallback(this)
         activityRequestTravelBinding.rcReqTravel.adapter = travelAdapter
         travelRequestDao = WcsHrisApps.database.travelReqDao()
     }
@@ -88,8 +90,23 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
     }
 
     override fun onLoadTeam(listTeam: List<FriendModel>) {
-        arrTeamTravel.addAll(listTeam)
-        travelAdapter.notifyDataSetChanged()
+        when(arrTeamTravel.size){
+            0 -> {
+                arrTeamTravel.addAll(listTeam)
+                travelAdapter.notifyDataSetChanged()
+            }
+            else -> {
+                val selectedFriendModel = listTeam[0]
+                //ngecek data yang sama di array
+                val isMatch = arrTeamTravel.contains(selectedFriendModel)
+                if(isMatch){
+                    onMessage("Data already on the list", ConstantObject.vToastInfo)
+                }else{
+                    arrTeamTravel.addAll(listTeam)
+                    travelAdapter.notifyDataSetChanged()
+                }
+            }
+        }
     }
 
     override fun onMessage(message: String, messageType: Int) {
@@ -314,4 +331,11 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface {
         const val chooseDateFrom = "date_from"
         const val chooseDateInto = "date_into"
     }
+
+    override fun selectedItemFriend(friendModel: FriendModel) {
+        arrTeamTravel.remove(friendModel)
+        travelAdapter.notifyDataSetChanged()
+    }
+
+
 }

@@ -34,9 +34,9 @@ class RequestTravelListActivity : AppCompatActivity(), ReqTravelListInterface {
         }
         requestTravelListAdapter = CustomTravelListAdapter(this, arrReqTravel)
         activityRequestTravelListBinding.rcReqTravelList.adapter = requestTravelListAdapter
-        activityRequestTravelListBinding.viewModel?.initDataTravel(ConstantObject.loadWithProgressBar)
+        activityRequestTravelListBinding.viewModel?.initDataTravel(ConstantObject.vLoadWithProgressBar)
         activityRequestTravelListBinding.swReqTravelList.setOnRefreshListener {
-            activityRequestTravelListBinding.viewModel?.initDataTravel(ConstantObject.loadWithoutProgressBar)
+            activityRequestTravelListBinding.viewModel?.initDataTravel(ConstantObject.vLoadWithoutProgressBar)
         }
     }
 
@@ -48,7 +48,7 @@ class RequestTravelListActivity : AppCompatActivity(), ReqTravelListInterface {
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
         when(typeLoading){
-            ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.vLoadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
             else -> onHideSwipeTravelList()
         }
     }

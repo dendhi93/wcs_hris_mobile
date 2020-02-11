@@ -36,9 +36,9 @@ class TeamFragment : Fragment(), TeamInterface, SelectedTeamInterface {
         teamAdapter = CustomTeamAdapter(requireContext(), arrTeamList)
         teamAdapter.initSelectedCallBack(this)
         fragmentTeamBinding.rcTeam.adapter = teamAdapter
-        fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.loadWithProgressBar)
+        fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.vLoadWithProgressBar)
         fragmentTeamBinding.swTeam.setOnRefreshListener {
-            fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.loadWithoutProgressBar)
+            fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.vLoadWithoutProgressBar)
         }
         searchTeam()
     }
@@ -83,7 +83,7 @@ class TeamFragment : Fragment(), TeamInterface, SelectedTeamInterface {
         arrTeamList.clear()
         arrTeamList.addAll(teamList)
         when(typeLoading){
-            ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.vLoadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
             else -> {
                 teamAdapter.notifyDataSetChanged()
                 hideUI(ConstantObject.vGlobalUI)

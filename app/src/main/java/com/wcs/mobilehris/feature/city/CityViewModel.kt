@@ -52,7 +52,7 @@ class CityViewModel (private val context : Context, private val cityInterface: C
                 cityInterface.showUI(ConstantObject.vGlobalUI)
                 cityInterface.hideUI(ConstantObject.vRecylerViewUI)
                 when(typeLoading){
-                    ConstantObject.loadWithProgressBar -> cityInterface.hideUI(ConstantObject.vProgresBarUI)
+                    ConstantObject.vLoadWithProgressBar -> cityInterface.hideUI(ConstantObject.vProgresBarUI)
                     else -> cityInterface.onHideSwipeRefreshCity()
                 }
                 cityInterface.onErrorMessage(context.getString(R.string.no_data_found), ConstantObject.vToastInfo)

@@ -1,7 +1,6 @@
 package com.wcs.mobilehris.feature.requesttravellist
 
 import android.content.Context
-import android.content.Intent
 import android.os.Handler
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -20,7 +19,7 @@ class RequestTravelListViewModel (private val context : Context, private val req
     }
 
     private fun getTravelData(typeLoading : Int){
-        when(typeLoading){ConstantObject.loadWithProgressBar -> requestTravalListInterface.showUI(ConstantObject.vProgresBarUI) }
+        when(typeLoading){ConstantObject.vLoadWithProgressBar -> requestTravalListInterface.showUI(ConstantObject.vProgresBarUI) }
         requestTravalListInterface.hideUI(ConstantObject.vRecylerViewUI)
         requestTravalListInterface.showUI(ConstantObject.vGlobalUI)
 
@@ -45,7 +44,7 @@ class RequestTravelListViewModel (private val context : Context, private val req
                 requestTravalListInterface.showUI(ConstantObject.vGlobalUI)
                 requestTravalListInterface.hideUI(ConstantObject.vRecylerViewUI)
                 when(typeLoading){
-                    ConstantObject.loadWithProgressBar -> requestTravalListInterface.hideUI(ConstantObject.vProgresBarUI)
+                    ConstantObject.vLoadWithProgressBar -> requestTravalListInterface.hideUI(ConstantObject.vProgresBarUI)
                     else -> requestTravalListInterface.onHideSwipeTravelList()
                 }
                 requestTravalListInterface.onErrorMessage(context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
