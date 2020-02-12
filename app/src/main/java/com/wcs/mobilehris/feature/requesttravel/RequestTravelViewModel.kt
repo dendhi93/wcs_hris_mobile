@@ -206,4 +206,7 @@ class RequestTravelViewModel (private val context : Context, private val request
         }
         return true
     }
+
+    fun clickSetTravel(){}
+    fun clickSetDestination(){}
 }

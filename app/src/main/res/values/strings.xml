@@ -108,5 +108,7 @@
     <string name="round_trip">Round Trip</string>
     <string name="one_way">One Way</string>
     <string name="add_destination">Add Destination</string>
+    <string name="set_travel">Set Travel</string>
+    <string name="acommodation">Transport and Accommodation</string>
 
 </resources>
