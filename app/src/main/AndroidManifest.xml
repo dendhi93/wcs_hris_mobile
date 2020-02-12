@@ -46,7 +46,6 @@
             android:label="@string/req_travel_hist_activity" />
         <activity
             android:name=".feature.confirmtask.ConfirmTaskActivity"
-            android:label="@string/confirm_task_activity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".feature.team.TeamActivity"

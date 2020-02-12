@@ -61,12 +61,6 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
         holder.imgBCustomPlan.setOnClickListener {
             showPopUp(it, model)
         }
-        holder.btnPlan.setOnClickListener{
-            val intent = Intent(_context, ConfirmTaskActivity::class.java)
-            intent.putExtra(ConfirmTaskActivity.intentExtraTaskId, model.taskId)
-            intent.putExtra(ConfirmTaskActivity.intentExtraChargeCode, model.contentChargeCode)
-            _context.startActivity(intent)
-        }
         val flagTask = model.flagTask.trim()
         holder.btnPlan.text = flagTask
         when(flagTask){
@@ -78,10 +72,25 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
                 holder.btnPlan.isEnabled = true
                 holder.btnPlan.setBackgroundResource(R.drawable.bg_light_green_button)
             }
+            ConstantObject.vWaitingTask ->{
+                holder.btnPlan.isEnabled = true
+                holder.btnPlan.setBackgroundResource(R.drawable.bg_green_button)
+            }
             else -> {
                 holder.btnPlan.isEnabled = false
                 holder.btnPlan.setBackgroundResource(R.drawable.bg_green_button)
             }
+        }
+        holder.btnPlan.setOnClickListener{
+            val intent = Intent(_context, ConfirmTaskActivity::class.java)
+            intent.putExtra(ConfirmTaskActivity.intentExtraTaskId, model.taskId)
+            intent.putExtra(ConfirmTaskActivity.intentExtraChargeCode, model.contentChargeCode)
+            //VALIDATE click from fragment confirm / completed
+            when(flagTask){
+                ConstantObject.vWaitingTask ->{ intent.putExtra(ConstantObject.extra_intent, ConstantObject.vEditTask) }
+                ConstantObject.vConfirmTask ->{ intent.putExtra(ConstantObject.extra_intent, ConstantObject.vConfirmTask) }
+            }
+            _context.startActivity(intent)
         }
     }
 

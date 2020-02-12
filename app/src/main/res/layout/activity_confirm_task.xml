@@ -426,7 +426,7 @@
                         android:onClick="@{() -> viewModel.onClickConfirm()}"
                         android:enabled="@{!viewModel.isProgressConfirmTask }"
                         android:layout_marginBottom="@dimen/spacing_tiny"
-                        android:text="@string/confirm_save"
+                        android:text="@={viewModel.stButtonName}"
                         android:background="@drawable/bg_blue_button"/>
                 </LinearLayout>
             </ScrollView>

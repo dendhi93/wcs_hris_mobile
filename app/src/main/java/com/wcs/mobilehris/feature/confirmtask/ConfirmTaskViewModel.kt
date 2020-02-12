@@ -23,6 +23,7 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
     val stConfirmPM = ObservableField<String>("")
     val stConfirmActHour = ObservableField<String>("")
     val stConfirmActDescription = ObservableField<String>("")
+    val stButtonName = ObservableField<String>("")
     val isHiddenSolmanNoTv = ObservableField<Boolean>(false)
     val isHiddenPMTv = ObservableField<Boolean>(false)
     private var stTypeTask : String? = ""

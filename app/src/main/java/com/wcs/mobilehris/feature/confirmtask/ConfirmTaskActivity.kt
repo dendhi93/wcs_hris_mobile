@@ -16,6 +16,7 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
     private lateinit var activityConfirmBinding : ActivityConfirmTaskBinding
     private var intentConfirmTaskId : String? = ""
     private var intentConfirmTaskChargeCode : String? = ""
+    private var intentConfirmTaskFromMenu : String? = ""
     private var confirmActiveDialog : Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,12 +28,15 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
     override fun onStart() {
         super.onStart()
         activityConfirmBinding.viewModel?.isProgressConfirmTask?.set(false)
+        intentConfirmTaskId = intent.getStringExtra(intentExtraTaskId)
+        intentConfirmTaskChargeCode = intent.getStringExtra(intentExtraChargeCode)
+        intentConfirmTaskFromMenu = intent.getStringExtra(ConstantObject.extra_intent)
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
+            it.title = intentConfirmTaskFromMenu.toString().trim()
         }
-        intentConfirmTaskId = intent.getStringExtra(intentExtraTaskId)
-        intentConfirmTaskChargeCode = intent.getStringExtra(intentExtraChargeCode)
+        activityConfirmBinding.viewModel?.stButtonName?.set(intentConfirmTaskFromMenu.toString().trim())
         when{
             intentConfirmTaskId != "" && intentConfirmTaskChargeCode != "" ->{
                 val confirmTaskSplitChargeCode = intentConfirmTaskChargeCode.toString().trim().split("|")
