@@ -28,6 +28,7 @@ class RequestTravelViewModel (private val context : Context, private val request
     val stChargeCode = ObservableField<String>("")
     val stTransTypeCode = ObservableField<String>("")
     val isAddDestination = ObservableField<Boolean>(false)
+    val isTravelSelected = ObservableField<Boolean>(true)
     private val listSelectedTeam = mutableListOf<FriendModel>()
     private lateinit var mTransTypeDao : TransTypeDao
     private lateinit var mChargeCodeDao : ChargeCodeDao
@@ -207,6 +208,12 @@ class RequestTravelViewModel (private val context : Context, private val request
         return true
     }
 
-    fun clickSetTravel(){}
-    fun clickSetDestination(){}
+    fun clickSetTravel(){
+        isTravelSelected.set(true)
+        requestTravelInterface.onChangeButtonBackground(true)
+    }
+    fun clickSetDestination(){
+        isTravelSelected.set(false)
+        requestTravelInterface.onChangeButtonBackground(false)
+    }
 }

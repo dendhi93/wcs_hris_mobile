@@ -19,4 +19,5 @@ interface RequestTravelInterface : DialogInterface, ActionInterface {
     fun onIntentMultipleDestination()
     fun onClearListTeam()
     fun onHideSoftKeyboard()
+    fun onChangeButtonBackground(isTravelSelected : Boolean)
 }

@@ -33,6 +33,8 @@ class ApprovalViewModel(private val _context : Context, private val _approvalInt
         listApprovalMenu.add(_approvalModel)
         _approvalModel = ApprovalModel("Travel Claim", R.mipmap.ic_edit_pen, 10, "Last request by Jean less than two hour ago")
         listApprovalMenu.add(_approvalModel)
+        _approvalModel = ApprovalModel("Activity", R.mipmap.ic_checklist_64, 20, "Last request by Jean less than two hour ago")
+        listApprovalMenu.add(_approvalModel)
 
         Handler().postDelayed({
             _approvalInterface.loadApprovalMenu(listApprovalMenu)

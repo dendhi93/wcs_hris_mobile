@@ -2,6 +2,7 @@ package com.wcs.mobilehris.feature.requesttravel
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
@@ -32,6 +33,7 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
 
+@Suppress("DEPRECATION")
 class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, SelectedFriendInterface {
     private lateinit var activityRequestTravelBinding : ActivityRequestTravelBinding
     private lateinit var travelAdapter : CustomDetailTaskAdapter
@@ -66,6 +68,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
         travelAdapter.initSelectedTeamCallback(this)
         activityRequestTravelBinding.rcReqTravel.adapter = travelAdapter
         travelRequestDao = WcsHrisApps.database.travelReqDao()
+        onChangeButtonBackground(true)
     }
 
     private fun initRadioTravel(){
@@ -241,6 +244,23 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
     override fun onHideSoftKeyboard() {
         val inputManager:InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+
+    override fun onChangeButtonBackground(isTravelSelected: Boolean) {
+        when{
+            isTravelSelected -> {
+                activityRequestTravelBinding.btnCreateTaskSetTravel.setBackgroundColor(resources.getColor(R.color.colorBlueMantab))
+                activityRequestTravelBinding.btnCreateTaskSetTravel.setTextColor(Color.WHITE)
+                activityRequestTravelBinding.btnCreateTaskAddAccomodation.setBackgroundColor(resources.getColor(R.color.colorWhite))
+                activityRequestTravelBinding.btnCreateTaskAddAccomodation.setTextColor(Color.BLACK)
+            }
+            else -> {
+                activityRequestTravelBinding.btnCreateTaskSetTravel.setBackgroundColor(resources.getColor(R.color.colorWhite))
+                activityRequestTravelBinding.btnCreateTaskSetTravel.setTextColor(Color.BLACK)
+                activityRequestTravelBinding.btnCreateTaskAddAccomodation.setBackgroundColor(resources.getColor(R.color.colorBlueMantab))
+                activityRequestTravelBinding.btnCreateTaskAddAccomodation.setTextColor(Color.WHITE)
+            }
+        }
     }
 
 
