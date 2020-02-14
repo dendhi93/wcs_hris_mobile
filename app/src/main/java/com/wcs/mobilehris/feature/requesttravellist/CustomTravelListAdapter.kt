@@ -27,10 +27,9 @@ class CustomTravelListAdapter  (private val context : Context, private val reqTr
         val finalTravel = model.depart.trim() + " - " +model.arrival.trim()
         val finalTime = model.dateFrom.trim() + " - " + model.dateInto.trim()
         val isAccepted = model.statusTravel
-        val isOneWayTravel = model.isOneWay
         holder.imgCustom.visibility = View.GONE
         holder.imgVIconIsConflick.visibility = View.VISIBLE
-        holder.imgVWayTravel.visibility = View.VISIBLE
+        holder.imgVWayTravel.visibility = View.GONE
         holder.tvTravelDestination.text = finalTravel
         holder.tvTravelTime.text = finalTime
         holder.cvCustomTravel.setOnClickListener {
@@ -43,10 +42,6 @@ class CustomTravelListAdapter  (private val context : Context, private val reqTr
             "True" -> holder.imgVIconIsConflick.setImageResource(R.mipmap.ic_checklist_48)
             "Waiting" -> holder.imgVIconIsConflick.setImageResource(R.mipmap.ic_waiting)
             else -> holder.imgVIconIsConflick.setImageResource(R.mipmap.ic_block_32)
-        }
-        when{
-            isOneWayTravel -> holder.imgVWayTravel.setImageResource(R.mipmap.ic_left_arrow_48)
-            else -> holder.imgVWayTravel.setImageResource(R.mipmap.ic_refresh_48)
         }
     }
 

@@ -214,9 +214,7 @@
                                     android:inputType="text"
                                     android:maxLines="1"
                                     android:textSize="@dimen/text_fields_text_size" />
-
                             </com.google.android.material.textfield.TextInputLayout>
-
                         </LinearLayout>
 
                         <com.google.android.material.textfield.TextInputLayout

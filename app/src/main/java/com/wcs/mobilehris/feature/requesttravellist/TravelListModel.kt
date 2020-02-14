@@ -6,6 +6,5 @@ data class TravelListModel (
     val arrival : String,
     val dateFrom : String,
     val dateInto : String,
-    val statusTravel : String,
-    val isOneWay : Boolean
+    val statusTravel : String
 )

@@ -25,13 +25,13 @@ class RequestTravelListViewModel (private val context : Context, private val req
 
         val listTravelList = mutableListOf<TravelListModel>()
         var travelModel = TravelListModel("01","Jakarta",
-            "Malaysia","27/01/2020","31/01/2020","Waiting", false)
+            "Malaysia","27/01/2020","31/01/2020","Waiting")
         listTravelList.add(travelModel)
         travelModel = TravelListModel("02","Jakarta",
-            "Solo","03/02/2020","14/02/2020","True", true)
+            "Solo","03/02/2020","14/02/2020","True")
         listTravelList.add(travelModel)
         travelModel = TravelListModel("02","Solo",
-            "Medan","17/02/2020","28/02/2020","False", false)
+            "Medan","17/02/2020","28/02/2020","False")
         listTravelList.add(travelModel)
 
         when{

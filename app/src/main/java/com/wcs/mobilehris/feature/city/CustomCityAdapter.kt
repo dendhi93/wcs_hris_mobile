@@ -31,7 +31,7 @@ class CustomCityAdapter (private val context : Context, private var cityMutableL
         holder.tvCity.text = model.cityDescription.trim()
         holder.tvCountry.text = model.countryDescription.trim()
         holder.cvCustomCity.setOnClickListener {
-            selectedCityInterface?.selectedItemCity(model)
+            selectedCityInterface.selectedItemCity(model)
         }
     }
 
