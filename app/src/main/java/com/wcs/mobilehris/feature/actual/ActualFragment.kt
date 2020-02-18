@@ -32,9 +32,9 @@ class ActualFragment : Fragment(), ActualInterface {
         actualFragmentBinding.rcActual.setHasFixedSize(true)
         actualAdapter = CustomTaskAdapter(requireContext(), arrActualList)
         actualFragmentBinding.rcActual.adapter = actualAdapter
-        actualFragmentBinding.viewModel?.initActual(ConstantObject.loadWithProgressBar)
+        actualFragmentBinding.viewModel?.initActual(ConstantObject.vLoadWithProgressBar)
         actualFragmentBinding.swActual.setOnRefreshListener {
-            actualFragmentBinding.viewModel?.initActual(ConstantObject.loadWithoutProgressBar)
+            actualFragmentBinding.viewModel?.initActual(ConstantObject.vLoadWithoutProgressBar)
         }
     }
 
@@ -47,7 +47,7 @@ class ActualFragment : Fragment(), ActualInterface {
         showUI(ConstantObject.vRecylerViewUI)
 
         when(typeLoading){
-            ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.vLoadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
             else -> onHideSwipeRefresh()
         }
     }

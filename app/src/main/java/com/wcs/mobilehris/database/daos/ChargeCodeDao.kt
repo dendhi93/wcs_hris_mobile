@@ -15,8 +15,8 @@ interface ChargeCodeDao{
     @Query("SELECT count(id) FROM mCharge_code")
     fun getCountChargeCode() : Int
 
-    @Query("SELECT mCompanyName FROM mCharge_code WHERE mChargeCodeNo LIKE :title")
-    fun getCompName(title : String) : String
+    @Query("SELECT * FROM mCharge_code WHERE mChargeCodeNo LIKE :title")
+    fun getDetailChargeCode(title : String) : List<ChargeCodeEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertChargeCode(chargeCodeEntity: ChargeCodeEntity)

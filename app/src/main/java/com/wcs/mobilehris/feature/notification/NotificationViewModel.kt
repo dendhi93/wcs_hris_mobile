@@ -14,10 +14,8 @@ class NotificationViewModel(private var context : Context, private var notificat
 
     fun validateNotification(){
         when{
-            !ConnectionObject.isNetworkAvailable(context) -> {
-                notificationInterface.onAlertNotif(context.getString(R.string.alert_no_connection),
+            !ConnectionObject.isNetworkAvailable(context) -> notificationInterface.onAlertNotif(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, NotificationFragment.ALERT_NOTIF_NO_CONNECTION)
-            }
             else -> getNotifData()
         }
     }
@@ -50,7 +48,6 @@ class NotificationViewModel(private var context : Context, private var notificat
                 isVisibleUI.set(false)
             }
         }
-
     }
 
 }

@@ -25,8 +25,8 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     val isHiddenRv = ObservableField<Boolean>(false)
     val isHiddenSolmanTv = ObservableField<Boolean>(false)
     val isHiddenPMTv = ObservableField<Boolean>(false)
-    val isEnableCompanyNameTv = ObservableField<Boolean>(false)
-    val stTypeOnsite = ObservableField<String>("")
+    val isEnableCompanyNameTxt = ObservableField<Boolean>(false)
+    val isEnablePMTxt = ObservableField<Boolean>(false)
     val stDateTask = ObservableField<String>("")
     val stDateTimeFrom = ObservableField<String>("")
     val stDateTimeInto = ObservableField<String>("")
@@ -107,10 +107,8 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
 
     fun validateTask(){
         when{
-            !ConnectionObject.isNetworkAvailable(context) -> {
-                createTaskInterface.onAlertCreateTask(context.getString(R.string.alert_no_connection),
+            !ConnectionObject.isNetworkAvailable(context) -> createTaskInterface.onAlertCreateTask(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, CreateTaskActivity.ALERT_CREATE_TASK_NO_CONNECTION)
-            }
             !validateSubmitTask() -> createTaskInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
             else -> createTaskInterface.onAlertCreateTask(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, CreateTaskActivity.ALERT_CREATE_TASK_CONFIRMATION)
@@ -126,33 +124,16 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
         }
     }
 
-    fun findCompany(code : String){
+    fun findDataCreateTask(code : String){
         mChargeCode = code
-        var compName : String
-        doAsync {
-            compName  = mChargeCodeDao.getCompName(code.trim())
-            uiThread {
-                when{
-                    compName.isNotEmpty() -> {
-                        isEnableCompanyNameTv.set(false)
-                        stCompanyName.set(compName)
-                    }
-                    else ->{
-                        isEnableCompanyNameTv.set(true)
-                        stCompanyName.set("")
-                    }
-                }
-            }
-        }
-    }
-
-    fun getTypeTask(selectedType : String){
-        when(selectedType.trim()){
-            ConstantObject.projectTask -> {
+        when(code.substring(0, 1)){
+            "F" -> {
+                mTypeTask = ConstantObject.vProjectTask
                 isHiddenSolmanTv.set(true)
                 isHiddenPMTv.set(false)
             }
-            ConstantObject.supportTask -> {
+            "E" -> {
+                mTypeTask = ConstantObject.vSupportTask
                 isHiddenSolmanTv.set(false)
                 isHiddenPMTv.set(true)
             }
@@ -161,7 +142,37 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                 isHiddenPMTv.set(true)
             }
         }
-        mTypeTask = selectedType
+
+        doAsync {
+            val listDtlChargeCode  = mChargeCodeDao.getDetailChargeCode(code.trim())
+            uiThread {
+                when{
+                    listDtlChargeCode.isNotEmpty() ->{
+                        val compName = listDtlChargeCode[0].mCompanyName.trim()
+                        when{
+                            compName.isNotEmpty() -> {
+                                stCompanyName.set(compName)
+                                isEnableCompanyNameTxt.set(false)
+                            }
+                            else -> isEnableCompanyNameTxt.set(true)
+                        }
+
+                        when(mTypeTask){
+                            ConstantObject.vProjectTask -> {
+                                val stDataPM = listDtlChargeCode[0].mProjectManager.trim()
+                                when{
+                                    stDataPM.isNotEmpty() -> {
+                                        stPMTask.set(stDataPM.trim())
+                                        isEnablePMTxt.set(false)
+                                    }
+                                    else -> isEnablePMTxt.set(true)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     fun validateTeam(itemUserId : String, itemName : String){
@@ -182,10 +193,9 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                         || stDateTask.get().equals("")
                         || stContactPerson.get().equals("")
                         || stDescriptionTask.get().equals("")
-                        || stTypeOnsite.get().equals("")
                         || mTypeTask == "" -> return false
-            mTypeTask == ConstantObject.supportTask -> { when{stSolmanNoTask.get().equals("") -> return false } }
-            mTypeTask == ConstantObject.projectTask -> { when{stPMTask.get().equals("") -> return false } }
+            mTypeTask == ConstantObject.vSupportTask -> { when{stSolmanNoTask.get().equals("") -> return false } }
+            mTypeTask == ConstantObject.vProjectTask -> { when{stPMTask.get().equals("") -> return false } }
         }
         return true
     }

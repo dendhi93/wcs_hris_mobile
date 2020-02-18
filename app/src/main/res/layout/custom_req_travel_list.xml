@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_custom_reqTravel"
+    app:cardCornerRadius="10dp"
+    android:layout_marginStart="@dimen/spacing_tiny_2"
+    android:layout_marginEnd="@dimen/spacing_tiny_2"
+    app:cardElevation="1dp"
+    android:padding="1dp"
+    android:elevation="2dp"
+    app:cardMaxElevation="1dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/cardview_light_background"
+    tools:ignore="PrivateResource"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_small">
+
+        <LinearLayout
+            android:id="@+id/ln_customReqTravel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_toStartOf="@+id/imgV_customReq"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_tiny_3"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_margin="@dimen/spacing_tiny"
+                    android:layout_width="@dimen/padding_medium2"
+                    android:layout_height="@dimen/padding_medium2"
+                    android:src="@mipmap/ic_marker"/>
+                <TextView
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dark_background"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_customReqTravel_city_name"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/spacing_tiny"
+                    android:layout_width="@dimen/padding_medium2"
+                    android:layout_height="@dimen/padding_medium2"
+                    android:src="@mipmap/ic_time"/>
+
+                <TextView
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dark_background"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_customReqTravel_checkInCheckOut"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/spacing_tiny"
+                    android:layout_width="@dimen/padding_medium2"
+                    android:layout_height="@dimen/padding_medium2"
+                    android:src="@mipmap/ic_train"/>
+
+                <TextView
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dark_background"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_customReqTravel_transType"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_margin="@dimen/spacing_tiny"
+                    android:layout_width="@dimen/padding_medium2"
+                    android:layout_height="@dimen/padding_medium2"
+                    android:src="@mipmap/ic_factory"/>
+                <TextView
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dark_background"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_customReqTravel_hotelName"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/spacing_tiny"
+            android:id="@+id/imgV_customReqTravel"
+            android:src="@mipmap/ic_trash_24"
+            android:layout_width="@dimen/icon_medium"
+            android:contentDescription="@string/content_description_image"
+            android:layout_centerVertical="true"
+            android:layout_height="@dimen/icon_medium"/>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

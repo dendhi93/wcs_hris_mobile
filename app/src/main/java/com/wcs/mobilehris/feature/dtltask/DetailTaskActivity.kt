@@ -17,7 +17,7 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
     private lateinit var dtlTaskAdapter : CustomDetailTaskAdapter
     private var arrTeamTaskList = ArrayList<FriendModel>()
     private var intentTaskId : String? = ""
-    private var intentTaskTypeTask : String? = ""
+    private var intentDtlTaskChargeCode : String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,16 +29,16 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
     override fun onStart() {
         super.onStart()
         dtlTaskBinding.rcDtlTask.setHasFixedSize(true)
-        dtlTaskAdapter = CustomDetailTaskAdapter(this, arrTeamTaskList)
+        dtlTaskAdapter = CustomDetailTaskAdapter(this, arrTeamTaskList, ConstantObject.vNotCreateEdit)
         dtlTaskBinding.rcDtlTask.adapter = dtlTaskAdapter
         intentTaskId = intent.getStringExtra(extraTaskId)
-        intentTaskTypeTask = intent.getStringExtra(extraTypeTask)
+        intentDtlTaskChargeCode = intent.getStringExtra(extraCode)
 
         when{
-            intentTaskId != "" && intentTaskTypeTask != "" ->{
-                dtlTaskBinding.viewModel?.initDataDtl(intentTaskId.toString().trim(), intentTaskTypeTask.toString().trim())
+            intentTaskId != "" && intentDtlTaskChargeCode != "" ->{
+                val dtlTaskSplitChargeCode = intentDtlTaskChargeCode.toString().trim().split("|")
+                dtlTaskBinding.viewModel?.initDataDtl(intentTaskId.toString().trim(), dtlTaskSplitChargeCode[0].trim())
                 supportActionBar?.title = getString(R.string.dtl_task_activity)
-                supportActionBar?.subtitle = intentTaskTypeTask.toString().trim()
             }
         }
         supportActionBar?.let {
@@ -77,16 +77,6 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
         }
     }
 
-    override fun onSetCheckedRadio(isOnsite: Boolean) {
-        dtlTaskBinding.rgDtlTaskIsOnsite.clearCheck()
-        when(isOnsite){
-            true -> dtlTaskBinding.rbDtltaskOnSite.isChecked = true
-            else -> dtlTaskBinding.rbDtltaskOffSite.isChecked = true
-        }
-        dtlTaskBinding.rbDtltaskOnSite.isEnabled = false
-        dtlTaskBinding.rbDtltaskOffSite.isEnabled = false
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -100,7 +90,7 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
     companion object{
         const val ALERT_DTL_TASK_NO_CONNECTION = 1
         const val extraTaskId = "extra_task_id"
-        const val extraTypeTask = "extra_type_task"
+        const val extraCode = "extra_charge_code"
     }
 }
 

@@ -32,9 +32,9 @@ class CompletedFragment : Fragment(), CompletedInterface {
         fragmentCompletedBinding.rcCompleted.setHasFixedSize(true)
         completedAdapter = CustomTaskAdapter(requireContext(), arrCompletedList)
         fragmentCompletedBinding.rcCompleted.adapter = completedAdapter
-        fragmentCompletedBinding.viewModel?.initCompleted(ConstantObject.loadWithProgressBar)
+        fragmentCompletedBinding.viewModel?.initCompleted(ConstantObject.vLoadWithProgressBar)
         fragmentCompletedBinding.swCompleted.setOnRefreshListener {
-            fragmentCompletedBinding.viewModel?.initCompleted(ConstantObject.loadWithoutProgressBar)
+            fragmentCompletedBinding.viewModel?.initCompleted(ConstantObject.vLoadWithoutProgressBar)
         }
     }
 
@@ -46,7 +46,7 @@ class CompletedFragment : Fragment(), CompletedInterface {
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
         when(typeLoading){
-            ConstantObject.loadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
+            ConstantObject.vLoadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
             else -> onHideSwipeRefresh()
         }
     }

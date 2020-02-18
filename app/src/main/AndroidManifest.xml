@@ -34,8 +34,10 @@
         android:roundIcon="@mipmap/ic_hris_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.wcs.mobilehris.feature.multipletrip.MultipleTripActivity"
-            android:label="@string/list_destination_activity"/>
+        <activity android:name=".feature.dtlreqtravel.DtlRequestTravelActivity"></activity>
+        <activity
+            android:name=".feature.multipletrip.MultipleTripActivity"
+            android:label="@string/list_destination_activity" />
         <activity
             android:name=".feature.city.CityActivity"
             android:label="@string/search_city_activity" />
@@ -47,7 +49,6 @@
             android:label="@string/req_travel_hist_activity" />
         <activity
             android:name=".feature.confirmtask.ConfirmTaskActivity"
-            android:label="@string/confirm_task_activity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".feature.team.TeamActivity"

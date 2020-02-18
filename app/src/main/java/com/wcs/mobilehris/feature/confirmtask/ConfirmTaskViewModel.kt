@@ -10,6 +10,7 @@ import com.wcs.mobilehris.util.ConstantObject
 
 class ConfirmTaskViewModel (private val context : Context, private val confirmTaskInterface: ConfirmTaskInterface) : ViewModel(){
     val isProgressConfirmTask = ObservableField<Boolean>(false)
+    val isHideCardView = ObservableField<Boolean>(false)
     val isOnSiteConfirmTask = ObservableField<Boolean>(false)
     val stConfirmChargeCode = ObservableField<String>("")
     val stConfirmCompName = ObservableField<String>("")
@@ -22,6 +23,7 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
     val stConfirmPM = ObservableField<String>("")
     val stConfirmActHour = ObservableField<String>("")
     val stConfirmActDescription = ObservableField<String>("")
+    val stButtonName = ObservableField<String>("")
     val isHiddenSolmanNoTv = ObservableField<Boolean>(false)
     val isHiddenPMTv = ObservableField<Boolean>(false)
     private var stTypeTask : String? = ""
@@ -38,26 +40,31 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
         }
     }
 
-    fun onLoadConfirmData(intentTaskId : String, intentTypeTask : String){
+    fun onLoadConfirmData(intentTaskId : String, intentChargeCode : String){
         stIntentTaskId = intentTaskId
         isProgressConfirmTask.set(true)
-        stTypeTask = intentTypeTask
+        isHideCardView.set(true)
         Handler().postDelayed({
-            stConfirmChargeCode.set("A-1003-096")
+            stConfirmChargeCode.set(intentChargeCode.trim())
             stConfirmCompName.set("PT ABCD")
             stConfirmCP.set("Michael Saputra")
             stConfirmTaskDate.set("17/01/2020")
             stConfirmTaskTimeFrom.set("08:00")
             stConfirmTaskTimeInto.set("17:00")
             stConfirmDescription.set("Buat Mobile Hris")
-            confirmTaskInterface.onCheckConfirmRadio(true)
-            when(intentTypeTask){
-                ConstantObject.projectTask -> {
+            //FIND PREFIX CHARGE CODE and decide type project substring first in intentChargeCode
+            when(intentChargeCode.substring(0, 1)){
+                "F" -> stTypeTask = ConstantObject.vProjectTask
+                "E" -> stTypeTask = ConstantObject.vSupportTask
+                "A" -> stTypeTask = ConstantObject.vPreSalesTask
+            }
+            when(stTypeTask){
+                ConstantObject.vProjectTask -> {
                     isHiddenPMTv.set(false)
                     isHiddenSolmanNoTv.set(true)
                     stConfirmPM.set("Edo Saputra")
                 }
-                ConstantObject.supportTask -> {
+                ConstantObject.vSupportTask -> {
                     isHiddenPMTv.set(true)
                     isHiddenSolmanNoTv.set(false)
                     stConfirmSolmanNo.set("A001-001")
@@ -68,13 +75,14 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
                 }
             }
             isProgressConfirmTask.set(false)
+            isHideCardView.set(false)
         }, 2000)
     }
 
     private fun isSubmitConfirm() : Boolean {
-        if(stTypeTask == ConstantObject.preSalesTask ||
-            stTypeTask == ConstantObject.prospectTask ||
-            stTypeTask == ConstantObject.projectTask){
+        if(stTypeTask == ConstantObject.vPreSalesTask ||
+            stTypeTask == ConstantObject.vProspectTask ||
+            stTypeTask == ConstantObject.vProjectTask){
                 if(stConfirmActHour.get() == "" || stConfirmActDescription.get() == "") return false
         }else {
             if(stConfirmActHour.get() == "") return false

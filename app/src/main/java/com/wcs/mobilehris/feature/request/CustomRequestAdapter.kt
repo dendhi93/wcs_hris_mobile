@@ -18,7 +18,7 @@ class CustomRequestAdapter(private val _context : Context, private val requestLi
     RecyclerView.Adapter<CustomRequestAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_list_menu,parent,false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_global_list,parent,false))
     }
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){

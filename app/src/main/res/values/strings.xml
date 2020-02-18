@@ -39,6 +39,7 @@
     <string name="empty_data">Empty Data</string>
     <string name="no_data_found">No Data Found</string>
     <string name="btn_plan">Plan</string>
+    <string name="content_description_image">""</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -48,7 +49,7 @@
     <string name="dtl_task_activity">Detail Activity</string>
     <string name="create_task_activity">Create Activity</string>
     <string name="search_team_activity">Search Team</string>
-    <string name="confirm_task_activity">Confirm Task</string>
+    <string name="confirm_task_activity">Confirm Activity</string>
     <string name="req_travel_hist_activity">Request Travel History</string>
     <string name="req_travel_activity">Request Travel</string>
     <string name="search_city_activity">Search City</string>
@@ -85,7 +86,7 @@
     <string name="no_solman">No Solman</string>
     <string name="project_manager">Project Manager</string>
     <string name="travel_business">Travel Business</string>
-    <string name="not_travel_business">Not Travel Business</string>
+    <string name="not_travel_business">Non Travel Business</string>
     <string name="address">Address</string>
 
     <!--create task content form-->
@@ -97,12 +98,23 @@
     <string name="activity_description">Action</string>
     <string name="confirm_save">Confirm</string>
 
+    <!--detail req travel content form-->
+    <string name="reject_save">Reject</string>
+
     <!--req Travel content form-->
     <string name="depart_date">Depart Date</string>
     <string name="return_date">Return Date</string>
+    <string name="hotel">Hotel</string>
+    <string name="hotel_name">Hotel Name</string>
+    <string name="checkIn">Check In</string>
+    <string name="checkOut">Check Out</string>
     <string name="multiple_destination">Multiple Trip</string>
     <string name="round_trip">Round Trip</string>
     <string name="one_way">One Way</string>
-    <string name="add_destination">Add Destination</string>
+    <string name="add_destination">Add City</string>
+    <string name="set_travel">Set Travel</string>
+    <string name="transport">Trans and Acommodation</string>
+    <string name="save">Save</string>
+    <string name="edit_travel">Edit Set Travel</string>
 
 </resources>

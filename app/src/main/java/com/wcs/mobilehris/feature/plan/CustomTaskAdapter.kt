@@ -14,7 +14,6 @@ import com.wcs.mobilehris.R
 import com.wcs.mobilehris.feature.confirmtask.ConfirmTaskActivity
 import com.wcs.mobilehris.feature.dtltask.DetailTaskActivity
 import com.wcs.mobilehris.util.ConstantObject
-import com.wcs.mobilehris.util.MessageUtils
 
 class CustomTaskAdapter (private val _context : Context, private val planList : MutableList<ContentTaskModel>):
     RecyclerView.Adapter<CustomTaskAdapter.ViewHolder>(){
@@ -32,11 +31,13 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
         val stActionHour = model.actHourTaken
         val isCompleted = model.isCompleted
         val stActHour: String?
+        val stSplitChargeCode = model.contentChargeCode.trim().split("|")
+        val finalChargeCode = stSplitChargeCode[0]+"\n"+stSplitChargeCode[1]
         holder.tvCreatedUser.text = stCreated
         holder.tvCustomCompanyName.text = model.companyName.trim()
         holder.tvCustomTime.text = stTaskTime.trim()
         holder.tvCustomDate.text = model.taskDate.trim()
-        holder.tvCustomTitle.text = model.taskType.trim()
+        holder.tvCustomTitle.text = finalChargeCode.trim()
         when{
             stActionHour > 0 -> {
                 stActHour = "$stActionHour Hour "
@@ -60,12 +61,6 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
         holder.imgBCustomPlan.setOnClickListener {
             showPopUp(it, model)
         }
-        holder.btnPlan.setOnClickListener{
-            val intent = Intent(_context, ConfirmTaskActivity::class.java)
-            intent.putExtra(ConfirmTaskActivity.intentExtraTaskId, model.taskId)
-            intent.putExtra(ConfirmTaskActivity.intentExtraTypeTask, model.taskType)
-            _context.startActivity(intent)
-        }
         val flagTask = model.flagTask.trim()
         holder.btnPlan.text = flagTask
         when(flagTask){
@@ -77,10 +72,25 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
                 holder.btnPlan.isEnabled = true
                 holder.btnPlan.setBackgroundResource(R.drawable.bg_light_green_button)
             }
+            ConstantObject.vWaitingTask ->{
+                holder.btnPlan.isEnabled = true
+                holder.btnPlan.setBackgroundResource(R.drawable.bg_green_button)
+            }
             else -> {
                 holder.btnPlan.isEnabled = false
                 holder.btnPlan.setBackgroundResource(R.drawable.bg_green_button)
             }
+        }
+        holder.btnPlan.setOnClickListener{
+            val intent = Intent(_context, ConfirmTaskActivity::class.java)
+            intent.putExtra(ConfirmTaskActivity.intentExtraTaskId, model.taskId)
+            intent.putExtra(ConfirmTaskActivity.intentExtraChargeCode, model.contentChargeCode)
+            //VALIDATE click from fragment confirm / completed
+            when(flagTask){
+                ConstantObject.vWaitingTask ->{ intent.putExtra(ConstantObject.extra_intent, ConstantObject.vEditTask) }
+                ConstantObject.vConfirmTask ->{ intent.putExtra(ConstantObject.extra_intent, ConstantObject.vConfirmTask) }
+            }
+            _context.startActivity(intent)
         }
     }
 
@@ -107,7 +117,7 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
                 R.id.mnu_custom_list_task_dtl ->{
                     val intent = Intent(_context, DetailTaskActivity::class.java)
                     intent.putExtra(DetailTaskActivity.extraTaskId, model.taskId)
-                    intent.putExtra(DetailTaskActivity.extraTypeTask, model.taskType)
+                    intent.putExtra(DetailTaskActivity.extraCode, model.contentChargeCode)
                     _context.startActivity(intent)
                 }
             }

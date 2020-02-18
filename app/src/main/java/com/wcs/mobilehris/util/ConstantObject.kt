@@ -15,25 +15,32 @@ object ConstantObject {
     const val vAlertDialogConfirmation = "Confirmation"
 
     //UI type
-    const val vButtonUI = 1
-    const val vProgresBarUI = 2
-    const val vEditTextUI = 3
+    const val vButtonUI = 10
+    const val vProgresBarUI = 20
+    const val vEditTextUI = 30
     const val vGlobalUI = 99
     const val vRecylerViewUI = 5
 
     //type flagTask Type
     const val vPlanTask = "Plan"
     const val vConfirmTask = "Confirm"
+    const val vEditTask = "Edit"
+    const val vApproved = "Approved"
+    const val vRejected = "Rejected"
+    const val vWaitingTask = "Waiting"
+    const val vNoApproval = "No Approval"
 
     //type progressBar
-    const val loadWithProgressBar = 11
-    const val loadWithoutProgressBar = 22
+    const val vLoadWithProgressBar = 11
+    const val vLoadWithoutProgressBar = 22
 
     //type task
-    const val supportTask = "Support"
-    const val projectTask = "Project"
-    const val prospectTask = "Prospect"
-    const val preSalesTask = "PreSales"
+    const val vSupportTask = "Support"
+    const val vProjectTask = "Project"
+    const val vProspectTask = "Prospect"
+    const val vPreSalesTask = "PreSales"
+    const val vCreateEdit = "createEdit"
+    const val vNotCreateEdit = "globalTask"
 
     //menu request
     const val travelMenu = "Travel"
@@ -47,4 +54,6 @@ object ConstantObject {
     const val extra_fromIntentCreateTravel = "CreateTravel"
     const val extra_fromIntentTeam = "team_fragment"
     const val extra_fromIntentProfile = "profile_activity"
+    const val extra_fromIntentDtlTravel = "Detail Travel"
+    const val extra_fromIntentConfirmTravel = "Confirm Travel"
 }

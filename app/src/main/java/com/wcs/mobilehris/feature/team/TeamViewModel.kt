@@ -13,10 +13,8 @@ class TeamViewModel (private val context : Context, private val teamInterface: T
 
     fun initDataTeam(typeOfLoading : Int){
         when{
-            !ConnectionObject.isNetworkAvailable(context) -> {
-                teamInterface.onAlertTeam(context.getString(R.string.alert_no_connection),
+            !ConnectionObject.isNetworkAvailable(context) -> teamInterface.onAlertTeam(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, TeamFragment.ALERT_TEAM_NO_CONNECTION)
-            }
             else -> getTeamData(typeOfLoading)
         }
     }
@@ -51,7 +49,7 @@ class TeamViewModel (private val context : Context, private val teamInterface: T
                 teamInterface.showUI(ConstantObject.vGlobalUI)
                 teamInterface.hideUI(ConstantObject.vRecylerViewUI)
                 when(typeLoading){
-                    ConstantObject.loadWithProgressBar -> teamInterface.hideUI(ConstantObject.vProgresBarUI)
+                    ConstantObject.vLoadWithProgressBar -> teamInterface.hideUI(ConstantObject.vProgresBarUI)
                     else -> teamInterface.onHideSwipeRefresh()
                 }
                 teamInterface.onErrorMessage(context.getString(R.string.no_data_found), ConstantObject.vToastInfo)

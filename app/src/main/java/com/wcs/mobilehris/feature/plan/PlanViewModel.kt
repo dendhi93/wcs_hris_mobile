@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.feature.createtask.CreateTaskActivity
-import com.wcs.mobilehris.feature.dtltask.DetailTaskActivity
 import com.wcs.mobilehris.util.ConstantObject
 
 class PlanViewModel (var _context : Context, var _planInterface : PlanInterface ) : ViewModel(){
@@ -24,13 +23,13 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
 
     private fun getPlanData(typeLoading : Int){
         when(typeLoading){
-            ConstantObject.loadWithProgressBar -> _planInterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.vLoadWithProgressBar -> _planInterface.showUI(ConstantObject.vProgresBarUI)
         }
 
         _planInterface.hideUI(ConstantObject.vRecylerViewUI)
         _planInterface.showUI(ConstantObject.vGlobalUI)
         val listPlan = mutableListOf<ContentTaskModel>()
-        var _planModel = ContentTaskModel("Prospect",
+        var _planModel = ContentTaskModel("A-1003-096|BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
             "Michael",
             "18/12/2019 11.24",
             "PT Sukanda",
@@ -43,7 +42,7 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
             true,
             "")
         listPlan.add(_planModel)
-        _planModel = ContentTaskModel("PreSales",
+        _planModel = ContentTaskModel("A-1003-096|BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
             "Windy",
             "19/12/2019 11.24",
             "PT Heinz ABC",
@@ -68,7 +67,7 @@ class PlanViewModel (var _context : Context, var _planInterface : PlanInterface 
                 _planInterface.hideUI(ConstantObject.vRecylerViewUI)
 
                 when(typeLoading){
-                    ConstantObject.loadWithProgressBar -> _planInterface.hideUI(ConstantObject.vProgresBarUI)
+                    ConstantObject.vLoadWithProgressBar -> _planInterface.hideUI(ConstantObject.vProgresBarUI)
                     else -> _planInterface.onHideSwipeRefresh()
                 }
                 _planInterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)

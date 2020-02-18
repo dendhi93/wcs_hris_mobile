@@ -47,13 +47,12 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
             stDtlTaskTimeInto.set("17:00")
             stDtlContactPerson.set("Denny Rambakila")
             stDtlDescription.set("Test")
-            dtlTaskInterface.onSetCheckedRadio(true)
             when(stIntentTypeTask.trim()) {
-                ConstantObject.supportTask -> {
+                ConstantObject.vSupportTask -> {
                     isHiddenProjectManager.set(true)
                     stDtlSolmanNo.set("845894900")
                 }
-                ConstantObject.projectTask -> {
+                ConstantObject.vProjectTask -> {
                     isHiddenSolmanTv.set(true)
                     stDtlProjectManager.set("Pak Rojak")
                 }
@@ -73,7 +72,9 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
         listFriend.add(friendModel)
 
         Handler().postDelayed({
-            dtlTaskInterface.loadTeam(listFriend)
+            when{
+                listFriend.isNotEmpty() -> dtlTaskInterface.loadTeam(listFriend)
+            }
         },1000)
     }
 

@@ -1,11 +1,12 @@
 package com.wcs.mobilehris.feature.createtask
 
-import android.R.layout.simple_spinner_item
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.MenuItem
-import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioButton
@@ -21,9 +22,11 @@ import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.feature.team.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
+class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFriendInterface {
     private lateinit var activityCreateTaskBinding: ActivityCreateTaskBinding
     private lateinit var createTaskAdapter : CustomDetailTaskAdapter
     private var arrTeamTaskList = ArrayList<FriendModel>()
@@ -40,43 +43,37 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
     override fun onStart() {
         super.onStart()
         activityCreateTaskBinding.rcCreateTask.setHasFixedSize(true)
-        createTaskAdapter = CustomDetailTaskAdapter(this, arrTeamTaskList)
+        createTaskAdapter = CustomDetailTaskAdapter(this, arrTeamTaskList, ConstantObject.vCreateEdit)
+        createTaskAdapter.initSelectedTeamCallback(this)
         activityCreateTaskBinding.rcCreateTask.adapter = createTaskAdapter
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
         }
         activityCreateTaskBinding.viewModel?.initUI()
-        loadTaskSpinner()
-        initRadio()
         activityCreateTaskBinding.viewModel?.initDataChargeCode()
     }
 
-    private fun loadTaskSpinner(){
-        val arrTaskType = arrayOf("Type Task",ConstantObject.prospectTask,ConstantObject.preSalesTask, ConstantObject.projectTask, ConstantObject.supportTask)
-        val adapter = ArrayAdapter(this, simple_spinner_item, arrTaskType)
-        adapter.setDropDownViewResource(simple_spinner_item)
-        activityCreateTaskBinding.spCreateTaskTypeTask.adapter = adapter
-        activityCreateTaskBinding.spCreateTaskTypeTask.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>,view: View,position: Int,id: Long) {
-                activityCreateTaskBinding.viewModel?.getTypeTask(adapter.getItem(position).toString())
-            }
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
-    }
-
-    private fun initRadio(){
-        activityCreateTaskBinding.rgCreateTaskIsOnsite.setOnCheckedChangeListener{ group, checkedId ->
-                val radio: RadioButton? = findViewById(checkedId)
-                activityCreateTaskBinding.viewModel?.stTypeOnsite?.set(radio?.text.toString())
-            }
-    }
-
     override fun onLoadTeam(listTeam: List<FriendModel>) {
-        arrTeamTaskList.addAll(listTeam)
-        createTaskAdapter.notifyDataSetChanged()
-        
-        onResizeLayout(noMatchParentSize)
+        when(arrTeamTaskList.size){
+            0 -> {
+                arrTeamTaskList.addAll(listTeam)
+                createTaskAdapter.notifyDataSetChanged()
+                onResizeLayout(noMatchParentSize)
+            }
+            else -> {
+                val selectedFriendModel = listTeam[0]
+                //ngecek data yang sama di array
+                val isMatch = arrTeamTaskList.contains(selectedFriendModel)
+                if(isMatch){
+                    onMessage("Data already on the list", ConstantObject.vToastInfo)
+                }else{
+                        arrTeamTaskList.addAll(listTeam)
+                        createTaskAdapter.notifyDataSetChanged()
+                        onResizeLayout(noMatchParentSize)
+                }
+            }
+        }
     }
 
     override fun onMessage(message: String, messageType: Int) {
@@ -128,7 +125,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
                 parent,view,position,id->
             val selectedItem = parent.getItemAtPosition(position).toString()
             val splitChargeCode = selectedItem.split("  ")[0]
-            activityCreateTaskBinding.viewModel?.findCompany(splitChargeCode)
+            activityCreateTaskBinding.viewModel?.findDataCreateTask(splitChargeCode)
         }
     }
 
@@ -186,4 +183,9 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface {
     }
 
     override fun onNegativeClick(o: Any) {}
+
+    override fun selectedItemFriend(friendModel: FriendModel) {
+        arrTeamTaskList.remove(friendModel)
+        createTaskAdapter.notifyDataSetChanged()
+    }
 }

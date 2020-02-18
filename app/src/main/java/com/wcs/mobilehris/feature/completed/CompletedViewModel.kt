@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.feature.createtask.CreateTaskActivity
-import com.wcs.mobilehris.feature.dtltask.DetailTaskActivity
 import com.wcs.mobilehris.feature.plan.ContentTaskModel
 import com.wcs.mobilehris.util.ConstantObject
 
@@ -25,31 +24,31 @@ class CompletedViewModel(private val _context : Context, private val _completedI
 
     private fun getCompletedData(typeLoading : Int){
         when(typeLoading){
-            ConstantObject.loadWithProgressBar -> _completedInterface.showUI(ConstantObject.vProgresBarUI)
+            ConstantObject.vLoadWithProgressBar -> _completedInterface.showUI(ConstantObject.vProgresBarUI)
         }
         _completedInterface.hideUI(ConstantObject.vRecylerViewUI)
         _completedInterface.showUI(ConstantObject.vGlobalUI)
         val listCompleted = mutableListOf<ContentTaskModel>()
-        var _completedModel = ContentTaskModel("Prospect",
+        var _completedModel = ContentTaskModel("F-0014-018|MILLS MOBILITY APPLICATION",
             "Michael",
             "18/12/2019 11.24",
             "PT Sukanda",
             "08:00",
             "11:00",
-            "Completed",
+            "Approved",
             "20/12/2019",
             "60",
             8,
             true,
             "")
         listCompleted.add(_completedModel)
-        _completedModel = ContentTaskModel("Prospect",
+        _completedModel = ContentTaskModel("A-1003-096|BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
             "Windy",
             "20/01/2020 11:24",
             "PT KSL",
             "08:30",
             "12:00",
-            "Completed",
+            "Waiting",
             "20/12/2019",
             "60",
             4,
@@ -68,7 +67,7 @@ class CompletedViewModel(private val _context : Context, private val _completedI
                 _completedInterface.hideUI(ConstantObject.vRecylerViewUI)
                 _completedInterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
                 when(typeLoading){
-                    ConstantObject.loadWithProgressBar -> _completedInterface.hideUI(ConstantObject.vProgresBarUI)
+                    ConstantObject.vLoadWithProgressBar -> _completedInterface.hideUI(ConstantObject.vProgresBarUI)
                     else -> _completedInterface.onHideSwipeRefresh()
                 }
             }

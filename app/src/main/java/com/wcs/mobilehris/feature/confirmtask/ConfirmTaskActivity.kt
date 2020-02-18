@@ -15,7 +15,8 @@ import com.wcs.mobilehris.utilinterface.DialogInterface
 class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInterface {
     private lateinit var activityConfirmBinding : ActivityConfirmTaskBinding
     private var intentConfirmTaskId : String? = ""
-    private var intentConfirmTaskTypeTask : String? = ""
+    private var intentConfirmTaskChargeCode : String? = ""
+    private var intentConfirmTaskFromMenu : String? = ""
     private var confirmActiveDialog : Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,28 +28,20 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
     override fun onStart() {
         super.onStart()
         activityConfirmBinding.viewModel?.isProgressConfirmTask?.set(false)
+        intentConfirmTaskId = intent.getStringExtra(intentExtraTaskId)
+        intentConfirmTaskChargeCode = intent.getStringExtra(intentExtraChargeCode)
+        intentConfirmTaskFromMenu = intent.getStringExtra(ConstantObject.extra_intent)
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
+            it.title = intentConfirmTaskFromMenu.toString().trim()
         }
-        intentConfirmTaskId = intent.getStringExtra(intentExtraTaskId)
-        intentConfirmTaskTypeTask = intent.getStringExtra(intentExtraTypeTask)
+        activityConfirmBinding.viewModel?.stButtonName?.set(intentConfirmTaskFromMenu.toString().trim())
         when{
-            intentConfirmTaskId != "" && intentConfirmTaskTypeTask != "" ->{
-                supportActionBar?.subtitle = intentConfirmTaskTypeTask.toString().trim()
+            intentConfirmTaskId != "" && intentConfirmTaskChargeCode != "" ->{
+                val confirmTaskSplitChargeCode = intentConfirmTaskChargeCode.toString().trim().split("|")
                 activityConfirmBinding.viewModel?.onLoadConfirmData(intentConfirmTaskId.toString().trim(),
-                    intentConfirmTaskTypeTask.toString().trim())
-            }
-        }
-        initConfirmRadio()
-    }
-
-    private fun initConfirmRadio(){
-        activityConfirmBinding.rgConfirmTaskIsOnsite.setOnCheckedChangeListener{ group, checkedId ->
-            val radio: RadioButton? = findViewById(checkedId)
-            when("${radio?.text}"){
-                getString(R.string.travel_business) -> activityConfirmBinding.viewModel?.isOnSiteConfirmTask?.set(true)
-                else -> activityConfirmBinding.viewModel?.isOnSiteConfirmTask?.set(false)
+                    confirmTaskSplitChargeCode[0].trim())
             }
         }
     }
@@ -83,14 +76,6 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
         }
     }
 
-    override fun onCheckConfirmRadio(isOnsite: Boolean) {
-        activityConfirmBinding.rgConfirmTaskIsOnsite.clearCheck()
-        when(isOnsite){
-            true -> activityConfirmBinding.rbConfirmTaskOnSite.isChecked = true
-            else -> activityConfirmBinding.rbConfirmTaskOffSite.isChecked = true
-        }
-    }
-
     override fun onSuccessConfirm() {
         Handler().postDelayed({
             onAlertMessage("Transaction Success", ConstantObject.vToastSuccess)
@@ -110,7 +95,7 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
     companion object{
         const val ALERT_CONFIRM_TASK_NO_CONNECTION = 1
         const val intentExtraTaskId = "extra_task_id"
-        const val intentExtraTypeTask = "extra_type_task"
+        const val intentExtraChargeCode = "extra_charge_code"
         const val ALERT_CONFIRM_TASK_CONFIRMATION = 3
     }
 }

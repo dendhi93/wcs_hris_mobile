@@ -7,6 +7,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="toolbarStyle">@style/CustomTextToolBarStyle</item>
         <item name="android:fontFamily">@font/custom_font</item>
+        <item name="actionOverflowButtonStyle">@style/OverFlow</item>
         <item name="android:textColor">@color/text_color</item>
     </style>
 
@@ -53,4 +54,9 @@
         <item name="titleTextColor">@color/colorBlack</item>
         <item name="android:textColorSecondary">@color/colorBlack</item>
     </style>
+
+    <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:src">@mipmap/ic_three_dot</item>
+    </style>
+
 </resources>
