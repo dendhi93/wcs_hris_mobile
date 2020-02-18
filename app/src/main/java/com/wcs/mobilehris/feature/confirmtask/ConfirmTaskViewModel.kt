@@ -52,7 +52,6 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
             stConfirmTaskTimeFrom.set("08:00")
             stConfirmTaskTimeInto.set("17:00")
             stConfirmDescription.set("Buat Mobile Hris")
-            confirmTaskInterface.onCheckConfirmRadio(true)
             //FIND PREFIX CHARGE CODE and decide type project substring first in intentChargeCode
             when(intentChargeCode.substring(0, 1)){
                 "F" -> stTypeTask = ConstantObject.vProjectTask

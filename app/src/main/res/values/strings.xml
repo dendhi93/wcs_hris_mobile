@@ -86,7 +86,7 @@
     <string name="no_solman">No Solman</string>
     <string name="project_manager">Project Manager</string>
     <string name="travel_business">Travel Business</string>
-    <string name="not_travel_business">Not Travel Business</string>
+    <string name="not_travel_business">Non Travel Business</string>
     <string name="address">Address</string>
 
     <!--create task content form-->

@@ -27,7 +27,6 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     val isHiddenPMTv = ObservableField<Boolean>(false)
     val isEnableCompanyNameTxt = ObservableField<Boolean>(false)
     val isEnablePMTxt = ObservableField<Boolean>(false)
-    val stTypeOnsite = ObservableField<String>("")
     val stDateTask = ObservableField<String>("")
     val stDateTimeFrom = ObservableField<String>("")
     val stDateTimeInto = ObservableField<String>("")
@@ -194,7 +193,6 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                         || stDateTask.get().equals("")
                         || stContactPerson.get().equals("")
                         || stDescriptionTask.get().equals("")
-                        || stTypeOnsite.get().equals("")
                         || mTypeTask == "" -> return false
             mTypeTask == ConstantObject.vSupportTask -> { when{stSolmanNoTask.get().equals("") -> return false } }
             mTypeTask == ConstantObject.vProjectTask -> { when{stPMTask.get().equals("") -> return false } }

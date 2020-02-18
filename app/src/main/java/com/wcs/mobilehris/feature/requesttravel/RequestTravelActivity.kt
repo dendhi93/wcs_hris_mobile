@@ -12,6 +12,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.RadioButton
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -47,9 +48,6 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     private var arrReasonDesc = ArrayList<String>()
     private var arrReasonCode = ArrayList<String>()
     private lateinit var travelRequestDao : TravelRequestDao
-    private lateinit var menu1 : MenuItem
-    private lateinit var menu2 : MenuItem
-    private lateinit var menu3 : MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +80,17 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
         activityRequestTravelBinding.rcReqTravelCities.adapter = citiesAdapter
         travelRequestDao = WcsHrisApps.database.travelReqDao()
         onChangeButtonBackground(true)
+        initReqTravelRadio()
+    }
+
+    private fun initReqTravelRadio(){
+        activityRequestTravelBinding.rgReqTravelIsTB.setOnCheckedChangeListener{ group, checkedId ->
+            val radio: RadioButton? = findViewById(checkedId)
+            when("${radio?.text}"){
+                getString(R.string.travel_business) -> activityRequestTravelBinding.viewModel?.isNonTB?.set(true)
+                else -> activityRequestTravelBinding.viewModel?.isNonTB?.set(false)
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

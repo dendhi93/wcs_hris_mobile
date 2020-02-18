@@ -24,14 +24,17 @@ class CustomTravelListAdapter  (private val context : Context, private val reqTr
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val model : TravelListModel = reqTravelList[position]
-        val finalTravel = model.depart.trim() + " - " +model.arrival.trim()
-        val finalTime = model.dateFrom.trim() + " - " + model.dateInto.trim()
+        val finalTravelTime = model.departDate.trim() + " - " + model.returnDate.trim()
         val isAccepted = model.statusTravel
         holder.imgCustom.visibility = View.GONE
         holder.imgVIconIsConflick.visibility = View.VISIBLE
+        holder.tvTravelDescription.visibility = View.VISIBLE
+        holder.tvTravelBusinessType.visibility = View.VISIBLE
         holder.imgVWayTravel.visibility = View.GONE
-        holder.tvTravelDestination.text = finalTravel
-        holder.tvTravelTime.text = finalTime
+        holder.tvTravelReason.text = model.reasonDesc.trim()
+        holder.tvTravelTime.text = finalTravelTime
+        holder.tvTravelDescription.text = model.travelDescription.trim()
+        holder.tvTravelBusinessType.text = model.travelBusinessType.trim()
         holder.cvCustomTravel.setOnClickListener {
            val intent = Intent(context, DtlRequestTravelActivity::class.java)
             intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentDtlTravel)
@@ -47,9 +50,11 @@ class CustomTravelListAdapter  (private val context : Context, private val reqTr
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
         var cvCustomTravel : CardView = view.findViewById(R.id.cv_custom)
-        var tvTravelDestination : TextView = view.findViewById(R.id.tv_custom)
+        var tvTravelReason : TextView = view.findViewById(R.id.tv_custom)
         var imgCustom : ImageView = view.findViewById(R.id.imgV_custom)
         var tvTravelTime : TextView = view.findViewById(R.id.tv_custom_content)
+        var tvTravelDescription : TextView = view.findViewById(R.id.tv_custom_content_2)
+        var tvTravelBusinessType : TextView = view.findViewById(R.id.tv_custom_content_3)
         var imgVIconIsConflick : ImageView = view.findViewById(R.id.imgV_custom_1)
         var imgVWayTravel : ImageView = view.findViewById(R.id.imgV_custom_2)
     }

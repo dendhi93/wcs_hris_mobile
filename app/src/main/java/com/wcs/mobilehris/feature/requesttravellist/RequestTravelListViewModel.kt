@@ -24,14 +24,17 @@ class RequestTravelListViewModel (private val context : Context, private val req
         requestTravalListInterface.showUI(ConstantObject.vGlobalUI)
 
         val listTravelList = mutableListOf<TravelListModel>()
-        var travelModel = TravelListModel("01","Jakarta",
-            "Malaysia","27/01/2020","31/01/2020","Waiting")
+        var travelModel = TravelListModel("01","Training/Seminar/WorkShop",
+            "27/01/2020","31/01/2020","Training React Native",
+            "Non Travel Business", "Waiting")
         listTravelList.add(travelModel)
-        travelModel = TravelListModel("02","Jakarta",
-            "Solo","03/02/2020","14/02/2020","True")
+        travelModel = TravelListModel("01","Routine Duty",
+            "10/02/2020","14/02/2020","Support Sari Roti",
+            "Travel Business", "True")
         listTravelList.add(travelModel)
-        travelModel = TravelListModel("02","Solo",
-            "Medan","17/02/2020","28/02/2020","False")
+        travelModel = TravelListModel("01","Others",
+            "03/02/2020","07/02/2020","Presales",
+            "Non Travel Business", "False")
         listTravelList.add(travelModel)
 
         when{

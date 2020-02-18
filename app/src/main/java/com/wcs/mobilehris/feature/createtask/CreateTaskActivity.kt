@@ -51,15 +51,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFri
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
         }
         activityCreateTaskBinding.viewModel?.initUI()
-        initRadio()
         activityCreateTaskBinding.viewModel?.initDataChargeCode()
-    }
-
-    private fun initRadio(){
-        activityCreateTaskBinding.rgCreateTaskIsOnsite.setOnCheckedChangeListener{ group, checkedId ->
-                val radio: RadioButton? = findViewById(checkedId)
-                activityCreateTaskBinding.viewModel?.stTypeOnsite?.set(radio?.text.toString())
-            }
     }
 
     override fun onLoadTeam(listTeam: List<FriendModel>) {

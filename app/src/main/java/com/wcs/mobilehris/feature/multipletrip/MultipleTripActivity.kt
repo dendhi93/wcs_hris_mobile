@@ -53,6 +53,7 @@ class MultipleTripActivity : AppCompatActivity(), MultiTripInterface {
                 multiTripList[i].tReturnCity.trim(),
                 multiTripList[i].tdepartDate.trim(),
                 multiTripList[i].tReturnDate.trim(),
+                "",
                 "Waiting"))
         }
         multiTripAdapter.notifyDataSetChanged()

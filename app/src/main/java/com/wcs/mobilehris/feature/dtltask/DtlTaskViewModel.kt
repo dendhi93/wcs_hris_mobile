@@ -47,7 +47,6 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
             stDtlTaskTimeInto.set("17:00")
             stDtlContactPerson.set("Denny Rambakila")
             stDtlDescription.set("Test")
-            dtlTaskInterface.onSetCheckedRadio(true)
             when(stIntentTypeTask.trim()) {
                 ConstantObject.vSupportTask -> {
                     isHiddenProjectManager.set(true)

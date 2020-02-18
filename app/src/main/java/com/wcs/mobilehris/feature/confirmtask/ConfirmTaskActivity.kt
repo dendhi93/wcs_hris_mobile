@@ -44,17 +44,6 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
                     confirmTaskSplitChargeCode[0].trim())
             }
         }
-        initConfirmRadio()
-    }
-
-    private fun initConfirmRadio(){
-        activityConfirmBinding.rgConfirmTaskIsOnsite.setOnCheckedChangeListener{ group, checkedId ->
-            val radio: RadioButton? = findViewById(checkedId)
-            when("${radio?.text}"){
-                getString(R.string.travel_business) -> activityConfirmBinding.viewModel?.isOnSiteConfirmTask?.set(true)
-                else -> activityConfirmBinding.viewModel?.isOnSiteConfirmTask?.set(false)
-            }
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -84,14 +73,6 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
                 confirmActiveDialog = ALERT_CONFIRM_TASK_CONFIRMATION
                 MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
             }
-        }
-    }
-
-    override fun onCheckConfirmRadio(isOnsite: Boolean) {
-        activityConfirmBinding.rgConfirmTaskIsOnsite.clearCheck()
-        when(isOnsite){
-            true -> activityConfirmBinding.rbConfirmTaskOnSite.isChecked = true
-            else -> activityConfirmBinding.rbConfirmTaskOffSite.isChecked = true
         }
     }
 

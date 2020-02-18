@@ -36,6 +36,7 @@ class RequestTravelViewModel (private val context : Context, private val request
     val isTravelSelected = ObservableField<Boolean>(true)
     val isProgressReqTravel = ObservableField<Boolean>(false)
     val isSetTravel = ObservableField<Boolean>(false)
+    val isNonTB = ObservableField<Boolean>(false)
     private val listSelectedTeam = mutableListOf<FriendModel>()
     private lateinit var mTransTypeDao : TransTypeDao
     private lateinit var mChargeCodeDao : ChargeCodeDao

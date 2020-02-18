@@ -77,16 +77,6 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
         }
     }
 
-    override fun onSetCheckedRadio(isOnsite: Boolean) {
-        dtlTaskBinding.rgDtlTaskIsOnsite.clearCheck()
-        when(isOnsite){
-            true -> dtlTaskBinding.rbDtltaskOnSite.isChecked = true
-            else -> dtlTaskBinding.rbDtltaskOffSite.isChecked = true
-        }
-        dtlTaskBinding.rbDtltaskOnSite.isEnabled = false
-        dtlTaskBinding.rbDtltaskOffSite.isEnabled = false
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
