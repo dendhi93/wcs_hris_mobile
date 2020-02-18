@@ -22,39 +22,53 @@
             android:visibility="@{viewModel.isProgressReqTravel ? View.VISIBLE : View.GONE}"
             android:indeterminate="true" />
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_below="@+id/pb_reqTravel"
-            android:id="@+id/ln_reqTravel_top"
-            android:layout_marginTop="@dimen/spacing_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:id="@+id/cv_reqTravel_top"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="1dp"
+            android:padding="1dp"
+            android:elevation="2dp"
+            app:cardMaxElevation="1dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/cardview_light_background"
+            tools:ignore="PrivateResource"
+            app:cardUseCompatPadding="true">
 
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:id="@+id/btn_createTask_setTravel"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:textSize="@dimen/text_fields_text_size"
-                android:onClick="@{() -> viewModel.clickSetTravel()}"
-                android:layout_height="@dimen/button_height"
-                android:text="@string/set_travel" />
+            <LinearLayout
+                android:id="@+id/ln_reqTravel_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:id="@+id/btn_createTask_addAccomodation"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:textSize="@dimen/text_fields_text_size"
-                android:layout_height="@dimen/button_height"
-                android:onClick="@{() -> viewModel.clickSetDestination()}"
-                android:text="@string/transport"/>
-        </LinearLayout>
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:id="@+id/btn_createTask_setTravel"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/text_fields_text_size"
+                    android:onClick="@{() -> viewModel.clickSetTravel()}"
+                    android:layout_height="@dimen/button_height"
+                    android:text="@string/set_travel" />
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:id="@+id/btn_createTask_addAccomodation"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/text_fields_text_size"
+                    android:layout_height="@dimen/button_height"
+                    android:onClick="@{() -> viewModel.clickSetDestination()}"
+                    android:text="@string/transport"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ln_reqTravel_top"
+            android:layout_below="@+id/cv_reqTravel_top"
             android:padding="@dimen/spacing_tiny_2"
             android:id="@+id/rl_reqTravel_top">
 
@@ -66,7 +80,7 @@
                 app:cardElevation="1dp"
                 android:padding="1dp"
                 android:elevation="2dp"
-                app:cardMaxElevation="0dp"
+                app:cardMaxElevation="1dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:cardBackgroundColor="@color/cardview_light_background"
                 tools:ignore="PrivateResource"
@@ -109,6 +123,7 @@
                                     android:gravity="center_vertical"
                                     android:hint="@string/charge_code"
                                     android:maxLines="2"
+                                    android:enabled="@{!viewModel.isSetTravel}"
                                     android:textColor="@color/colorBlack"
                                     android:textColorHint="@color/colorBlack"
                                     android:inputType="text"
@@ -140,6 +155,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:focusable="false"
+                                        android:enabled="@{!viewModel.isSetTravel}"
                                         android:onClick="@{() -> viewModel.initTravelDateFrom()}"
                                         android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
                                         android:textColor="@color/colorBlack"
@@ -172,6 +188,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:focusable="false"
+                                        android:enabled="@{!viewModel.isSetTravel}"
                                         android:onClick="@{() -> viewModel.initTravelDateInto()}"
                                         android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
                                         android:text="@={viewModel.stReturnDate}"
@@ -189,6 +206,7 @@
                                 android:id="@+id/sp_reqTravel_reason"
                                 android:background="@color/colorGray200"
                                 android:layout_width="match_parent"
+                                android:enabled="@{!viewModel.isSetTravel}"
                                 android:layout_margin="@dimen/spacing_tiny_3"
                                 android:layout_height="@dimen/text_fields_height"/>
 
@@ -214,6 +232,7 @@
                                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
                                     android:gravity="center_vertical"
                                     android:textColor="@color/colorBlack"
+                                    android:enabled="@{!viewModel.isSetTravel}"
                                     android:textColorHint="@color/colorBlack"
                                     android:hint="@string/description"
                                     android:text="@={viewModel.stTravelDescription}"
@@ -469,7 +488,7 @@
                 android:layout_marginEnd="@dimen/spacing_tiny_3"
                 android:id="@+id/btn_reqTravel_save"
                 android:layout_width="match_parent"
-                android:onClick="@{() -> viewModel.submitTravel()}"
+                android:onClick="@{() -> viewModel.submitSetTravel()}"
                 android:layout_height="@dimen/button_height"
                 android:textColor="@color/colorWhite"
                 android:text="@string/set_travel"

@@ -5,11 +5,11 @@
         android:id="@+id/menu_save"
         android:orderInCategory="1"
         app:showAsAction="never"
-        android:title="@string/save"/>
+        android:title="@string/set_travel"/>
     <item
-        android:id="@+id/menu_set_travel"
-        android:orderInCategory="2"
+        android:id="@+id/menu_edit"
+        android:orderInCategory="1"
         app:showAsAction="never"
-        android:title="@string/save_and_generate"/>
+        android:title="@string/edit_travel"/>
 
 </menu>

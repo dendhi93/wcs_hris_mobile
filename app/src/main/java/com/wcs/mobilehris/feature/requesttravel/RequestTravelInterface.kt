@@ -18,9 +18,8 @@ interface RequestTravelInterface : DialogInterface {
     fun getDataDepart()
     fun getDataReturn()
     fun onSuccessRequestTravel()
-    fun onIntentMultipleDestination()
-    fun onClearListTeam()
     fun onHideSoftKeyboard()
     fun onChangeButtonBackground(isTravelSelected : Boolean)
-    fun onShowHideOverFlow(isShow : Boolean)
+    fun onLoadCitiesTravel(listCity : List<ReqTravelModel>)
+    fun onResetCities()
 }

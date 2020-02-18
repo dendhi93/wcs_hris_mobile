@@ -27,23 +27,19 @@ import com.wcs.mobilehris.feature.city.CityActivity
 import com.wcs.mobilehris.feature.createtask.SelectedFriendInterface
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
 import com.wcs.mobilehris.feature.dtltask.FriendModel
-import com.wcs.mobilehris.feature.multipletrip.MultipleTripActivity
-import com.wcs.mobilehris.feature.requesttravellist.CustomTravelListAdapter
-import com.wcs.mobilehris.feature.requesttravellist.TravelListModel
 import com.wcs.mobilehris.feature.team.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 
 
-@Suppress("DEPRECATION")
-class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, SelectedFriendInterface {
+@Suppress("DEPRECATION", "UNREACHABLE_CODE")
+class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
+    SelectedFriendInterface, SelectedTravelInterface {
     private lateinit var activityRequestTravelBinding : ActivityRequestTravelBinding
     private lateinit var travelAdapter : CustomDetailTaskAdapter
-    private lateinit var citiesAdapter : CustomTravelListAdapter
+    private lateinit var citiesAdapter : CustomReqTravelAdapter
     private var arrTeamTravel = ArrayList<FriendModel>()
-    private var arrCities = ArrayList<TravelListModel>()
+    private var arrCities = ArrayList<ReqTravelModel>()
     private var keyDialogActive = 0
     private var arrChargeCode = ArrayList<String>()
     private var arrDescTransType = ArrayList<String>()
@@ -53,6 +49,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
     private lateinit var travelRequestDao : TravelRequestDao
     private lateinit var menu1 : MenuItem
     private lateinit var menu2 : MenuItem
+    private lateinit var menu3 : MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +57,6 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
         activityRequestTravelBinding.viewModel = RequestTravelViewModel(this, this)
         activityRequestTravelBinding.rcReqTravelTeam.layoutManager = LinearLayoutManager(this)
         activityRequestTravelBinding.rcReqTravelCities.layoutManager = LinearLayoutManager(this)
-        invalidateOptionsMenu()
     }
 
     override fun onStart() {
@@ -81,7 +77,8 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
         activityRequestTravelBinding.rcReqTravelTeam.adapter = travelAdapter
 
         activityRequestTravelBinding.rcReqTravelCities.setHasFixedSize(true)
-        citiesAdapter = CustomTravelListAdapter(this, arrCities)
+        citiesAdapter = CustomReqTravelAdapter(this, arrCities)
+        citiesAdapter.initSelectedTravel(this)
         activityRequestTravelBinding.rcReqTravelCities.adapter = citiesAdapter
         travelRequestDao = WcsHrisApps.database.travelReqDao()
         onChangeButtonBackground(true)
@@ -94,26 +91,32 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
                 return true
             }
             R.id.menu_save -> {
-                onMessage("Coba 1", ConstantObject.vToastInfo)
+                activityRequestTravelBinding.viewModel?.submitSetTravel()
                 return true
             }
             R.id.menu_set_travel -> {
-                onMessage("Coba 2", ConstantObject.vToastInfo)
+                onAlertReqTravel(getString(R.string.transaction_alert_confirmation),
+                    ConstantObject.vAlertDialogConfirmation, ALERT_REQ_TRAVEL_GENERATE_TRAVEL)
                 return true
             }
-
+            R.id.menu_edit -> {
+                onAlertReqTravel(getString(R.string.transaction_alert_confirmation),
+                    ConstantObject.vAlertDialogConfirmation, ALERT_REQ_TRAVEL_EDIT_TRAVEL)
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.clear()
         val inflater = menuInflater
-        inflater.inflate(R.menu.req_travel_menu, menu)
-        menu?.let {
-            menu1 = it.findItem(R.id.menu_save)
-            menu2 = it.findItem(R.id.menu_set_travel)
+        if(activityRequestTravelBinding.viewModel?.isTravelSelected?.get() == true){
+            inflater.inflate(R.menu.req_travel_menu, menu)
+        }else{
+            inflater.inflate(R.menu.save_travel_menu, menu)
         }
-        return super.onCreateOptionsMenu(menu)
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onLoadTeam(listTeam: List<FriendModel>) {
@@ -148,8 +151,16 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
     override fun onAlertReqTravel(alertMessage: String,alertTitle: String,intTypeActionAlert: Int) {
         when(intTypeActionAlert){
             ALERT_REQ_TRAVEL_NO_CONNECTION ->  MessageUtils.alertDialogDismiss(alertMessage, alertTitle, this)
-            ALERT_REQ_TRAVEL_CONFIRMATION -> {
-                keyDialogActive = ALERT_REQ_TRAVEL_CONFIRMATION
+            ALERT_REQ_TRAVEL_SET_TRAVEL -> {
+                keyDialogActive = ALERT_REQ_TRAVEL_SET_TRAVEL
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
+            ALERT_REQ_TRAVEL_EDIT_TRAVEL -> {
+                keyDialogActive = ALERT_REQ_TRAVEL_EDIT_TRAVEL
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
+            ALERT_REQ_TRAVEL_GENERATE_TRAVEL -> {
+                keyDialogActive = ALERT_REQ_TRAVEL_GENERATE_TRAVEL
                 MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
             }
         }
@@ -160,7 +171,6 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
         for(i in listChargeCode.indices){
             arrChargeCode.add(listChargeCode[i].mChargeCodeNo+"  "+listChargeCode[i].mDescriptionChargeCode)
         }
-
         val chargeCodeAdapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrChargeCode)
         activityRequestTravelBinding.actReqTravelChargeCode.setAdapter(chargeCodeAdapter)
         activityRequestTravelBinding.actReqTravelChargeCode.threshold = 1
@@ -193,7 +203,8 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
                 when{
                     position > 0 -> {
                         val code = arrTransTypeCode[position].trim()
-                        activityRequestTravelBinding.viewModel?.stTransTypeCode?.set(code)
+                        val descTrans = arrDescTransType[position].trim()
+                        activityRequestTravelBinding.viewModel?.stTransTypeCode?.set("$code-$descTrans")
                         onHideSoftKeyboard()
                     }
                 }
@@ -218,11 +229,12 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
         val reasonAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrReasonDesc)
         reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
         activityRequestTravelBinding.spReqTravelReason.adapter = reasonAdapter
-        activityRequestTravelBinding.spReqTravelTransType.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+        activityRequestTravelBinding.spReqTravelReason.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 when{
                     position > 0 -> {
                         val reasonCode = arrReasonCode[position].trim()
+                        Log.d("###", "reasonCode $reasonCode")
                         activityRequestTravelBinding.viewModel?.stReasonCode?.set(reasonCode)
                         onHideSoftKeyboard()
                     }
@@ -248,16 +260,12 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
             }
             RESULT_SUCCESS_DESTINATION_FROM -> {
                 val intentCityDepart : String = data?.getStringExtra(RESULT_EXTRA__TRAVEL_CITY_DESC).toString()
-                when{
-                    intentCityDepart != "null" -> activityRequestTravelBinding.viewModel?.stDepartFrom?.set(intentCityDepart)
-                }
+                when{intentCityDepart != "null" -> activityRequestTravelBinding.viewModel?.stDepartFrom?.set(intentCityDepart) }
             }
             RESULT_SUCCESS_DESTINATION_INTO -> {
                 val intentCityReturn : String = data?.getStringExtra(RESULT_EXTRA__TRAVEL_CITY_DESC).toString()
                 when{
-                    intentCityReturn != "null" -> {
-                        activityRequestTravelBinding.viewModel?.validateCityReturn(intentCityReturn)
-                    }
+                    intentCityReturn != "null" -> { activityRequestTravelBinding.viewModel?.validateCityReturn(intentCityReturn) }
                 }
             }
         }
@@ -276,23 +284,9 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
     }
 
     override fun onSuccessRequestTravel() {
-        Handler().postDelayed({
-            onMessage(getString(R.string.alert_transaction_success), ConstantObject.vToastInfo)
-            activityRequestTravelBinding.viewModel?.isProgressReqTravel?.set(false)
-            finish()
-        }, 2000)
-    }
-
-    override fun onIntentMultipleDestination() {
-        val intent = Intent(this, MultipleTripActivity::class.java)
-        intent.putExtra(extra_intentChargeCode, activityRequestTravelBinding.viewModel?.stChargeCode?.get().toString())
-        startActivity(intent)
+        onMessage(getString(R.string.alert_transaction_success), ConstantObject.vToastSuccess)
+        activityRequestTravelBinding.viewModel?.isProgressReqTravel?.set(false)
         finish()
-    }
-
-    override fun onClearListTeam() {
-        arrTeamTravel.clear()
-        travelAdapter.notifyDataSetChanged()
     }
 
     override fun onHideSoftKeyboard() {
@@ -307,45 +301,58 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
                 activityRequestTravelBinding.btnCreateTaskSetTravel.setTextColor(Color.WHITE)
                 activityRequestTravelBinding.btnCreateTaskAddAccomodation.setBackgroundColor(resources.getColor(R.color.colorWhite))
                 activityRequestTravelBinding.btnCreateTaskAddAccomodation.setTextColor(Color.BLACK)
+                activityRequestTravelBinding.viewModel?.stAddTeamButton?.set(getString(R.string.add_team))
             }
             else -> {
                 activityRequestTravelBinding.btnCreateTaskSetTravel.setBackgroundColor(resources.getColor(R.color.colorWhite))
                 activityRequestTravelBinding.btnCreateTaskSetTravel.setTextColor(Color.BLACK)
                 activityRequestTravelBinding.btnCreateTaskAddAccomodation.setBackgroundColor(resources.getColor(R.color.colorBlueMantab))
                 activityRequestTravelBinding.btnCreateTaskAddAccomodation.setTextColor(Color.WHITE)
+                activityRequestTravelBinding.viewModel?.stAddTeamButton?.set(getString(R.string.add_destination))
             }
         }
     }
 
-    override fun onShowHideOverFlow(isShow: Boolean) {
-        when {
-            isShow -> {
-                menu1.isVisible = true
-                menu2.isVisible = true
+    override fun onLoadCitiesTravel(listCity: List<ReqTravelModel>) {
+        when(arrCities.size){
+            0 -> {
+                arrCities.addAll(listCity)
+                citiesAdapter.notifyDataSetChanged()
             }
             else -> {
-                menu1.isVisible = false
-                menu2.isVisible = false
+                val selectedCityModel = listCity[0]
+                //ngecek data yang sama di array
+                val isMatch = arrCities.contains(selectedCityModel)
+                if(isMatch){ onMessage("Data already on the list", ConstantObject.vToastInfo) }
+                else{
+                    arrCities.addAll(listCity)
+                    citiesAdapter.notifyDataSetChanged()
+                }
             }
         }
     }
 
+    override fun onResetCities() {
+        arrCities.clear()
+        citiesAdapter.notifyDataSetChanged()
+    }
 
     override fun onPositiveClick(o: Any) {
         when(keyDialogActive){
             ALERT_REQ_TRAVEL_CONFIRMATION -> activityRequestTravelBinding.viewModel?.actionSubmitTravel()
+            ALERT_REQ_TRAVEL_SET_TRAVEL -> activityRequestTravelBinding.viewModel?.actionSetTravel()
+            ALERT_REQ_TRAVEL_EDIT_TRAVEL -> activityRequestTravelBinding.viewModel?.actionEditTravel(arrCities)
+            ALERT_REQ_TRAVEL_GENERATE_TRAVEL -> activityRequestTravelBinding.viewModel?.actionGenerateTravel(arrCities)
         }
     }
 
     override fun onBackPressed() {
+        //todo pake alert yg biasa aj
         AlertDialog.Builder(this).setTitle(getString(R.string.confirmation_menu))
             .setMessage("Are you sure do you want to exit this transaction ? ")
             .setPositiveButton(android.R.string.ok){
                     dialog, _ ->
-                doAsync {
-                    travelRequestDao.deleteTravelReq(activityRequestTravelBinding.viewModel?.stChargeCode?.get().toString())
-                    uiThread { finish() }
-                }
+                finish()
                 super.onBackPressed()
                 dialog.dismiss()
             }
@@ -359,13 +366,35 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface, Selec
 
     override fun onNegativeClick(o: Any) {}
     override fun selectedItemFriend(friendModel: FriendModel) {
-        arrTeamTravel.remove(friendModel)
-        travelAdapter.notifyDataSetChanged()
+        when{
+            activityRequestTravelBinding.viewModel?.isSetTravel?.get() == false ->{
+                arrTeamTravel.remove(friendModel)
+                travelAdapter.notifyDataSetChanged()
+            }
+            else -> onMessage("Request Travel was set, transaction not allowed", ConstantObject.vToastInfo)
+        }
     }
 
+    override fun selectedItemTravel(travelModel: ReqTravelModel) {
+        arrCities.remove(travelModel)
+        citiesAdapter.notifyDataSetChanged()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        invalidateOptionsMenu()
+        when(activityRequestTravelBinding.viewModel?.isTravelSelected?.get()){
+            true -> onChangeButtonBackground(true)
+            else -> onChangeButtonBackground(false)
+        }
+
+    }
     companion object{
         const val ALERT_REQ_TRAVEL_NO_CONNECTION = 1
         const val ALERT_REQ_TRAVEL_CONFIRMATION = 5
+        const val ALERT_REQ_TRAVEL_SET_TRAVEL = 7
+        const val ALERT_REQ_TRAVEL_EDIT_TRAVEL = 9
+        const val ALERT_REQ_TRAVEL_GENERATE_TRAVEL = 13
         const val RESULT_SUCCESS_DESTINATION_FROM = 11
         const val RESULT_SUCCESS_DESTINATION_INTO = 22
         const val RESULT_SUCCESS_CODE_TEAM = 33
