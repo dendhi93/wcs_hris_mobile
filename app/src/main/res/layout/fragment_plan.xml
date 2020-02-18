@@ -44,10 +44,6 @@
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_width=""
-                android:layout_height="" />
-
             <TextView
                 android:id="@+id/tv_plan_empty"
                 android:layout_width="wrap_content"

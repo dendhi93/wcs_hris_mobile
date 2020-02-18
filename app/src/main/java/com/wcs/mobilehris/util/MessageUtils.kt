@@ -29,7 +29,9 @@ object MessageUtils {
         when(action) {
             ConstantObject.vSnackBarWithButton -> {
                 val snackBar = Snackbar.make(rootView, snackMessage, Snackbar.LENGTH_INDEFINITE)
-                snackBar.setActionTextColor(Color.WHITE)
+                snackBar.setBackgroundTint(Color.YELLOW)
+                snackBar.setActionTextColor(Color.BLACK)
+                snackBar.setTextColor(Color.BLACK)
                 snackBar.setAction("OK") {
                     snackBar.dismiss()
                 }
@@ -37,7 +39,9 @@ object MessageUtils {
             }
             else -> {
                 val snackBar = Snackbar.make(rootView, snackMessage, Snackbar.LENGTH_LONG)
-                snackBar.setActionTextColor(Color.WHITE)
+                snackBar.setBackgroundTint(Color.YELLOW)
+                snackBar.setActionTextColor(Color.BLACK)
+                snackBar.setTextColor(Color.BLACK)
                 snackBar.show()
             }
         }

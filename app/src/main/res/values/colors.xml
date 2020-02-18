@@ -46,9 +46,13 @@
     <color name="tab_text_color">#080808</color>
 
     <!--Text Fields-->
-    <color name="text_fields_box_color">#43C6AC</color>
+    <color name="text_fields_box_color">#6CB2D1</color>
 
-    <!--Login Button-->
+    <!--Button-->
+    <color name="button_color">#6CB2D1</color>
+    <color name="button_text_color">#080808</color>
+
+    <!--@TODO Delete these gradient color-->
     <color name="logInButtonGradient1">#43C6AC</color>
     <color name="logInButtonGradient2">#F8FFAE</color>
     <color name="logInButtonGradientRipple">#52FFFFFF</color>

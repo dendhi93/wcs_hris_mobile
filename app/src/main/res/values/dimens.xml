@@ -58,9 +58,13 @@
     <dimen name="space_09">24dp</dimen>
     <dimen name="space_10">26dp</dimen>
     <dimen name="space_11">32dp</dimen>
+    <dimen name="space_12">36dp</dimen>
+    <dimen name="space_13">48dp</dimen>
+    <dimen name="space_14">60dp</dimen>
+    <dimen name="space_15">72dp</dimen>
 
     <!--Button-->
-    <dimen name="button_height">46dp</dimen>
+    <dimen name="button_height">52dp</dimen>
     <dimen name="button_radius">12dp</dimen>
     <dimen name="button_text_size">14sp</dimen>
 

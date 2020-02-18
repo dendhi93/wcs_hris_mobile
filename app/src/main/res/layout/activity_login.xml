@@ -16,9 +16,10 @@
         android:background="@color/backgroundApp"
         android:fillViewport="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:focusable="true"
             android:focusableInTouchMode="true">
 
@@ -29,129 +30,130 @@
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
                 android:visibility="@{viewModel.isVisibleProgress ? View.VISIBLE : View.INVISIBLE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_alignParentTop="true"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tf_login_uid"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/text_fields_height"
-                android:layout_marginStart="@dimen/space_08"
-                android:layout_marginEnd="@dimen/space_08"
-                app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
-                app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
-                app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
-                app:boxCornerRadiusTopStart="@dimen/text_fields_radius"
-                app:boxStrokeColor="@color/text_fields_box_color"
-                app:boxStrokeWidth="@dimen/text_fields_box_width"
-                app:layout_constraintBottom_toTopOf="@+id/tf_login_pass"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txt_login_uid"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:digits="0123456789"
-                    android:gravity="center_vertical"
-                    android:hint="@string/user_id"
-                    android:imeOptions="actionNext"
-                    android:inputType="numberPassword"
-                    android:maxLines="1"
-                    android:paddingStart="@dimen/space_08"
-                    android:paddingEnd="@dimen/space_08"
-                    android:text="@={viewModel.stUserId}"
-                    android:textSize="@dimen/text_fields_text_size" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tf_login_pass"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/text_fields_height"
-                android:layout_marginStart="@dimen/space_08"
-                android:layout_marginTop="@dimen/space_07"
-                android:layout_marginEnd="@dimen/space_08"
-                app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
-                app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
-                app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
-                app:boxCornerRadiusTopStart="@dimen/text_fields_radius"
-                app:boxStrokeColor="@color/text_fields_box_color"
-                app:boxStrokeWidth="@dimen/text_fields_box_width"
-                app:layout_constraintBottom_toTopOf="@+id/btn_login_log_in"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tf_login_uid"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:passwordToggleEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txt_login_pass"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:hint="@string/password"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:paddingStart="@dimen/space_08"
-                    android:paddingEnd="@dimen/space_08"
-                    android:text="@={viewModel.stPassword}"
-                    android:textSize="@dimen/text_fields_text_size" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/btn_login_log_in"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
-                android:layout_marginStart="@dimen/space_08"
-                android:layout_marginTop="@dimen/space_08"
-                android:layout_marginEnd="@dimen/space_08"
-                android:background="@drawable/log_in_button"
-                android:enabled="@{!viewModel.isVisibleProgress}"
-                android:onClick="@{() -> viewModel.getLogin()}"
-                android:stateListAnimator="@null"
-                android:text="@string/login"
-                android:textSize="@dimen/button_text_size"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/txt_login_forgot"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tf_login_pass"
-                app:layout_constraintVertical_chainStyle="packed" />
-
-            <TextView
-                android:id="@+id/txt_login_forgot"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="@dimen/space_08"
-                android:layout_marginTop="@dimen/space_06"
-                android:onClick="@{() -> viewModel.intentForgotPass()}"
-                android:text="@string/forgot_password"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/txt_login_version"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_login_log_in"
-                app:layout_constraintVertical_chainStyle="packed" />
+                android:orientation="vertical"
+                android:layout_below="@+id/pb_login">
 
-            <TextView
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign In"
+                    android:textSize="20sp"
+                    android:letterSpacing="0.1"
+                    android:layout_marginTop="@dimen/space_14"
+                    android:layout_gravity="center_horizontal" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tf_login_uid"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/text_fields_height"
+                    android:layout_marginHorizontal="@dimen/space_08"
+                    android:layout_marginTop="@dimen/space_08"
+                    app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                    app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                    app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                    app:boxCornerRadiusTopStart="@dimen/text_fields_radius"
+                    app:boxStrokeColor="@color/text_fields_box_color"
+                    app:boxStrokeWidth="@dimen/text_fields_box_width"
+                    app:hintTextColor="@color/text_color">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txt_login_uid"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:digits="0123456789"
+                        android:gravity="center_vertical"
+                        android:hint="@string/user_id"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberPassword"
+                        android:maxLines="1"
+                        android:paddingStart="@dimen/space_08"
+                        android:paddingEnd="@dimen/space_08"
+                        android:text="@={viewModel.stUserId}"
+                        android:textColor="@color/text_color"
+                        android:textColorHighlight="@color/text_color"
+                        android:textSize="@dimen/text_fields_text_size" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tf_login_pass"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/text_fields_height"
+                    android:layout_marginHorizontal="@dimen/space_08"
+                    android:layout_marginTop="@dimen/space_08"
+                    app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                    app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                    app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                    app:boxCornerRadiusTopStart="@dimen/text_fields_radius"
+                    app:boxStrokeColor="@color/text_fields_box_color"
+                    app:boxStrokeWidth="@dimen/text_fields_box_width"
+                    app:hintTextColor="@color/text_color"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txt_login_pass"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:hint="@string/password"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:paddingStart="@dimen/space_08"
+                        android:paddingEnd="@dimen/space_08"
+                        android:text="@={viewModel.stPassword}"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_fields_text_size" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_login_log_in"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginHorizontal="@dimen/space_08"
+                    android:layout_marginTop="@dimen/space_08"
+                    android:enabled="@{!viewModel.isVisibleProgress}"
+                    android:onClick="@{() -> viewModel.getLogin()}"
+                    android:stateListAnimator="@null"
+                    android:text="@string/login"
+                    android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/button_text_size"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/button_color"
+                    app:cornerRadius="@dimen/button_radius" />
+
+                <TextView
+                    android:id="@+id/txt_login_forgot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/space_08"
+                    android:layout_marginTop="@dimen/space_06"
+                    android:onClick="@{() -> viewModel.intentForgotPass()}"
+                    android:text="@string/forgot_password"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txt_login_version"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/space_05"
                 android:text="@={viewModel.stVersion}"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/text_color" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
 
     </ScrollView>
 
