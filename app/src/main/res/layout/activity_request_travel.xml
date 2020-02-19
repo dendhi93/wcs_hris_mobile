@@ -225,12 +225,16 @@
                                     android:id="@+id/rb_reqTravel_tb"
                                     android:text="@string/travel_business"
                                     android:layout_marginEnd="@dimen/spacing_huge"
+                                    android:textColor="@color/colorBlack"
+                                    android:buttonTint="@color/colorBlack"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
 
                                 <RadioButton
                                     android:id="@+id/rb_reqTravel_nonTB"
                                     android:text="@string/not_travel_business"
+                                    android:textColor="@color/colorBlack"
+                                    android:buttonTint="@color/colorBlack"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
                             </RadioGroup>

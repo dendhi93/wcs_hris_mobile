@@ -16,6 +16,8 @@ import com.wcs.mobilehris.database.entity.TransportTypeEntity
 import com.wcs.mobilehris.databinding.ActivityDtlRequestTravelBinding
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
 import com.wcs.mobilehris.feature.dtltask.FriendModel
+import com.wcs.mobilehris.feature.requesttravel.CustomReqTravelAdapter
+import com.wcs.mobilehris.feature.requesttravel.ReqTravelModel
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
@@ -23,12 +25,12 @@ import com.wcs.mobilehris.util.MessageUtils
 class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface {
     private lateinit var dtlTravelActivityBinding : ActivityDtlRequestTravelBinding
     private lateinit var dtlTravelAdapter : CustomDetailTaskAdapter
+    private lateinit var citiesAdapter : CustomReqTravelAdapter
     private var arrListTeamTravel = ArrayList<FriendModel>()
+    private var arrListCitiesTravel = ArrayList<ReqTravelModel>()
     private lateinit var intentFromForm : String
     private lateinit var intentTravelId : String
-    private var arrListTransport =  ArrayList<String>()
-    private var arrListTransportCode = ArrayList<String>()
-
+    private var onKeyAlertActive = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,8 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface {
         dtlTravelActivityBinding.viewModel = DtlTravelViewModel(this, this)
         dtlTravelActivityBinding.rcDtlReqTravel.layoutManager = LinearLayoutManager(this)
         dtlTravelActivityBinding.rcDtlReqTravel.setHasFixedSize(true)
+        dtlTravelActivityBinding.rcDtlReqTravelCities.layoutManager = LinearLayoutManager(this)
+        dtlTravelActivityBinding.rcDtlReqTravelCities.setHasFixedSize(true)
     }
 
     override fun onStart() {
@@ -51,20 +55,11 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface {
             ConstantObject.extra_fromIntentConfirmTravel -> supportActionBar?.title = ConstantObject.extra_fromIntentConfirmTravel
         }
 
-        dtlTravelActivityBinding.viewModel?.getDataTransport()
-        initRadioDtlTravel()
         dtlTravelAdapter = CustomDetailTaskAdapter(this, arrListTeamTravel, ConstantObject.vNotCreateEdit)
         dtlTravelActivityBinding.rcDtlReqTravel.adapter = dtlTravelAdapter
-    }
-
-    private fun initRadioDtlTravel(){
-        dtlTravelActivityBinding.rgDtlReqTravelTypeWay.setOnCheckedChangeListener{ group, checkedId ->
-            val radio: RadioButton? = findViewById(checkedId)
-            when(radio?.text){
-                getString(R.string.multiple_destination) -> dtlTravelActivityBinding.viewModel?.stDtlTravelIsOneWay?.set(false)
-                else -> dtlTravelActivityBinding.viewModel?.stDtlTravelIsOneWay?.set(true)
-            }
-        }
+        citiesAdapter = CustomReqTravelAdapter(this, arrListCitiesTravel, ConstantObject.vNotCreateEdit)
+        dtlTravelActivityBinding.rcDtlReqTravelCities.adapter = citiesAdapter
+        dtlTravelActivityBinding.viewModel?.validateDataTravel(intentFromForm, intentTravelId)
     }
 
     override fun onLoadTeam(listTeam: List<FriendModel>) {
@@ -85,79 +80,44 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface {
     override fun onAlertDtlReqTravel(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
         when(intTypeActionAlert){
             ALERT_DTL_REQ_TRAVEL_NO_CONNECTION -> MessageUtils.alertDialogDismiss(alertMessage, alertTitle, this)
-        }
-    }
-
-    override fun onLoadTransport(listTransport: List<TransportTypeEntity>) {
-        for(i in listTransport.indices){
-            when(i) {
-                0 -> {
-                    arrListTransport.add("Transportation Type")
-                    arrListTransport.add("")
-                }
-                else -> {
-                    arrListTransport.add(listTransport[i].mTransTypeDescription.trim())
-                    arrListTransportCode.add(listTransport[i].mTransCode.trim())
-                }
+            ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT -> {
+                onKeyAlertActive = ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
+            ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT -> {
+                onKeyAlertActive = ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
             }
         }
-
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrListTransport)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        dtlTravelActivityBinding.spDtlReqTravelTransType.adapter = adapter
-        dtlTravelActivityBinding.spDtlReqTravelTransType.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                when{
-                    position > 0 -> {
-                        val code = arrListTransportCode[position].trim()
-                        dtlTravelActivityBinding.viewModel?.stDtlTravelTransType?.set(code)
-                        hidingKeyboard()
-                    }
-                }
-            }
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
-        when{
-            arrListTransport.isNotEmpty() -> dtlTravelActivityBinding.viewModel?.validateDataTravel(intentFromForm, intentTravelId)
-        }
     }
 
-    override fun onSuccessDtlTravel() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onLoadCitiesTravel(listCities: List<ReqTravelModel>) {
+        arrListCitiesTravel.clear()
+        arrListCitiesTravel.addAll(listCities)
+        citiesAdapter.notifyDataSetChanged()
     }
 
-    override fun getCityDepart() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getCityReturn() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onSuccessDtlTravel(message: String) {
+        dtlTravelActivityBinding.viewModel?.isProgressDtlReqTravel?.set(false)
+        onMessage(message, ConstantObject.vToastSuccess)
+        finish()
     }
 
     override fun selectedTravelWayRadio(booleanTravelWay: Boolean?) {
         dtlTravelActivityBinding.rgDtlReqTravelTypeWay.clearCheck()
         booleanTravelWay?.let {
             when{
-                it -> dtlTravelActivityBinding.rbDtlReqTravelOneWay.isChecked = true
-                else -> dtlTravelActivityBinding.rbDtlReqTravelRoundTrip.isChecked = true
-            }
-        }
-    }
-
-    override fun selectedSpinner(selectedTransType: String) {
-        when{
-            arrListTransport.isNotEmpty() -> {
-                for(i in arrListTransport.indices){
-                    when(arrListTransport[i].trim()){
-                        selectedTransType -> dtlTravelActivityBinding.spDtlReqTravelTransType.setSelection(i)
-                    }
-                }
+                it -> dtlTravelActivityBinding.rbDtlReqTravelTb.isChecked = true
+                else -> dtlTravelActivityBinding.rbDtlReqTravelNonTb.isChecked = true
             }
         }
     }
 
     override fun onPositiveClick(o: Any) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        when(onKeyAlertActive){
+            ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT)
+            ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT)
+        }
     }
 
     override fun onNegativeClick(o: Any) {}
@@ -172,15 +132,10 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface {
         }
     }
 
-    private fun hidingKeyboard(){
-        val inputManager: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-    }
-
     companion object{
         const val ALERT_DTL_REQ_TRAVEL_NO_CONNECTION = 1
+        const val ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT = 3
+        const val ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT = 5
         const val extraTravelId = "travel_id"
-        const val selectDateFrom = "date_from"
-        const val selectDateInto = "date_into"
     }
 }

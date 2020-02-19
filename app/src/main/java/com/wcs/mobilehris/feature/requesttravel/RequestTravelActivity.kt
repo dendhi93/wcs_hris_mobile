@@ -75,7 +75,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
         activityRequestTravelBinding.rcReqTravelTeam.adapter = travelAdapter
 
         activityRequestTravelBinding.rcReqTravelCities.setHasFixedSize(true)
-        citiesAdapter = CustomReqTravelAdapter(this, arrCities)
+        citiesAdapter = CustomReqTravelAdapter(this, arrCities, ConstantObject.vNotCreateEdit)
         citiesAdapter.initSelectedTravel(this)
         activityRequestTravelBinding.rcReqTravelCities.adapter = citiesAdapter
         travelRequestDao = WcsHrisApps.database.travelReqDao()

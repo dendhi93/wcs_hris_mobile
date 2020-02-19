@@ -40,7 +40,7 @@ object ConstantObject {
     const val vProspectTask = "Prospect"
     const val vPreSalesTask = "PreSales"
     const val vCreateEdit = "createEdit"
-    const val vNotCreateEdit = "globalTask"
+    const val vNotCreateEdit = "nonCreateEdit"
 
     //menu request
     const val travelMenu = "Travel"
