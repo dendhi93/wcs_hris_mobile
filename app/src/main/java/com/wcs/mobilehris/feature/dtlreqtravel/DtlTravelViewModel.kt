@@ -20,7 +20,7 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
     val stDtlTravelReturnDate = ObservableField<String>("")
     val stDtlTravelDescription = ObservableField<String>("")
     val stDtlTravelReason = ObservableField<String>("")
-    val stDtlTravelIsTB = ObservableField<Boolean>(false)
+    private val stDtlTravelIsTB = ObservableField<Boolean>(false)
 
     private var stIntentFromMenu : String? = null
     private var stIntentTravelId : String? = null
@@ -38,10 +38,7 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
         stIntentTravelId = intentTravelId.trim()
         isProgressDtlReqTravel.set(true)
         isHideDtlTravelUI.set(true)
-        when(intentFrom){
-            ConstantObject.extra_fromIntentConfirmTravel -> isConfirmTravelMenu.set(true)
-            else -> isConfirmTravelMenu.set(false)
-        }
+        isConfirmTravelMenu.set(false)
 
         Handler().postDelayed({
             stDtlTravelChargeCode.set("A-1003-096 BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY")
@@ -77,6 +74,10 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
             when{dtlListCityTravel.isNotEmpty() -> dtlTravelInterface.onLoadCitiesTravel(dtlListCityTravel)}
             isProgressDtlReqTravel.set(false)
             isHideDtlTravelUI.set(false)
+            when(intentFrom){
+                ConstantObject.extra_fromIntentConfirmTravel -> isConfirmTravelMenu.set(true)
+                else -> isConfirmTravelMenu.set(false)
+            }
         }, 2000)
     }
 

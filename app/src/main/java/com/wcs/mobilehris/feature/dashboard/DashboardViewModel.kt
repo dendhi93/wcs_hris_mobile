@@ -45,7 +45,7 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
         _dashboardInterface.hideUI(ConstantObject.vRecylerViewUI)
         _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
         val listDashboard = mutableListOf<DashboardModel>()
-        var dashBoardModel = DashboardModel("Activity","Metting at 13.00" +
+        var dashBoardModel = DashboardModel("Activity","Meeting at 13.00" +
                 "\nInterview new Candidate at  15.00" +
                 "\nand 2 others")
         listDashboard.add(dashBoardModel)
@@ -67,9 +67,7 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
                 _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
 
                 when(typeLoading){
-                    ConstantObject.vLoadWithProgressBar -> {
-                        _dashboardInterface.hideUI(ConstantObject.vProgresBarUI)
-                    }
+                    ConstantObject.vLoadWithProgressBar -> { _dashboardInterface.hideUI(ConstantObject.vProgresBarUI) }
                     else -> _dashboardInterface.hideSwipeRefreshLayout()
                 }
                 _dashboardInterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
