@@ -12,16 +12,18 @@ class Preference(private var _context : Context){
     private val KEY_NAMEPROFILE = "name"
     private val KEY_PHONEPROFILE = "phone"
     private val KEY_EMAILPROFILE = "email"
+    private val KEY_TOKEN = "token"
 
     init {
         editor = sharedPreferences.edit()
     }
 
-    fun saveUn(un: String, name : String, phone : String, email : String) {
+    fun saveUn(un: String, name : String, phone : String, email : String, unToken : String) {
         editor.putString(KEY_USERNAME, un)
         editor.putString(KEY_NAMEPROFILE, name)
         editor.putString(KEY_PHONEPROFILE, phone)
         editor.putString(KEY_EMAILPROFILE, email)
+        editor.putString(KEY_TOKEN, unToken)
         editor.apply()
     }
 
@@ -29,6 +31,7 @@ class Preference(private var _context : Context){
     fun getName(): String { return sharedPreferences.getString(KEY_NAMEPROFILE, "").toString() }
     fun getPhone(): String { return sharedPreferences.getString(KEY_PHONEPROFILE, "").toString() }
     fun getEmail(): String { return sharedPreferences.getString(KEY_EMAILPROFILE, "").toString() }
+    fun getToken(): String { return sharedPreferences.getString(KEY_EMAILPROFILE, "").toString() }
 
     fun clearPreference() {
         editor.clear()

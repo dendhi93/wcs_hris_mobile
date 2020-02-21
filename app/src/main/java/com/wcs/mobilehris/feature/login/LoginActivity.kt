@@ -4,11 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.text.method.PasswordTransformationMethod
-import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.ActivityLoginBinding
 import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         bindingLogin = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        bindingLogin.viewModel = LoginViewModel(this, this)
+        bindingLogin.viewModel = LoginViewModel(this, this, ApiRepo())
     }
 
     override fun onStart() {

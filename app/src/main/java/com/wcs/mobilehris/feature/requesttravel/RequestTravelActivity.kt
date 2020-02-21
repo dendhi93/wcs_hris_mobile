@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -18,8 +17,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
-import com.wcs.mobilehris.application.WcsHrisApps
-import com.wcs.mobilehris.database.daos.TravelRequestDao
 import com.wcs.mobilehris.database.entity.ChargeCodeEntity
 import com.wcs.mobilehris.database.entity.ReasonTravelEntity
 import com.wcs.mobilehris.database.entity.TransportTypeEntity
@@ -47,7 +44,6 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     private var arrTransTypeCode = ArrayList<String>()
     private var arrReasonDesc = ArrayList<String>()
     private var arrReasonCode = ArrayList<String>()
-    private lateinit var travelRequestDao : TravelRequestDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +74,6 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
         citiesAdapter = CustomReqTravelAdapter(this, arrCities, ConstantObject.vNotCreateEdit)
         citiesAdapter.initSelectedTravel(this)
         activityRequestTravelBinding.rcReqTravelCities.adapter = citiesAdapter
-        travelRequestDao = WcsHrisApps.database.travelReqDao()
         onChangeButtonBackground(true)
         initReqTravelRadio()
     }
