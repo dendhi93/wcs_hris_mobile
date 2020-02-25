@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentRequestBinding
+import com.wcs.mobilehris.util.ConstantObject
 
 class RequestFragment : Fragment(), RequestInterface {
     private lateinit var requestBinding : FragmentRequestBinding
@@ -27,7 +28,7 @@ class RequestFragment : Fragment(), RequestInterface {
         super.onViewCreated(view, savedInstanceState)
         requestBinding.rcRequest.layoutManager = LinearLayoutManager(requireContext())
         requestBinding.rcRequest.setHasFixedSize(true)
-        requestAdapter = CustomRequestAdapter(requireContext(), arrList)
+        requestAdapter = CustomRequestAdapter(requireContext(), arrList, ConstantObject.extra_fromIntentRequestTravel)
         requestBinding.rcRequest.adapter = requestAdapter
         requestBinding.viewModel?.initMenu()
     }

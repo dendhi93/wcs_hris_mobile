@@ -51,9 +51,11 @@ object ConstantObject {
     //type intent
     const val extra_intent = "extra_intent"
     const val extra_fromIntentCreateTask = "CreateTask"
-    const val extra_fromIntentCreateTravel = "CreateTravel"
     const val extra_fromIntentTeam = "team_fragment"
     const val extra_fromIntentProfile = "profile_activity"
     const val extra_fromIntentDtlTravel = "Detail Travel"
     const val extra_fromIntentConfirmTravel = "Confirm Travel"
+    const val extra_fromIntentCreateTravel = "CreateTravel"
+    const val extra_fromIntentRequestTravel = "RequestTravel"
+    const val extra_fromIntentApprovalTravel = "ApprovalTravel"
 }

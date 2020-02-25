@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentApprovalBinding
+import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
 class ApprovalFragment : Fragment(), ApprovalInterface {
@@ -28,7 +29,7 @@ class ApprovalFragment : Fragment(), ApprovalInterface {
         super.onViewCreated(view, savedInstanceState)
         approvalBinding.rcApproval.layoutManager = LinearLayoutManager(requireContext())
         approvalBinding.rcApproval.setHasFixedSize(true)
-        approvalAdapter = CustomApprovalAdapter(requireContext(), arrApprovalList)
+        approvalAdapter = CustomApprovalAdapter(requireContext(), arrApprovalList, ConstantObject.extra_fromIntentApprovalTravel)
         approvalBinding.rcApproval.adapter = approvalAdapter
 
         approvalBinding.viewModel?.approvalInitMenu()

@@ -34,6 +34,7 @@ class ApiRepo {
                             val errObj = JSONObject(anError?.errorBody.toString())
                             callback.onDataError(errObj.getString("Message"))
                         }
+                        else -> callback.onDataError(anError.errorBody.toString())
                     }
                 }
             })

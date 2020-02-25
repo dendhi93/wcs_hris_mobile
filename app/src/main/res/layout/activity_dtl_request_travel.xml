@@ -305,38 +305,52 @@
             android:layout_margin="@dimen/spacing_tiny"
             android:visibility="@{viewModel.isConfirmTravelMenu ? View.VISIBLE : View.GONE}"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_alignParentBottom="true">
 
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:layout_marginStart="@dimen/spacing_tiny_3"
-                android:layout_marginEnd="@dimen/spacing_tiny_3"
-                android:id="@+id/btn_dtlReqTravel_confirm"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/button_height"
-                android:layout_weight="1"
-                android:onClick="@{() -> viewModel.onSubmitConfirm()}"
-                android:enabled="@{!viewModel.isProgressDtlReqTravel}"
-                android:textColor="@color/colorWhite"
-                android:text="@string/confirm_save"
-                android:background="@drawable/bg_blue_button"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:layout_marginStart="@dimen/spacing_tiny_3"
-                android:layout_marginEnd="@dimen/spacing_tiny_3"
-                android:onClick="@{() -> viewModel.onSubmitReject()}"
-                android:enabled="@{!viewModel.isProgressDtlReqTravel}"
-                android:id="@+id/btn_dtlReqTravel_reject"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/button_height"
-                android:layout_weight="1"
-                android:text="@string/reject_save"
-                android:background="@drawable/bg_transparent_button"/>
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_marginEnd="@dimen/spacing_tiny_3"
+                    android:id="@+id/btn_dtlReqTravel_confirm"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_weight="1"
+                    android:onClick="@{() -> viewModel.onSubmitConfirm()}"
+                    android:enabled="@{!viewModel.isProgressDtlReqTravel}"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/confirm_save"
+                    android:background="@drawable/bg_blue_button"/>
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_marginEnd="@dimen/spacing_tiny_3"
+                    android:onClick="@{() -> viewModel.onSubmitReject()}"
+                    android:enabled="@{!viewModel.isProgressDtlReqTravel}"
+                    android:id="@+id/btn_dtlReqTravel_reject"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_weight="1"
+                    android:text="@string/reject_save"
+                    android:background="@drawable/bg_transparent_button"/>
+            </LinearLayout>
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+                <include layout="@layout/custom_bottom_sheet_reject"/>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         </LinearLayout>
     </RelativeLayout>

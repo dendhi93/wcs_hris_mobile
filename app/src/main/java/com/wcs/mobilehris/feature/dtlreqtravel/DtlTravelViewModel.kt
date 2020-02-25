@@ -20,6 +20,7 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
     val stDtlTravelReturnDate = ObservableField<String>("")
     val stDtlTravelDescription = ObservableField<String>("")
     val stDtlTravelReason = ObservableField<String>("")
+    val stDtlTravelNotes = ObservableField<String>("")
     private val stDtlTravelIsTB = ObservableField<Boolean>(false)
 
     private var stIntentFromMenu : String? = null
@@ -81,8 +82,14 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
         }, 2000)
     }
 
-    fun viewCities(){ isCitiesView.set(true) }
-    fun viewFriends(){ isCitiesView.set(false) }
+    fun viewCities(){
+        isCitiesView.set(true)
+        dtlTravelInterface.onChangeButtonBackground(true)
+    }
+    fun viewFriends(){
+        isCitiesView.set(false)
+        dtlTravelInterface.onChangeButtonBackground(false)
+    }
     fun onSubmitConfirm(){dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
         ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT)}
     fun onSubmitReject(){dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),

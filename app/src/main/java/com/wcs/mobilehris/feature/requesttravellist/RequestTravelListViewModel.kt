@@ -9,34 +9,47 @@ import com.wcs.mobilehris.util.ConstantObject
 
 class RequestTravelListViewModel (private val context : Context, private val requestTravalListInterface: ReqTravelListInterface) : ViewModel(){
 
-    fun initDataTravel(typeOfLoading : Int){
+    fun initDataTravel(typeOfLoading : Int, intentTravelFrom : String){
         when{
             !ConnectionObject.isNetworkAvailable(context) ->
                 requestTravalListInterface.onAlertReqTravelList(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, RequestTravelListActivity.ALERT_REQ_TRAVEL_HIST_NO_CONNECTION)
-            else -> getTravelData(typeOfLoading)
+            else -> getTravelData(typeOfLoading, intentTravelFrom)
         }
     }
 
-    private fun getTravelData(typeLoading : Int){
+    private fun getTravelData(typeLoading : Int, intentTravelFrom :String){
         when(typeLoading){ConstantObject.vLoadWithProgressBar -> requestTravalListInterface.showUI(ConstantObject.vProgresBarUI) }
         requestTravalListInterface.hideUI(ConstantObject.vRecylerViewUI)
         requestTravalListInterface.showUI(ConstantObject.vGlobalUI)
 
         val listTravelList = mutableListOf<TravelListModel>()
-        var travelModel = TravelListModel("01","Training/Seminar/WorkShop",
-            "27/01/2020","31/01/2020","Training React Native",
-            "Non Travel Business", "Waiting")
-        listTravelList.add(travelModel)
-        travelModel = TravelListModel("01","Routine Duty",
-            "10/02/2020","14/02/2020","Support Sari Roti",
-            "Travel Business", "True")
-        listTravelList.add(travelModel)
-        travelModel = TravelListModel("01","Others",
-            "03/02/2020","07/02/2020","Presales",
-            "Non Travel Business", "False")
-        listTravelList.add(travelModel)
-
+        when(intentTravelFrom){
+            ConstantObject.extra_fromIntentApprovalTravel -> {
+                var travelModel = TravelListModel("01","Training/Seminar/WorkShop",
+                    "27/01/2020","31/01/2020","Training React Native",
+                    "Non Travel Business", "")
+                listTravelList.add(travelModel)
+                travelModel = TravelListModel("01","Training/Seminar/WorkShop",
+                    "03/02/2020","07/02/2020","Training .net",
+                    "Non Travel Business", "")
+                listTravelList.add(travelModel)
+            }
+            else -> {
+                var travelModel = TravelListModel("01","Training/Seminar/WorkShop",
+                    "27/01/2020","31/01/2020","Training React Native",
+                    "Non Travel Business", "Waiting")
+                listTravelList.add(travelModel)
+                travelModel = TravelListModel("01","Routine Duty",
+                    "10/02/2020","14/02/2020","Support Sari Roti",
+                    "Travel Business", "True")
+                listTravelList.add(travelModel)
+                travelModel = TravelListModel("01","Others",
+                    "03/02/2020","07/02/2020","Presales",
+                    "Non Travel Business", "False")
+                listTravelList.add(travelModel)
+            }
+        }
         when{
             listTravelList.size > 0 -> {
                 Handler().postDelayed({

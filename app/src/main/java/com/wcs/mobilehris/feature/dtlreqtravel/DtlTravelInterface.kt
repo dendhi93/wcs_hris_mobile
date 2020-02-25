@@ -11,4 +11,5 @@ interface DtlTravelInterface : DialogInterface {
     fun onLoadCitiesTravel(listCities : List<ReqTravelModel>)
     fun onSuccessDtlTravel(message : String)
     fun selectedTravelWayRadio(booleanTravelWay: Boolean?)
+    fun onChangeButtonBackground(booleanCityView : Boolean?)
 }

@@ -13,10 +13,12 @@ import com.wcs.mobilehris.feature.requesttravel.RequestTravelActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class RequestTravelListActivity : AppCompatActivity(), ReqTravelListInterface {
     private lateinit var activityRequestTravelListBinding : ActivityRequestTravelListBinding
     private lateinit var requestTravelListAdapter : CustomTravelListAdapter
     private var arrReqTravel = ArrayList<TravelListModel>()
+    private lateinit var intentTravelFrom : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +33,17 @@ class RequestTravelListActivity : AppCompatActivity(), ReqTravelListInterface {
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
+            intentTravelFrom = intent.getStringExtra(ConstantObject.extra_intent)
+            when(intentTravelFrom){
+                ConstantObject.extra_fromIntentRequestTravel -> it.title = getString(R.string.req_travel_hist_activity)
+                else -> it.title = getString(R.string.approval_travel_list_activity)
+            }
         }
-        requestTravelListAdapter = CustomTravelListAdapter(this, arrReqTravel)
+        requestTravelListAdapter = CustomTravelListAdapter(this, arrReqTravel, intentTravelFrom)
         activityRequestTravelListBinding.rcReqTravelList.adapter = requestTravelListAdapter
-        activityRequestTravelListBinding.viewModel?.initDataTravel(ConstantObject.vLoadWithProgressBar)
+        activityRequestTravelListBinding.viewModel?.initDataTravel(ConstantObject.vLoadWithProgressBar, intentTravelFrom)
         activityRequestTravelListBinding.swReqTravelList.setOnRefreshListener {
-            activityRequestTravelListBinding.viewModel?.initDataTravel(ConstantObject.vLoadWithoutProgressBar)
+            activityRequestTravelListBinding.viewModel?.initDataTravel(ConstantObject.vLoadWithoutProgressBar, intentTravelFrom)
         }
     }
 

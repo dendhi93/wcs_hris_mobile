@@ -26,14 +26,14 @@
         android:name=".application.WcsHrisApps"
         android:allowBackup="true"
         android:icon="@mipmap/ic_hris_logo"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:usesCleartextTraffic="true"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_hris_logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".feature.dtlreqtravel.DtlRequestTravelActivity"/>
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".feature.dtlreqtravel.DtlRequestTravelActivity" />
         <activity
             android:name=".feature.city.CityActivity"
             android:label="@string/search_city_activity" />

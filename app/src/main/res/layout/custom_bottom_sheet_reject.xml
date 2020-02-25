@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_customBottomSheetReject"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="1dp"
+    android:padding="1dp"
+    android:elevation="2dp"
+    app:cardMaxElevation="0dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/cardview_light_background"
+    tools:ignore="PrivateResource"
+    app:cardUseCompatPadding="true"
+    android:paddingBottom="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="@dimen/spacing_huge_2"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="@dimen/spacing_tiny_2"
+            android:layout_marginStart="@dimen/spacing_tiny_2"
+            android:layout_marginEnd="@dimen/spacing_tiny_2"
+            android:layout_marginBottom="@dimen/spacing_small_1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_huge_2"
+            app:boxStrokeWidth="@dimen/text_fields_box_width"
+            app:boxStrokeColor="@color/text_fields_box_color"
+            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txt_customBottomSheet_notes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                android:gravity="center_vertical"
+                android:textColor="@color/colorBlack"
+                android:textColorHint="@color/colorBlack"
+                android:hint="@string/notes_bottom_sheet"
+                android:inputType="text"
+                android:textSize="@dimen/text_fields_text_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_customBottomSheet_reject"
+            android:layout_margin="@dimen/spacing_small"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:text="@string/save"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/bg_blue_button" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
