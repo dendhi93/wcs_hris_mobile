@@ -73,12 +73,13 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
                 "Mercure Hotel")
             dtlListCityTravel.add(reqTravelModel)
             when{dtlListCityTravel.isNotEmpty() -> dtlTravelInterface.onLoadCitiesTravel(dtlListCityTravel)}
+
             isProgressDtlReqTravel.set(false)
             isHideDtlTravelUI.set(false)
-            when(intentFrom){
-                ConstantObject.extra_fromIntentConfirmTravel -> isConfirmTravelMenu.set(true)
-                else -> isConfirmTravelMenu.set(false)
-            }
+            if (intentFrom == ConstantObject.extra_fromIntentConfirmTravel ||
+                    intentFrom == ConstantObject.extra_fromIntentApprovalTravel){
+                isConfirmTravelMenu.set(true)
+            }else { isConfirmTravelMenu.set(false) }
         }, 2000)
     }
 
@@ -90,16 +91,35 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
         isCitiesView.set(false)
         dtlTravelInterface.onChangeButtonBackground(false)
     }
-    fun onSubmitConfirm(){dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
-        ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT)}
-    fun onSubmitReject(){dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
-        ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT)}
+    fun onSubmitConfirm(){
+        when{
+            !ConnectionObject.isNetworkAvailable(context) -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.alert_no_connection),
+                ConstantObject.vAlertDialogNoConnection, DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_NO_CONNECTION)
+            stIntentFromMenu == ConstantObject.extra_fromIntentRequestTravel -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
+                ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT)
+            stIntentFromMenu == ConstantObject.extra_fromIntentApprovalTravel -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
+                ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_ACCEPT)
+        }
+
+    }
+    fun onSubmitReject(){
+        when{
+            !ConnectionObject.isNetworkAvailable(context) -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.alert_no_connection),
+                ConstantObject.vAlertDialogNoConnection, DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_NO_CONNECTION)
+            stIntentFromMenu == ConstantObject.extra_fromIntentRequestTravel -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
+                ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT)
+            stIntentFromMenu == ConstantObject.extra_fromIntentApprovalTravel -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
+                ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_REJECT)
+        }
+    }
 
     fun onProcessConfirm(chooseConfirm : Int){
         isProgressDtlReqTravel.set(true)
         Handler().postDelayed({
             when(chooseConfirm){
                 DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT ->  dtlTravelInterface.onSuccessDtlTravel("Transaction Successful accepted")
+                DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT -> dtlTravelInterface.onSuccessDtlTravel("Transaction Successful rejected")
+                DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_ACCEPT -> dtlTravelInterface.onSuccessDtlTravel("Transaction Successful approved")
                 else -> dtlTravelInterface.onSuccessDtlTravel("Transaction Successful rejected")
             }
         }, 2000)

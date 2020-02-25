@@ -47,7 +47,10 @@ class CustomTravelListAdapter  (private val context : Context,
                     context.startActivity(intent)
                 }
                 else -> {
-                    MessageUtils.toastMessage(context,"Coba", ConstantObject.vToastInfo)
+                    val intent = Intent(context, DtlRequestTravelActivity::class.java)
+                    intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentApprovalTravel)
+                    intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.travelId)
+                    context.startActivity(intent)
                 }
             }
 

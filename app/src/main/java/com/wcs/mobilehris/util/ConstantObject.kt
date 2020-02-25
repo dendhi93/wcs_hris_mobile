@@ -57,5 +57,5 @@ object ConstantObject {
     const val extra_fromIntentConfirmTravel = "Confirm Travel"
     const val extra_fromIntentCreateTravel = "CreateTravel"
     const val extra_fromIntentRequestTravel = "RequestTravel"
-    const val extra_fromIntentApprovalTravel = "ApprovalTravel"
+    const val extra_fromIntentApprovalTravel = "Approval Travel"
 }
