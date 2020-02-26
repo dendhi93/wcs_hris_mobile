@@ -69,6 +69,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface, TransR
         citiesAdapter = CustomReqTravelAdapter(this, arrListCitiesTravel, ConstantObject.vNotCreateEdit)
         dtlTravelActivityBinding.rcDtlReqTravelCities.adapter = citiesAdapter
         dtlTravelActivityBinding.viewModel?.validateDataTravel(intentFromForm, intentTravelId)
+        onChangeButtonBackground(true)
     }
 
     override fun onLoadTeam(listTeam: List<FriendModel>) {
@@ -133,16 +134,16 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface, TransR
     override fun onChangeButtonBackground(booleanCityView: Boolean?) {
         when (booleanCityView) {
             true -> {
-                dtlTravelActivityBinding.btnDtlReqTravelListCities.setBackgroundResource(R.drawable.bg_blue_button)
-                dtlTravelActivityBinding.btnDtlReqTravelListCities.setTextColor(Color.WHITE)
-                dtlTravelActivityBinding.btnDtlReqTravelListFriend.setBackgroundResource(R.drawable.bg_transparent_button)
-                dtlTravelActivityBinding.btnDtlReqTravelListFriend.setTextColor(Color.BLACK)
+                dtlTravelActivityBinding.btnDtlReqTravelListCities.setBackgroundResource(R.color.colorGray400)
+                dtlTravelActivityBinding.btnDtlReqTravelListCities.setTextColor(Color.BLACK)
+                dtlTravelActivityBinding.btnDtlReqTravelListFriend.setBackgroundResource(R.color.colorGray200)
+                dtlTravelActivityBinding.btnDtlReqTravelListFriend.setTextColor(Color.GRAY)
             }
             else -> {
-                dtlTravelActivityBinding.btnDtlReqTravelListCities.setBackgroundResource(R.drawable.bg_transparent_button)
-                dtlTravelActivityBinding.btnDtlReqTravelListCities.setTextColor(Color.BLACK)
-                dtlTravelActivityBinding.btnDtlReqTravelListFriend.setBackgroundResource(R.drawable.bg_blue_button)
-                dtlTravelActivityBinding.btnDtlReqTravelListFriend.setTextColor(Color.WHITE)
+                dtlTravelActivityBinding.btnDtlReqTravelListCities.setBackgroundResource(R.color.colorGray200)
+                dtlTravelActivityBinding.btnDtlReqTravelListCities.setTextColor(Color.GRAY)
+                dtlTravelActivityBinding.btnDtlReqTravelListFriend.setBackgroundResource(R.color.colorGray400)
+                dtlTravelActivityBinding.btnDtlReqTravelListFriend.setTextColor(Color.BLACK)
             }
         }
     }

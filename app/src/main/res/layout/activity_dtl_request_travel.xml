@@ -252,28 +252,23 @@
                                 style="?android:attr/buttonBarButtonStyle"
                                 android:layout_marginBottom="@dimen/spacing_small"
                                 android:layout_marginStart="@dimen/spacing_tiny_3"
-                                android:layout_marginEnd="@dimen/spacing_tiny_3"
                                 android:id="@+id/btn_dtlReqTravel_listCities"
                                 android:layout_width="0dp"
                                 android:onClick="@{() -> viewModel.viewCities()}"
                                 android:layout_height="@dimen/button_height"
                                 android:layout_weight="1"
-                                android:textColor="@color/colorWhite"
-                                android:text="@string/list_cities"
-                                android:background="@drawable/bg_blue_button"/>
+                                android:text="@string/list_cities" />
 
                             <Button
                                 style="?android:attr/buttonBarButtonStyle"
                                 android:layout_marginBottom="@dimen/spacing_small"
-                                android:layout_marginStart="@dimen/spacing_tiny_3"
                                 android:layout_marginEnd="@dimen/spacing_tiny_3"
                                 android:id="@+id/btn_dtlReqTravel_listFriend"
                                 android:layout_width="0dp"
                                 android:onClick="@{() -> viewModel.viewFriends()}"
                                 android:layout_height="@dimen/button_height"
                                 android:layout_weight="1"
-                                android:text="@string/list_friends"
-                                android:background="@drawable/bg_transparent_button"/>
+                                android:text="@string/list_friends" />
 
                         </LinearLayout>
                     </LinearLayout>

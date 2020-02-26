@@ -2,12 +2,14 @@ package com.wcs.mobilehris.feature.requesttravellist
 
 import android.content.Context
 import android.os.Handler
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.util.ConstantObject
 
 class RequestTravelListViewModel (private val context : Context, private val requestTravalListInterface: ReqTravelListInterface) : ViewModel(){
+    val isVisibleFab = ObservableField<Boolean>(false)
 
     fun initDataTravel(typeOfLoading : Int, intentTravelFrom : String){
         when{
@@ -26,6 +28,7 @@ class RequestTravelListViewModel (private val context : Context, private val req
         val listTravelList = mutableListOf<TravelListModel>()
         when(intentTravelFrom){
             ConstantObject.extra_fromIntentApprovalTravel -> {
+                isVisibleFab.set(false)
                 var travelModel = TravelListModel("01","Training/Seminar/WorkShop",
                     "27/01/2020","31/01/2020","Training React Native",
                     "Non Travel Business", "")
@@ -36,6 +39,7 @@ class RequestTravelListViewModel (private val context : Context, private val req
                 listTravelList.add(travelModel)
             }
             else -> {
+                isVisibleFab.set(true)
                 var travelModel = TravelListModel("01","Training/Seminar/WorkShop",
                     "27/01/2020","31/01/2020","Training React Native",
                     "Non Travel Business", "Waiting")

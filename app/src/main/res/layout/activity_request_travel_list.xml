@@ -53,6 +53,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="@dimen/icon_medium"
             android:layout_marginEnd="@dimen/icon_medium"
+            android:visibility="@{viewModel.isVisibleFab ? View.VISIBLE : View.GONE}"
             android:onClick="@{() -> viewModel.fabClickRequest()}"
             android:id="@+id/fab_reqTravelList"
             android:src="@mipmap/ic_plus_48"
