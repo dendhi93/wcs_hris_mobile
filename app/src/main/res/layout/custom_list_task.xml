@@ -22,16 +22,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_margin="@dimen/spacing_tiny"
+            android:textColor="@color/text_color"
             android:textSize="@dimen/alph_size_small"
             android:textStyle="bold" />
 
         <ImageButton
-            android:layout_margin="@dimen/spacing_tiny"
-            android:background="@color/colorWhite"
             android:id="@+id/imgB_menu"
             android:layout_width="@dimen/spacing_large"
             android:layout_height="@dimen/spacing_large"
             android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/spacing_tiny"
+            android:background="@color/colorWhite"
             android:src="@mipmap/ic_three_dot" />
 
         <LinearLayout
@@ -57,7 +58,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/spacing_tiny_3" />
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:textColor="@color/text_color" />
             </LinearLayout>
 
             <LinearLayout
@@ -76,26 +78,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/spacing_tiny_3" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/padding_medium2"
-                    android:layout_height="@dimen/padding_medium2"
-                    android:layout_margin="@dimen/spacing_tiny"
-                    android:src="@mipmap/ic_marker" />
-
-                <TextView
-                    android:id="@+id/tv_customPlan_Location"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/spacing_tiny_3" />
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:textColor="@color/text_color" />
             </LinearLayout>
 
             <LinearLayout
@@ -114,7 +98,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/spacing_tiny_3" />
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:textColor="@color/text_color" />
             </LinearLayout>
 
             <LinearLayout
@@ -135,31 +120,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/spacing_tiny_3" />
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:textColor="@color/text_color" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ln_custom_actHourTaken"
-                android:layout_marginBottom="@dimen/spacing_tiny_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:layout_marginBottom="@dimen/spacing_tiny_3"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/spacing_tiny"
                     android:layout_width="@dimen/padding_medium2"
                     android:layout_height="@dimen/padding_medium2"
-                    android:src="@mipmap/ic_time"/>
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/spacing_tiny"
+                    android:src="@mipmap/ic_time" />
 
                 <TextView
-                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:id="@+id/tv_customPlan_time_taken"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dark_background"
                     android:layout_gravity="center_vertical"
-                    android:id="@+id/tv_customPlan_time_taken"/>
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:textColor="@color/dark_background" />
             </LinearLayout>
 
             <View
@@ -181,24 +167,24 @@
                 android:id="@+id/tv_custom_isCompleted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/alph_size_small_2"
-                android:layout_marginEnd="@dimen/spacing_tiny"
+                android:layout_marginStart="@dimen/spacing_small"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginEnd="@dimen/spacing_tiny"
                 android:layout_toStartOf="@+id/btn_customPlan"
-                android:layout_marginStart="@dimen/spacing_small"/>
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/alph_size_small_2" />
 
             <Button
-                android:padding="@dimen/spacing_tiny_3"
-                android:layout_marginTop="@dimen/spacing_tiny"
-                android:layout_marginBottom="@dimen/spacing_small_1"
-                android:layout_marginEnd="@dimen/spacing_tiny"
-                android:textColor="@color/colorWhite"
                 android:id="@+id/btn_customPlan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/spacing_tiny"
+                android:layout_marginEnd="@dimen/spacing_tiny"
+                android:layout_marginBottom="@dimen/spacing_small_1"
                 android:background="@drawable/bg_red_button"
-                android:layout_alignParentEnd="true"/>
+                android:padding="@dimen/spacing_tiny_3"
+                android:textColor="@color/text_color" />
 
         </RelativeLayout>
     </RelativeLayout>

@@ -43,7 +43,6 @@
                     android:layout_height="wrap_content"
                     android:text="Sign In"
                     android:textSize="20sp"
-                    android:letterSpacing="0.1"
                     android:layout_marginTop="@dimen/space_14"
                     android:layout_gravity="center_horizontal" />
 
