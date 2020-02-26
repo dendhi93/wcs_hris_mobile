@@ -1,42 +1,35 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <data>
-        <import type="android.view.View" />
-        <variable
-            name="viewModel"
-            type="com.wcs.mobilehris.feature.confirmation.ConfirmationViewModel" />
-    </data>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimary"
-        android:orientation="vertical">
+        android:background="?attr/colorPrimary">
 
         <ProgressBar
-            android:id="@+id/pb_confirmation"
+            android:id="@+id/pb_ApprovalTravelList"
             android:layout_width="match_parent"
             android:layout_height="@dimen/permission_button_margin_vertical"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:visibility="gone"
             android:indeterminate="true" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:layout_below="@+id/pb_confirmation"
-            android:id="@+id/sw_confirmation"
+            android:id="@+id/sw_approvalTravelList"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_confirmation"
+                android:id="@+id/rc_approvalTravelList"
                 android:visibility="gone"
                 android:layoutAnimation="@anim/layout_animation_up_to_down"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <TextView
-            android:id="@+id/tv_confirmation_empty"
+            android:id="@+id/tv_approvalTravelList_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

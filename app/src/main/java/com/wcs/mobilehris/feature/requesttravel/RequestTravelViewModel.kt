@@ -3,7 +3,6 @@ package com.wcs.mobilehris.feature.requesttravel
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Handler
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -12,7 +11,6 @@ import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.database.daos.ChargeCodeDao
 import com.wcs.mobilehris.database.daos.ReasonTravelDao
 import com.wcs.mobilehris.database.daos.TransTypeDao
-import com.wcs.mobilehris.database.daos.TravelRequestDao
 import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.DateTimeUtils
@@ -40,7 +38,6 @@ class RequestTravelViewModel (private val context : Context, private val request
     private val listSelectedTeam = mutableListOf<FriendModel>()
     private lateinit var mTransTypeDao : TransTypeDao
     private lateinit var mChargeCodeDao : ChargeCodeDao
-    private lateinit var mTravelRequestDao : TravelRequestDao
     private lateinit var mReasonTravelDao : ReasonTravelDao
     private val calendar : Calendar = Calendar.getInstance()
     private var mYear : Int = 0
@@ -114,7 +111,6 @@ class RequestTravelViewModel (private val context : Context, private val request
 
     fun initDataChargeCode(){
         mChargeCodeDao = WcsHrisApps.database.chargeCodeDao()
-        mTravelRequestDao = WcsHrisApps.database.travelReqDao()
         doAsync {
             val listTableChargeCode = mChargeCodeDao.getAllChargeCode()
             uiThread { when{listTableChargeCode.isNotEmpty() -> requestTravelInterface.onLoadChargeCode(listTableChargeCode) } }

@@ -14,7 +14,9 @@ import com.wcs.mobilehris.feature.requesttravellist.RequestTravelListActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
-class CustomRequestAdapter(private val _context : Context, private val requestList : MutableList<RequestModel>):
+class CustomRequestAdapter(private val _context : Context,
+                           private val requestList : MutableList<RequestModel>,
+                            private val customIntentTravelFrom : String):
     RecyclerView.Adapter<CustomRequestAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,7 +40,11 @@ class CustomRequestAdapter(private val _context : Context, private val requestLi
         holder.imgCustom.setImageResource(model.imgItemMenu)
         holder.cvCustom.setOnClickListener {
             when(reqMenu){
-                ConstantObject.travelMenu -> _context.startActivity(Intent(_context, RequestTravelListActivity::class.java))
+                ConstantObject.travelMenu -> {
+                    val intent = Intent(_context, RequestTravelListActivity::class.java)
+                    intent.putExtra(ConstantObject.extra_intent, customIntentTravelFrom)
+                    _context.startActivity(intent)
+                }
                 else -> MessageUtils.toastMessage(_context,"Test", ConstantObject.vToastInfo)
             }
         }

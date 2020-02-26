@@ -1,6 +1,7 @@
 package com.wcs.mobilehris.feature.approval
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,13 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.feature.requesttravellist.RequestTravelListActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
-class CustomApprovalAdapter (private val _context : Context, private val approvalList : MutableList<ApprovalModel>):
+class CustomApprovalAdapter (private val _context : Context,
+                             private val approvalList : MutableList<ApprovalModel>,
+                             private val customIntentFrom : String):
     RecyclerView.Adapter<CustomApprovalAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,7 +36,14 @@ class CustomApprovalAdapter (private val _context : Context, private val approva
         holder.tvMenuContent.text = model.itemMenuContent.trim()
         holder.imgCustom.setImageResource(model.imgItemMenu)
         holder.cvCustom.setOnClickListener {
-            MessageUtils.toastMessage(_context, "coba", ConstantObject.vToastInfo)
+            when(model.itemMenu){
+                ConstantObject.travelMenu -> {
+                    val intent = Intent(_context, RequestTravelListActivity::class.java)
+                    intent.putExtra(ConstantObject.extra_intent, customIntentFrom)
+                    _context.startActivity(intent)
+                }
+                else -> MessageUtils.toastMessage(_context, "coba", ConstantObject.vToastInfo)
+            }
         }
         holder.tvMenuContent.setTextColor(Color.BLACK)
     }

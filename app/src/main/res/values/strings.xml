@@ -40,6 +40,7 @@
     <string name="no_data_found">No Data Found</string>
     <string name="btn_plan">Plan</string>
     <string name="content_description_image">""</string>
+    <string name="notes_bottom_sheet">Notes</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -51,6 +52,7 @@
     <string name="search_team_activity">Search Team</string>
     <string name="confirm_task_activity">Confirm Activity</string>
     <string name="req_travel_hist_activity">Request Travel History</string>
+    <string name="approval_travel_list_activity">Approval Travel Report</string>
     <string name="req_travel_activity">Request Travel</string>
     <string name="search_city_activity">Search City</string>
     <string name="list_destination_activity">List Destination</string>
@@ -100,6 +102,9 @@
 
     <!--detail req travel content form-->
     <string name="reject_save">Reject</string>
+    <string name="list_cities">List Cities</string>
+    <string name="list_friends">List Friends</string>
+    <string name="reason_dtlTravel">Reason</string>
 
     <!--req Travel content form-->
     <string name="depart_date">Depart Date</string>

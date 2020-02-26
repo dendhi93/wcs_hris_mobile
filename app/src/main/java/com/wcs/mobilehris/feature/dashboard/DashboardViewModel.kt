@@ -67,9 +67,7 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
                 _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
 
                 when(typeLoading){
-                    ConstantObject.vLoadWithProgressBar -> {
-                        _dashboardInterface.hideUI(ConstantObject.vProgresBarUI)
-                    }
+                    ConstantObject.vLoadWithProgressBar -> { _dashboardInterface.hideUI(ConstantObject.vProgresBarUI) }
                     else -> _dashboardInterface.hideSwipeRefreshLayout()
                 }
                 _dashboardInterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)

@@ -7,15 +7,18 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
+import com.androidnetworking.interceptors.HttpLoggingInterceptor
+import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 
 
 object ConnectionObject {
+    const val timeout = 60 //second
     /**
      * check respond http response
      */
     fun checkHttpCode(httpCode: String): Boolean = httpCode == "200"
-
-    fun checkHttpBadRequest(httpCode: Int): Boolean = httpCode == 401
+//    fun checkHttpBadRequest(httpCode: Int): Boolean = httpCode == 400
 
     /**
      * check if network available either wi-fi or 3g data
@@ -41,5 +44,19 @@ object ConnectionObject {
             } catch (e: Exception) { Log.i("update_statut", "" + e.message) }
         }
         return false
+    }
+
+    fun okhttpClient(retry: Boolean, duration: Int): OkHttpClient {
+
+        val builder = OkHttpClient.Builder()
+            .connectTimeout(duration.toLong(), TimeUnit.SECONDS)
+            .readTimeout(duration.toLong(), TimeUnit.SECONDS)
+            .writeTimeout(duration.toLong(), TimeUnit.SECONDS)
+            .retryOnConnectionFailure(retry)
+            builder.addNetworkInterceptor(
+                HttpLoggingInterceptor()
+                    .setLevel(HttpLoggingInterceptor.Level.BODY))
+
+        return builder.build()
     }
 }

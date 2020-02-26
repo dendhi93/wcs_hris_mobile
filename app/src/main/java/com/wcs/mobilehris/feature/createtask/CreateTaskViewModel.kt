@@ -35,6 +35,7 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     val stDescriptionTask = ObservableField<String>("")
     val stSolmanNoTask = ObservableField<String>("")
     val stPMTask = ObservableField<String>("")
+    val stPMCode = ObservableField<String>("")
     private val calendar : Calendar = Calendar.getInstance()
     private var mChargeCode : String = ""
     private var mTypeTask : String = ""
@@ -159,7 +160,8 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
 
                         when(mTypeTask){
                             ConstantObject.vProjectTask -> {
-                                val stDataPM = listDtlChargeCode[0].mProjectManager.trim()
+                                val stDataPM = listDtlChargeCode[0].mProjectManagerName.trim()
+                                stPMCode.set(listDtlChargeCode[0].mProjectManagerNik.trim())
                                 when{
                                     stDataPM.isNotEmpty() -> {
                                         stPMTask.set(stDataPM.trim())

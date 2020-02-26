@@ -12,8 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.feature.dtlreqtravel.DtlRequestTravelActivity
 import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.MessageUtils
 
-class CustomTravelListAdapter  (private val context : Context, private val reqTravelList : MutableList<TravelListModel>):
+class CustomTravelListAdapter  (private val context : Context,
+                                private val reqTravelList : MutableList<TravelListModel>,
+                                private val customIntentTravelFrom : String):
     RecyclerView.Adapter<CustomTravelListAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,15 +39,27 @@ class CustomTravelListAdapter  (private val context : Context, private val reqTr
         holder.tvTravelDescription.text = model.travelDescription.trim()
         holder.tvTravelBusinessType.text = model.travelBusinessType.trim()
         holder.cvCustomTravel.setOnClickListener {
-           val intent = Intent(context, DtlRequestTravelActivity::class.java)
-            intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentDtlTravel)
-            intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.travelId)
-            context.startActivity(intent)
+            when(customIntentTravelFrom){
+                ConstantObject.extra_fromIntentRequestTravel ->{
+                    val intent = Intent(context, DtlRequestTravelActivity::class.java)
+                    intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentDtlTravel)
+                    intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.travelId)
+                    context.startActivity(intent)
+                }
+                else -> {
+                    val intent = Intent(context, DtlRequestTravelActivity::class.java)
+                    intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentApprovalTravel)
+                    intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.travelId)
+                    context.startActivity(intent)
+                }
+            }
+
         }
         when(isAccepted){
             "True" -> holder.imgVIconIsConflick.setImageResource(R.mipmap.ic_checklist_48)
             "Waiting" -> holder.imgVIconIsConflick.setImageResource(R.mipmap.ic_waiting)
-            else -> holder.imgVIconIsConflick.setImageResource(R.mipmap.ic_block_32)
+            "False" -> holder.imgVIconIsConflick.setImageResource(R.mipmap.ic_block_32)
+            else -> holder.imgVIconIsConflick.visibility = View.GONE
         }
     }
 

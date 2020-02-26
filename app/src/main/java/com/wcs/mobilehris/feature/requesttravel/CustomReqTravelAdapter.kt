@@ -12,7 +12,7 @@ import com.wcs.mobilehris.R
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
-class CustomReqTravelAdapter (private val context : Context, private val list : MutableList<ReqTravelModel>):
+class CustomReqTravelAdapter (private val context : Context, private val list : MutableList<ReqTravelModel>, private val fromMenu : String):
     RecyclerView.Adapter<CustomReqTravelAdapter.ViewHolder>(){
     private lateinit var selectedTravelInterface: SelectedTravelInterface
 
@@ -31,15 +31,16 @@ class CustomReqTravelAdapter (private val context : Context, private val list : 
         val travelCity = model.depart.trim() + " - " +model.arrival.trim()
         val travelHotelTime = model.dateCheckIn + " - " +model.dateCheckOut.trim()
         val stCustomTransType = model.transType.split("-")[1]
+        when(fromMenu){
+            ConstantObject.vCreateEdit -> holder.imgVTravelTrash.visibility = View.VISIBLE
+            else -> holder.imgVTravelTrash.visibility = View.GONE
+        }
         holder.tvCityName.text = travelCity
         holder.tvTravelCheckInCheckOut.text = travelHotelTime
         holder.tvTravelTransType.text = stCustomTransType.trim()
         holder.tvTravelHotelName.text = model.hotelName.trim()
         holder.imgVTravelTrash.setOnClickListener {
             selectedTravelInterface.selectedItemTravel(model)
-        }
-        holder.cvCustomTravel.setOnClickListener {
-            MessageUtils.toastMessage(context, "Test 2", ConstantObject.vToastInfo)
         }
     }
 

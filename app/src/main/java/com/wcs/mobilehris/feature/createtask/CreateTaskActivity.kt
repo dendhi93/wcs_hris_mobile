@@ -1,15 +1,12 @@
 package com.wcs.mobilehris.feature.createtask
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.RadioButton
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -22,7 +19,6 @@ import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.feature.team.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
-import java.util.*
 import kotlin.collections.ArrayList
 
 

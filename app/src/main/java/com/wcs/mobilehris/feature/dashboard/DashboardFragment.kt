@@ -61,9 +61,7 @@ class DashboardFragment : Fragment(), DashboardInterface {
 
     override fun onAlertDash(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
         when(intTypeActionAlert){
-            ALERT_DASH_NO_CONNECTION -> {
-                MessageUtils.alertDialogDismiss(alertMessage, alertTitle, requireContext())}
-        }
+            ALERT_DASH_NO_CONNECTION -> MessageUtils.alertDialogDismiss(alertMessage, alertTitle, requireContext())}
     }
 
     override fun hideSwipeRefreshLayout() {

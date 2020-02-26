@@ -3,11 +3,12 @@ package com.wcs.mobilehris.feature.login
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.ActivityLoginBinding
 import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
@@ -17,37 +18,25 @@ import com.wcs.mobilehris.utilinterface.DialogInterface
 class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
     private lateinit var bindingLogin: ActivityLoginBinding
     private var keyDialogActive = 0
-    private var isDoubleTab = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         bindingLogin = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        bindingLogin.viewModel = LoginViewModel(this, this)
+        bindingLogin.viewModel = LoginViewModel(this, this, ApiRepo())
     }
 
     override fun onStart() {
         super.onStart()
         supportActionBar?.hide()
         bindingLogin.viewModel?.getVersion()
-        bindingLogin.txtLoginUid.transformationMethod = HideReturnsTransformationMethod()
+        bindingLogin.txtLoginPass.transformationMethod = PasswordTransformationMethod()
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {
         when (messageType) {
-            ConstantObject.vSnackBarNoButton -> MessageUtils.snackBarMessage(
-                message,
-                this,
-                ConstantObject.vSnackBarNoButton
-            )
-            ConstantObject.vToastInfo -> MessageUtils.toastMessage(
-                this,
-                message,
-                ConstantObject.vToastInfo
-            )
+            ConstantObject.vSnackBarNoButton -> MessageUtils.snackBarMessage(message, this, ConstantObject.vSnackBarNoButton)
+            ConstantObject.vToastInfo -> MessageUtils.toastMessage(this, message, ConstantObject.vToastInfo)
         }
     }
 
@@ -77,6 +66,7 @@ class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
         bindingLogin.viewModel?.validateLogin()
     }
 
+    private var isDoubleTab = false
     override fun onBackPressed() {
         if (isDoubleTab) {
             super.onBackPressed()

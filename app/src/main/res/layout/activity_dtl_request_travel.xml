@@ -75,7 +75,6 @@
                                 android:gravity="center_vertical"
                                 android:textColor="@color/colorBlack"
                                 android:textColorHint="@color/colorBlack"
-                                android:focusable="false"
                                 android:hint="@string/charge_code"
                                 android:text="@={viewModel.stDtlTravelChargeCode}"
                                 android:enabled="false"
@@ -115,8 +114,7 @@
                                     android:gravity="center_vertical"
                                     android:hint="@string/depart_date"
                                     android:text="@={viewModel.stDtlTravelDepartDate}"
-                                    android:enabled="@{viewModel.isConfirmTravelMenu}"
-                                    android:onClick="@{() -> viewModel.getDtlDepartDate()}"
+                                    android:enabled="false"
                                     android:inputType="text"
                                     android:maxLines="1"
                                     android:textSize="@dimen/text_fields_text_size" />
@@ -146,86 +144,13 @@
                                     android:textColor="@color/colorBlack"
                                     android:textColorHint="@color/colorBlack"
                                     android:hint="@string/return_date"
-                                    android:onClick="@{() -> viewModel.getDtlReturnDate()}"
                                     android:text="@={viewModel.stDtlTravelReturnDate}"
-                                    android:enabled="@{viewModel.isConfirmTravelMenu}"
+                                    android:enabled="false"
                                     android:inputType="text"
                                     android:maxLines="1"
                                     android:textSize="@dimen/text_fields_text_size" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_marginStart="@dimen/spacing_tiny_3"
-                            android:layout_marginEnd="@dimen/spacing_tiny_3"
-                            android:layout_marginBottom="@dimen/spacing_tiny_3"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/text_fields_height"
-                            app:boxStrokeWidth="@dimen/text_fields_box_width"
-                            app:boxStrokeColor="@color/text_fields_box_color"
-                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
-                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
-                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
-                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/txt_dtlReqTravel_from"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
-                                android:gravity="center_vertical"
-                                android:textColor="@color/colorBlack"
-                                android:textColorHint="@color/colorBlack"
-                                android:focusable="false"
-                                android:text="@={viewModel.stDtlTravelDepartCity}"
-                                android:enabled="@{viewModel.isConfirmTravelMenu}"
-                                android:hint="@string/from"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:textSize="@dimen/text_fields_text_size" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_marginStart="@dimen/spacing_tiny_3"
-                            android:layout_marginEnd="@dimen/spacing_tiny_3"
-                            android:layout_marginBottom="@dimen/spacing_tiny_3"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/text_fields_height"
-                            app:boxStrokeWidth="@dimen/text_fields_box_width"
-                            app:boxStrokeColor="@color/text_fields_box_color"
-                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
-                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
-                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
-                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/txt_dtlReqTravel_into"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
-                                android:gravity="center_vertical"
-                                android:textColor="@color/colorBlack"
-                                android:textColorHint="@color/colorBlack"
-                                android:hint="@string/into"
-                                android:focusable="false"
-                                android:inputType="text"
-                                android:text="@={viewModel.stDtlTravelReturnCity}"
-                                android:enabled="@{viewModel.isConfirmTravelMenu}"
-                                android:maxLines="1"
-                                android:textSize="@dimen/text_fields_text_size" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <Spinner
-                            android:id="@+id/sp_dtlReqTravel_transType"
-                            android:background="@color/colorGray200"
-                            android:layout_width="match_parent"
-                            android:enabled="@{viewModel.isConfirmTravelMenu}"
-                            android:layout_margin="@dimen/spacing_tiny_3"
-                            android:layout_height="@dimen/text_fields_height"/>
 
                         <RadioGroup
                             android:layout_width="wrap_content"
@@ -236,20 +161,116 @@
                             android:orientation="horizontal">
 
                             <RadioButton
-                                android:id="@+id/rb_dtlReqTravel_oneWay"
-                                android:text="@string/one_way"
+                                android:id="@+id/rb_dtlReqTravel_tb"
+                                android:text="@string/travel_business"
                                 android:layout_marginEnd="@dimen/padding_medium"
-                                android:enabled="@{viewModel.isConfirmTravelMenu}"
+                                android:enabled="false"
+                                android:buttonTint="@color/colorBlack"
+                                android:textColor="@color/colorBlack"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
                             <RadioButton
-                                android:id="@+id/rb_dtlReqTravel_roundTrip"
-                                android:text="@string/round_trip"
-                                android:enabled="@{viewModel.isConfirmTravelMenu}"
+                                android:id="@+id/rb_dtlReqTravel_nonTb"
+                                android:text="@string/not_travel_business"
+                                android:buttonTint="@color/colorBlack"
+                                android:enabled="false"
+                                android:textColor="@color/colorBlack"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                         </RadioGroup>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_marginStart="@dimen/spacing_tiny_3"
+                            android:layout_marginEnd="@dimen/spacing_tiny_3"
+                            android:layout_marginBottom="@dimen/spacing_tiny_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/icon_huge"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_dtlreqTravel_reason"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                android:gravity="center_vertical"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorBlack"
+                                android:hint="@string/reason_dtlTravel"
+                                android:text="@={viewModel.stDtlTravelReason}"
+                                android:enabled="false"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_fields_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_marginTop="@dimen/spacing_tiny_2"
+                            android:layout_marginStart="@dimen/spacing_tiny_2"
+                            android:layout_marginEnd="@dimen/spacing_tiny_2"
+                            android:layout_marginBottom="@dimen/spacing_small_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_huge_2"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_dtlTask_description"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                android:gravity="center_vertical"
+                                android:textColor="@color/colorBlack"
+                                android:enabled="false"
+                                android:textColorHint="@color/colorBlack"
+                                android:hint="@string/description"
+                                android:text="@={viewModel.stDtlTravelDescription}"
+                                android:inputType="text"
+                                android:maxLength="200"
+                                android:textSize="@dimen/text_fields_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_margin="@dimen/spacing_tiny"
+                            android:layout_height="wrap_content">
+
+                            <Button
+                                style="?android:attr/buttonBarButtonStyle"
+                                android:layout_marginBottom="@dimen/spacing_small"
+                                android:layout_marginStart="@dimen/spacing_tiny_3"
+                                android:id="@+id/btn_dtlReqTravel_listCities"
+                                android:layout_width="0dp"
+                                android:onClick="@{() -> viewModel.viewCities()}"
+                                android:layout_height="@dimen/button_height"
+                                android:layout_weight="1"
+                                android:text="@string/list_cities" />
+
+                            <Button
+                                style="?android:attr/buttonBarButtonStyle"
+                                android:layout_marginBottom="@dimen/spacing_small"
+                                android:layout_marginEnd="@dimen/spacing_tiny_3"
+                                android:id="@+id/btn_dtlReqTravel_listFriend"
+                                android:layout_width="0dp"
+                                android:onClick="@{() -> viewModel.viewFriends()}"
+                                android:layout_height="@dimen/button_height"
+                                android:layout_weight="1"
+                                android:text="@string/list_friends" />
+
+                        </LinearLayout>
                     </LinearLayout>
                 </ScrollView>
             </androidx.cardview.widget.CardView>
@@ -259,6 +280,16 @@
             android:id="@+id/rc_dtlReqTravel"
             android:layout_below="@+id/rl_dtlReqTravel_top"
             android:layoutAnimation="@anim/layout_animation_up_to_down"
+            android:visibility="@{viewModel.isCitiesView ? View.GONE : View.VISIBLE}"
+            android:layout_width="match_parent"
+            android:layout_above="@+id/ln_reqTravel_bottom"
+            android:layout_height="match_parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rc_dtlReqTravelCities"
+            android:layout_below="@+id/rl_dtlReqTravel_top"
+            android:layoutAnimation="@anim/layout_animation_up_to_down"
+            android:visibility="@{viewModel.isCitiesView ? View.VISIBLE : View.GONE}"
             android:layout_width="match_parent"
             android:layout_above="@+id/ln_reqTravel_bottom"
             android:layout_height="match_parent"/>
@@ -269,34 +300,52 @@
             android:layout_margin="@dimen/spacing_tiny"
             android:visibility="@{viewModel.isConfirmTravelMenu ? View.VISIBLE : View.GONE}"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_alignParentBottom="true">
 
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:layout_marginStart="@dimen/spacing_tiny_3"
-                android:layout_marginEnd="@dimen/spacing_tiny_3"
-                android:id="@+id/btn_dtlReqTravel_confirm"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/button_height"
-                android:layout_weight="1"
-                android:textColor="@color/colorWhite"
-                android:text="@string/confirm_save"
-                android:background="@drawable/bg_blue_button"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:layout_marginStart="@dimen/spacing_tiny_3"
-                android:layout_marginEnd="@dimen/spacing_tiny_3"
-                android:id="@+id/btn_dtlReqTravel_reject"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/button_height"
-                android:layout_weight="1"
-                android:text="@string/reject_save"
-                android:background="@drawable/bg_transparent_button"/>
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_marginEnd="@dimen/spacing_tiny_3"
+                    android:id="@+id/btn_dtlReqTravel_confirm"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_weight="1"
+                    android:onClick="@{() -> viewModel.onSubmitConfirm()}"
+                    android:enabled="@{!viewModel.isProgressDtlReqTravel}"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/confirm_save"
+                    android:background="@drawable/bg_blue_button"/>
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginStart="@dimen/spacing_tiny_3"
+                    android:layout_marginEnd="@dimen/spacing_tiny_3"
+                    android:onClick="@{() -> viewModel.onSubmitReject()}"
+                    android:enabled="@{!viewModel.isProgressDtlReqTravel}"
+                    android:id="@+id/btn_dtlReqTravel_reject"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_weight="1"
+                    android:text="@string/reject_save"
+                    android:background="@drawable/bg_transparent_button"/>
+            </LinearLayout>
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+                <include layout="@layout/custom_bottom_sheet_reject"/>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         </LinearLayout>
     </RelativeLayout>
