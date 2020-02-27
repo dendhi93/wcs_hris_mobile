@@ -162,7 +162,9 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             EXTRA_FLAG_ACTIVITY -> {
                 supportActionBar?.let {
                     it.subtitle = "Activity"
-                    frTransaction.replace(R.id.frame_nav_container, ActivityFragment())
+                    frTransaction.replace(R.id.frame_nav_container,
+                        ActivityFragment()
+                    )
                 }
             }
             EXTRA_FLAG_REQUEST -> {

@@ -27,30 +27,30 @@ class RequestTravelListViewModel (private val context : Context, private val req
 
         val listTravelList = mutableListOf<TravelListModel>()
         when(intentTravelFrom){
-            ConstantObject.extra_fromIntentApprovalTravel -> {
+            ConstantObject.extra_fromIntentApproval -> {
                 isVisibleFab.set(false)
                 var travelModel = TravelListModel("01","Training/Seminar/WorkShop",
                     "27/01/2020","31/01/2020","Training React Native",
-                    "Non Travel Business", "")
+                    "Non Travel Business", "","Andika")
                 listTravelList.add(travelModel)
                 travelModel = TravelListModel("01","Training/Seminar/WorkShop",
                     "03/02/2020","07/02/2020","Training .net",
-                    "Non Travel Business", "")
+                    "Non Travel Business", "", "Michael")
                 listTravelList.add(travelModel)
             }
             else -> {
                 isVisibleFab.set(true)
                 var travelModel = TravelListModel("01","Training/Seminar/WorkShop",
                     "27/01/2020","31/01/2020","Training React Native",
-                    "Non Travel Business", "Waiting")
+                    "Non Travel Business", "Waiting","")
                 listTravelList.add(travelModel)
                 travelModel = TravelListModel("01","Routine Duty",
                     "10/02/2020","14/02/2020","Support Sari Roti",
-                    "Travel Business", "True")
+                    "Travel Business", "True","")
                 listTravelList.add(travelModel)
                 travelModel = TravelListModel("01","Others",
                     "03/02/2020","07/02/2020","Presales",
-                    "Non Travel Business", "False")
+                    "Non Travel Business", "False","")
                 listTravelList.add(travelModel)
             }
         }

@@ -28,7 +28,7 @@ class RequestFragment : Fragment(), RequestInterface {
         super.onViewCreated(view, savedInstanceState)
         requestBinding.rcRequest.layoutManager = LinearLayoutManager(requireContext())
         requestBinding.rcRequest.setHasFixedSize(true)
-        requestAdapter = CustomRequestAdapter(requireContext(), arrList, ConstantObject.extra_fromIntentRequestTravel)
+        requestAdapter = CustomRequestAdapter(requireContext(), arrList, ConstantObject.extra_fromIntentRequest)
         requestBinding.rcRequest.adapter = requestAdapter
         requestBinding.viewModel?.initMenu()
     }

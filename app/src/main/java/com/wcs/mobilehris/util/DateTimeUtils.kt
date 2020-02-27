@@ -1,10 +1,7 @@
-@file:Suppress("DEPRECATION")
+@file:Suppress("DEPRECATION", "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 
 package com.wcs.mobilehris.util
 
-import android.app.Activity
-import android.content.Context
-import android.view.inputmethod.InputMethodManager
 import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
@@ -56,5 +53,4 @@ object DateTimeUtils {
             diffDays.toInt()
         }catch (e : Exception){ 0 }
     }
-
 }

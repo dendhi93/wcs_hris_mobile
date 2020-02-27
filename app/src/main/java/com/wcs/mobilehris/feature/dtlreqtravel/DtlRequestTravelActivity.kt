@@ -2,22 +2,16 @@ package com.wcs.mobilehris.feature.dtlreqtravel
 
 import android.graphics.Color
 import android.os.Bundle
-import android.os.ProxyFileDescriptorCallback
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.ActivityDtlRequestTravelBinding
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
@@ -26,7 +20,6 @@ import com.wcs.mobilehris.feature.requesttravel.CustomReqTravelAdapter
 import com.wcs.mobilehris.feature.requesttravel.ReqTravelModel
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
-import kotlinx.android.synthetic.main.custom_bottom_sheet_reject.*
 
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -39,6 +32,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface, TransR
     private lateinit var intentFromForm : String
     private lateinit var intentTravelId : String
     private var onKeyAlertActive = 0
+    private var intentTravelRequestor : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,16 +46,20 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface, TransR
 
     override fun onStart() {
         super.onStart()
+        intentFromForm = intent.getStringExtra(ConstantObject.extra_intent)
+        intentTravelId = intent.getStringExtra(extraTravelId)
+        intentTravelRequestor = intent.getStringExtra(extraTravelRequestor)
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
-        }
-        intentFromForm = intent.getStringExtra(ConstantObject.extra_intent)
-        intentTravelId = intent.getStringExtra(extraTravelId)
-        when(intentFromForm){
-            ConstantObject.extra_fromIntentDtlTravel -> supportActionBar?.title = ConstantObject.extra_fromIntentDtlTravel
-            ConstantObject.extra_fromIntentConfirmTravel -> supportActionBar?.title = ConstantObject.extra_fromIntentConfirmTravel
-            else -> supportActionBar?.title = ConstantObject.extra_fromIntentApprovalTravel
+            when(intentFromForm){
+                ConstantObject.extra_fromIntentDtlTravel -> it.title = ConstantObject.extra_fromIntentDtlTravel
+                ConstantObject.extra_fromIntentConfirmTravel -> it.title = ConstantObject.extra_fromIntentConfirmTravel
+                else -> {
+                    it.title = getString(R.string.approval_travel_activity)
+                    it.subtitle = intentTravelRequestor.trim()
+                }
+            }
         }
 
         dtlTravelAdapter = CustomDetailTaskAdapter(this, arrListTeamTravel, ConstantObject.vNotCreateEdit)
@@ -152,7 +150,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface, TransR
         dtlTravelActivityBinding.viewModel?.stDtlTravelNotes?.set(notesReject.trim())
         when(intentFromForm){
             ConstantObject.extra_fromIntentConfirmTravel -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT)
-            ConstantObject.extra_fromIntentApprovalTravel -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_APPROVE_TRAVEL_REJECT)
+            ConstantObject.extra_fromIntentApproval -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_APPROVE_TRAVEL_REJECT)
         }
 
     }
@@ -189,6 +187,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface, TransR
         const val ALERT_DTL_APPROVE_TRAVEL_ACCEPT = 7
         const val ALERT_DTL_APPROVE_TRAVEL_REJECT = 9
         const val extraTravelId = "travel_id"
+        const val extraTravelRequestor = "requestor"
     }
 
     class CustomBottomSheetDialogFragment(private val callback:TransRejectInterface) : BottomSheetDialogFragment() {

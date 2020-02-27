@@ -54,8 +54,11 @@
     <string name="req_travel_hist_activity">Request Travel History</string>
     <string name="approval_travel_list_activity">Approval Travel Report</string>
     <string name="req_travel_activity">Request Travel</string>
+    <string name="approval_travel_activity">Approval Travel</string>
     <string name="search_city_activity">Search City</string>
     <string name="list_destination_activity">List Destination</string>
+    <string name="req_leave_hist_activity">Request Leave History</string>
+    <string name="approval_leave_list_activity">Approval Leave Report</string>
 
     <!--permission form-->
     <string name="permission_button">IZINKAN</string>
