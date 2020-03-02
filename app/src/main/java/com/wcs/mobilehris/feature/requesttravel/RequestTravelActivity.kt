@@ -193,10 +193,12 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
                 0 -> {
                     arrDescTransType.add("Transportation Type")
                     arrTransTypeCode.add("")
+                    arrDescTransType.add(listTransport[i].mTransTypeDescription.trim())
+                    arrTransTypeCode.add(listTransport[i].mTransCode.trim())
                 }
                 else -> {
-                    arrDescTransType.add(listTransport[i-1].mTransTypeDescription.trim())
-                    arrTransTypeCode.add(listTransport[i-1].mTransCode.trim())
+                    arrDescTransType.add(listTransport[i].mTransTypeDescription.trim())
+                    arrTransTypeCode.add(listTransport[i].mTransCode.trim())
                 }
             }
             pos += 1
@@ -226,10 +228,12 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
                 0 -> {
                     arrReasonCode.add("")
                     arrReasonDesc.add("Reason Type")
+                    arrReasonCode.add(listReason[i].mReasonCode.trim())
+                    arrReasonDesc.add(listReason[i].mReasonDescription.trim())
                 }
                 else -> {
-                    arrReasonCode.add(listReason[i-1].mReasonCode.trim())
-                    arrReasonDesc.add(listReason[i-1].mReasonDescription.trim())
+                    arrReasonCode.add(listReason[i].mReasonCode.trim())
+                    arrReasonDesc.add(listReason[i].mReasonDescription.trim())
                 }
             }
             reasonPos += 1
