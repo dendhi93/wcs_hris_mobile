@@ -33,7 +33,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".feature.leave.list.LeaveListActivity"></activity>
+        <activity android:name=".feature.leave.transaction.LeaveTransactionActivity"></activity>
+        <activity android:name=".feature.leave.list.LeaveListActivity" />
         <activity android:name=".feature.dtlreqtravel.DtlRequestTravelActivity" />
         <activity
             android:name=".feature.city.CityActivity"
