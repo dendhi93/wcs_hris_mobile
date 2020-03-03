@@ -1,0 +1,308 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.wcs.mobilehris.feature.leave.transaction.LeaveTransViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="?attr/colorPrimary">
+
+        <ProgressBar
+            android:id="@+id/pb_leaveTransation"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:visibility="@{viewModel.isProgressLeaveTrans ? View.VISIBLE : View.GONE}"
+            android:layout_height="@dimen/permission_button_margin_vertical"
+            android:indeterminate="true" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/cv_reqTravel_top"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="1dp"
+            android:layout_margin="@dimen/spacing_tiny_2"
+            android:elevation="2dp"
+            app:cardMaxElevation="1dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/cardview_light_background"
+            tools:ignore="PrivateResource"
+            android:visibility="@{viewModel.isHiddenContent ? View.GONE : View.VISIBLE}"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/spacing_tiny_2">
+
+                <Spinner
+                    android:id="@+id/sp_reqLeave_reason"
+                    android:background="@color/colorGray200"
+                    android:layout_width="match_parent"
+                    android:layout_margin="@dimen/spacing_tiny_3"
+                    android:enabled="@{!viewModel.isDtlLeaveMenu}"
+                    android:layout_height="@dimen/text_fields_height"/>
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/spacing_tiny_2"
+                    android:id="@+id/ln_leave_content"
+                    android:layout_below="@+id/sp_reqLeave_reason"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_margin="@dimen/spacing_tiny_3"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/text_fields_height"
+                            android:layout_weight="1"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_leaveTrans_dateFrom"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:focusable="false"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorBlack"
+                                android:gravity="center_vertical"
+                                android:hint="@string/date_from"
+                                android:inputType="text"
+                                android:text="@={viewModel.stLeaveDateFrom}"
+                                android:onClick="@{() -> viewModel.initDateFrom()}"
+                                android:enabled="@{!viewModel.isDtlLeaveMenu}"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_fields_text_size"
+                                tools:ignore="TooDeepLayout" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_margin="@dimen/spacing_tiny_3"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/text_fields_height"
+                            android:layout_weight="1"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_leaveTrans_dateInto"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:focusable="false"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                android:gravity="center_vertical"
+                                android:text="@={viewModel.stLeaveDateInto}"
+                                android:enabled="@{!viewModel.isDtlLeaveMenu}"
+                                android:onClick="@{() -> viewModel.initDateInto()}"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorBlack"
+                                android:hint="@string/date_into"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_fields_text_size" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_marginStart="@dimen/spacing_tiny_3"
+                        android:layout_marginEnd="@dimen/spacing_tiny_3"
+                        android:layout_marginBottom="@dimen/spacing_tiny_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/text_fields_height"
+                        app:boxStrokeWidth="@dimen/text_fields_box_width"
+                        app:boxStrokeColor="@color/text_fields_box_color"
+                        app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                        app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                        app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                        app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_leaveTrans_qtyTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                            android:gravity="center_vertical"
+                            android:textColor="@color/colorBlack"
+                            android:textColorHint="@color/colorBlack"
+                            android:hint="@string/time_label"
+                            android:enabled="@{!viewModel.isDtlLeaveMenu}"
+                            android:text="@={viewModel.stLeaveCountTime}"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:maxLines="1"
+                            android:textSize="@dimen/text_fields_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_margin="@dimen/spacing_tiny_3"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/text_fields_height"
+                            android:layout_weight="1"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_leaveTrans_timeFrom"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:focusable="false"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorBlack"
+                                android:gravity="center_vertical"
+                                android:hint="@string/time_from"
+                                android:enabled="@{!viewModel.isDtlLeaveMenu}"
+                                android:onClick="@{() -> viewModel.initTimeFrom()}"
+                                android:text="@={viewModel.stLeaveTimeFrom}"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_fields_text_size"
+                                tools:ignore="TooDeepLayout" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_margin="@dimen/spacing_tiny_3"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/text_fields_height"
+                            android:layout_weight="1"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_leaveTrans_timeInto"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:focusable="false"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                android:gravity="center_vertical"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorBlack"
+                                android:hint="@string/time_into"
+                                android:enabled="@{!viewModel.isDtlLeaveMenu}"
+                                android:onClick="@{() -> viewModel.initTimeInto()}"
+                                android:text="@={viewModel.stLeaveTimeInto}"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_fields_text_size" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_marginTop="@dimen/spacing_tiny_2"
+                        android:layout_marginStart="@dimen/spacing_tiny_2"
+                        android:layout_marginEnd="@dimen/spacing_tiny_2"
+                        android:layout_marginBottom="@dimen/spacing_small_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_huge_2"
+                        app:boxStrokeWidth="@dimen/text_fields_box_width"
+                        app:boxStrokeColor="@color/text_fields_box_color"
+                        app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                        app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                        app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                        app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_createTask_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                            android:gravity="center_vertical"
+                            android:textColor="@color/colorBlack"
+                            android:textColorHint="@color/colorBlack"
+                            android:hint="@string/notes_bottom_sheet"
+                            android:enabled="@{!viewModel.isDtlLeaveMenu}"
+                            android:text="@={viewModel.stLeaveNotes}"
+                            android:inputType="text"
+                            android:maxLength="200"
+                            android:textSize="@dimen/text_fields_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ln_leaveTrans_bottom"
+                    android:layout_margin="@dimen/spacing_tiny_2"
+                    android:layout_alignParentBottom="true"
+                    android:visibility="@{viewModel.isHiddenButton ? View.GONE : View.VISIBLE}"
+                    android:orientation="horizontal">
+
+                    <Button
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:id="@+id/btn_leaveTrans_save"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="@dimen/button_height"
+                        android:textColor="@color/colorWhite"
+                        android:onClick="@{() -> viewModel.clickLeave()}"
+                        android:text="@={viewModel.stLeaveSubmitButton}"
+                        android:enabled="@{!viewModel.isProgressLeaveTrans}"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        android:background="@drawable/bg_blue_button"/>
+
+                    <Button
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:onClick="@{() -> viewModel.submitLeaveReject()}"
+                        android:enabled="@{!viewModel.isProgressLeaveTrans}"
+                        android:visibility="@{viewModel.isHiddenRejectButton ? View.GONE : View.VISIBLE}"
+                        android:id="@+id/btn_dtlReqTravel_reject"
+                        android:layout_width="0dp"
+                        android:layout_marginStart="@dimen/spacing_tiny_3"
+                        android:layout_height="@dimen/button_height"
+                        android:layout_weight="1"
+                        android:text="@string/reject_save"
+                        android:background="@drawable/bg_transparent_button"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</layout>

@@ -19,11 +19,16 @@ import java.util.*
 class LeaveTransViewModel (private val context: Context, private val leaveTransInterface: LeaveTransInterface) : ViewModel(){
     val isProgressLeaveTrans = ObservableField<Boolean>(false)
     val isDtlLeaveMenu = ObservableField<Boolean>(false)
+    val isHiddenContent = ObservableField<Boolean>(false)
+    val isHiddenButton = ObservableField<Boolean>(false)
+    val isHiddenRejectButton = ObservableField<Boolean>(false)
     val stLeaveSubmitButton = ObservableField<String>("")
     val stLeaveDateFrom = ObservableField<String>("")
     val stLeaveDateInto = ObservableField<String>("")
     val stLeaveTimeFrom = ObservableField<String>("")
     val stLeaveTimeInto = ObservableField<String>("")
+    val stLeaveCountTime = ObservableField<String>("")
+    val stLeaveNotes = ObservableField<String>("")
     private lateinit var mReasonLeaveDao : ReasonLeaveDao
     private val calendar : Calendar = Calendar.getInstance()
     private var mYear : Int = 0
@@ -32,8 +37,12 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
     private var mHour : Int = 0
     private var mMinute : Int = 0
     private var mSecond : Int = 0
+    private var reasonCode : String = ""
+    private var reasonLeaveDescription : String = ""
+    private var intentFromLeave : String = ""
 
     fun onInitLeaveData(fromLeaveMenu : String){
+        intentFromLeave = fromLeaveMenu
         when{
             !ConnectionObject.isNetworkAvailable(context) -> leaveTransInterface.onAlertLeaveTrans(context.getString(
                 R.string.alert_no_connection),
@@ -42,12 +51,64 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
         }
     }
 
+    fun onValidateFromMenu(fromLeaveMenu : String){
+        when(fromLeaveMenu){
+            LeaveTransactionActivity.valueLeaveDtlType ->{
+                isDtlLeaveMenu.set(true)
+                isHiddenButton.set(true)
+            }
+            ConstantObject.extra_fromIntentRequest -> {
+                isDtlLeaveMenu.set(false)
+                stLeaveSubmitButton.set(context.getString(R.string.save))
+                isHiddenButton.set(false)
+                isHiddenRejectButton.set(true)
+            }
+            ConstantObject.extra_fromIntentApproval -> {
+                isDtlLeaveMenu.set(true)
+                stLeaveSubmitButton.set(context.getString(R.string.save))
+                isHiddenButton.set(false)
+                isHiddenRejectButton.set(false)
+            }
+            else -> {
+                isDtlLeaveMenu.set(false)
+                stLeaveSubmitButton.set(ConstantObject.vEditTask)
+                isHiddenButton.set(false)
+                isHiddenRejectButton.set(true)
+            }
+        }
+    }
+
     private fun getLeaveData(fromLeaveMenu : String){
         if(fromLeaveMenu != ConstantObject.extra_fromIntentRequest){
             isProgressLeaveTrans.set(true)
+            isHiddenContent.set(true)
                 Handler().postDelayed({
+                    stLeaveDateFrom.set("05/02/2020")
+                    stLeaveDateInto.set("05/02/2020")
+                    stLeaveCountTime.set("8")
+                    stLeaveTimeFrom.set("08:30")
+                    stLeaveTimeInto.set("17:30")
+                    when (fromLeaveMenu) {
+                        LeaveTransactionActivity.valueLeaveDtlType, ConstantObject.vEditTask -> {
+                            leaveTransInterface.onSelectedSpinner("Sick Leave")
+                            stLeaveNotes.set("Sakit Panas")
+                        }
+                        ConstantObject.extra_fromIntentApproval -> {
+                            leaveTransInterface.onSelectedSpinner("Sick Leave")
+                            validateReasonLeave("Sick Leave", "D-001002")
+                            stLeaveNotes.set("Sakit Panas")
+                        }
+                    }
                     isProgressLeaveTrans.set(false)
+                    isHiddenContent.set(false)
                 }, 2000)
+        }
+
+        when(fromLeaveMenu){
+            ConstantObject.extra_fromIntentRequest ->{
+                leaveTransInterface.enableUI(LeaveTransactionActivity.columnCountTime)
+                leaveTransInterface.enableUI(LeaveTransactionActivity.columnDateInto)
+            }
         }
     }
 
@@ -55,16 +116,16 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
     fun initDateInto(){
         when(stLeaveDateFrom.get()?.trim()){
             "" -> leaveTransInterface.onMessage("Please fill date from first", ConstantObject.vSnackBarWithButton)
-            else -> initDate(LeaveTransactionActivity.columnTimeFrom)
+            else -> initDate(LeaveTransactionActivity.columnDateInto)
         }
     }
 
-    private fun initDate(fromColumn : String){
+    private fun initDate(fromColumn : Int){
         mYear = calendar.get(Calendar.YEAR)
         mMonth = calendar.get(Calendar.MONTH)
         mDay = calendar.get(Calendar.DAY_OF_MONTH)
         val datePickerDialog = DatePickerDialog(context,
-            DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 val selectedMonth: String = if (month < 10) {
                     "0" + (month + 1)
                 } else {
@@ -76,18 +137,34 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
                     dayOfMonth.toString()
                 }
                 when(fromColumn){
-                    LeaveTransactionActivity.columnDateFrom -> stLeaveDateFrom.set("$year-$selectedMonth-$selectedDay")
-                    else -> validateDate("$year-$selectedMonth-$selectedDay")
+                    LeaveTransactionActivity.columnDateFrom -> validateDateFrom("$year-$selectedMonth-$selectedDay")
+                    else -> validateDateInto("$year-$selectedMonth-$selectedDay")
                 }
             }, mYear, mMonth, mDay
         )
         datePickerDialog.show()
     }
 
-    private fun validateDate(selectedDate : String){
+    private fun validateDateFrom(selectedDateFrom : String){
+        val intDiffDateFrom = DateTimeUtils.getDifferentDate(DateTimeUtils.getCurrentDate(), selectedDateFrom.trim())
+        when{
+            intDiffDateFrom < 0 -> leaveTransInterface.onMessage("Date From should not less than today", ConstantObject.vSnackBarWithButton)
+            else -> {
+                when (reasonLeaveDescription) {
+                    LeaveTransactionActivity.valueTwoHour, LeaveTransactionActivity.valueFourHours, LeaveTransactionActivity.valueSickLeave -> {
+                        stLeaveDateFrom.set(selectedDateFrom.trim())
+                        stLeaveDateInto.set(selectedDateFrom.trim())
+                    }
+                    else -> stLeaveDateFrom.set(selectedDateFrom.trim())
+                }
+            }
+        }
+    }
+
+    private fun validateDateInto(selectedDate : String){
         val intDiffDate = DateTimeUtils.getDifferentDate(stLeaveDateFrom.get().toString(), selectedDate.trim())
         when{
-            intDiffDate < 0 -> leaveTransInterface.onMessage("Return Date should not less then Depart Date  ", ConstantObject.vSnackBarWithButton)
+            intDiffDate < 0 -> leaveTransInterface.onMessage("Date into should not less than Date From ", ConstantObject.vSnackBarWithButton)
             else -> stLeaveDateInto.set(selectedDate.trim())
         }
     }
@@ -100,7 +177,7 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
         }
     }
 
-    private fun initLeaveTime(chooseTime : String){
+    private fun initLeaveTime(chooseTime : Int){
         mHour = calendar.get(Calendar.HOUR_OF_DAY)
         mMinute = calendar.get(Calendar.MINUTE)
         mSecond = calendar.get(Calendar.SECOND)
@@ -108,22 +185,13 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
         var selectedMinutes: String
         var selectedSecond: String
         val timePickerDialog = TimePickerDialog(context,
-            TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
-                selectedHour = if (hourOfDay < 10) {
-                    "0$hourOfDay"
-                } else {
-                    hourOfDay.toString()
-                }
-                selectedMinutes = if (minute < 10) {
-                    "0$minute"
-                } else {
-                    minute.toString()
-                }
-                selectedSecond = if (mSecond < 10) {
-                    "0$mSecond"
-                } else {
-                    mSecond.toString()
-                }
+            TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                selectedHour = if (hourOfDay < 10) { "0$hourOfDay"
+                } else { hourOfDay.toString() }
+                selectedMinutes = if (minute < 10) { "0$minute"
+                } else { minute.toString() }
+                selectedSecond = if (mSecond < 10) { "0$mSecond"
+                } else { mSecond.toString() }
                 when (chooseTime) {
                     LeaveTransactionActivity.columnTimeFrom -> stLeaveTimeFrom.set("$selectedHour:$selectedMinutes:$selectedSecond")
                     LeaveTransactionActivity.columnTimeInto -> validateLeaveTime("$selectedHour:$selectedMinutes:$selectedSecond")
@@ -136,14 +204,80 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
     private fun validateLeaveTime(chooseTime : String){
         val intDiff = DateTimeUtils.getDifferentHours(stLeaveTimeFrom.get().toString(), chooseTime)
         when{
-            intDiff < 0 -> leaveTransInterface.onMessage("Time To less then Time From, Please fill again ", ConstantObject.vSnackBarWithButton)
-            intDiff < 1 -> leaveTransInterface.onMessage("Time To less then two hour, Please fill again ", ConstantObject.vSnackBarWithButton)
-            else -> stLeaveTimeInto.set(chooseTime.trim())
+            intDiff < 0 -> leaveTransInterface.onMessage("Time To less than Time From, Please fill again ", ConstantObject.vSnackBarWithButton)
+            intDiff < 1 -> leaveTransInterface.onMessage("Time To less than two hour, Please fill again ", ConstantObject.vSnackBarWithButton)
+            intDiff > 9 -> leaveTransInterface.onMessage("Time To should not more than 8 hours, Please fill again ", ConstantObject.vSnackBarWithButton)
+            else -> {
+                when(reasonLeaveDescription){
+                    LeaveTransactionActivity.valueTwoHour -> {
+                        when{
+                            intDiff > 2 -> leaveTransInterface.onMessage("Time To should not more than 2 hours, Please fill again ", ConstantObject.vSnackBarWithButton)
+                            else -> stLeaveTimeInto.set(chooseTime.trim())
+                        }
+                    }
+                    LeaveTransactionActivity.valueFourHours -> {
+                        when{
+                            intDiff > 4 -> leaveTransInterface.onMessage("Time To should not more than 4 hours, Please fill again ", ConstantObject.vSnackBarWithButton)
+                            else -> stLeaveTimeInto.set(chooseTime.trim())
+                        }
+                    }
+                    else -> {
+                        when{
+                            intDiff < 8 -> leaveTransInterface.onMessage("Time To less than 8 hours, Please fill again ", ConstantObject.vSnackBarWithButton)
+                            else -> stLeaveTimeInto.set(chooseTime.trim())
+                        }
+                    }
+                }
+            }
         }
     }
 
-    fun validateLeave(){
-        leaveTransInterface.onMessage("Tes", ConstantObject.vToastInfo)
+    fun clickLeave(){
+        when{
+            !ConnectionObject.isNetworkAvailable(context) -> leaveTransInterface.onAlertLeaveTrans(context.getString(
+                R.string.alert_no_connection),
+                ConstantObject.vAlertDialogNoConnection, LeaveTransactionActivity.ALERT_LEAVE_TRANS_NO_CONNECTION)
+            intentFromLeave == ConstantObject.vEditTask -> leaveTransInterface.onAlertLeaveTrans(context.getString(R.string.transaction_alert_confirmation),
+                ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT)
+            intentFromLeave == ConstantObject.extra_fromIntentRequest ->{
+                when {
+                    !validateLeave() -> leaveTransInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
+                    else -> leaveTransInterface.onAlertLeaveTrans(context.getString(R.string.transaction_alert_confirmation),
+                        ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST)
+                }
+            }
+            else -> {}
+        }
+    }
+
+     fun onSubmitLeave(clickAlertFrom : Int){
+        when(clickAlertFrom) {
+            LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT -> {
+                isProgressLeaveTrans.set(true)
+                Handler().postDelayed({
+                    leaveTransInterface.onSuccessDtlTravel("Transaction Success Edited")
+                }, 2000)
+            }
+            LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST -> {
+                isProgressLeaveTrans.set(true)
+                Handler().postDelayed({
+                    leaveTransInterface.onSuccessDtlTravel(context.getString(R.string.alert_transaction_success))
+                }, 2000)
+            }
+        }
+    }
+
+    private fun validateLeave() : Boolean{
+        when{
+            stLeaveDateFrom.get().equals("")||
+                    stLeaveDateInto.get().equals("")||
+                    stLeaveTimeFrom.get().equals("")||
+                    stLeaveTimeInto.get().equals("")||
+                    stLeaveCountTime.get().equals("")||
+                    stLeaveNotes.get().equals("")||
+                    reasonCode == "" -> return false
+        }
+        return true
     }
 
     fun initReasonSpinner(){
@@ -156,6 +290,36 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
                 }
             }
         }
+    }
+
+    fun validateReasonLeave(reasonDesc : String, codeLeave : String){
+        reasonCode = codeLeave
+        reasonLeaveDescription = reasonDesc
+        when(reasonDesc){
+            LeaveTransactionActivity.valueAnnualLeave ->{
+                stLeaveCountTime.set("8")
+                leaveTransInterface.disableUI(LeaveTransactionActivity.columnCountTime)
+            }
+            LeaveTransactionActivity.valueSickLeave ->{
+                stLeaveCountTime.set("8")
+                leaveTransInterface.disableUI(LeaveTransactionActivity.columnCountTime)
+                leaveTransInterface.disableUI(LeaveTransactionActivity.columnDateInto)
+            }
+            LeaveTransactionActivity.valueTwoHour-> {
+                stLeaveCountTime.set("2")
+                leaveTransInterface.disableUI(LeaveTransactionActivity.columnCountTime)
+                leaveTransInterface.disableUI(LeaveTransactionActivity.columnDateInto)
+            }
+            LeaveTransactionActivity.valueFourHours -> {
+                stLeaveCountTime.set("4")
+                leaveTransInterface.disableUI(LeaveTransactionActivity.columnCountTime)
+                leaveTransInterface.disableUI(LeaveTransactionActivity.columnDateInto)
+            }
+        }
+    }
+
+    fun submitLeaveReject(){
+        leaveTransInterface.onMessage("Test Reject", ConstantObject.vToastInfo)
     }
 
 }

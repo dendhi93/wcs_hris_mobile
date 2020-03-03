@@ -7,5 +7,4 @@ interface LeaveListInterface : ActionInterface.ShowHideUI{
     fun onErrorMessage(message : String, messageType : Int)
     fun onAlertLeaveList(alertMessage : String, alertTitle : String, intTypeActionAlert : Int)
     fun onHideSwipeLeaveList()
-    fun intentToRequestLeave()
 }

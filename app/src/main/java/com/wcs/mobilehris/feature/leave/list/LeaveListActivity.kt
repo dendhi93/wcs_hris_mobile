@@ -73,10 +73,6 @@ class LeaveListActivity : AppCompatActivity(), LeaveListInterface {
 
     override fun onHideSwipeLeaveList() { activityLeaveListBinding.swLeaveList.isRefreshing = false }
 
-    override fun intentToRequestLeave() {
-        onErrorMessage("Coba", ConstantObject.vToastInfo)
-    }
-
     override fun hideUI(typeUI: Int) {
         when(typeUI){
             ConstantObject.vProgresBarUI -> activityLeaveListBinding.pbLeaveList.visibility = View.GONE

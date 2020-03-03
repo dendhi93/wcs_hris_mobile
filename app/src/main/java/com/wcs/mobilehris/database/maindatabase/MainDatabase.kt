@@ -8,10 +8,12 @@ import com.wcs.mobilehris.database.entity.*
 @Database(entities = [UpdateMasterEntity::class,
     ChargeCodeEntity::class,
     TransportTypeEntity::class,
-    ReasonTravelEntity::class], version = 1)
+    ReasonTravelEntity::class,
+    ReasonLeaveEntity::class], version = 1)
 abstract class MainDatabase : RoomDatabase(){
     abstract fun updateMasterDao() : UpdateMasterDao
     abstract fun chargeCodeDao() : ChargeCodeDao
     abstract fun transTypeDao() : TransTypeDao
     abstract fun reasonTravelDao() : ReasonTravelDao
+    abstract fun reasonLeaveDao() : ReasonLeaveDao
 }

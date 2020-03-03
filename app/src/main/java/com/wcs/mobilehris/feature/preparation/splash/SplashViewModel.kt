@@ -8,10 +8,7 @@ import com.wcs.mobilehris.R
 import com.wcs.mobilehris.application.WcsHrisApps
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.database.daos.*
-import com.wcs.mobilehris.database.entity.ChargeCodeEntity
-import com.wcs.mobilehris.database.entity.ReasonTravelEntity
-import com.wcs.mobilehris.database.entity.TransportTypeEntity
-import com.wcs.mobilehris.database.entity.UpdateMasterEntity
+import com.wcs.mobilehris.database.entity.*
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.DateTimeUtils
 import org.jetbrains.anko.doAsync
@@ -27,13 +24,16 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
     private lateinit var mChargeCodeDao : ChargeCodeDao
     private lateinit var mTransTypeDao : TransTypeDao
     private lateinit var mReasonTravelDao : ReasonTravelDao
+    private lateinit var mReasonLeaveDao : ReasonLeaveDao
     private val arrJsonUpdateMaster = mutableListOf<UpdateMasterEntity>()
     private val arrJsonChargeCode = mutableListOf<ChargeCodeEntity>()
     private val arrJsonTransType = mutableListOf<TransportTypeEntity>()
     private val arrJsonReasonTravel = mutableListOf<ReasonTravelEntity>()
+    private val arrJsonReasonLeave = mutableListOf<ReasonLeaveEntity>()
     private var countDataChargeCode = 0
     private var countDataTransType = 0
     private var countDataReasonTravel = 0
+    private var countDataReasonLeave = 0
     private var transTime = DateTimeUtils.getCurrentTime()
 
     fun processDownload(){
@@ -53,7 +53,8 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
         //arraylist master data dari json
         arrJsonUpdateMaster.add(UpdateMasterEntity(1,"mCharge_code",DateTimeUtils.getCurrentDate()))
         arrJsonUpdateMaster.add(UpdateMasterEntity(2,"mTrans_type",DateTimeUtils.getCurrentDate()))
-        arrJsonUpdateMaster.add(UpdateMasterEntity(2,"mReason_Travel",DateTimeUtils.getCurrentDate()))
+        arrJsonUpdateMaster.add(UpdateMasterEntity(3,"mReason_Travel",DateTimeUtils.getCurrentDate()))
+        arrJsonUpdateMaster.add(UpdateMasterEntity(4,"mReason_leave",DateTimeUtils.getCurrentDate()))
 
         //arraylist master chargecode dari json
         arrJsonChargeCode.add(ChargeCodeEntity(1, "A-1003-096",
@@ -99,7 +100,7 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
         arrJsonTransType.add(TransportTypeEntity(9, "TRN", "TRAIN", transTime))
         arrJsonTransType.add(TransportTypeEntity(10, "TRV", "TRAVEL", transTime))
 
-        //arraylist master reason from json
+        //arraylist master reason travel from json
         arrJsonReasonTravel.add(ReasonTravelEntity(1, "IMPL", "Implementasi", transTime))
         arrJsonReasonTravel.add(ReasonTravelEntity(2, "AUDT", "Audit", transTime))
         arrJsonReasonTravel.add(ReasonTravelEntity(3, "MEET", "Meeting", transTime))
@@ -110,10 +111,18 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
         arrJsonReasonTravel.add(ReasonTravelEntity(8, "ROU", "Routine Duty", transTime))
         arrJsonReasonTravel.add(ReasonTravelEntity(9, "OTH", "Others", transTime))
 
+        //arraylist master reason leave from json
+        arrJsonReasonLeave.add(ReasonLeaveEntity(1, "AAAAA", "Annual Leave", transTime))
+        arrJsonReasonLeave.add(ReasonLeaveEntity(2, "D-001002", "Sick Leave", transTime))
+        arrJsonReasonLeave.add(ReasonLeaveEntity(3, "CCCCC", "2 Hour Leave", transTime))
+        arrJsonReasonLeave.add(ReasonLeaveEntity(4, "DDDDD", "4 Hour Leave", transTime))
+
         mUpdateMasterDataDao = WcsHrisApps.database.updateMasterDao()
         mChargeCodeDao = WcsHrisApps.database.chargeCodeDao()
         mTransTypeDao = WcsHrisApps.database.transTypeDao()
         mReasonTravelDao = WcsHrisApps.database.reasonTravelDao()
+        mReasonLeaveDao = WcsHrisApps.database.reasonLeaveDao()
+
         doAsync{
             val listUpdate = mUpdateMasterDataDao.getDataUpdate()
             when{
@@ -155,15 +164,21 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
             countDataChargeCode = mChargeCodeDao.getCountChargeCode()
             countDataTransType = mTransTypeDao.getCountTransType()
             countDataReasonTravel = mReasonTravelDao.getCountReasonTravel()
+            countDataReasonLeave = mReasonLeaveDao.getCountReasonLeave()
             Log.d("###", "chargeCode qty $countDataChargeCode")
             Log.d("###", "transType qty $countDataTransType")
             Log.d("###", "reasonTravel qty $countDataReasonTravel")
+            Log.d("###", "reasonLeave qty $countDataReasonLeave")
             uiThread {
                 when{
                     countDataChargeCode > 0 &&
                     countDataTransType > 0 &&
-                    countDataReasonTravel > 0  -> successDownload()
-                    else -> _splashInterface.onErrorMessage("Data not yet success to save ", ConstantObject.vToastError)
+                    countDataReasonTravel > 0 &&
+                    countDataReasonLeave > 0 -> successDownload()
+                    else -> {
+                        _splashInterface.onErrorMessage("Data not yet success to save ", ConstantObject.vToastError)
+                        isBtnVisible.set(true)
+                    }
                 }
             }
         }
@@ -174,6 +189,7 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
         var insertChargeCodeModel : ChargeCodeEntity
         var insertTransTypeModel : TransportTypeEntity
         var insertReasonTravelModel : ReasonTravelEntity
+        var insertReasonLeaveModel : ReasonLeaveEntity
         //insert charge code
         when(tableDesc){
             "mCharge_code" -> {
@@ -220,6 +236,21 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
                 }
                 Log.d("###","Success Insert Data reason travel")
             }
+            "mReason_leave" -> {
+                doAsync {
+                    mReasonLeaveDao.deleteAllReasonLeave()
+                }
+                for(l in arrJsonReasonLeave.indices){
+                    insertReasonLeaveModel = ReasonLeaveEntity(
+                        arrJsonReasonLeave[l].id,
+                        arrJsonReasonLeave[l].mLeaveCode,
+                        arrJsonReasonLeave[l].mLeaveDescription,
+                        arrJsonReasonLeave[l].mLeaveUpdateDate
+                    )
+                    mReasonLeaveDao.insertReasonLeave(insertReasonLeaveModel)
+                }
+                Log.d("###","Success Insert Data reason leave")
+            }
             else -> {
                 for(i in arrJsonChargeCode.indices){
                     insertChargeCodeModel = ChargeCodeEntity(arrJsonChargeCode[i].id,
@@ -249,6 +280,17 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
                     mReasonTravelDao.insertReasonTravel(insertReasonTravelModel)
                 }
                 Log.d("###","Success Insert Data reason travel")
+
+                for(l in arrJsonReasonLeave.indices){
+                    insertReasonLeaveModel = ReasonLeaveEntity(
+                        arrJsonReasonLeave[l].id,
+                        arrJsonReasonLeave[l].mLeaveCode,
+                        arrJsonReasonLeave[l].mLeaveDescription,
+                        arrJsonReasonLeave[l].mLeaveUpdateDate
+                    )
+                    mReasonLeaveDao.insertReasonLeave(insertReasonLeaveModel)
+                }
+                Log.d("###","Success Insert Data reason Leave")
             }
         }
 
@@ -256,16 +298,23 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
             countDataChargeCode = mChargeCodeDao.getCountChargeCode()
             countDataTransType = mTransTypeDao.getCountTransType()
             countDataReasonTravel = mReasonTravelDao.getCountReasonTravel()
+            countDataReasonLeave = mReasonLeaveDao.getCountReasonLeave()
             uiThread {
                 Log.d("###", "chargeCode qty $countDataChargeCode")
                 Log.d("###", "transType qty $countDataTransType")
                 Log.d("###", "reasonTravel qty $countDataReasonTravel")
+                Log.d("###", "reasonLeave qty $countDataReasonLeave")
+
                 when{
                     countDataChargeCode > 0
                             && countDataTransType > 0
                             && countDataReasonTravel > 0
+                            && countDataReasonLeave > 0
                             && isFirstInsert -> successDownload()
-                    else -> _splashInterface.onErrorMessage("Data not yet success to save ", ConstantObject.vToastError)
+                    else -> {
+                        _splashInterface.onErrorMessage("Data not yet success to save ", ConstantObject.vToastError)
+                        isBtnVisible.set(true)
+                    }
                 }
             }
         }

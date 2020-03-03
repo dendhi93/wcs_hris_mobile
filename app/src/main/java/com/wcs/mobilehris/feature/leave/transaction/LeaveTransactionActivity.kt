@@ -15,13 +15,14 @@ import com.wcs.mobilehris.util.MessageUtils
 
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface {
+class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface, com.wcs.mobilehris.utilinterface.DialogInterface {
     private lateinit var leaveActivityBinding : ActivityLeaveTransactionBinding
     private lateinit var intentLeaveId : String
     private lateinit var intentLeaveType : String
     private lateinit var intentRequestor : String
     private var arrTransDescLeaveType = ArrayList<String>()
     private var arrTransLeaveCode = ArrayList<String>()
+    private var onKeyAlertActive = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,29 +39,17 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
             when(intentLeaveType){
-                valueLeaveDtlType ->{
-                    it.title = valueLeaveDtlType
-                    leaveActivityBinding.viewModel?.isDtlLeaveMenu?.set(true)
-                }
-                ConstantObject.extra_fromIntentRequest -> {
-                    it.title = getString(R.string.req_leave_activity)
-                    leaveActivityBinding.viewModel?.isDtlLeaveMenu?.set(false)
-                    leaveActivityBinding.viewModel?.stLeaveSubmitButton?.set(getString(R.string.save))
-                }
+                valueLeaveDtlType -> it.title = valueLeaveDtlType
+                ConstantObject.extra_fromIntentRequest -> it.title = getString(R.string.req_leave_activity)
                 ConstantObject.extra_fromIntentApproval -> {
                     it.title = getString(R.string.approval_leave_activity)
                     it.subtitle = intentRequestor.trim()
-                    leaveActivityBinding.viewModel?.isDtlLeaveMenu?.set(false)
-                    leaveActivityBinding.viewModel?.stLeaveSubmitButton?.set(getString(R.string.save))
                 }
-                else -> {
-                    it.title = ConstantObject.vEditTask
-                    leaveActivityBinding.viewModel?.isDtlLeaveMenu?.set(false)
-                    leaveActivityBinding.viewModel?.stLeaveSubmitButton?.set(ConstantObject.vEditTask)
-                }
+                else -> it.title = ConstantObject.vEditTask
             }
         }
         leaveActivityBinding.viewModel?.onInitLeaveData(intentLeaveType)
+        leaveActivityBinding.viewModel?.onValidateFromMenu(intentLeaveType)
         leaveActivityBinding.viewModel?.initReasonSpinner()
     }
 
@@ -86,11 +75,29 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface {
     override fun onAlertLeaveTrans(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
         when(intTypeActionAlert){
             ALERT_LEAVE_TRANS_NO_CONNECTION -> MessageUtils.alertDialogDismiss(alertMessage, alertTitle, this)
+            ALERT_LEAVE_TRANS_REQUEST -> {
+                onKeyAlertActive = ALERT_LEAVE_TRANS_REQUEST
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
             }
+            ALERT_LEAVE_TRANS_EDIT -> {
+                onKeyAlertActive = ALERT_LEAVE_TRANS_EDIT
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
+            ALERT_LEAVE_TRANS_APPROVE -> {
+                onKeyAlertActive = ALERT_LEAVE_TRANS_EDIT
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
+            ALERT_LEAVE_TRANS_REJECT -> {
+                onKeyAlertActive = ALERT_LEAVE_TRANS_REJECT
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
+        }
     }
 
     override fun onSuccessDtlTravel(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        leaveActivityBinding.viewModel?.isProgressLeaveTrans?.set(false)
+        onMessage(message, ConstantObject.vToastSuccess)
+        finish()
     }
 
     override fun onLoadReasonLeave(listLeave: List<ReasonLeaveEntity>) {
@@ -100,10 +107,12 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface {
                 0 -> {
                     arrTransDescLeaveType.add("Leave Type")
                     arrTransLeaveCode.add("")
+                    arrTransDescLeaveType.add(listLeave[i].mLeaveDescription.trim())
+                    arrTransLeaveCode.add(listLeave[i].mLeaveCode.trim())
                 }
                 else -> {
-                    arrTransDescLeaveType.add(listLeave[i-1].mLeaveDescription.trim())
-                    arrTransLeaveCode.add(listLeave[i-1].mLeaveCode.trim())
+                    arrTransDescLeaveType.add(listLeave[i].mLeaveDescription.trim())
+                    arrTransLeaveCode.add(listLeave[i].mLeaveCode.trim())
                 }
             }
             index += 1
@@ -116,10 +125,9 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 when{
                     position > 0 -> {
-                        val code = arrTransDescLeaveType[position].trim()
-                        val descTrans = arrTransLeaveCode[position].trim()
-//                        activityRequestTravelBinding.viewModel?.stTransTypeCode?.set("$code-$descTrans")
-//                        onHideSoftKeyboard()
+                        val code = arrTransLeaveCode[position].trim()
+                        val descTrans = arrTransDescLeaveType[position].trim()
+                        leaveActivityBinding.viewModel?.validateReasonLeave(descTrans, code)
                     }
                 }
             }
@@ -139,14 +147,54 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface {
         }
     }
 
+    override fun enableUI(typeUI: Int) {
+        when(typeUI){
+            columnCountTime -> leaveActivityBinding.txtLeaveTransQtyTime.isEnabled = true
+            columnDateFrom -> leaveActivityBinding.txtLeaveTransDateFrom.isEnabled = true
+            columnDateInto -> leaveActivityBinding.txtLeaveTransDateInto.isEnabled = true
+            columnTimeFrom -> leaveActivityBinding.txtLeaveTransTimeFrom.isEnabled = true
+            columnTimeInto -> leaveActivityBinding.txtLeaveTransTimeInto.isEnabled = true
+        }
+    }
+
+    override fun disableUI(typeUI: Int) {
+        when(typeUI){
+            columnCountTime -> leaveActivityBinding.txtLeaveTransQtyTime.isEnabled = false
+            columnDateFrom -> leaveActivityBinding.txtLeaveTransDateFrom.isEnabled = false
+            columnDateInto -> leaveActivityBinding.txtLeaveTransDateInto.isEnabled = false
+            columnTimeFrom -> leaveActivityBinding.txtLeaveTransTimeFrom.isEnabled = false
+            columnTimeInto -> leaveActivityBinding.txtLeaveTransTimeInto.isEnabled = false
+        }
+    }
+
+    override fun onPositiveClick(o: Any) {
+        when(onKeyAlertActive){
+            ALERT_LEAVE_TRANS_EDIT -> leaveActivityBinding.viewModel?.onSubmitLeave(ALERT_LEAVE_TRANS_EDIT)
+            ALERT_LEAVE_TRANS_REQUEST -> leaveActivityBinding.viewModel?.onSubmitLeave(ALERT_LEAVE_TRANS_REQUEST)
+        }
+    }
+
+    override fun onNegativeClick(o: Any) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     companion object{
         const val ALERT_LEAVE_TRANS_NO_CONNECTION = 1
+        const val ALERT_LEAVE_TRANS_REQUEST = 2
+        const val ALERT_LEAVE_TRANS_EDIT = 3
+        const val ALERT_LEAVE_TRANS_APPROVE = 4
+        const val ALERT_LEAVE_TRANS_REJECT = 5
+        const val columnDateFrom = 11
+        const val columnDateInto = 22
+        const val columnTimeFrom = 33
+        const val columnTimeInto = 44
+        const val columnCountTime = 55
         const val extralLeaveId = "leave_id"
         const val extraLeaveRequestor = "requestor"
         const val valueLeaveDtlType = "DETAIL LEAVE"
-        const val columnDateFrom = "column_date_from"
-        const val columnDateInto = "column_date_into"
-        const val columnTimeFrom = "column_time_from"
-        const val columnTimeInto = "column_time_into"
+        const val valueSickLeave = "Sick Leave"
+        const val valueAnnualLeave = "Annual Leave"
+        const val valueTwoHour = "2 Hour Leave"
+        const val valueFourHours = "4 Hour Leave"
     }
 }

@@ -1,11 +1,13 @@
 package com.wcs.mobilehris.feature.leave.list
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
+import com.wcs.mobilehris.feature.leave.transaction.LeaveTransactionActivity
 import com.wcs.mobilehris.util.ConstantObject
 
 class LeaveListViewModel (private val context: Context, private val leaveListInterface: LeaveListInterface):ViewModel(){
@@ -97,7 +99,11 @@ class LeaveListViewModel (private val context: Context, private val leaveListInt
     }
 
     fun onClickFab(){
-        leaveListInterface.onErrorMessage("Tes", ConstantObject.vToastInfo)
+        val intent = Intent(context, LeaveTransactionActivity::class.java)
+        intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentRequest)
+        intent.putExtra(LeaveTransactionActivity.extralLeaveId, "")
+        intent.putExtra(LeaveTransactionActivity.extraLeaveRequestor, "")
+        context.startActivity(intent)
     }
 
 }

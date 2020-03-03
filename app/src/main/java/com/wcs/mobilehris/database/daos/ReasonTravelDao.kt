@@ -21,7 +21,7 @@ interface ReasonTravelDao {
     @Query("SELECT * FROM mReason_Travel WHERE mReasonDescription LIKE :reasonTitle")
     fun getDtlReason(reasonTitle : String) : List<ReasonTravelEntity>
 
-    @Query("DELETE FROM mTrans_type")
+    @Query("DELETE FROM mReason_Travel")
     fun deleteAllReasonTravel()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

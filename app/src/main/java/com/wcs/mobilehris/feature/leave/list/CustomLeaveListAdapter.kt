@@ -1,6 +1,7 @@
 package com.wcs.mobilehris.feature.leave.list
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.feature.leave.transaction.LeaveTransactionActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
@@ -42,10 +44,22 @@ class CustomLeaveListAdapter(private val context : Context,
             else -> holder.imgVIconStatus.visibility = View.GONE
         }
         holder.cvCustomLeave.setOnClickListener {
+            val intent = Intent(context, LeaveTransactionActivity::class.java)
             when(customIntentLeaveFrom){
-                ConstantObject.extra_fromIntentRequest -> MessageUtils.toastMessage(context, "Coba", ConstantObject.vToastInfo)
-                else -> MessageUtils.toastMessage(context, "Coba", ConstantObject.vToastInfo)
+                ConstantObject.extra_fromIntentRequest -> {
+                    when(model.leaveStatus){
+                        "Waiting" -> intent.putExtra(ConstantObject.extra_intent, ConstantObject.vEditTask)
+                        else -> intent.putExtra(ConstantObject.extra_intent, LeaveTransactionActivity.valueLeaveDtlType)
+                    }
+                    intent.putExtra(LeaveTransactionActivity.extraLeaveRequestor, "")
+                }
+                else -> {
+                    intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentApproval)
+                    intent.putExtra(LeaveTransactionActivity.extraLeaveRequestor, model.leaveRequestor)
+                }
             }
+            intent.putExtra(LeaveTransactionActivity.extralLeaveId, model.leaveId)
+            context.startActivity(intent)
         }
     }
 
