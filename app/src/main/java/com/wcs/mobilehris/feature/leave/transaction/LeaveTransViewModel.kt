@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Handler
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -29,6 +30,7 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
     val stLeaveTimeInto = ObservableField<String>("")
     val stLeaveCountTime = ObservableField<String>("")
     val stLeaveNotes = ObservableField<String>("")
+    val stLeaveRejectNotes = ObservableField<String>("")
     private lateinit var mReasonLeaveDao : ReasonLeaveDao
     private val calendar : Calendar = Calendar.getInstance()
     private var mYear : Int = 0
@@ -246,24 +248,30 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
                         ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST)
                 }
             }
-            else -> {}
+            intentFromLeave == ConstantObject.extra_fromIntentApproval -> leaveTransInterface.onAlertLeaveTrans(context.getString(R.string.transaction_alert_confirmation),
+                ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_APPROVE)
         }
     }
 
      fun onSubmitLeave(clickAlertFrom : Int){
-        when(clickAlertFrom) {
-            LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT -> {
-                isProgressLeaveTrans.set(true)
-                Handler().postDelayed({
-                    leaveTransInterface.onSuccessDtlTravel("Transaction Success Edited")
-                }, 2000)
-            }
-            LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST -> {
-                isProgressLeaveTrans.set(true)
-                Handler().postDelayed({
-                    leaveTransInterface.onSuccessDtlTravel(context.getString(R.string.alert_transaction_success))
-                }, 2000)
-            }
+         isProgressLeaveTrans.set(true)
+         Handler().postDelayed({
+             when(clickAlertFrom) {
+                 LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Edited")
+                 LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST -> leaveTransInterface.onSuccessLeaveTrans(context.getString(R.string.alert_transaction_success))
+                 LeaveTransactionActivity.ALERT_LEAVE_TRANS_APPROVE -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Approved")
+                 else -> leaveTransInterface.onSuccessLeaveTrans("Transaction Successful rejected")
+             }
+         }, 2000)
+    }
+
+    fun clickLeaveReject() {
+        when {
+            !ConnectionObject.isNetworkAvailable(context) -> leaveTransInterface.onAlertLeaveTrans(
+                context.getString(R.string.alert_no_connection), ConstantObject.vAlertDialogNoConnection,
+                LeaveTransactionActivity.ALERT_LEAVE_TRANS_NO_CONNECTION)
+            else -> leaveTransInterface.onAlertLeaveTrans(context.getString(R.string.transaction_alert_confirmation),
+                ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_REJECT)
         }
     }
 
@@ -317,9 +325,4 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
             }
         }
     }
-
-    fun submitLeaveReject(){
-        leaveTransInterface.onMessage("Test Reject", ConstantObject.vToastInfo)
-    }
-
 }

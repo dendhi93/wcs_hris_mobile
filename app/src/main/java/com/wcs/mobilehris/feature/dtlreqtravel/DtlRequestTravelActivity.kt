@@ -20,10 +20,12 @@ import com.wcs.mobilehris.feature.requesttravel.CustomReqTravelAdapter
 import com.wcs.mobilehris.feature.requesttravel.ReqTravelModel
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
+import com.wcs.mobilehris.utilinterface.CustomBottomSheetInterface
 
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface, TransRejectInterface {
+class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
+    CustomBottomSheetInterface {
     private lateinit var dtlTravelActivityBinding : ActivityDtlRequestTravelBinding
     private lateinit var dtlTravelAdapter : CustomDetailTaskAdapter
     private lateinit var citiesAdapter : CustomReqTravelAdapter
@@ -146,7 +148,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface, TransR
         }
     }
 
-    override fun onRejectTravel(notesReject: String) {
+    override fun onRejectTransaction(notesReject: String) {
         dtlTravelActivityBinding.viewModel?.stDtlTravelNotes?.set(notesReject.trim())
         when(intentFromForm){
             ConstantObject.extra_fromIntentConfirmTravel -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT)
@@ -190,7 +192,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface, TransR
         const val extraTravelRequestor = "requestor"
     }
 
-    class CustomBottomSheetDialogFragment(private val callback:TransRejectInterface) : BottomSheetDialogFragment() {
+    class CustomBottomSheetDialogFragment(private val callback: CustomBottomSheetInterface) : BottomSheetDialogFragment() {
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
         ): View? {
@@ -201,7 +203,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface, TransR
                 when {
                     txtNotes.text.toString().trim() == "" -> MessageUtils.toastMessage(requireContext(),
                         requireContext().getString(R.string.fill_in_the_blank), ConstantObject.vToastInfo)
-                    else -> {callback.onRejectTravel(txtNotes.text.toString().trim())}
+                    else -> callback.onRejectTransaction(txtNotes.text.toString().trim())
                 }
             }
             return v

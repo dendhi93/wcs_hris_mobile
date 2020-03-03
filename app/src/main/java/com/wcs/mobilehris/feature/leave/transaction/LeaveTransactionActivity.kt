@@ -2,20 +2,29 @@ package com.wcs.mobilehris.feature.leave.transaction
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.textfield.TextInputEditText
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.database.entity.ReasonLeaveEntity
 import com.wcs.mobilehris.databinding.ActivityLeaveTransactionBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
+import com.wcs.mobilehris.utilinterface.CustomBottomSheetInterface
+import com.wcs.mobilehris.utilinterface.DialogInterface
 
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface, com.wcs.mobilehris.utilinterface.DialogInterface {
+class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface,
+    DialogInterface, CustomBottomSheetInterface {
     private lateinit var leaveActivityBinding : ActivityLeaveTransactionBinding
     private lateinit var intentLeaveId : String
     private lateinit var intentLeaveType : String
@@ -84,7 +93,7 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface, com.w
                 MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
             }
             ALERT_LEAVE_TRANS_APPROVE -> {
-                onKeyAlertActive = ALERT_LEAVE_TRANS_EDIT
+                onKeyAlertActive = ALERT_LEAVE_TRANS_APPROVE
                 MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
             }
             ALERT_LEAVE_TRANS_REJECT -> {
@@ -94,7 +103,7 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface, com.w
         }
     }
 
-    override fun onSuccessDtlTravel(message: String) {
+    override fun onSuccessLeaveTrans(message: String) {
         leaveActivityBinding.viewModel?.isProgressLeaveTrans?.set(false)
         onMessage(message, ConstantObject.vToastSuccess)
         finish()
@@ -147,6 +156,11 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface, com.w
         }
     }
 
+    override fun onRejectTransaction(notesReject: String) {
+        leaveActivityBinding.viewModel?.stLeaveRejectNotes?.set(notesReject.trim())
+        leaveActivityBinding.viewModel?.onSubmitLeave(ALERT_LEAVE_TRANS_REJECT)
+    }
+
     override fun enableUI(typeUI: Int) {
         when(typeUI){
             columnCountTime -> leaveActivityBinding.txtLeaveTransQtyTime.isEnabled = true
@@ -171,12 +185,12 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface, com.w
         when(onKeyAlertActive){
             ALERT_LEAVE_TRANS_EDIT -> leaveActivityBinding.viewModel?.onSubmitLeave(ALERT_LEAVE_TRANS_EDIT)
             ALERT_LEAVE_TRANS_REQUEST -> leaveActivityBinding.viewModel?.onSubmitLeave(ALERT_LEAVE_TRANS_REQUEST)
+            ALERT_LEAVE_TRANS_APPROVE -> leaveActivityBinding.viewModel?.onSubmitLeave(ALERT_LEAVE_TRANS_APPROVE)
+            ALERT_LEAVE_TRANS_REJECT -> CustomBottomSheetDialogFragment(this).show(supportFragmentManager, "Dialog")
         }
     }
 
-    override fun onNegativeClick(o: Any) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onNegativeClick(o: Any) {}
 
     companion object{
         const val ALERT_LEAVE_TRANS_NO_CONNECTION = 1
@@ -196,5 +210,22 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface, com.w
         const val valueAnnualLeave = "Annual Leave"
         const val valueTwoHour = "2 Hour Leave"
         const val valueFourHours = "4 Hour Leave"
+    }
+
+    class CustomBottomSheetDialogFragment(private val callback: CustomBottomSheetInterface) : BottomSheetDialogFragment() {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        ): View? {
+            val v: View = inflater.inflate(R.layout.custom_bottom_sheet_reject, container, false)
+            val btnSubmitReject = v.findViewById<View>(R.id.btn_customBottomSheet_reject) as Button
+            val txtNotes = v.findViewById<View>(R.id.txt_customBottomSheet_notes) as TextInputEditText
+            btnSubmitReject.setOnClickListener{
+                when {
+                    txtNotes.text.toString().trim() == "" -> MessageUtils.toastMessage(requireContext(),
+                        requireContext().getString(R.string.fill_in_the_blank), ConstantObject.vToastInfo)
+                    else -> callback.onRejectTransaction(txtNotes.text.toString().trim())
+                }
+            }
+            return v
+        }
     }
 }

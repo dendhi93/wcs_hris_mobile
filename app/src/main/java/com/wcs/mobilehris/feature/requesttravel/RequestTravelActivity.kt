@@ -359,7 +359,6 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     }
 
     override fun onBackPressed() {
-        //todo pake alert yg biasa aj
         AlertDialog.Builder(this).setTitle(getString(R.string.confirmation_menu))
             .setMessage("Are you sure do you want to exit this transaction ? ")
             .setPositiveButton(android.R.string.ok){

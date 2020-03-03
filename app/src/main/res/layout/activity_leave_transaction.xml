@@ -274,33 +274,46 @@
                     android:layout_margin="@dimen/spacing_tiny_2"
                     android:layout_alignParentBottom="true"
                     android:visibility="@{viewModel.isHiddenButton ? View.GONE : View.VISIBLE}"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <Button
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:id="@+id/btn_leaveTrans_save"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="@dimen/button_height"
-                        android:textColor="@color/colorWhite"
-                        android:onClick="@{() -> viewModel.clickLeave()}"
-                        android:text="@={viewModel.stLeaveSubmitButton}"
-                        android:enabled="@{!viewModel.isProgressLeaveTrans}"
-                        android:layout_marginBottom="@dimen/spacing_tiny"
-                        android:background="@drawable/bg_blue_button"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                    <Button
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:onClick="@{() -> viewModel.submitLeaveReject()}"
-                        android:enabled="@{!viewModel.isProgressLeaveTrans}"
-                        android:visibility="@{viewModel.isHiddenRejectButton ? View.GONE : View.VISIBLE}"
-                        android:id="@+id/btn_dtlReqTravel_reject"
-                        android:layout_width="0dp"
-                        android:layout_marginStart="@dimen/spacing_tiny_3"
-                        android:layout_height="@dimen/button_height"
-                        android:layout_weight="1"
-                        android:text="@string/reject_save"
-                        android:background="@drawable/bg_transparent_button"/>
+                        <Button
+                            style="?android:attr/buttonBarButtonStyle"
+                            android:id="@+id/btn_leaveTrans_save"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="@dimen/button_height"
+                            android:textColor="@color/colorWhite"
+                            android:onClick="@{() -> viewModel.clickLeave()}"
+                            android:text="@={viewModel.stLeaveSubmitButton}"
+                            android:enabled="@{!viewModel.isProgressLeaveTrans}"
+                            android:layout_marginBottom="@dimen/spacing_tiny"
+                            android:background="@drawable/bg_blue_button"/>
+
+                        <Button
+                            style="?android:attr/buttonBarButtonStyle"
+                            android:onClick="@{() -> viewModel.clickLeaveReject()}"
+                            android:enabled="@{!viewModel.isProgressLeaveTrans}"
+                            android:visibility="@{viewModel.isHiddenRejectButton ? View.GONE : View.VISIBLE}"
+                            android:id="@+id/btn_dtlReqTravel_reject"
+                            android:layout_width="0dp"
+                            android:layout_marginStart="@dimen/spacing_tiny_3"
+                            android:layout_height="@dimen/button_height"
+                            android:layout_weight="1"
+                            android:text="@string/reject_save"
+                            android:background="@drawable/bg_transparent_button"/>
+                    </LinearLayout>
+
+                    <androidx.coordinatorlayout.widget.CoordinatorLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+                        <include layout="@layout/custom_bottom_sheet_reject"/>
+                    </androidx.coordinatorlayout.widget.CoordinatorLayout>
                 </LinearLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
