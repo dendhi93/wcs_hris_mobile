@@ -11,17 +11,18 @@ import com.wcs.mobilehris.feature.requesttravel.ReqTravelModel
 import com.wcs.mobilehris.util.ConstantObject
 
 class DtlTravelViewModel (private val context : Context, private val dtlTravelInterface: DtlTravelInterface) : ViewModel(){
-    val isProgressDtlReqTravel = ObservableField<Boolean>(false)
-    val isHideDtlTravelUI = ObservableField<Boolean>(false)
-    val isConfirmTravelMenu = ObservableField<Boolean>(false)
-    val isCitiesView = ObservableField<Boolean>(true)
-    val stDtlTravelChargeCode = ObservableField<String>("")
-    val stDtlTravelDepartDate = ObservableField<String>("")
-    val stDtlTravelReturnDate = ObservableField<String>("")
-    val stDtlTravelDescription = ObservableField<String>("")
-    val stDtlTravelReason = ObservableField<String>("")
-    val stDtlTravelNotes = ObservableField<String>("")
-    private val stDtlTravelIsTB = ObservableField<Boolean>(false)
+    val isProgressDtlReqTravel = ObservableField(false)
+    val isHideDtlTravelUI = ObservableField(false)
+    val isConfirmTravelMenu = ObservableField(false)
+    val isCitiesView = ObservableField(true)
+    val stDtlTravelChargeCode = ObservableField("")
+    val stDtlTravelDepartDate = ObservableField("")
+    val stDtlTravelReturnDate = ObservableField("")
+    val stDtlTravelDescription = ObservableField("")
+    val stDtlTravelReason = ObservableField("")
+    val stDtlTravelNotes = ObservableField("")
+    val stButtonSubmitTravel = ObservableField("")
+    private val stDtlTravelIsTB = ObservableField(false)
 
     private var stIntentFromMenu : String? = null
     private var stIntentTravelId : String? = null
@@ -40,6 +41,10 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
         isProgressDtlReqTravel.set(true)
         isHideDtlTravelUI.set(true)
         isConfirmTravelMenu.set(false)
+        when(stIntentFromMenu){
+            ConstantObject.extra_fromIntentConfirmTravel -> stButtonSubmitTravel.set(context.getString(R.string.confirm_save))
+            else -> stButtonSubmitTravel.set(context.getString(R.string.save))
+        }
 
         Handler().postDelayed({
             stDtlTravelChargeCode.set("A-1003-096 BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY")

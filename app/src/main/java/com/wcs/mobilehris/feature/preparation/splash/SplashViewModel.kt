@@ -165,10 +165,10 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
             countDataTransType = mTransTypeDao.getCountTransType()
             countDataReasonTravel = mReasonTravelDao.getCountReasonTravel()
             countDataReasonLeave = mReasonLeaveDao.getCountReasonLeave()
-            Log.d("###", "chargeCode qty $countDataChargeCode")
-            Log.d("###", "transType qty $countDataTransType")
-            Log.d("###", "reasonTravel qty $countDataReasonTravel")
-            Log.d("###", "reasonLeave qty $countDataReasonLeave")
+            Log.d("###_1", "chargeCode qty $countDataChargeCode")
+            Log.d("###_1", "transType qty $countDataTransType")
+            Log.d("###_1", "reasonTravel qty $countDataReasonTravel")
+            Log.d("###_1", "reasonLeave qty $countDataReasonLeave")
             uiThread {
                 when{
                     countDataChargeCode > 0 &&
@@ -300,10 +300,10 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
             countDataReasonTravel = mReasonTravelDao.getCountReasonTravel()
             countDataReasonLeave = mReasonLeaveDao.getCountReasonLeave()
             uiThread {
-                Log.d("###", "chargeCode qty $countDataChargeCode")
-                Log.d("###", "transType qty $countDataTransType")
-                Log.d("###", "reasonTravel qty $countDataReasonTravel")
-                Log.d("###", "reasonLeave qty $countDataReasonLeave")
+                Log.d("###_2", "chargeCode qty $countDataChargeCode")
+                Log.d("###_2", "transType qty $countDataTransType")
+                Log.d("###_2", "reasonTravel qty $countDataReasonTravel")
+                Log.d("###_2", "reasonLeave qty $countDataReasonLeave")
 
                 when{
                     countDataChargeCode > 0
