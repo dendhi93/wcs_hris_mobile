@@ -3,6 +3,7 @@ package com.wcs.mobilehris.feature.login
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -30,7 +31,9 @@ class LoginActivity : AppCompatActivity(), LoginInterface, DialogInterface {
         super.onStart()
         supportActionBar?.hide()
         bindingLogin.viewModel?.getVersion()
+        bindingLogin.txtLoginUid.transformationMethod = HideReturnsTransformationMethod()
         bindingLogin.txtLoginPass.transformationMethod = PasswordTransformationMethod()
+
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {

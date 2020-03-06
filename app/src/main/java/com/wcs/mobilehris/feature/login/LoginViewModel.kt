@@ -31,7 +31,7 @@ class LoginViewModel(private var _context : Context, private var _loginInterface
 
     fun getLogin(){
         when {
-            stUserId.get().isNullOrEmpty() -> _loginInterface.onErrorMessage("Please fill userid", ConstantObject.vSnackBarNoButton)
+            stUserId.get().isNullOrEmpty() -> _loginInterface.onErrorMessage("Please fill user ID", ConstantObject.vSnackBarNoButton)
             stPassword.get().isNullOrEmpty() -> _loginInterface.onErrorMessage("Please fill password", ConstantObject.vSnackBarNoButton)
             !ConnectionObject.isNetworkAvailable(_context) -> {_loginInterface.onAlertLogin(_context.getString(R.string.alert_no_connection),
                 ConstantObject.vAlertDialogNoConnection, LoginActivity.DIALOG_NO_INTERNET)}

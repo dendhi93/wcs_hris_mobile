@@ -21,9 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_margin="@dimen/spacing_tiny"
+            android:layout_margin="@dimen/space_04"
             android:textColor="@color/text_color"
-            android:textSize="@dimen/alph_size_small"
+            android:textSize="@dimen/card_view_title_text_size"
             android:textStyle="bold" />
 
         <ImageButton
