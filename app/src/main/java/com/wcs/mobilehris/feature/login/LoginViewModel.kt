@@ -45,43 +45,42 @@ class LoginViewModel(private var _context : Context, private var _loginInterface
 
     private fun processLogin(){
         isVisibleProgress.set(true)
-        apiRepo.getLogin(stUserId.get().toString().trim(),
-            stPassword.get().toString().trim(),
-            _context,
-            object : ApiRepo.ApiCallback<JSONObject>{
-                override fun onDataLoaded(data: JSONObject?) {
-                    data?.let {
-                        val dtlUser = it.getString("Data")
-                        Log.d("###", "json user $dtlUser")
-                        val userToken = JSONObject(dtlUser)
-                        Log.d("###", "data $dtlUser")
-                        preference.saveUn(stUserId.get().toString().trim(),
-                            userToken.getString("FULL_NAME"),
-                            userToken.getString("PHONE_NUMBER"),
-                            userToken.getString("EMAIL"),
-                            userToken.getString("TOKEN"))
-                        _loginInterface.onSuccessLogin()
-                    }
-                    isVisibleProgress.set(false)
-                }
-
-                override fun onDataError(error: String?) {
-                    Log.d("###", " err $error")
-                    _loginInterface.onErrorMessage(error.toString().trim(), ConstantObject.vToastInfo)
-                    isVisibleProgress.set(false)
-                }
-
-            })
+//        apiRepo.getLogin(stUserId.get().toString().trim(),
+//            stPassword.get().toString().trim(),
+//            _context,
+//            object : ApiRepo.ApiCallback<JSONObject>{
+//                override fun onDataLoaded(data: JSONObject?) {
+//                    data?.let {
+//                        val dtlUser = it.getString("Data")
+//                        Log.d("###", "json user $dtlUser")
+//                        val userToken = JSONObject(dtlUser)
+//                        Log.d("###", "data $dtlUser")
+//                        preference.saveUn(stUserId.get().toString().trim(),
+//                            userToken.getString("FULL_NAME"),
+//                            userToken.getString("PHONE_NUMBER"),
+//                            userToken.getString("EMAIL"),
+//                            userToken.getString("TOKEN"))
+//                        _loginInterface.onSuccessLogin()
+//                    }
+//                    isVisibleProgress.set(false)
+//                }
+//
+//                override fun onDataError(error: String?) {
+//                    Log.d("###", " err $error")
+//                    _loginInterface.onErrorMessage(error.toString().trim(), ConstantObject.vToastInfo)
+//                    isVisibleProgress.set(false)
+//                }
+//            })
 
         //offline mode
-//        Handler().postDelayed({
-//            preference.saveUn(stUserId.get().toString().trim(),
-//                "Untitled",
-//                "0878900679",
-//                "untitled-id@id.wilmar-intl.com",
-//                "ABDC1234")
-//            _loginInterface.onSuccessLogin()
-//        }, 2000)
+        Handler().postDelayed({
+            preference.saveUn(stUserId.get().toString().trim(),
+                "Untitled",
+                "0878900679",
+                "untitled-id@id.wilmar-intl.com",
+                "ABDC1234")
+            _loginInterface.onSuccessLogin()
+        }, 2000)
     }
 
     fun validateLogin(){

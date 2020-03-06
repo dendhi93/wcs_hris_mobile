@@ -321,7 +321,7 @@
                     android:onClick="@{() -> viewModel.onSubmitConfirm()}"
                     android:enabled="@{!viewModel.isProgressDtlReqTravel}"
                     android:textColor="@color/colorWhite"
-                    android:text="@string/confirm_save"
+                    android:text="@={viewModel.stButtonSubmitTravel}"
                     android:background="@drawable/bg_blue_button"/>
 
                 <Button

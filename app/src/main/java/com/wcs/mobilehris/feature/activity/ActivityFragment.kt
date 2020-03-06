@@ -20,7 +20,10 @@ class ActivityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        val viewPagerAdapter = ViewPagerActivityAdapter(childFragmentManager)
+        val viewPagerAdapter =
+            ViewPagerActivityAdapter(
+                childFragmentManager
+            )
         activityBinding.vpActivity.adapter = viewPagerAdapter
         activityBinding.tlActivity.setupWithViewPager(activityBinding.vpActivity)
     }

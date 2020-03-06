@@ -77,13 +77,21 @@ class RequestTravelViewModel (private val context : Context, private val request
                 val selectedDay: String = if (dayOfMonth < 10) { "0$dayOfMonth" } else { dayOfMonth.toString() }
                 val finalDate = "$year-$selectedMonth-$selectedDay"
                 when(chooseFrom){
-                    RequestTravelActivity.chooseDateFrom -> stDepartDate.set(finalDate.trim())
+                    RequestTravelActivity.chooseDateFrom -> validateDateFromTravel(finalDate.trim())
                     RequestTravelActivity.chooseDateInto  -> validateDateInto(finalDate.trim())
                     RequestTravelActivity.chooseDateCheckIn -> validateCheckInCheckOut(RequestTravelActivity.chooseDateCheckIn ,finalDate)
                     else -> validateCheckInCheckOut(RequestTravelActivity.chooseDateCheckOut , finalDate.trim())
                 }
             }, mYear, mMonth, mDay)
         datePickerDialog.show()
+    }
+
+    private fun validateDateFromTravel(selectedDate : String){
+        val intDiffDateFrom = DateTimeUtils.getDifferentDate(DateTimeUtils.getCurrentDate(), selectedDate.trim())
+        when{
+            intDiffDateFrom < 0 -> requestTravelInterface.onMessage("Depart Date should not less than today", ConstantObject.vSnackBarWithButton)
+            else -> stDepartDate.set(selectedDate.trim())
+        }
     }
 
     private fun validateDateInto(selectedEndDate : String){

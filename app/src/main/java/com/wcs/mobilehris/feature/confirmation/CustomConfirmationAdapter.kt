@@ -34,6 +34,7 @@ class CustomConfirmationAdapter (private val context : Context, private val conf
                     val intent = Intent(context, DtlRequestTravelActivity::class.java)
                     intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentConfirmTravel)
                     intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.menuId)
+                    intent.putExtra(DtlRequestTravelActivity.extraTravelRequestor, "")
                     context.startActivity(intent)
                 }
             }

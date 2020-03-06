@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.feature.leave.list.LeaveListActivity
 import com.wcs.mobilehris.feature.requesttravellist.RequestTravelListActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
@@ -39,6 +40,11 @@ class CustomApprovalAdapter (private val _context : Context,
             when(model.itemMenu){
                 ConstantObject.travelMenu -> {
                     val intent = Intent(_context, RequestTravelListActivity::class.java)
+                    intent.putExtra(ConstantObject.extra_intent, customIntentFrom)
+                    _context.startActivity(intent)
+                }
+                ConstantObject.leaveMenu -> {
+                    val intent = Intent(_context, LeaveListActivity::class.java)
                     intent.putExtra(ConstantObject.extra_intent, customIntentFrom)
                     _context.startActivity(intent)
                 }

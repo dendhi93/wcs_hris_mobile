@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.feature.dtlreqtravel.DtlRequestTravelActivity
 import com.wcs.mobilehris.util.ConstantObject
-import com.wcs.mobilehris.util.MessageUtils
 
 class CustomTravelListAdapter  (private val context : Context,
                                 private val reqTravelList : MutableList<TravelListModel>,
                                 private val customIntentTravelFrom : String):
     RecyclerView.Adapter<CustomTravelListAdapter.ViewHolder>(){
+    private var mainContent : String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_global_list,parent,false))
@@ -33,27 +33,31 @@ class CustomTravelListAdapter  (private val context : Context,
         holder.imgVIconIsConflick.visibility = View.VISIBLE
         holder.tvTravelDescription.visibility = View.VISIBLE
         holder.tvTravelBusinessType.visibility = View.VISIBLE
-        holder.imgVWayTravel.visibility = View.GONE
-        holder.tvTravelReason.text = model.reasonDesc.trim()
+        mainContent = when(customIntentTravelFrom){
+            ConstantObject.extra_fromIntentApproval -> model.requestor + "\n" +model.reasonDesc
+            else -> model.reasonDesc
+        }
+        holder.tvTravelReason.text = mainContent.trim()
         holder.tvTravelTime.text = finalTravelTime
         holder.tvTravelDescription.text = model.travelDescription.trim()
         holder.tvTravelBusinessType.text = model.travelBusinessType.trim()
         holder.cvCustomTravel.setOnClickListener {
             when(customIntentTravelFrom){
-                ConstantObject.extra_fromIntentRequestTravel ->{
+                ConstantObject.extra_fromIntentRequest ->{
                     val intent = Intent(context, DtlRequestTravelActivity::class.java)
                     intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentDtlTravel)
                     intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.travelId)
+                    intent.putExtra(DtlRequestTravelActivity.extraTravelRequestor, "")
                     context.startActivity(intent)
                 }
                 else -> {
                     val intent = Intent(context, DtlRequestTravelActivity::class.java)
-                    intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentApprovalTravel)
+                    intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentApproval)
                     intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.travelId)
+                    intent.putExtra(DtlRequestTravelActivity.extraTravelRequestor, model.requestor)
                     context.startActivity(intent)
                 }
             }
-
         }
         when(isAccepted){
             "True" -> holder.imgVIconIsConflick.setImageResource(R.mipmap.ic_checklist_48)
@@ -71,7 +75,6 @@ class CustomTravelListAdapter  (private val context : Context,
         var tvTravelDescription : TextView = view.findViewById(R.id.tv_custom_content_2)
         var tvTravelBusinessType : TextView = view.findViewById(R.id.tv_custom_content_3)
         var imgVIconIsConflick : ImageView = view.findViewById(R.id.imgV_custom_1)
-        var imgVWayTravel : ImageView = view.findViewById(R.id.imgV_custom_2)
     }
 
 }

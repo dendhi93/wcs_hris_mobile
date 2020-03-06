@@ -35,7 +35,7 @@ class RequestTravelListActivity : AppCompatActivity(), ReqTravelListInterface {
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
             intentTravelFrom = intent.getStringExtra(ConstantObject.extra_intent)
             when(intentTravelFrom){
-                ConstantObject.extra_fromIntentRequestTravel -> it.title = getString(R.string.req_travel_hist_activity)
+                ConstantObject.extra_fromIntentRequest -> it.title = getString(R.string.req_travel_hist_activity)
                 else -> it.title = getString(R.string.approval_travel_list_activity)
             }
         }

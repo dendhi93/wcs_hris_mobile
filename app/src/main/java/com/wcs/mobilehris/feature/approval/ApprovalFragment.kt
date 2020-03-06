@@ -29,7 +29,7 @@ class ApprovalFragment : Fragment(), ApprovalInterface {
         super.onViewCreated(view, savedInstanceState)
         approvalBinding.rcApproval.layoutManager = LinearLayoutManager(requireContext())
         approvalBinding.rcApproval.setHasFixedSize(true)
-        approvalAdapter = CustomApprovalAdapter(requireContext(), arrApprovalList, ConstantObject.extra_fromIntentApprovalTravel)
+        approvalAdapter = CustomApprovalAdapter(requireContext(), arrApprovalList, ConstantObject.extra_fromIntentApproval)
         approvalBinding.rcApproval.adapter = approvalAdapter
 
         approvalBinding.viewModel?.approvalInitMenu()

@@ -187,17 +187,21 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     }
 
     override fun onLoadTransport(listTransport: List<TransportTypeEntity>) {
+        var pos = 0
         for(i in listTransport.indices){
-            when(i) {
+            when(pos) {
                 0 -> {
                     arrDescTransType.add("Transportation Type")
                     arrTransTypeCode.add("")
+                    arrDescTransType.add(listTransport[i].mTransTypeDescription.trim())
+                    arrTransTypeCode.add(listTransport[i].mTransCode.trim())
                 }
                 else -> {
                     arrDescTransType.add(listTransport[i].mTransTypeDescription.trim())
                     arrTransTypeCode.add(listTransport[i].mTransCode.trim())
                 }
             }
+            pos += 1
         }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrDescTransType)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -218,17 +222,21 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     }
 
     override fun onLoadReason(listReason: List<ReasonTravelEntity>) {
+        var reasonPos = 0
         for(i in listReason.indices){
-            when(i) {
+            when(reasonPos) {
                 0 -> {
                     arrReasonCode.add("")
                     arrReasonDesc.add("Reason Type")
+                    arrReasonCode.add(listReason[i].mReasonCode.trim())
+                    arrReasonDesc.add(listReason[i].mReasonDescription.trim())
                 }
                 else -> {
                     arrReasonCode.add(listReason[i].mReasonCode.trim())
                     arrReasonDesc.add(listReason[i].mReasonDescription.trim())
                 }
             }
+            reasonPos += 1
         }
         val reasonAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrReasonDesc)
         reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -351,7 +359,6 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     }
 
     override fun onBackPressed() {
-        //todo pake alert yg biasa aj
         AlertDialog.Builder(this).setTitle(getString(R.string.confirmation_menu))
             .setMessage("Are you sure do you want to exit this transaction ? ")
             .setPositiveButton(android.R.string.ok){

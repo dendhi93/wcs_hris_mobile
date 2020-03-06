@@ -38,7 +38,7 @@ object ConnectionObject {
             try {
                 val activeNetworkInfo = connectivityManager.activeNetworkInfo
                 if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
-                    Log.i("update_statut", "Network is available : true")
+                    Log.i("update_status", "Network is available : true")
                     return true
                 }
             } catch (e: Exception) { Log.i("update_statut", "" + e.message) }
@@ -46,8 +46,7 @@ object ConnectionObject {
         return false
     }
 
-    fun okhttpClient(retry: Boolean, duration: Int): OkHttpClient {
-
+    fun okHttpClient(retry: Boolean, duration: Int): OkHttpClient {
         val builder = OkHttpClient.Builder()
             .connectTimeout(duration.toLong(), TimeUnit.SECONDS)
             .readTimeout(duration.toLong(), TimeUnit.SECONDS)

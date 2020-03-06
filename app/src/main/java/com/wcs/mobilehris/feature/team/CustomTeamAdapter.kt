@@ -28,7 +28,7 @@ class CustomTeamAdapter(private val _context : Context, private var teamList : M
         holder.tvTeamPhone.text = model.phone.trim()
         holder.tvTeamMail.text = model.email.trim()
         holder.cvTeam.setOnClickListener {
-            selectedInterface?.selectedItemTeam(model)
+            selectedInterface.selectedItemTeam(model)
         }
     }
 

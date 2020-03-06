@@ -17,7 +17,7 @@ class ApiRepo {
         AndroidNetworking.initialize(context)
         Log.d("###","url Login "+BuildConfig.HRIS_URL+"authenticates/"+userName.trim()+"/"+passUn.trim())
         AndroidNetworking.get(BuildConfig.HRIS_URL+"authenticates/"+userName.trim()+"/"+passUn.trim())
-            .setOkHttpClient(ConnectionObject.okhttpClient(false, ConnectionObject.timeout))
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
             .setPriority(Priority.MEDIUM)
             .build()
             .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {

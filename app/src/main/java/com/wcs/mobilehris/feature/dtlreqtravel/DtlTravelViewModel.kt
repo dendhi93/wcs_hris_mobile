@@ -11,17 +11,18 @@ import com.wcs.mobilehris.feature.requesttravel.ReqTravelModel
 import com.wcs.mobilehris.util.ConstantObject
 
 class DtlTravelViewModel (private val context : Context, private val dtlTravelInterface: DtlTravelInterface) : ViewModel(){
-    val isProgressDtlReqTravel = ObservableField<Boolean>(false)
-    val isHideDtlTravelUI = ObservableField<Boolean>(false)
-    val isConfirmTravelMenu = ObservableField<Boolean>(false)
-    val isCitiesView = ObservableField<Boolean>(true)
-    val stDtlTravelChargeCode = ObservableField<String>("")
-    val stDtlTravelDepartDate = ObservableField<String>("")
-    val stDtlTravelReturnDate = ObservableField<String>("")
-    val stDtlTravelDescription = ObservableField<String>("")
-    val stDtlTravelReason = ObservableField<String>("")
-    val stDtlTravelNotes = ObservableField<String>("")
-    private val stDtlTravelIsTB = ObservableField<Boolean>(false)
+    val isProgressDtlReqTravel = ObservableField(false)
+    val isHideDtlTravelUI = ObservableField(false)
+    val isConfirmTravelMenu = ObservableField(false)
+    val isCitiesView = ObservableField(true)
+    val stDtlTravelChargeCode = ObservableField("")
+    val stDtlTravelDepartDate = ObservableField("")
+    val stDtlTravelReturnDate = ObservableField("")
+    val stDtlTravelDescription = ObservableField("")
+    val stDtlTravelReason = ObservableField("")
+    val stDtlTravelNotes = ObservableField("")
+    val stButtonSubmitTravel = ObservableField("")
+    private val stDtlTravelIsTB = ObservableField(false)
 
     private var stIntentFromMenu : String? = null
     private var stIntentTravelId : String? = null
@@ -40,6 +41,10 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
         isProgressDtlReqTravel.set(true)
         isHideDtlTravelUI.set(true)
         isConfirmTravelMenu.set(false)
+        when(stIntentFromMenu){
+            ConstantObject.extra_fromIntentConfirmTravel -> stButtonSubmitTravel.set(context.getString(R.string.confirm_save))
+            else -> stButtonSubmitTravel.set(context.getString(R.string.save))
+        }
 
         Handler().postDelayed({
             stDtlTravelChargeCode.set("A-1003-096 BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY")
@@ -77,7 +82,7 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
             isProgressDtlReqTravel.set(false)
             isHideDtlTravelUI.set(false)
             if (intentFrom == ConstantObject.extra_fromIntentConfirmTravel ||
-                    intentFrom == ConstantObject.extra_fromIntentApprovalTravel){
+                    intentFrom == ConstantObject.extra_fromIntentApproval){
                 isConfirmTravelMenu.set(true)
             }else { isConfirmTravelMenu.set(false) }
         }, 2000)
@@ -95,9 +100,9 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
         when{
             !ConnectionObject.isNetworkAvailable(context) -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.alert_no_connection),
                 ConstantObject.vAlertDialogNoConnection, DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_NO_CONNECTION)
-            stIntentFromMenu == ConstantObject.extra_fromIntentRequestTravel -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
+            stIntentFromMenu == ConstantObject.extra_fromIntentRequest -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT)
-            stIntentFromMenu == ConstantObject.extra_fromIntentApprovalTravel -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
+            stIntentFromMenu == ConstantObject.extra_fromIntentApproval -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_ACCEPT)
         }
 
@@ -106,9 +111,9 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
         when{
             !ConnectionObject.isNetworkAvailable(context) -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.alert_no_connection),
                 ConstantObject.vAlertDialogNoConnection, DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_NO_CONNECTION)
-            stIntentFromMenu == ConstantObject.extra_fromIntentRequestTravel -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
+            stIntentFromMenu == ConstantObject.extra_fromIntentRequest -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT)
-            stIntentFromMenu == ConstantObject.extra_fromIntentApprovalTravel -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
+            stIntentFromMenu == ConstantObject.extra_fromIntentApproval -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_REJECT)
         }
     }

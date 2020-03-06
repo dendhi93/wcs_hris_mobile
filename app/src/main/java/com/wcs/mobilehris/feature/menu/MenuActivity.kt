@@ -43,27 +43,18 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         menuBinding = DataBindingUtil.setContentView(this, R.layout.activity_menu)
         val header = menuBinding.navView.inflateHeaderView(R.layout.nav_header_menu)
         tvHeaderMenu = header.findViewById(R.id.tv_nav_header_bottom)
         lnHeader = header.findViewById(R.id.ln_nav_header)
         setSupportActionBar(menuBinding.toolbar)
         supportActionBar?.let {
-            it.title = "Dashboard"
-
+//            it.title = Html.fromHtml("<font color='#000000'>WcsHR System</font>")
+            it.title = getString(R.string.app_name_label)
         }
 
         val toggle = ActionBarDrawerToggle(
-            this,
-            menuBinding.drawerLayout,
-            menuBinding.toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
+            this, menuBinding.drawerLayout, menuBinding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         menuBinding.drawerLayout.addDrawerListener(toggle)
         toggle.isDrawerIndicatorEnabled = true
         toggle.syncState()
