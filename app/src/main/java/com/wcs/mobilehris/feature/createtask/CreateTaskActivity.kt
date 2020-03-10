@@ -168,6 +168,8 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFri
         const val RESULT_EXTRA_TEAM_NAME = "team_name"
         const val RESULT_EXTRA_TEAM_USER_ID = "team_user_id"
         const val ALERT_CREATE_TASK_CONFIRMATION = 5
+        const val chooseDateFrom = "date_from"
+        const val chooseDateInto = "date_into"
         const val chooseTimeFrom = "time_from"
         const val chooseTimeInto = "time_into"
     }

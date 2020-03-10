@@ -10,9 +10,9 @@ import java.util.concurrent.TimeUnit
 
 object DateTimeUtils {
 
-    fun getCurrentTime(): String { return SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()) }
+    fun getCurrentTime(): String { return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()) }
 
-    fun getCurrentDate(): String { return SimpleDateFormat("yyy-MM-dd", Locale.getDefault()).format(Date()) }
+    fun getCurrentDate(): String { return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()) }
 
     fun getChangeDateFormat(dateTime: String?): String? {
         return try {

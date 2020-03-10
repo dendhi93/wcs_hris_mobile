@@ -18,6 +18,7 @@ object ConnectionObject {
      * check respond http response
      */
     fun checkHttpCode(httpCode: String): Boolean = httpCode == "200"
+    fun checkHttpNotFound(httpCode: Int): Boolean = httpCode == 404
 //    fun checkHttpBadRequest(httpCode: Int): Boolean = httpCode == 400
 
     /**

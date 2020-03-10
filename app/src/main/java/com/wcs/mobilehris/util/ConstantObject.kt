@@ -58,4 +58,14 @@ object ConstantObject {
     const val extra_fromIntentCreateTravel = "CreateTravel"
     const val extra_fromIntentRequest = "Request"
     const val extra_fromIntentApproval = "Approval"
+
+    //response API
+    const val vResponseData = "Data"
+    const val vResponseResult = "result"
+
+    //param tabel
+    const val keyChargeCode = "mChargecode"
+    const val keyTransType = "mTrans_type"
+    const val keyReasonTravel = "mReason"
+    const val keyLeaveType = "mLeaveType"
 }

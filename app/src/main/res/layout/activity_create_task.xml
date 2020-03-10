@@ -79,6 +79,72 @@
 
                             </com.google.android.material.textfield.TextInputLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_margin="@dimen/spacing_tiny_2"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="@dimen/text_fields_height"
+                                app:boxStrokeWidth="@dimen/text_fields_box_width"
+                                app:boxStrokeColor="@color/text_fields_box_color"
+                                app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                                app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                                app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                                app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/txt_createTask_validFrom"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                    android:enabled="false"
+                                    android:gravity="center_vertical"
+                                    android:hint="@string/valid_from"
+                                    android:textColor="@color/colorBlack"
+                                    android:textColorHint="@color/colorBlack"
+                                    android:text="@={viewModel.stChargeCodeValidFrom}"
+                                    android:inputType="text"
+                                    android:maxLines="1"
+                                    android:textSize="@dimen/text_fields_text_size" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_margin="@dimen/spacing_tiny_2"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="@dimen/text_fields_height"
+                                app:boxStrokeWidth="@dimen/text_fields_box_width"
+                                app:boxStrokeColor="@color/text_fields_box_color"
+                                app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                                app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                                app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                                app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/txt_createTask_validInto"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                    android:enabled="false"
+                                    android:gravity="center_vertical"
+                                    android:hint="@string/valid_into"
+                                    android:textColor="@color/colorBlack"
+                                    android:textColorHint="@color/colorBlack"
+                                    android:text="@={viewModel.stChargeCodeValidInto}"
+                                    android:inputType="text"
+                                    android:maxLines="1"
+                                    android:textSize="@dimen/text_fields_text_size" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_margin="@dimen/spacing_tiny_2"
@@ -133,11 +199,43 @@
                                     android:layout_height="match_parent"
                                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
                                     android:maxLength="25"
-                                    android:text="@={viewModel.stDateTask}"
-                                    android:onClick="@{() -> viewModel.initDate()}"
+                                    android:text="@={viewModel.stDateTaskFrom}"
+                                    android:onClick="@{() -> viewModel.initDateFrom()}"
                                     android:focusable="false"
                                     android:gravity="center_vertical"
-                                    android:hint="@string/date"
+                                    android:hint="@string/date_from"
+                                    android:textColor="@color/colorBlack"
+                                    android:textColorHint="@color/colorBlack"
+                                    android:inputType="text"
+                                    android:maxLines="1"
+                                    android:textSize="@dimen/text_fields_text_size" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/text_fields_height"
+                                android:layout_margin="@dimen/spacing_tiny_2"
+                                android:layout_weight="1"
+                                app:boxStrokeWidth="@dimen/text_fields_box_width"
+                                app:boxStrokeColor="@color/text_fields_box_color"
+                                app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                                app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                                app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                                app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/txt_createTask_dateInto"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                                    android:maxLength="25"
+                                    android:text="@={viewModel.stDateTaskInto}"
+                                    android:onClick="@{() -> viewModel.initDateInto()}"
+                                    android:focusable="false"
+                                    android:gravity="center_vertical"
+                                    android:hint="@string/date_into"
                                     android:textColor="@color/colorBlack"
                                     android:textColorHint="@color/colorBlack"
                                     android:inputType="text"
@@ -169,7 +267,7 @@
                                 app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
 
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/txt_createTask_dateFrom"
+                                    android:id="@+id/txt_createTask_timeFrom"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
@@ -200,7 +298,7 @@
                                 app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
 
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/txt_createTask_dateInto"
+                                    android:id="@+id/txt_createTask_timeInto"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "

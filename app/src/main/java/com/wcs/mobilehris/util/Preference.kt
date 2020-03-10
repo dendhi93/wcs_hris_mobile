@@ -7,31 +7,29 @@ class Preference(private var _context : Context){
     private val sharedPreferences: SharedPreferences =
         _context.getSharedPreferences(_context.packageName + "_pref", Context.MODE_PRIVATE)
     private val editor: SharedPreferences.Editor
-    private val TAG = "Preferences"
-    private val KEY_USERNAME = "usernama"
-    private val KEY_NAMEPROFILE = "name"
-    private val KEY_PHONEPROFILE = "phone"
-    private val KEY_EMAILPROFILE = "email"
-    private val KEY_TOKEN = "token"
+    private val keyUsername = "usernama"
+    private val keYProfileName = "name"
+    private val keyPhoneProfile = "phone"
+    private val keyEmailProfile = "email"
+    private val keyToken = "token"
 
     init {
         editor = sharedPreferences.edit()
     }
-
     fun saveUn(un: String, name : String, phone : String, email : String, unToken : String) {
-        editor.putString(KEY_USERNAME, un)
-        editor.putString(KEY_NAMEPROFILE, name)
-        editor.putString(KEY_PHONEPROFILE, phone)
-        editor.putString(KEY_EMAILPROFILE, email)
-        editor.putString(KEY_TOKEN, unToken)
+        editor.putString(keyUsername, un)
+        editor.putString(keYProfileName, name)
+        editor.putString(keyPhoneProfile, phone)
+        editor.putString(keyEmailProfile, email)
+        editor.putString(keyToken, unToken)
         editor.apply()
     }
 
-    fun getUn(): String { return sharedPreferences.getString(KEY_USERNAME, "").toString() }
-    fun getName(): String { return sharedPreferences.getString(KEY_NAMEPROFILE, "").toString() }
-    fun getPhone(): String { return sharedPreferences.getString(KEY_PHONEPROFILE, "").toString() }
-    fun getEmail(): String { return sharedPreferences.getString(KEY_EMAILPROFILE, "").toString() }
-    fun getToken(): String { return sharedPreferences.getString(KEY_EMAILPROFILE, "").toString() }
+    fun getUn(): String { return sharedPreferences.getString(keyUsername, "").toString() }
+    fun getName(): String { return sharedPreferences.getString(keYProfileName, "").toString() }
+    fun getPhone(): String { return sharedPreferences.getString(keyPhoneProfile, "").toString() }
+    fun getEmail(): String { return sharedPreferences.getString(keyEmailProfile, "").toString() }
+    fun getToken(): String { return sharedPreferences.getString(keyToken, "").toString() }
 
     fun clearPreference() {
         editor.clear()

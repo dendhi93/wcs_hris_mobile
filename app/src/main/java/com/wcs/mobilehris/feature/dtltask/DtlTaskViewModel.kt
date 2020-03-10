@@ -1,5 +1,6 @@
 package com.wcs.mobilehris.feature.dtltask
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Handler
@@ -78,7 +79,8 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
         },1000)
     }
 
-    inner class AsyncDtlTask(): AsyncTask<Void, Void, String>(){
+    @SuppressLint("StaticFieldLeak")
+    inner class AsyncDtlTask: AsyncTask<Void, Void, String>(){
 
         override fun doInBackground(vararg params: Void?): String {
             return "OK"

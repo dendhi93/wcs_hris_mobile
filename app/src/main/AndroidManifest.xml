@@ -33,7 +33,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".feature.leave.transaction.LeaveTransactionActivity"></activity>
+        <activity android:name=".feature.leave.transaction.LeaveTransactionActivity"/>
         <activity android:name=".feature.leave.list.LeaveListActivity" />
         <activity android:name=".feature.dtlreqtravel.DtlRequestTravelActivity" />
         <activity
@@ -43,8 +43,7 @@
             android:name=".feature.requesttravel.RequestTravelActivity"
             android:label="@string/req_travel_activity" />
         <activity
-            android:name=".feature.requesttravellist.RequestTravelListActivity"
-            android:label="@string/req_travel_hist_activity" />
+            android:name=".feature.requesttravellist.RequestTravelListActivity" />
         <activity
             android:name=".feature.confirmtask.ConfirmTaskActivity"
             android:windowSoftInputMode="stateHidden" />

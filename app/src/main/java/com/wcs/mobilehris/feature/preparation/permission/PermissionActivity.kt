@@ -23,6 +23,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.karumi.dexter.listener.multi.SnackbarOnAnyDeniedMultiplePermissionsListener
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.ActivityPermissionBinding
+import com.wcs.mobilehris.feature.login.LoginActivity
 import com.wcs.mobilehris.feature.preparation.splash.SplashActivity
 
 class PermissionActivity : AppCompatActivity() {

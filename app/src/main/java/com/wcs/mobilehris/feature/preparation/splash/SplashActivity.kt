@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.ActivitySplashBinding
 import com.wcs.mobilehris.feature.login.LoginActivity
 import com.wcs.mobilehris.util.MessageUtils
@@ -16,14 +17,14 @@ class SplashActivity : AppCompatActivity(), SplashInterface, DialogInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindingSplash = DataBindingUtil.setContentView<ActivitySplashBinding>(this,R.layout.activity_splash)
-        bindingSplash.viewModel = SplashViewModel(this, this)
+        bindingSplash = DataBindingUtil.setContentView(this,R.layout.activity_splash)
+        bindingSplash.viewModel = SplashViewModel(this, this, ApiRepo())
     }
 
     override fun onStart() {
         super.onStart()
         supportActionBar?.hide()
-        bindingSplash.viewModel?.processDownload()
+        bindingSplash.viewModel?.validateUpdateMaster()
         bindingSplash.viewModel?.isBtnVisible?.set(false)
     }
 
@@ -50,10 +51,14 @@ class SplashActivity : AppCompatActivity(), SplashInterface, DialogInterface {
         bindingSplash.viewModel?.isPrgBarVisible?.set(false)
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
-
     }
 
     companion object{
         const val DIALOG_NO_INTERNET = 1
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }
