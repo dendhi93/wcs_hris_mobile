@@ -39,9 +39,8 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
         activityConfirmBinding.viewModel?.stButtonName?.set(intentConfirmTaskFromMenu.toString().trim())
         when{
             intentConfirmTaskId != "" && intentConfirmTaskChargeCode != "" ->{
-                val confirmTaskSplitChargeCode = intentConfirmTaskChargeCode.toString().trim().split("|")
                 activityConfirmBinding.viewModel?.onLoadConfirmData(intentConfirmTaskId.toString().trim(),
-                    confirmTaskSplitChargeCode[0].trim())
+                    intentConfirmTaskChargeCode.toString().trim())
             }
         }
     }

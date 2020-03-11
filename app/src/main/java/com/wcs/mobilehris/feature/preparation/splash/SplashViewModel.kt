@@ -255,9 +255,17 @@ class SplashViewModel(private var _context : Context,
 
             override fun onDataError(error: String?) {
                 Log.d(TAG, " err $error")
-                _splashInterface.onErrorMessage(" err on " + masterType +
-                        "\n" +error.toString().trim(), ConstantObject.vToastInfo)
+                val errMessage = error.toString().trim()
+                if (errMessage.contains("java.net.SocketTimeoutException")){
+                    _splashInterface.onErrorMessage(" err on " + masterType +
+                            "\nConnection Time Out, Please Try again", ConstantObject.vToastError)
+                }else {
+                    _splashInterface.onErrorMessage(" err on " + masterType +
+                            "\n" +error.toString().trim(), ConstantObject.vToastError)
+                }
+                Log.d("###","err " +error.toString())
                 isPrgBarVisible.set(false)
+                isBtnVisible.set(true)
             }
         })
     }

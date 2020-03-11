@@ -9,23 +9,23 @@ import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.util.ConstantObject
 
 class ConfirmTaskViewModel (private val context : Context, private val confirmTaskInterface: ConfirmTaskInterface) : ViewModel(){
-    val isProgressConfirmTask = ObservableField<Boolean>(false)
-    val isHideCardView = ObservableField<Boolean>(false)
-    val isOnSiteConfirmTask = ObservableField<Boolean>(false)
-    val stConfirmChargeCode = ObservableField<String>("")
-    val stConfirmCompName = ObservableField<String>("")
-    val stConfirmTaskDate = ObservableField<String>("")
-    val stConfirmTaskTimeFrom = ObservableField<String>("")
-    val stConfirmTaskTimeInto = ObservableField<String>("")
-    val stConfirmCP = ObservableField<String>("")
-    val stConfirmDescription = ObservableField<String>("")
-    val stConfirmSolmanNo = ObservableField<String>("")
-    val stConfirmPM = ObservableField<String>("")
-    val stConfirmActHour = ObservableField<String>("")
-    val stConfirmActDescription = ObservableField<String>("")
-    val stButtonName = ObservableField<String>("")
-    val isHiddenSolmanNoTv = ObservableField<Boolean>(false)
-    val isHiddenPMTv = ObservableField<Boolean>(false)
+    val isProgressConfirmTask = ObservableField(false)
+    val isHideCardView = ObservableField(false)
+    val stConfirmChargeCode = ObservableField("")
+    val stConfirmCompName = ObservableField("")
+    val stConfirmTaskDateFrom = ObservableField("")
+    val stConfirmTaskDateInto = ObservableField("")
+    val stConfirmTaskTimeFrom = ObservableField("")
+    val stConfirmTaskTimeInto = ObservableField("")
+    val stConfirmCP = ObservableField("")
+    val stConfirmDescription = ObservableField("")
+    val stConfirmSolmanNo = ObservableField("")
+    val stConfirmPM = ObservableField("")
+    val stConfirmActHour = ObservableField("")
+    val stConfirmActDescription = ObservableField("")
+    val stButtonName = ObservableField("")
+    val isHiddenSolmanNoTv = ObservableField(false)
+    val isHiddenPMTv = ObservableField(false)
     private var stTypeTask : String? = ""
     private var stIntentTaskId : String = ""
 
@@ -42,18 +42,20 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
 
     fun onLoadConfirmData(intentTaskId : String, intentChargeCode : String){
         stIntentTaskId = intentTaskId
+        val confirmTaskSplitChargeCode = intentChargeCode.trim().split("|")
         isProgressConfirmTask.set(true)
         isHideCardView.set(true)
         Handler().postDelayed({
-            stConfirmChargeCode.set(intentChargeCode.trim())
+            stConfirmChargeCode.set(confirmTaskSplitChargeCode[0].trim() + " " + confirmTaskSplitChargeCode[1].trim())
             stConfirmCompName.set("PT ABCD")
             stConfirmCP.set("Michael Saputra")
-            stConfirmTaskDate.set("17/01/2020")
+            stConfirmTaskDateFrom.set("17/01/2020")
+            stConfirmTaskDateFrom.set("19/01/2020")
             stConfirmTaskTimeFrom.set("08:00")
             stConfirmTaskTimeInto.set("17:00")
             stConfirmDescription.set("Buat Mobile Hris")
             //FIND PREFIX CHARGE CODE and decide type project substring first in intentChargeCode
-            when(intentChargeCode.substring(0, 1)){
+            when(confirmTaskSplitChargeCode[0].substring(0, 1)){
                 "F" -> stTypeTask = ConstantObject.vProjectTask
                 "E" -> stTypeTask = ConstantObject.vSupportTask
                 "A" -> stTypeTask = ConstantObject.vPreSalesTask

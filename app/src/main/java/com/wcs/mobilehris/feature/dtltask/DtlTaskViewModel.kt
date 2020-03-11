@@ -11,25 +11,32 @@ import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.util.ConstantObject
 
 class DtlTaskViewModel(private val context : Context, private val dtlTaskInterface : DtlTaskInterface) :ViewModel(){
-    val stChargeCode = ObservableField<String>("")
-    val stCompanyName = ObservableField<String>("")
-    val stDtlTaskDate = ObservableField<String>("")
-    val stDtlTaskTimeFrom = ObservableField<String>("")
-    val stDtlTaskTimeInto = ObservableField<String>("")
-    val stDtlContactPerson = ObservableField<String>("")
-    val stDtlDescription = ObservableField<String>("")
-    val stDtlSolmanNo = ObservableField<String>("")
-    val stDtlProjectManager = ObservableField<String>("")
-    val isProgressDtl = ObservableField<Boolean>(false)
-    val isHiddenRv = ObservableField<Boolean>(false)
-    val isHiddenSolmanTv = ObservableField<Boolean>(false)
-    val isHiddenProjectManager = ObservableField<Boolean>(false)
+    val stChargeCode = ObservableField("")
+    val stCompanyName = ObservableField("")
+    val stDtlTaskDateFrom = ObservableField("")
+    val stDtlTaskDateInto = ObservableField("")
+    val stDtlTaskTimeFrom = ObservableField("")
+    val stDtlTaskTimeInto = ObservableField("")
+    val stDtlContactPerson = ObservableField("")
+    val stDtlDescription = ObservableField("")
+    val stDtlSolmanNo = ObservableField("")
+    val stDtlProjectManager = ObservableField("")
+    val isProgressDtl = ObservableField(false)
+    val isHiddenRv = ObservableField(false)
+    val isHiddenSolmanTv = ObservableField(false)
+    val isHiddenProjectManager = ObservableField(false)
     private var stIntentTaskId : String = ""
     private var stIntentTypeTask : String = ""
 
-    fun initDataDtl(taskId : String, typeTask : String){
+    fun initDataDtl(taskId : String, chargeCode : String){
         stIntentTaskId = taskId.trim()
-        stIntentTypeTask = typeTask.trim()
+        val dtlTaskSplitChargeCode = chargeCode.trim().split("|")
+        when(dtlTaskSplitChargeCode[0].trim().substring(0, 1)){
+            "F" -> stIntentTypeTask = ConstantObject.vProjectTask
+            "E" -> stIntentTypeTask = ConstantObject.vSupportTask
+            else -> ConstantObject.vPreSalesTask
+        }
+        stChargeCode.set(dtlTaskSplitChargeCode[0].trim() +" " +dtlTaskSplitChargeCode[1].trim())
         when {
             !ConnectionObject.isNetworkAvailable(context) -> dtlTaskInterface.onAlertDtlTask(context.getString(R.string.alert_no_connection), ConstantObject.vAlertDialogNoConnection,
                     DetailTaskActivity.ALERT_DTL_TASK_NO_CONNECTION)
@@ -41,9 +48,10 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
         isProgressDtl.set(true)
         isHiddenRv.set(true)
         Handler().postDelayed({
-            stChargeCode.set("F1001-1003-1001")
+
             stCompanyName.set("PT Sukanda")
-            stDtlTaskDate.set("15/01/2020")
+            stDtlTaskDateFrom.set("15/01/2020")
+            stDtlTaskDateInto.set("16/01/2020")
             stDtlTaskTimeFrom.set("08:00")
             stDtlTaskTimeInto.set("17:00")
             stDtlContactPerson.set("Denny Rambakila")

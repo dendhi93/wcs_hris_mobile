@@ -36,8 +36,7 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
 
         when{
             intentTaskId != "" && intentDtlTaskChargeCode != "" ->{
-                val dtlTaskSplitChargeCode = intentDtlTaskChargeCode.toString().trim().split("|")
-                dtlTaskBinding.viewModel?.initDataDtl(intentTaskId.toString().trim(), dtlTaskSplitChargeCode[0].trim())
+                dtlTaskBinding.viewModel?.initDataDtl(intentTaskId.toString().trim(), intentDtlTaskChargeCode.toString().trim())
                 supportActionBar?.title = getString(R.string.dtl_task_activity)
             }
         }

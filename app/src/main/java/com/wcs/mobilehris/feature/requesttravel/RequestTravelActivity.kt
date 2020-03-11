@@ -93,7 +93,8 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                onAlertReqTravel("Are you sure do you want to exit this transaction ?",
+                    ConstantObject.vAlertDialogConfirmation, ALERT_REQ_TRAVEL_EXIT_CONF)
                 return true
             }
             R.id.menu_save -> {
@@ -167,6 +168,10 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             }
             ALERT_REQ_TRAVEL_GENERATE_TRAVEL -> {
                 keyDialogActive = ALERT_REQ_TRAVEL_GENERATE_TRAVEL
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
+            ALERT_REQ_TRAVEL_EXIT_CONF -> {
+                keyDialogActive = ALERT_REQ_TRAVEL_EXIT_CONF
                 MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
             }
         }
@@ -360,6 +365,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             ALERT_REQ_TRAVEL_SET_TRAVEL -> activityRequestTravelBinding.viewModel?.actionSetTravel()
             ALERT_REQ_TRAVEL_EDIT_TRAVEL -> activityRequestTravelBinding.viewModel?.actionEditTravel(arrCities)
             ALERT_REQ_TRAVEL_GENERATE_TRAVEL -> activityRequestTravelBinding.viewModel?.actionGenerateTravel(arrCities)
+            ALERT_REQ_TRAVEL_EXIT_CONF -> finish()
         }
     }
 
@@ -411,6 +417,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
         const val ALERT_REQ_TRAVEL_SET_TRAVEL = 7
         const val ALERT_REQ_TRAVEL_EDIT_TRAVEL = 9
         const val ALERT_REQ_TRAVEL_GENERATE_TRAVEL = 13
+        const val ALERT_REQ_TRAVEL_EXIT_CONF = 15
         const val RESULT_SUCCESS_DESTINATION_FROM = 11
         const val RESULT_SUCCESS_DESTINATION_INTO = 22
         const val RESULT_SUCCESS_CODE_TEAM = 33
@@ -420,7 +427,6 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
         const val RESULT_EXTRA_TRAVEL_CITY_CODE = "city_code"
         const val RESULT_EXTRA_TRAVEL_CITY_DESC = "city_description"
         const val RESULT_EXTRA_TRAVEL_COUNTRY_CODE = "city_code"
-
         const val extra_city_intent = "extra_city_intent"
         const val extra_city_intentDepart = "extra_city_intent_depart"
         const val extra_city_intentReturn = "extra_city_intent_return"
