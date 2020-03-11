@@ -8,6 +8,7 @@ import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.ActivitySplashBinding
 import com.wcs.mobilehris.feature.login.LoginActivity
+import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import com.wcs.mobilehris.utilinterface.DialogInterface
 
@@ -24,8 +25,12 @@ class SplashActivity : AppCompatActivity(), SplashInterface, DialogInterface {
     override fun onStart() {
         super.onStart()
         supportActionBar?.hide()
-        bindingSplash.viewModel?.validateUpdateMaster()
         bindingSplash.viewModel?.isBtnVisible?.set(false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        bindingSplash.viewModel?.validateUpdateMaster()
     }
 
     override fun onNegativeClick(o: Any) {}
@@ -36,7 +41,12 @@ class SplashActivity : AppCompatActivity(), SplashInterface, DialogInterface {
          }
     }
 
-    override fun onErrorMessage(message: String, messageType: Int) {}
+    override fun onErrorMessage(message: String, messageType: Int) {
+        when(messageType){
+            ConstantObject.vToastError -> MessageUtils.toastMessage(this, message, ConstantObject.vToastError)
+            ConstantObject.vToastInfo -> MessageUtils.toastMessage(this, message, ConstantObject.vToastInfo)
+        }
+    }
 
     override fun onAlertSplash(alertMessage: String, alertTitle: String, intTypeActionAlert : Int) {
         when(intTypeActionAlert) {

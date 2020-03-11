@@ -19,22 +19,22 @@ import org.jetbrains.anko.uiThread
 import java.util.*
 
 class RequestTravelViewModel (private val context : Context, private val requestTravelInterface: RequestTravelInterface): ViewModel(){
-    val stDepartDate = ObservableField<String>("")
-    val stReturnDate = ObservableField<String>("")
-    val stDepartFrom = ObservableField<String>("")
-    val stTravelInto = ObservableField<String>("")
-    val stChargeCode = ObservableField<String>("")
-    val stTravelDescription = ObservableField<String>("")
-    val stTravelCheckIn = ObservableField<String>("")
-    val stTravelCheckOut = ObservableField<String>("")
-    val stTransTypeCode = ObservableField<String>("")
-    val stReasonCode = ObservableField<String>("")
-    val stAddTeamButton = ObservableField<String>("")
-    val stHotelName = ObservableField<String>("")
-    val isTravelSelected = ObservableField<Boolean>(true)
-    val isProgressReqTravel = ObservableField<Boolean>(false)
-    val isSetTravel = ObservableField<Boolean>(false)
-    val isNonTB = ObservableField<Boolean>(false)
+    val stDepartDate = ObservableField("")
+    val stReturnDate = ObservableField("")
+    val stDepartFrom = ObservableField("")
+    val stTravelInto = ObservableField("")
+    val stChargeCode = ObservableField("")
+    val stTravelDescription = ObservableField("")
+    val stTravelCheckIn = ObservableField("")
+    val stTravelCheckOut = ObservableField("")
+    val stTransTypeCode = ObservableField("")
+    val stReasonCode = ObservableField("")
+    val stAddTeamButton = ObservableField("")
+    val stHotelName = ObservableField("")
+    val isTravelSelected = ObservableField(true)
+    val isProgressReqTravel = ObservableField(false)
+    val isSetTravel = ObservableField(false)
+    val isNonTB = ObservableField(false)
     private val listSelectedTeam = mutableListOf<FriendModel>()
     private lateinit var mTransTypeDao : TransTypeDao
     private lateinit var mChargeCodeDao : ChargeCodeDao
@@ -143,9 +143,14 @@ class RequestTravelViewModel (private val context : Context, private val request
         }
     }
 
-    fun validateTravelTeam(itemUserId : String, itemName : String){
-        if (itemUserId != "null" && itemName != "null"){
-            val itemFriendModel = FriendModel(itemUserId, itemName, "Free", false)
+    fun validateTravelTeam(itemUserId : String, itemName : String, stTeamStatus : String){
+        if (itemUserId != "null" && itemName != "null" && stTeamStatus != "null"){
+            val itemFriendModel = if(stTeamStatus.contains("Available")){
+                FriendModel(itemUserId, itemName, stTeamStatus.trim(), false)
+            }else {
+                FriendModel(itemUserId, itemName, stTeamStatus.trim(), true)
+            }
+
             listSelectedTeam.add(itemFriendModel)
             requestTravelInterface.onLoadTeam(listSelectedTeam)
         }

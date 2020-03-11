@@ -1,4 +1,4 @@
-package com.wcs.mobilehris.feature.team
+package com.wcs.mobilehris.feature.team.activity
 
 import android.content.Context
 import android.content.Intent
@@ -14,9 +14,10 @@ import androidx.core.view.MenuItemCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
-import com.wcs.mobilehris.databinding.FragmentTeamBinding
+import com.wcs.mobilehris.databinding.TeamProjectActivityBinding
 import com.wcs.mobilehris.feature.createtask.CreateTaskActivity
 import com.wcs.mobilehris.feature.requesttravel.RequestTravelActivity
+import com.wcs.mobilehris.feature.team.fragment.*
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import java.util.*
@@ -24,46 +25,41 @@ import kotlin.collections.ArrayList
 
 
 @Suppress("DEPRECATION", "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
-    private lateinit var fragmentTeamBinding: FragmentTeamBinding
-    private var arrTeamList = ArrayList<TeamModel>()
-    private lateinit var teamAdapter: CustomTeamAdapter
+class TeamActivity : AppCompatActivity(),
+    TeamProjectInterface,
+    SelectedTeamInterface.SelectedTeamProjectInterface {
+    private lateinit var teamProjectActivityBinding: TeamProjectActivityBinding
+    private var arrTeamList = ArrayList<TeamProjectModel>()
+    private lateinit var teamAdapter: CustomTeamProjectAdapter
     private var backIntent : Intent? = null
     private lateinit var intentFrom : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fragmentTeamBinding = DataBindingUtil.setContentView(this, R.layout.fragment_team)
-        fragmentTeamBinding.viewModel = TeamViewModel(this, this)
+        teamProjectActivityBinding = DataBindingUtil.setContentView(this, R.layout.team_project_activity)
+        teamProjectActivityBinding.viewModel = TeamProjectViewModel(this, this)
     }
 
     override fun onStart() {
         super.onStart()
-        fragmentTeamBinding.rcTeam.layoutManager = LinearLayoutManager(this)
-        fragmentTeamBinding.rcTeam.setHasFixedSize(true)
-        teamAdapter = CustomTeamAdapter(this, arrTeamList)
+        teamProjectActivityBinding.rcTeamProject.layoutManager = LinearLayoutManager(this)
+        teamProjectActivityBinding.rcTeamProject.setHasFixedSize(true)
+        teamAdapter = CustomTeamProjectAdapter(
+            this,
+            arrTeamList
+        )
         teamAdapter.initSelectedCallBack(this)
-        fragmentTeamBinding.rcTeam.adapter = teamAdapter
-        fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.vLoadWithProgressBar)
-        fragmentTeamBinding.swTeam.setOnRefreshListener {
-            fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.vLoadWithoutProgressBar)
-        }
-        fragmentTeamBinding.viewModel?.isHiddenSearch?.set(true)
+        teamProjectActivityBinding.rcTeamProject.adapter = teamAdapter
+        teamProjectActivityBinding.viewModel?.initDataTeamProject()
         intentFrom = intent.getStringExtra(ConstantObject.extra_intent).toString()
     }
 
-    override fun onLoadTeam(teamList: List<TeamModel>, typeLoading: Int) {
+    override fun onLoadTeamProject(teamList: List<TeamProjectModel>) {
         arrTeamList.clear()
         arrTeamList.addAll(teamList)
-        when(typeLoading){
-            ConstantObject.vLoadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
-            else -> {
-                onHideSwipeRefresh()
-                teamAdapter.notifyDataSetChanged()
-                hideUI(ConstantObject.vGlobalUI)
-                showUI(ConstantObject.vRecylerViewUI)
-            }
-        }
+        teamAdapter.notifyDataSetChanged()
+        teamProjectActivityBinding.viewModel?.isProgressVisibleTeam?.set(false)
+        teamProjectActivityBinding.viewModel?.isVisibleRecylerView?.set(false)
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {
@@ -73,32 +69,13 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
         }
     }
 
-    override fun onAlertTeam(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
+    override fun onAlertTeamProject(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
         when(intTypeActionAlert){
             ALERT_TEAM_NO_CONNECTION -> {
                 MessageUtils.alertDialogDismiss(alertMessage, alertTitle, this@TeamActivity)}
         }
     }
 
-    override fun onHideSwipeRefresh() {
-        fragmentTeamBinding.swTeam.isRefreshing = false
-    }
-
-    override fun hideUI(typeUI: Int) {
-        when(typeUI){
-            ConstantObject.vProgresBarUI -> fragmentTeamBinding.pbTeam.visibility = View.GONE
-            ConstantObject.vRecylerViewUI -> fragmentTeamBinding.rcTeam.visibility = View.GONE
-            ConstantObject.vGlobalUI -> fragmentTeamBinding.tvTeamEmpty.visibility = View.GONE
-        }
-    }
-
-    override fun showUI(typeUI: Int) {
-        when(typeUI){
-            ConstantObject.vProgresBarUI -> fragmentTeamBinding.pbTeam.visibility = View.VISIBLE
-            ConstantObject.vRecylerViewUI -> fragmentTeamBinding.rcTeam.visibility = View.VISIBLE
-            ConstantObject.vGlobalUI -> fragmentTeamBinding.tvTeamEmpty.visibility = View.VISIBLE
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
@@ -125,23 +102,18 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
     }
 
     private fun filterTeamName(textFilter : String){
-        val arrListFilteredTeam: ArrayList<TeamModel> = ArrayList()
-        val arrListTeamList : ArrayList<TeamModel> = arrTeamList
-        hideUI(ConstantObject.vGlobalUI)
-        showUI(ConstantObject.vRecylerViewUI)
+        val arrListFilteredTeam: ArrayList<TeamProjectModel> = ArrayList()
+        val arrListTeamList : ArrayList<TeamProjectModel> = arrTeamList
+        teamProjectActivityBinding.viewModel?.isVisibleRecylerView?.set(true)
         when{
             arrListTeamList.isNotEmpty() -> {
                 for(itemTeam in arrListTeamList) {
-                    if (itemTeam.name.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(
-                            Locale.getDefault()))
-                        || itemTeam.email.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(
-                            Locale.getDefault()))
-                        || itemTeam.phone.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(
+                    if (itemTeam.nameTeam.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(
                             Locale.getDefault()))){
                         arrListFilteredTeam.add(itemTeam)
                     }
                 }
-                teamAdapter.filterListTeam(arrListFilteredTeam)
+                teamAdapter.filterListTeamProject(arrListFilteredTeam)
             }
         }
     }
@@ -150,20 +122,22 @@ class TeamActivity : AppCompatActivity(), TeamInterface, SelectedTeamInterface {
         const val ALERT_TEAM_NO_CONNECTION = 1
     }
 
-    override fun selectedItemTeam(teamModel: TeamModel) {
+    override fun selectedItemNameProject(teamProjectModel: TeamProjectModel) {
         //back to activity create task / request travel
         when(intentFrom){
             ConstantObject.extra_fromIntentCreateTask -> {
                 backIntent = Intent(this, CreateTaskActivity::class.java)
-                backIntent?.putExtra(CreateTaskActivity.RESULT_EXTRA_TEAM_NAME, teamModel.name)
-                backIntent?.putExtra(CreateTaskActivity.RESULT_EXTRA_TEAM_USER_ID, teamModel.userId)
+                backIntent?.putExtra(CreateTaskActivity.RESULT_EXTRA_TEAM_NAME, teamProjectModel.nameTeam.trim())
+                backIntent?.putExtra(CreateTaskActivity.RESULT_EXTRA_TEAM_USER_ID, teamProjectModel.teamProjectId.trim())
+                backIntent?.putExtra(CreateTaskActivity.RESULT_EXTRA_TEAM_STATUS, teamProjectModel.statusTeam.trim())
                 setResult(CreateTaskActivity.RESULT_SUCCESS_CODE, backIntent)
                 finish()
             }
             ConstantObject.extra_fromIntentCreateTravel -> {
                 backIntent = Intent(this, RequestTravelActivity::class.java)
-                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA_TRAVEL_TEAM_NAME, teamModel.name)
-                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA__TRAVEL_TEAM_USER_ID, teamModel.userId)
+                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA_TRAVEL_TEAM_NAME, teamProjectModel.nameTeam)
+                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA_TRAVEL_TEAM_USER_ID, teamProjectModel.teamProjectId)
+                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA_TRAVEL_STATUS_TEAM, teamProjectModel.statusTeam)
                 setResult(RequestTravelActivity.RESULT_SUCCESS_CODE_TEAM, backIntent)
                 finish()
             }

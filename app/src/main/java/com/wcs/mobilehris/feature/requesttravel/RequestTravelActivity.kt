@@ -25,12 +25,14 @@ import com.wcs.mobilehris.feature.city.CityActivity
 import com.wcs.mobilehris.feature.createtask.SelectedFriendInterface
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
 import com.wcs.mobilehris.feature.dtltask.FriendModel
-import com.wcs.mobilehris.feature.team.TeamActivity
+import com.wcs.mobilehris.feature.team.activity.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
 
-@Suppress("DEPRECATION", "UNREACHABLE_CODE")
+@Suppress("DEPRECATION", "UNREACHABLE_CODE",
+    "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
+)
 class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     SelectedFriendInterface, SelectedTravelInterface {
     private lateinit var activityRequestTravelBinding : ActivityRequestTravelBinding
@@ -266,16 +268,19 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             RESULT_SUCCESS_CODE_TEAM -> {
-                val intentTeamName : String = data?.getStringExtra(RESULT_EXTRA_TRAVEL_TEAM_NAME).toString()
-                val intentTeamUserId : String = data?.getStringExtra(RESULT_EXTRA__TRAVEL_TEAM_USER_ID).toString()
-                activityRequestTravelBinding.viewModel?.validateTravelTeam(intentTeamUserId, intentTeamName)
+                data?.let {
+                    val intentTeamName : String = it.getStringExtra(RESULT_EXTRA_TRAVEL_TEAM_NAME).toString()
+                    val intentTeamUserId : String = it.getStringExtra(RESULT_EXTRA_TRAVEL_TEAM_USER_ID).toString()
+                    val intentTeamStatus : String = it.getStringExtra(RESULT_EXTRA_TRAVEL_STATUS_TEAM).toString()
+                    activityRequestTravelBinding.viewModel?.validateTravelTeam(intentTeamUserId, intentTeamName,intentTeamStatus)
+                }
             }
             RESULT_SUCCESS_DESTINATION_FROM -> {
-                val intentCityDepart : String = data?.getStringExtra(RESULT_EXTRA__TRAVEL_CITY_DESC).toString()
+                val intentCityDepart : String = data?.getStringExtra(RESULT_EXTRA_TRAVEL_CITY_DESC).toString()
                 when{intentCityDepart != "null" -> activityRequestTravelBinding.viewModel?.stDepartFrom?.set(intentCityDepart) }
             }
             RESULT_SUCCESS_DESTINATION_INTO -> {
-                val intentCityReturn : String = data?.getStringExtra(RESULT_EXTRA__TRAVEL_CITY_DESC).toString()
+                val intentCityReturn : String = data?.getStringExtra(RESULT_EXTRA_TRAVEL_CITY_DESC).toString()
                 when{
                     intentCityReturn != "null" -> { activityRequestTravelBinding.viewModel?.validateCityReturn(intentCityReturn) }
                 }
@@ -410,10 +415,11 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
         const val RESULT_SUCCESS_DESTINATION_INTO = 22
         const val RESULT_SUCCESS_CODE_TEAM = 33
         const val RESULT_EXTRA_TRAVEL_TEAM_NAME = "team_name"
-        const val RESULT_EXTRA__TRAVEL_TEAM_USER_ID = "team_user_id"
+        const val RESULT_EXTRA_TRAVEL_TEAM_USER_ID = "team_user_id"
+        const val RESULT_EXTRA_TRAVEL_STATUS_TEAM = "status_team_travel"
         const val RESULT_EXTRA_TRAVEL_CITY_CODE = "city_code"
-        const val RESULT_EXTRA__TRAVEL_CITY_DESC = "city_description"
-        const val RESULT_EXTRA__TRAVEL_COUNTRY_CODE = "city_code"
+        const val RESULT_EXTRA_TRAVEL_CITY_DESC = "city_description"
+        const val RESULT_EXTRA_TRAVEL_COUNTRY_CODE = "city_code"
 
         const val extra_city_intent = "extra_city_intent"
         const val extra_city_intentDepart = "extra_city_intent_depart"

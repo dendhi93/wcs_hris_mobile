@@ -1,4 +1,4 @@
-package com.wcs.mobilehris.feature.team
+package com.wcs.mobilehris.feature.team.fragment
 
 import android.content.Context
 import android.view.LayoutInflater

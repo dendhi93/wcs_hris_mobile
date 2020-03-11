@@ -26,7 +26,6 @@ class SplashViewModel(private var _context : Context,
     val isPrgBarVisible = ObservableField(false)
     val isBtnVisible = ObservableField(false)
     private val arrJsonUpdateMaster = mutableListOf<UpdateMasterEntity>()
-    private val arrTableNotSame = mutableListOf<String>()
     private lateinit var mUpdateMasterDataDao : UpdateMasterDao
     private lateinit var mChargeCodeDao : ChargeCodeDao
     private lateinit var mTransTypeDao : TransTypeDao
@@ -280,7 +279,7 @@ class SplashViewModel(private var _context : Context,
                             countDataReasonTravel > 0 &&
                             countDataReasonLeave > 0 -> _splashInterface.successSplash()
                     else -> {
-                        _splashInterface.onErrorMessage("Data not yet success to save ", ConstantObject.vToastError)
+                        _splashInterface.onErrorMessage("Master Data not yet success to save.Please try again ", ConstantObject.vToastError)
                         isPrgBarVisible.set(false)
                         isBtnVisible.set(true)
                     }
@@ -335,12 +334,6 @@ class SplashViewModel(private var _context : Context,
                                         }
                                     }
                                 }
-//                                when(jsonList[i].mTableDescription){
-//                                    ConstantObject.keyChargeCode -> arrTableNotSame.add("getlatestmasterchargecode")
-//                                    ConstantObject.keyTransType -> arrTableNotSame.add("getlatestmastertransport")
-//                                    ConstantObject.keyReasonTravel -> arrTableNotSame.add("getlatestmasterreason")
-//                                    else -> arrTableNotSame.add("getlatestmasterleavetype")
-//                                }
                             }
                         }
                     }

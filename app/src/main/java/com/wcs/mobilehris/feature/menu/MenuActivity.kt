@@ -24,7 +24,7 @@ import com.wcs.mobilehris.feature.notification.NotificationFragment
 import com.wcs.mobilehris.feature.request.RequestFragment
 import com.wcs.mobilehris.feature.setting.SettingFragment
 import com.wcs.mobilehris.feature.status.StatusFragment
-import com.wcs.mobilehris.feature.team.TeamFragment
+import com.wcs.mobilehris.feature.team.fragment.TeamFragment
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import com.wcs.mobilehris.util.Preference
@@ -109,7 +109,8 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 supportActionBar?.let { it.subtitle = "Notification" }
             }
             R.id.nav_team -> {
-                vFragment = TeamFragment()
+                vFragment =
+                    TeamFragment()
                 supportActionBar?.let { it.subtitle = "Team" }
             }
             R.id.nav_setting -> {
@@ -206,7 +207,9 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             EXTRA_FLAG_TEAM -> {
                 supportActionBar?.let {
                     it.subtitle = "Team"
-                    frTransaction.replace(R.id.frame_nav_container, TeamFragment())
+                    frTransaction.replace(R.id.frame_nav_container,
+                        TeamFragment()
+                    )
                 }
             }
             EXTRA_FLAG_SETTING -> {

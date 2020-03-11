@@ -48,7 +48,7 @@
             android:name=".feature.confirmtask.ConfirmTaskActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".feature.team.TeamActivity"
+            android:name=".feature.team.activity.TeamActivity"
             android:label="@string/search_team_activity" />
         <activity
             android:name=".feature.createtask.CreateTaskActivity"

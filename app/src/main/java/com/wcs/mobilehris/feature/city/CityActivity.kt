@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.ActivityCityBinding
 import com.wcs.mobilehris.feature.requesttravel.RequestTravelActivity
-import com.wcs.mobilehris.feature.team.TeamActivity
+import com.wcs.mobilehris.feature.team.activity.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import java.util.*
@@ -146,16 +146,16 @@ class CityActivity : AppCompatActivity(), CityInterface, SelectedCityInterface {
             RequestTravelActivity.extra_city_intentDepart -> {
                 backIntent = Intent(this, RequestTravelActivity::class.java)
                 backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA_TRAVEL_CITY_CODE, cityModel.cityCode)
-                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA__TRAVEL_CITY_DESC, cityModel.cityDescription)
-                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA__TRAVEL_COUNTRY_CODE, cityModel.countryCode)
+                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA_TRAVEL_CITY_DESC, cityModel.cityDescription)
+                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA_TRAVEL_COUNTRY_CODE, cityModel.countryCode)
                 setResult(RequestTravelActivity.RESULT_SUCCESS_DESTINATION_FROM, backIntent)
                 finish()
             }
             RequestTravelActivity.extra_city_intentReturn -> {
                 backIntent = Intent(this, RequestTravelActivity::class.java)
                 backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA_TRAVEL_CITY_CODE, cityModel.cityCode)
-                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA__TRAVEL_CITY_DESC, cityModel.cityDescription)
-                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA__TRAVEL_COUNTRY_CODE, cityModel.countryCode)
+                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA_TRAVEL_CITY_DESC, cityModel.cityDescription)
+                backIntent?.putExtra(RequestTravelActivity.RESULT_EXTRA_TRAVEL_COUNTRY_CODE, cityModel.countryCode)
                 setResult(RequestTravelActivity.RESULT_SUCCESS_DESTINATION_INTO, backIntent)
                 finish()
             }

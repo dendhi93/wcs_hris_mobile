@@ -6,7 +6,7 @@
         <import type="android.view.View" />
         <variable
             name="viewModel"
-            type="com.wcs.mobilehris.feature.team.TeamViewModel" />
+            type="com.wcs.mobilehris.feature.team.fragment.TeamViewModel" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
