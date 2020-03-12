@@ -5,11 +5,9 @@ import android.util.Log
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.OkHttpResponseAndJSONArrayRequestListener
 import com.androidnetworking.interfaces.OkHttpResponseAndJSONObjectRequestListener
 import com.wcs.mobilehris.BuildConfig
 import okhttp3.Response
-import org.json.JSONArray
 import org.json.JSONObject
 
 //class untuk ambil data ke server
@@ -25,18 +23,21 @@ class ApiRepo {
             .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
                 override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
                     okHttpResponse?.let {
-                        when{ConnectionObject.checkHttpCode(okHttpResponse.code().toString()) -> callback.onDataLoaded(response) }
+                        when{ConnectionObject.checkSuccessHttpCode(okHttpResponse.code().toString()) -> callback.onDataLoaded(response) }
                     }
                 }
 
                 override fun onError(anError: ANError?) {
                     when{
                         anError?.errorCode != 0 -> {
-                            Log.d("errMessage","" +anError?.errorBody.toString())
+                            Log.d("###","Login " +anError?.errorBody.toString())
                             val errObj = JSONObject(anError?.errorBody.toString())
                             callback.onDataError(errObj.getString("Message"))
                         }
-                        else -> callback.onDataError(anError.errorBody.toString())
+                        else -> {
+                            Log.d("###_2","Login " +anError?.errorBody.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
                     }
                 }
             })
@@ -53,7 +54,7 @@ class ApiRepo {
                 override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
                     okHttpResponse?.let {
                         when{
-                            ConnectionObject.checkHttpCode(it.code().toString()) -> callback.onDataLoaded(response)
+                            ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response)
                             ConnectionObject.checkHttpNotFound(it.code()) -> callback.onDataError(response.toString())
                         }
                     }
@@ -62,11 +63,11 @@ class ApiRepo {
                 override fun onError(anError: ANError?) {
                     when{
                         anError?.errorCode != 0 -> {
-                            Log.d("###","" +anError?.message)
+                            Log.d("###","date Master " +anError?.message)
                             callback.onDataError(anError?.errorBody.toString())
                         }
                         else -> {
-                            Log.d("###_2",""+anError.message.toString())
+                            Log.d("###_2","date Master "+anError.message.toString())
                             callback.onDataError(anError.message.toString())
                         }
                     }
@@ -85,7 +86,7 @@ class ApiRepo {
                 override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
                     okHttpResponse?.let {
                         when{
-                            ConnectionObject.checkHttpCode(it.code().toString()) -> callback.onDataLoaded(response)
+                            ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response)
                             ConnectionObject.checkHttpNotFound(it.code()) -> callback.onDataError(response.toString())
                         }
                     }
@@ -94,11 +95,43 @@ class ApiRepo {
                 override fun onError(anError: ANError?) {
                     when{
                         anError?.errorCode != 0 -> {
-                            Log.d("###","" +anError?.message)
+                            Log.d("###","masterData " +anError?.message)
                             callback.onDataError(anError?.errorBody.toString())
                         }
                         else -> {
-                            Log.d("###_2",""+anError.message.toString())
+                            Log.d("###_2","masterData "+anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun getDataActivity(unUser : String,selectedDate : String,context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        val urlActivity = BuildConfig.HRIS_URL+"getactivitybydate/"+selectedDate.trim()+"/"+unUser.trim()
+        Log.d("###", "url getDataActivity ${urlActivity.trim()}")
+        AndroidNetworking.get(urlActivity.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let {
+                        when{
+                            ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response)
+                        }
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","activity " +anError?.message)
+                            callback.onDataError(anError?.errorBody.toString())
+                        }
+                        else -> {
+                            Log.d("###_2","activity "+anError.message.toString())
                             callback.onDataError(anError.message.toString())
                         }
                     }

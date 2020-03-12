@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.FragmentActualBinding
 import com.wcs.mobilehris.feature.plan.ContentTaskModel
 import com.wcs.mobilehris.feature.plan.CustomTaskAdapter
@@ -22,7 +23,7 @@ class ActualFragment : Fragment(), ActualInterface {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         actualFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_actual, container, false)
-        actualFragmentBinding.viewModel = ActualViewModel(requireContext(), this)
+        actualFragmentBinding.viewModel = ActualViewModel(requireContext(), this, ApiRepo())
         return actualFragmentBinding.root
     }
 

@@ -53,4 +53,13 @@ object DateTimeUtils {
             diffDays.toInt()
         }catch (e : Exception){ 0 }
     }
+
+    fun getAdvancedDate(tenorDate : Int) : String?{
+        return try {
+            val calendar = Calendar.getInstance()
+            calendar.add(Calendar.DAY_OF_YEAR, tenorDate)
+            val formatedDate = SimpleDateFormat("yyy-MM-dd", Locale.getDefault())
+            formatedDate.format(calendar.time).toString()
+        }catch (e : java.lang.Exception){ "err $e" }
+    }
 }

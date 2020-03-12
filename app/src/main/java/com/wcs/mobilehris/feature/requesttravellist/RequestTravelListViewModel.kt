@@ -9,7 +9,7 @@ import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.util.ConstantObject
 
 class RequestTravelListViewModel (private val context : Context, private val requestTravalListInterface: ReqTravelListInterface) : ViewModel(){
-    val isVisibleFab = ObservableField<Boolean>(false)
+    val isVisibleFab = ObservableField(false)
 
     fun initDataTravel(typeOfLoading : Int, intentTravelFrom : String){
         when{

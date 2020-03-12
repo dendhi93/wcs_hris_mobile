@@ -1,6 +1,7 @@
 package com.wcs.mobilehris.feature.plan
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +10,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.FragmentPlanBinding
 import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.DateTimeUtils
 import com.wcs.mobilehris.util.MessageUtils
 
 
@@ -18,10 +21,11 @@ class PlanFragment : Fragment(), PlanInterface {
     private lateinit var planFragmentBinding : FragmentPlanBinding
     private var arrPlanList = ArrayList<ContentTaskModel>()
     private lateinit var planAdapter: CustomTaskAdapter
+    private var tenorDate = 1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         planFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_plan, container, false)
-        planFragmentBinding.viewModel = PlanViewModel(requireContext(), this)
+        planFragmentBinding.viewModel = PlanViewModel(requireContext(), this, ApiRepo())
         return planFragmentBinding.root
     }
 
@@ -31,14 +35,15 @@ class PlanFragment : Fragment(), PlanInterface {
         planFragmentBinding.rcPlan.setHasFixedSize(true)
         planAdapter = CustomTaskAdapter(requireContext(), arrPlanList)
         planFragmentBinding.rcPlan.adapter = planAdapter
-        planFragmentBinding.viewModel?.initPlan(ConstantObject.vLoadWithProgressBar)
+        planFragmentBinding.viewModel?.initPlan(ConstantObject.vLoadWithProgressBar, tenorDate)
         planFragmentBinding.swPlan.setOnRefreshListener {
-            planFragmentBinding.viewModel?.initPlan(ConstantObject.vLoadWithoutProgressBar)
+            tenorDate += 1
+            planFragmentBinding.viewModel?.initPlan(ConstantObject.vLoadWithoutProgressBar, tenorDate)
         }
     }
 
     override fun onLoadList(planList: List<ContentTaskModel>, typeLoading : Int) {
-        arrPlanList.clear()
+//        arrPlanList.clear()
         arrPlanList.addAll(planList)
         planAdapter.notifyDataSetChanged()
 

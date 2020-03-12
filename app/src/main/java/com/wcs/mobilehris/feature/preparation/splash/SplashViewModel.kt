@@ -158,7 +158,7 @@ class SplashViewModel(private var _context : Context,
             override fun onDataError(error: String?) {
                 Log.d(TAG, " err $error")
                 _splashInterface.onErrorMessage(" err on " + typeData +
-                        "\n" +error.toString().trim(), ConstantObject.vToastInfo)
+                        "\n" +error.toString().trim(), ConstantObject.vToastError)
                 isPrgBarVisible.set(false)
             }
         })
@@ -174,16 +174,16 @@ class SplashViewModel(private var _context : Context,
                         "getlatestmasterchargecode" -> {
                             doAsync {
                                 for (i in 0 until jArrayDateMaster.length()) {
-                                    val responseDataChargeCode = jArrayDateMaster.getJSONObject(i)
+                                    val jObjChargeCode = jArrayDateMaster.getJSONObject(i)
                                     val chargeCodeModel = ChargeCodeEntity(i+1,
-                                        responseDataChargeCode.getString("CHARGE_CD"),
-                                        responseDataChargeCode.getString("CHARGE_NAME"),
-                                        responseDataChargeCode.getString("CUSTOMER_NAME"),
-                                        responseDataChargeCode.getString("PM_NAME"),
-                                        responseDataChargeCode.getString("WCS_PM_NIK"),
-                                        responseDataChargeCode.getString("VALID_FROM"),
-                                        responseDataChargeCode.getString("VALID_TO"),
-                                        responseDataChargeCode.getString("CREATED_DT")
+                                        jObjChargeCode.getString("CHARGE_CD"),
+                                        jObjChargeCode.getString("CHARGE_NAME"),
+                                        jObjChargeCode.getString("CUSTOMER_NAME"),
+                                        jObjChargeCode.getString("PM_NAME"),
+                                        jObjChargeCode.getString("WCS_PM_NIK"),
+                                        jObjChargeCode.getString("VALID_FROM"),
+                                        jObjChargeCode.getString("VALID_TO"),
+                                        jObjChargeCode.getString("CREATED_DT")
                                     )
                                     mChargeCodeDao.insertChargeCode(chargeCodeModel)
                                 }
@@ -255,15 +255,8 @@ class SplashViewModel(private var _context : Context,
 
             override fun onDataError(error: String?) {
                 Log.d(TAG, " err $error")
-                val errMessage = error.toString().trim()
-                if (errMessage.contains("java.net.SocketTimeoutException")){
-                    _splashInterface.onErrorMessage(" err on " + masterType +
-                            "\nConnection Time Out, Please Try again", ConstantObject.vToastError)
-                }else {
-                    _splashInterface.onErrorMessage(" err on " + masterType +
-                            "\n" +error.toString().trim(), ConstantObject.vToastError)
-                }
-                Log.d("###","err " +error.toString())
+                _splashInterface.onErrorMessage(" err on " + masterType +
+                        "\n" +error.toString().trim(), ConstantObject.vToastError)
                 isPrgBarVisible.set(false)
                 isBtnVisible.set(true)
             }

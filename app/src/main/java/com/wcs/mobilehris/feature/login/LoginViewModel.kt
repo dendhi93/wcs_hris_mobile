@@ -14,10 +14,10 @@ import org.json.JSONObject
 
 class LoginViewModel(private var _context : Context, private var _loginInterface : LoginInterface, private var apiRepo: ApiRepo) : ViewModel() {
 
-    val stUserId = ObservableField<String>("")
-    val stPassword = ObservableField<String>("")
-    val stVersion = ObservableField<String>("")
-    val isVisibleProgress = ObservableField<Boolean>(false)
+    val stUserId = ObservableField("")
+    val stPassword = ObservableField("")
+    val stVersion = ObservableField("")
+    val isVisibleProgress = ObservableField(false)
     private var preference: Preference = Preference(_context)
 
     fun getVersion(){
