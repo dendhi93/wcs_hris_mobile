@@ -48,6 +48,7 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
+                activityConfirmBinding.viewModel?.onBackConfirmTask()
                 finish()
                 return true
             }
@@ -63,7 +64,6 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
             else -> MessageUtils.toastMessage(this, message, ConstantObject.vToastSuccess)
         }
     }
-
 
     override fun onAlertConfirmTask(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
         when(intTypeActionAlert){
@@ -90,6 +90,12 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
     }
 
     override fun onNegativeClick(o: Any) {}
+
+    override fun onBackPressed() {
+        activityConfirmBinding.viewModel?.onBackConfirmTask()
+        finish()
+        super.onBackPressed()
+    }
 
     companion object{
         const val ALERT_CONFIRM_TASK_NO_CONNECTION = 1

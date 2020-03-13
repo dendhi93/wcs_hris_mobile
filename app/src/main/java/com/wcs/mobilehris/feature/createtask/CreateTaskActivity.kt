@@ -157,6 +157,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFri
         return when (item.itemId) {
             android.R.id.home -> {
                 activityCreateTaskBinding.viewModel?.onBackCreateTaskMenu()
+                finish()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -165,6 +166,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFri
 
     override fun onBackPressed() {
         activityCreateTaskBinding.viewModel?.onBackCreateTaskMenu()
+        finish()
         super.onBackPressed()
     }
 

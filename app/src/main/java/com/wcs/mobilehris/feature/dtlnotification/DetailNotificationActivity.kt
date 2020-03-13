@@ -19,7 +19,7 @@ class DetailNotificationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dtlNotificationBinding = DataBindingUtil.setContentView(this,R.layout.activity_detail_notification)
-        dtlNotificationBinding.viewModel = DtlNotificationViewModel()
+        dtlNotificationBinding.viewModel = DtlNotificationViewModel(this)
     }
 
     override fun onStart() {
@@ -42,11 +42,18 @@ class DetailNotificationActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
+                dtlNotificationBinding.viewModel?.onBackDtlNotification()
                 finish()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        dtlNotificationBinding.viewModel?.onBackDtlNotification()
+        finish()
+        super.onBackPressed()
     }
 
     companion object{

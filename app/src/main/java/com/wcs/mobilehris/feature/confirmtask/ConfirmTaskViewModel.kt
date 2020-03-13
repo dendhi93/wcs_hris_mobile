@@ -1,11 +1,13 @@
 package com.wcs.mobilehris.feature.confirmtask
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
+import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
 
 class ConfirmTaskViewModel (private val context : Context, private val confirmTaskInterface: ConfirmTaskInterface) : ViewModel(){
@@ -95,5 +97,11 @@ class ConfirmTaskViewModel (private val context : Context, private val confirmTa
     fun submitConfirmTask(){
         isProgressConfirmTask.set(true)
         confirmTaskInterface.onSuccessConfirm()
+    }
+
+    fun onBackConfirmTask(){
+        val intent = Intent(context, MenuActivity::class.java)
+        intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_REQUEST)
+        context.startActivity(intent)
     }
 }

@@ -100,6 +100,7 @@ class RequestTravelListActivity : AppCompatActivity(), ReqTravelListInterface {
         return when (item.itemId) {
             android.R.id.home -> {
                 activityRequestTravelListBinding.viewModel?.onBackTravelList()
+                finish()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -108,6 +109,7 @@ class RequestTravelListActivity : AppCompatActivity(), ReqTravelListInterface {
 
     override fun onBackPressed() {
         activityRequestTravelListBinding.viewModel?.onBackTravelList()
+        finish()
         super.onBackPressed()
     }
     companion object{

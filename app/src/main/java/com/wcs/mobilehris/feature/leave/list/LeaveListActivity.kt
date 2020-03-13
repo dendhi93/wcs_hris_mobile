@@ -93,6 +93,7 @@ class LeaveListActivity : AppCompatActivity(), LeaveListInterface {
         return when (item.itemId) {
             android.R.id.home -> {
                 activityLeaveListBinding.viewModel?.onBackLeaveListMenu(intentLeaveFrom)
+                finish()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -101,6 +102,7 @@ class LeaveListActivity : AppCompatActivity(), LeaveListInterface {
 
     override fun onBackPressed() {
         activityLeaveListBinding.viewModel?.onBackLeaveListMenu(intentLeaveFrom)
+        finish()
         super.onBackPressed()
     }
 

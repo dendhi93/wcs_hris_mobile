@@ -365,7 +365,10 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             ALERT_REQ_TRAVEL_SET_TRAVEL -> activityRequestTravelBinding.viewModel?.actionSetTravel()
             ALERT_REQ_TRAVEL_EDIT_TRAVEL -> activityRequestTravelBinding.viewModel?.actionEditTravel(arrCities)
             ALERT_REQ_TRAVEL_GENERATE_TRAVEL -> activityRequestTravelBinding.viewModel?.actionGenerateTravel(arrCities)
-            ALERT_REQ_TRAVEL_EXIT_CONF -> activityRequestTravelBinding.viewModel?.onBackReqTravelMenu()
+            ALERT_REQ_TRAVEL_EXIT_CONF -> {
+                activityRequestTravelBinding.viewModel?.onBackReqTravelMenu()
+                finish()
+            }
         }
     }
 
@@ -375,6 +378,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             .setPositiveButton(android.R.string.ok){
                     dialog, _ ->
                 activityRequestTravelBinding.viewModel?.onBackReqTravelMenu()
+                finish()
                 super.onBackPressed()
                 dialog.dismiss()
             }

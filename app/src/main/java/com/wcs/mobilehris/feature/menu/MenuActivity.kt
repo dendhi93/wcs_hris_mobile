@@ -233,7 +233,10 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when(keyDialogActive){
             DIALOG_LOG_OUT -> {
                 preference.clearPreference()
-                finish()
+                val startMain = Intent(Intent.ACTION_MAIN)
+                startMain.addCategory(Intent.CATEGORY_HOME)
+                startMain.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(startMain)
             }
         }
     }
