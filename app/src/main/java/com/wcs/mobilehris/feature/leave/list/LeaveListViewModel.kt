@@ -8,10 +8,11 @@ import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.feature.leave.transaction.LeaveTransactionActivity
+import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
 
 class LeaveListViewModel (private val context: Context, private val leaveListInterface: LeaveListInterface):ViewModel(){
-    val isVisibleFabLeave = ObservableField<Boolean>(false)
+    val isVisibleFabLeave = ObservableField(false)
 
     fun validateDataLeave(typeOfLoading : Int, intentLeaveFrom : String){
         when{
@@ -103,6 +104,15 @@ class LeaveListViewModel (private val context: Context, private val leaveListInt
         intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentRequest)
         intent.putExtra(LeaveTransactionActivity.extralLeaveId, "")
         intent.putExtra(LeaveTransactionActivity.extraLeaveRequestor, "")
+        context.startActivity(intent)
+    }
+
+    fun onBackLeaveListMenu(intentFrom : String){
+        val intent = Intent(context, MenuActivity::class.java)
+        when(intentFrom){
+            ConstantObject.extra_fromIntentApproval -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_APPROVAL)
+            else -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_REQUEST)
+        }
         context.startActivity(intent)
     }
 

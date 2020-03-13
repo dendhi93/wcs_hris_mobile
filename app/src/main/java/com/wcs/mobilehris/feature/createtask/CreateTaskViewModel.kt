@@ -5,6 +5,7 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
+import android.content.Intent
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -12,6 +13,7 @@ import com.wcs.mobilehris.application.WcsHrisApps
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.database.daos.ChargeCodeDao
 import com.wcs.mobilehris.feature.dtltask.FriendModel
+import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.DateTimeUtils
 import org.jetbrains.anko.doAsync
@@ -246,5 +248,11 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     fun submitTask(){
         isProgressCreateTask.set(true)
         createTaskInterface.onSuccessCreateTask()
+    }
+
+    fun onBackCreateTaskMenu(){
+        val intent = Intent(context, MenuActivity::class.java)
+        intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_ACTIVITY)
+        context.startActivity(intent)
     }
 }

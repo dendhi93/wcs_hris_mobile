@@ -160,6 +160,7 @@ class SplashViewModel(private var _context : Context,
                 _splashInterface.onErrorMessage(" err on " + typeData +
                         "\n" +error.toString().trim(), ConstantObject.vToastError)
                 isPrgBarVisible.set(false)
+                isBtnVisible.set(true)
             }
         })
     }
@@ -191,7 +192,7 @@ class SplashViewModel(private var _context : Context,
                                     Log.d("###","success insert charge code")
                                     if(isFirstInsert){
                                         processGetDataMaster("getlatestmastertransport",true)
-                                    }else{Log.d("###","1")}
+                                    }else{getDataUpdateDate(ConstantObject.keyChargeCode, false)}
                                 }
                             }
                         }
@@ -209,7 +210,7 @@ class SplashViewModel(private var _context : Context,
                                 uiThread {
                                     Log.d("###","success insert trans type")
                                     if(isFirstInsert){ processGetDataMaster("getlatestmasterreason",true)
-                                    }else {Log.d("###","2")}
+                                    }else{getDataUpdateDate(ConstantObject.keyChargeCode, false)}
                                 }
                             }
                         }
@@ -226,7 +227,8 @@ class SplashViewModel(private var _context : Context,
                                     mReasonTravelDao.insertReasonTravel(reasonTravelModel)
                                     uiThread {
                                         Log.d("###","success insert reason travel")
-                                        if(isFirstInsert){ processGetDataMaster("getlatestmasterleavetype",true) }
+                                        if(isFirstInsert){ processGetDataMaster("getlatestmasterleavetype",true)
+                                        }else{getDataUpdateDate(ConstantObject.keyChargeCode, false)}
                                     }
                                 }
                             }

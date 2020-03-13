@@ -365,7 +365,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             ALERT_REQ_TRAVEL_SET_TRAVEL -> activityRequestTravelBinding.viewModel?.actionSetTravel()
             ALERT_REQ_TRAVEL_EDIT_TRAVEL -> activityRequestTravelBinding.viewModel?.actionEditTravel(arrCities)
             ALERT_REQ_TRAVEL_GENERATE_TRAVEL -> activityRequestTravelBinding.viewModel?.actionGenerateTravel(arrCities)
-            ALERT_REQ_TRAVEL_EXIT_CONF -> finish()
+            ALERT_REQ_TRAVEL_EXIT_CONF -> activityRequestTravelBinding.viewModel?.onBackReqTravelMenu()
         }
     }
 
@@ -374,7 +374,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             .setMessage("Are you sure do you want to exit this transaction ? ")
             .setPositiveButton(android.R.string.ok){
                     dialog, _ ->
-                finish()
+                activityRequestTravelBinding.viewModel?.onBackReqTravelMenu()
                 super.onBackPressed()
                 dialog.dismiss()
             }
@@ -409,8 +409,9 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             true -> onChangeButtonBackground(true)
             else -> onChangeButtonBackground(false)
         }
-
     }
+
+
     companion object{
         const val ALERT_REQ_TRAVEL_NO_CONNECTION = 1
         const val ALERT_REQ_TRAVEL_CONFIRMATION = 5

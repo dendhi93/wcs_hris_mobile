@@ -156,11 +156,16 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFri
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                activityCreateTaskBinding.viewModel?.onBackCreateTaskMenu()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        activityCreateTaskBinding.viewModel?.onBackCreateTaskMenu()
+        super.onBackPressed()
     }
 
     companion object{

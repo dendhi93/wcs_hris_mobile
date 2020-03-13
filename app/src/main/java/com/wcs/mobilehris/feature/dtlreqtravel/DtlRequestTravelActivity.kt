@@ -175,11 +175,16 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                dtlTravelActivityBinding.viewModel?.onBackDtlTravel(intentFromForm)
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        dtlTravelActivityBinding.viewModel?.onBackDtlTravel(intentFromForm)
+        super.onBackPressed()
     }
 
     companion object{

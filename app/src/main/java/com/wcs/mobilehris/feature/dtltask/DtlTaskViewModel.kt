@@ -2,12 +2,14 @@ package com.wcs.mobilehris.feature.dtltask
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Handler
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
+import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
 
 class DtlTaskViewModel(private val context : Context, private val dtlTaskInterface : DtlTaskInterface) :ViewModel(){
@@ -99,5 +101,11 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
             initDtlTask()
             initListTeam()
         }
+    }
+
+    fun onBackPressMenu(){
+        val intent = Intent(context, MenuActivity::class.java)
+        intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_ACTIVITY)
+        context.startActivity(intent)
     }
 }

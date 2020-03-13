@@ -238,7 +238,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-
     companion object{
         const val EXTRA_FLAG_DASHBOARD = 1
         const val EXTRA_FLAG_ACTIVITY = 2

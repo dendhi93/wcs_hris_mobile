@@ -79,11 +79,17 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                dtlTaskBinding.viewModel?.onBackPressMenu()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+
+    override fun onBackPressed() {
+        dtlTaskBinding.viewModel?.onBackPressMenu()
+        super.onBackPressed()
     }
 
     companion object{

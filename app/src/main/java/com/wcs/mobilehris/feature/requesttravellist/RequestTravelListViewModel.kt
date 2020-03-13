@@ -1,32 +1,36 @@
 package com.wcs.mobilehris.feature.requesttravellist
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
+import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
 
 class RequestTravelListViewModel (private val context : Context, private val requestTravalListInterface: ReqTravelListInterface) : ViewModel(){
     val isVisibleFab = ObservableField(false)
+    private var intentFrom : String = ""
 
     fun initDataTravel(typeOfLoading : Int, intentTravelFrom : String){
+        intentFrom = intentTravelFrom
         when{
             !ConnectionObject.isNetworkAvailable(context) ->
                 requestTravalListInterface.onAlertReqTravelList(context.getString(R.string.alert_no_connection),
                     ConstantObject.vAlertDialogNoConnection, RequestTravelListActivity.ALERT_REQ_TRAVEL_HIST_NO_CONNECTION)
-            else -> getTravelData(typeOfLoading, intentTravelFrom)
+            else -> getTravelData(typeOfLoading)
         }
     }
 
-    private fun getTravelData(typeLoading : Int, intentTravelFrom :String){
+    private fun getTravelData(typeLoading : Int){
         when(typeLoading){ConstantObject.vLoadWithProgressBar -> requestTravalListInterface.showUI(ConstantObject.vProgresBarUI) }
         requestTravalListInterface.hideUI(ConstantObject.vRecylerViewUI)
         requestTravalListInterface.showUI(ConstantObject.vGlobalUI)
 
         val listTravelList = mutableListOf<TravelListModel>()
-        when(intentTravelFrom){
+        when(intentFrom){
             ConstantObject.extra_fromIntentApproval -> {
                 isVisibleFab.set(false)
                 var travelModel = TravelListModel("01","Training/Seminar/WorkShop",
@@ -73,4 +77,12 @@ class RequestTravelListViewModel (private val context : Context, private val req
     }
 
     fun fabClickRequest(){ requestTravalListInterface.intentToRequest() }
+    fun onBackTravelList(){
+        val intent = Intent(context, MenuActivity::class.java)
+        when(intentFrom){
+            ConstantObject.extra_fromIntentApproval -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_APPROVAL)
+            else -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_REQUEST)
+        }
+        context.startActivity(intent)
+    }
 }

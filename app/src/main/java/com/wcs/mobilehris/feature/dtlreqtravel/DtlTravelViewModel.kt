@@ -1,12 +1,14 @@
 package com.wcs.mobilehris.feature.dtlreqtravel
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.feature.dtltask.FriendModel
+import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.feature.requesttravel.ReqTravelModel
 import com.wcs.mobilehris.util.ConstantObject
 
@@ -128,5 +130,15 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
                 else -> dtlTravelInterface.onSuccessDtlTravel("Transaction Successful rejected")
             }
         }, 2000)
+    }
+
+    fun onBackDtlTravel(intentTravelFrom : String){
+        val intent = Intent(context, MenuActivity::class.java)
+        when(intentTravelFrom){
+            ConstantObject.extra_fromIntentDtlTravel -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_REQUEST)
+            ConstantObject.extra_fromIntentConfirmTravel -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_CONFIRMATION)
+            else -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_APPROVAL)
+        }
+        context.startActivity(intent)
     }
 }

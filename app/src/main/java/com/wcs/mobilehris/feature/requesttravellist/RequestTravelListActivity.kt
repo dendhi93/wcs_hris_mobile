@@ -99,11 +99,16 @@ class RequestTravelListActivity : AppCompatActivity(), ReqTravelListInterface {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                activityRequestTravelListBinding.viewModel?.onBackTravelList()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        activityRequestTravelListBinding.viewModel?.onBackTravelList()
+        super.onBackPressed()
     }
     companion object{
         const val ALERT_REQ_TRAVEL_HIST_NO_CONNECTION = 1
