@@ -4,15 +4,19 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
-import android.os.Handler
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
+import org.json.JSONArray
+import org.json.JSONObject
 
-class DtlTaskViewModel(private val context : Context, private val dtlTaskInterface : DtlTaskInterface) :ViewModel(){
+class DtlTaskViewModel(private val context : Context,
+                       private val dtlTaskInterface : DtlTaskInterface,
+                       private val apiRepo: ApiRepo) :ViewModel(){
     val stChargeCode = ObservableField("")
     val stCompanyName = ObservableField("")
     val stDtlTaskDateFrom = ObservableField("")
@@ -49,44 +53,83 @@ class DtlTaskViewModel(private val context : Context, private val dtlTaskInterfa
     private fun initDtlTask(){
         isProgressDtl.set(true)
         isHiddenRv.set(true)
-        Handler().postDelayed({
-
-            stCompanyName.set("PT Sukanda")
-            stDtlTaskDateFrom.set("15/01/2020")
-            stDtlTaskDateInto.set("16/01/2020")
-            stDtlTaskTimeFrom.set("08:00")
-            stDtlTaskTimeInto.set("17:00")
-            stDtlContactPerson.set("Denny Rambakila")
-            stDtlDescription.set("Test")
-            when(stIntentTypeTask.trim()) {
-                ConstantObject.vSupportTask -> {
-                    isHiddenProjectManager.set(true)
-                    stDtlSolmanNo.set("845894900")
-                }
-                ConstantObject.vProjectTask -> {
-                    isHiddenSolmanTv.set(true)
-                    stDtlProjectManager.set("Pak Rojak")
-                }
-                else->{
-                    isHiddenSolmanTv.set(true)
-                    isHiddenProjectManager.set(true)
+        apiRepo.getHeaderActivity(stIntentTaskId, context, object  :
+            ApiRepo.ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val responseHeaderActivity = it.getString(ConstantObject.vResponseData)
+                    val jObjHeaderAct = JSONObject(responseHeaderActivity)
+                    stCompanyName.set(jObjHeaderAct.getString("CUSTOMER_NAME"))
+                    stDtlTaskTimeFrom.set(jObjHeaderAct.getString("TIME_FROM"))
+                    stDtlTaskTimeInto.set(jObjHeaderAct.getString("TIME_TO"))
+                    stDtlContactPerson.set(jObjHeaderAct.getString("PICCUSTOMER"))
+                    stDtlDescription.set(jObjHeaderAct.getString("DESCRIPTION"))
+                    val dtlDateFrom = jObjHeaderAct.getString("DATE_FROM").split("T")
+                    stDtlTaskDateFrom.set(dtlDateFrom[0].trim())
+                    val dtlDateInto = jObjHeaderAct.getString("DATE_TO").split("T")
+                    stDtlTaskDateInto.set(dtlDateInto[0].trim())
+                    when(stIntentTypeTask.trim()) {
+                        ConstantObject.vSupportTask -> {
+                            isHiddenProjectManager.set(true)
+                            stDtlSolmanNo.set(jObjHeaderAct.getString("SOLMAN_NUMBER"))
+                        }
+                        ConstantObject.vProjectTask ->{
+                            isHiddenSolmanTv.set(true)
+                            stDtlProjectManager.set(jObjHeaderAct.getString("PM_NAME"))
+                        }
+                        else -> {
+                            isHiddenSolmanTv.set(true)
+                            isHiddenProjectManager.set(true)
+                        }
+                    }
                 }
             }
-        }, 2000)
+
+            override fun onDataError(error: String?) {
+                dtlTaskInterface.onErrorMessage(" err Header "
+                        +error.toString().trim(), ConstantObject.vToastError)
+            }
+        })
     }
 
     private fun initListTeam(){
         val listFriend = mutableListOf<FriendModel>()
-        var friendModel = FriendModel("62664930","Windy", "Free", false)
-        listFriend.add(friendModel)
-        friendModel = FriendModel("62405890","Michael Saputra", "Conflict With Heinz ABC", true)
-        listFriend.add(friendModel)
+        var friendModel : FriendModel
+        apiRepo.getDetailActivity(stIntentTaskId,
+            context, object  : ApiRepo.ApiCallback<JSONObject>{
+                override fun onDataLoaded(data: JSONObject?) {
+                    data?.let {
+                        val responsePlanData = it.getString(ConstantObject.vResponseData)
+                        val jArrayDataFriend = JSONArray(responsePlanData)
+                        for (i in 0 until jArrayDataFriend.length()) {
+                            val jObjFriend = jArrayDataFriend.getJSONObject(i)
+                            when(jObjFriend.getString("AVAILABLE")){
+                                "Y" -> {
+                                    friendModel = FriendModel(jObjFriend.getString("NIK"),
+                                        jObjFriend.getString("EMPLOYEE_NAME"),
+                                        "Free", false)
+                                    listFriend.add(friendModel!!)
+                                }
+                                else -> {
+                                    friendModel = FriendModel(jObjFriend.getString("NIK"),
+                                        jObjFriend.getString("EMPLOYEE_NAME"),
+                                        "Conflict", true)
+                                    listFriend.add(friendModel!!)
+                                }
+                            }
+                        }
+                        when{
+                            listFriend.isNotEmpty() -> dtlTaskInterface.loadTeam(listFriend)
+                        }
+                    }
+                }
 
-        Handler().postDelayed({
-            when{
-                listFriend.isNotEmpty() -> dtlTaskInterface.loadTeam(listFriend)
-            }
-        },1000)
+                override fun onDataError(error: String?) {
+                    dtlTaskInterface.onErrorMessage(" err dtl "
+                            +error.toString().trim(), ConstantObject.vToastError)
+                }
+
+            })
     }
 
     @SuppressLint("StaticFieldLeak")

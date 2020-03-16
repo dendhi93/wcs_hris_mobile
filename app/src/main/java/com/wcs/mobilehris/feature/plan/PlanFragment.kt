@@ -1,7 +1,6 @@
 package com.wcs.mobilehris.feature.plan
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.FragmentPlanBinding
 import com.wcs.mobilehris.util.ConstantObject
-import com.wcs.mobilehris.util.DateTimeUtils
 import com.wcs.mobilehris.util.MessageUtils
 
 
@@ -44,8 +42,25 @@ class PlanFragment : Fragment(), PlanInterface {
 
     override fun onLoadList(planList: List<ContentTaskModel>, typeLoading : Int) {
 //        arrPlanList.clear()
-        arrPlanList.addAll(planList)
-        planAdapter.notifyDataSetChanged()
+
+        when(arrPlanList.size){
+            0 -> {
+                arrPlanList.addAll(planList)
+                planAdapter.notifyDataSetChanged()
+            }
+            else -> {
+                for(j in arrPlanList.indices){
+                    val insideDateTask = arrPlanList[j].taskDate.trim()
+                    for(i in planList.indices){
+                        val onLoadDateTask = planList[i].taskDate.trim()
+                        if(insideDateTask != onLoadDateTask){
+                            arrPlanList.addAll(planList)
+                        }
+                    }
+                    planAdapter.notifyDataSetChanged()
+                }
+            }
+        }
 
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)

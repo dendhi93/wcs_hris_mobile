@@ -56,7 +56,7 @@ class ActualViewModel(private var _context : Context, private var _actualnterfac
                                 "Confirm",
                                 jObjDataPlan.getString("DT_FROM") +" - "
                                         + jObjDataPlan.getString("DT_TO"),
-                                jObjDataPlan.getString("ID"),
+                                jObjDataPlan.getString("ACTIVITY_HEADER_ID"),
                                 0,
                                 true,
                                 ""
@@ -84,6 +84,7 @@ class ActualViewModel(private var _context : Context, private var _actualnterfac
                     _actualnterface.showUI(ConstantObject.vGlobalUI)
                     _actualnterface.onErrorMessage(" err "
                             +error.toString().trim(), ConstantObject.vToastError)
+                    when(typeLoading){ConstantObject.vLoadWithProgressBar -> _actualnterface.hideUI(ConstantObject.vProgresBarUI) }
                 }
             })
     }

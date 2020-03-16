@@ -54,7 +54,7 @@ class PlanViewModel (private var _context : Context, private var _planInterface 
                                 "Plan",
                                 jObjDataPlan.getString("DT_FROM") +" - "
                                         + jObjDataPlan.getString("DT_TO"),
-                                jObjDataPlan.getString("ID"),
+                                jObjDataPlan.getString("ACTIVITY_HEADER_ID"),
                                 0,
                                 true,
                                 ""
@@ -82,11 +82,12 @@ class PlanViewModel (private var _context : Context, private var _planInterface 
                     _planInterface.showUI(ConstantObject.vGlobalUI)
                     _planInterface.onErrorMessage(" err "
                             +error.toString().trim(), ConstantObject.vToastError)
+                    when(typeLoading){
+                        ConstantObject.vLoadWithProgressBar -> _planInterface.hideUI(ConstantObject.vProgresBarUI)
+                    }
                 }
             })
     }
 
-    fun fabPlanClick(){
-        _context.startActivity(Intent(_context, CreateTaskActivity::class.java))
-    }
+    fun fabPlanClick(){ _context.startActivity(Intent(_context, CreateTaskActivity::class.java)) }
 }

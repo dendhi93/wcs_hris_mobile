@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.ActivityDetailTaskBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
@@ -22,7 +23,7 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dtlTaskBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail_task)
-        dtlTaskBinding.viewModel = DtlTaskViewModel(this, this)
+        dtlTaskBinding.viewModel = DtlTaskViewModel(this, this, ApiRepo())
         dtlTaskBinding.rcDtlTask.layoutManager = LinearLayoutManager(this)
     }
 
