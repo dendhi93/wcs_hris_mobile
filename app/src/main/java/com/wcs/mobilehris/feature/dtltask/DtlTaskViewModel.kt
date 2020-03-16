@@ -88,6 +88,7 @@ class DtlTaskViewModel(private val context : Context,
             override fun onDataError(error: String?) {
                 dtlTaskInterface.onErrorMessage(" err Header "
                         +error.toString().trim(), ConstantObject.vToastError)
+                isProgressDtl.set(false)
             }
         })
     }

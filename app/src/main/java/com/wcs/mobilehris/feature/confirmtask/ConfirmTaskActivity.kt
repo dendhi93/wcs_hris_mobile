@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.RadioButton
 import androidx.databinding.DataBindingUtil
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.ActivityConfirmTaskBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
@@ -22,7 +23,7 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityConfirmBinding = DataBindingUtil.setContentView(this, R.layout.activity_confirm_task)
-        activityConfirmBinding.viewModel = ConfirmTaskViewModel(this, this)
+        activityConfirmBinding.viewModel = ConfirmTaskViewModel(this, this, ApiRepo())
     }
 
     override fun onStart() {
