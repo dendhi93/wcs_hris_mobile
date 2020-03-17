@@ -38,6 +38,7 @@ class ActualViewModel(private var _context : Context, private var _actualnterfac
         val listActual = mutableListOf<ContentTaskModel>()
         apiRepo.getDataActivity(preference.getUn(),
             DateTimeUtils.getCurrentDate(),
+            ConstantObject.vConfirmTask,
             _context, object  : ApiRepo.ApiCallback<JSONObject> {
                 override fun onDataLoaded(data: JSONObject?) {
                     data?.let {
@@ -84,7 +85,10 @@ class ActualViewModel(private var _context : Context, private var _actualnterfac
                     _actualnterface.showUI(ConstantObject.vGlobalUI)
                     _actualnterface.onErrorMessage(" err "
                             +error.toString().trim(), ConstantObject.vToastError)
-                    when(typeLoading){ConstantObject.vLoadWithProgressBar -> _actualnterface.hideUI(ConstantObject.vProgresBarUI) }
+                    when(typeLoading){
+                        ConstantObject.vLoadWithProgressBar -> _actualnterface.hideUI(ConstantObject.vProgresBarUI)
+                        else -> _actualnterface.onHideSwipeRefresh()
+                    }
                 }
             })
     }

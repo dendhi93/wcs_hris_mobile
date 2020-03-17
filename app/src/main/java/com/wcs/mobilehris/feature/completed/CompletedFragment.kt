@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.FragmentCompletedBinding
 import com.wcs.mobilehris.feature.plan.ContentTaskModel
 import com.wcs.mobilehris.feature.plan.CustomTaskAdapter
@@ -22,7 +23,7 @@ class CompletedFragment : Fragment(), CompletedInterface {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentCompletedBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_completed, container, false)
-        fragmentCompletedBinding.viewModel = CompletedViewModel(requireContext(), this)
+        fragmentCompletedBinding.viewModel = CompletedViewModel(requireContext(), this, ApiRepo())
         return fragmentCompletedBinding.root
     }
 

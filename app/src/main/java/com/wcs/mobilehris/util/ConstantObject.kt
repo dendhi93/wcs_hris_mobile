@@ -24,10 +24,11 @@ object ConstantObject {
     //type flagTask Type
     const val vPlanTask = "Plan"
     const val vConfirmTask = "Confirm"
+    const val vCompletedTask = "Completed"
     const val vEditTask = "Edit"
     const val vApproved = "Approved"
     const val vRejected = "Rejected"
-    const val vWaitingTask = "Waiting"
+    const val vWaitingTask = "WAITING"
     const val vNoApproval = "No Approval"
 
     //type progressBar

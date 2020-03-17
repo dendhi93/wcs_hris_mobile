@@ -36,6 +36,7 @@ class PlanViewModel (private var _context : Context, private var _planInterface 
         val listPlan = mutableListOf<ContentTaskModel>()
         apiRepo.getDataActivity(preference.getUn(),
             DateTimeUtils.getAdvancedDate(intTenorDate).toString(),
+            ConstantObject.vPlanTask,
             _context, object  : ApiCallback<JSONObject>{
                 override fun onDataLoaded(data: JSONObject?) {
                     data?.let {
@@ -84,6 +85,7 @@ class PlanViewModel (private var _context : Context, private var _planInterface 
                             +error.toString().trim(), ConstantObject.vToastError)
                     when(typeLoading){
                         ConstantObject.vLoadWithProgressBar -> _planInterface.hideUI(ConstantObject.vProgresBarUI)
+                        else -> _planInterface.onHideSwipeRefresh()
                     }
                 }
             })

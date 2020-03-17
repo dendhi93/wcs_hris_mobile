@@ -7,6 +7,7 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.OkHttpResponseAndJSONObjectRequestListener
 import com.wcs.mobilehris.BuildConfig
+import com.wcs.mobilehris.util.ConstantObject
 import okhttp3.Response
 import org.json.JSONObject
 
@@ -107,9 +108,13 @@ class ApiRepo {
             })
     }
 
-    fun getDataActivity(unUser : String,selectedDate : String,context: Context, callback: ApiCallback<JSONObject>){
+    fun getDataActivity(unUser : String,selectedDate : String,activityFrom : String,context: Context, callback: ApiCallback<JSONObject>){
         AndroidNetworking.initialize(context)
-        val urlActivity = BuildConfig.HRIS_URL+"getactivitybydate/"+selectedDate.trim()+"/"+unUser.trim()
+        val urlActivity = when(activityFrom.trim()){
+            ConstantObject.vCompletedTask -> BuildConfig.HRIS_URL+"getcompletedactivitybynikandbydate/"+unUser.trim()+"/"+selectedDate.trim()
+            else -> BuildConfig.HRIS_URL+"getactivitybydate/"+selectedDate.trim()+"/"+unUser.trim()
+        }
+
         Log.d("###", "url getDataActivity ${urlActivity.trim()}")
         AndroidNetworking.get(urlActivity.trim())
             .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
@@ -185,8 +190,6 @@ class ApiRepo {
                     callback.onDataError(anError?.message.toString())
                 }
             })
-
-        
     }
 
     //interface response from server
