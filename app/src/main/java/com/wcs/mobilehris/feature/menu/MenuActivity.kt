@@ -177,7 +177,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             EXTRA_FLAG_APPROVAL -> {
                 supportActionBar?.let {
                     it.subtitle = "Approval"
-                    frTransaction.replace(R.id.frame_nav_container, RequestFragment())
+                    frTransaction.replace(R.id.frame_nav_container, ApprovalFragment())
                 }
             }
             EXTRA_FLAG_CONFIRMATION -> {

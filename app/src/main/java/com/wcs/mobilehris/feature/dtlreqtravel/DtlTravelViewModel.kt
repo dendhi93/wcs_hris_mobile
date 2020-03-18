@@ -3,7 +3,6 @@ package com.wcs.mobilehris.feature.dtlreqtravel
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
