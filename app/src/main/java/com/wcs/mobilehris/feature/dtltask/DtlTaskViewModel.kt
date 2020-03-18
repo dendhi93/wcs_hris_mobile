@@ -64,10 +64,8 @@ class DtlTaskViewModel(private val context : Context,
                     stDtlTaskTimeInto.set(jObjHeaderAct.getString("TIME_TO"))
                     stDtlContactPerson.set(jObjHeaderAct.getString("PICCUSTOMER"))
                     stDtlDescription.set(jObjHeaderAct.getString("DESCRIPTION"))
-                    val dtlDateFrom = jObjHeaderAct.getString("DATE_FROM").split("T")
-                    stDtlTaskDateFrom.set(dtlDateFrom[0].trim())
-                    val dtlDateInto = jObjHeaderAct.getString("DATE_TO").split("T")
-                    stDtlTaskDateInto.set(dtlDateInto[0].trim())
+                    stDtlTaskDateFrom.set(jObjHeaderAct.getString("DATE_FROM").split("T")[0].trim())
+                    stDtlTaskDateInto.set(jObjHeaderAct.getString("DATE_TO").split("T")[0].trim())
                     when(stIntentTypeTask.trim()) {
                         ConstantObject.vSupportTask -> {
                             isHiddenProjectManager.set(true)
@@ -109,13 +107,13 @@ class DtlTaskViewModel(private val context : Context,
                                     friendModel = FriendModel(jObjFriend.getString("NIK"),
                                         jObjFriend.getString("EMPLOYEE_NAME"),
                                         "Free", false)
-                                    listFriend.add(friendModel!!)
+                                    listFriend.add(friendModel)
                                 }
                                 else -> {
                                     friendModel = FriendModel(jObjFriend.getString("NIK"),
                                         jObjFriend.getString("EMPLOYEE_NAME"),
                                         "Conflict", true)
-                                    listFriend.add(friendModel!!)
+                                    listFriend.add(friendModel)
                                 }
                             }
                         }

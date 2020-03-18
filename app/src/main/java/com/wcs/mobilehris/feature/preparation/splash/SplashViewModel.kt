@@ -176,91 +176,83 @@ class SplashViewModel(private var _context : Context,
                 data?.let {
                     val responseData = it.getString(ConstantObject.vResponseResult)
                     val jArrayDateMaster = JSONArray(responseData)
-                    when(jArrayDateMaster.length()){
-                        0 -> {
-                            _splashInterface.onErrorMessage(_context.getString(R.string.problem_occured_alert), ConstantObject.vToastError)
-                            isPrgBarVisible.set(false)
+                    when(masterType){
+                        "getlatestmasterchargecode" -> {
+                            doAsync {
+                                for (i in 0 until jArrayDateMaster.length()) {
+                                    val jObjChargeCode = jArrayDateMaster.getJSONObject(i)
+                                    val chargeCodeModel = ChargeCodeEntity(i+1,
+                                        jObjChargeCode.getString("CHARGE_CD"),
+                                        jObjChargeCode.getString("CHARGE_NAME"),
+                                        jObjChargeCode.getString("CUSTOMER_NAME"),
+                                        jObjChargeCode.getString("PM_NAME"),
+                                        jObjChargeCode.getString("WCS_PM_NIK"),
+                                        jObjChargeCode.getString("VALID_FROM"),
+                                        jObjChargeCode.getString("VALID_TO"),
+                                        jObjChargeCode.getString("CREATED_DT")
+                                    )
+                                    mChargeCodeDao.insertChargeCode(chargeCodeModel)
+                                }
+                                uiThread {
+                                    Log.d("###","success insert charge code")
+                                    if(isFirstInsert){
+                                        processGetDataMaster("getlatestmastertransport",true)
+                                    }else{getDataUpdateDate(ConstantObject.keyChargeCode, false)}
+                                }
+                            }
                         }
-                        else ->{
-                            when(masterType){
-                                "getlatestmasterchargecode" -> {
-                                    doAsync {
-                                        for (i in 0 until jArrayDateMaster.length()) {
-                                            val jObjChargeCode = jArrayDateMaster.getJSONObject(i)
-                                            val chargeCodeModel = ChargeCodeEntity(i+1,
-                                                jObjChargeCode.getString("CHARGE_CD"),
-                                                jObjChargeCode.getString("CHARGE_NAME"),
-                                                jObjChargeCode.getString("CUSTOMER_NAME"),
-                                                jObjChargeCode.getString("PM_NAME"),
-                                                jObjChargeCode.getString("WCS_PM_NIK"),
-                                                jObjChargeCode.getString("VALID_FROM"),
-                                                jObjChargeCode.getString("VALID_TO"),
-                                                jObjChargeCode.getString("CREATED_DT")
-                                            )
-                                            mChargeCodeDao.insertChargeCode(chargeCodeModel)
-                                        }
-                                        uiThread {
-                                            Log.d("###","success insert charge code")
-                                            if(isFirstInsert){
-                                                processGetDataMaster("getlatestmastertransport",true)
-                                            }else{getDataUpdateDate(ConstantObject.keyChargeCode, false)}
-                                        }
+                        "getlatestmastertransport" -> {
+                            doAsync {
+                                for (j in 0 until jArrayDateMaster.length()) {
+                                    val responseDataTransport = jArrayDateMaster.getJSONObject(j)
+                                    val transportModel = TransportTypeEntity(j+1,
+                                        responseDataTransport.getString("TRANSPORT_CODE"),
+                                        responseDataTransport.getString("TRANSPORT_NAME"),
+                                        responseDataTransport.getString("CREATED_DT")
+                                    )
+                                    mTransTypeDao.insertTransType(transportModel)
+                                }
+                                uiThread {
+                                    Log.d("###","success insert trans type")
+                                    if(isFirstInsert){ processGetDataMaster("getlatestmasterreason",true)
+                                    }else{getDataUpdateDate(ConstantObject.keyChargeCode, false)}
+                                }
+                            }
+                        }
+                        "getlatestmasterreason" ->{
+                            doAsync {
+                                for(m in 0 until jArrayDateMaster.length()){
+                                    val responseDatamReason = jArrayDateMaster.getJSONObject(m)
+                                    val reasonTravelModel = ReasonTravelEntity(
+                                        m+1,
+                                        responseDatamReason.getString("REASON_CODE"),
+                                        responseDatamReason.getString("REASON_NAME"),
+                                        responseDatamReason.getString("CREATED_DT")
+                                    )
+                                    mReasonTravelDao.insertReasonTravel(reasonTravelModel)
+                                    uiThread {
+                                        Log.d("###","success insert reason travel")
+                                        if(isFirstInsert){ processGetDataMaster("getlatestmasterleavetype",true)
+                                        }else{getDataUpdateDate(ConstantObject.keyChargeCode, false)}
                                     }
                                 }
-                                "getlatestmastertransport" -> {
-                                    doAsync {
-                                        for (j in 0 until jArrayDateMaster.length()) {
-                                            val responseDataTransport = jArrayDateMaster.getJSONObject(j)
-                                            val transportModel = TransportTypeEntity(j+1,
-                                                responseDataTransport.getString("TRANSPORT_CODE"),
-                                                responseDataTransport.getString("TRANSPORT_NAME"),
-                                                responseDataTransport.getString("CREATED_DT")
-                                            )
-                                            mTransTypeDao.insertTransType(transportModel)
-                                        }
-                                        uiThread {
-                                            Log.d("###","success insert trans type")
-                                            if(isFirstInsert){ processGetDataMaster("getlatestmasterreason",true)
-                                            }else{getDataUpdateDate(ConstantObject.keyChargeCode, false)}
-                                        }
-                                    }
+                            }
+                        }
+                        else -> {
+                            doAsync {
+                                for (k in 0 until jArrayDateMaster.length()) {
+                                    val responseDataLeaveType = jArrayDateMaster.getJSONObject(k)
+                                    val responseLeaveModel = ReasonLeaveEntity(
+                                        k+1,
+                                        responseDataLeaveType.getString("CHARGE_CD"),
+                                        responseDataLeaveType.getString("LEAVE_TYPE_NAME"),
+                                        responseDataLeaveType.getString("CREATED_DT")
+                                    )
+                                    mReasonLeaveDao.insertReasonLeave(responseLeaveModel)
                                 }
-                                "getlatestmasterreason" ->{
-                                    doAsync {
-                                        for(m in 0 until jArrayDateMaster.length()){
-                                            val responseDatamReason = jArrayDateMaster.getJSONObject(m)
-                                            val reasonTravelModel = ReasonTravelEntity(
-                                                m+1,
-                                                responseDatamReason.getString("REASON_CODE"),
-                                                responseDatamReason.getString("REASON_NAME"),
-                                                responseDatamReason.getString("CREATED_DT")
-                                            )
-                                            mReasonTravelDao.insertReasonTravel(reasonTravelModel)
-                                            uiThread {
-                                                Log.d("###","success insert reason travel")
-                                                if(isFirstInsert){ processGetDataMaster("getlatestmasterleavetype",true)
-                                                }else{getDataUpdateDate(ConstantObject.keyChargeCode, false)}
-                                            }
-                                        }
-                                    }
-                                }
-                                else -> {
-                                    doAsync {
-                                        for (k in 0 until jArrayDateMaster.length()) {
-                                            val responseDataLeaveType = jArrayDateMaster.getJSONObject(k)
-                                            val responseLeaveModel = ReasonLeaveEntity(
-                                                k+1,
-                                                responseDataLeaveType.getString("CHARGE_CD"),
-                                                responseDataLeaveType.getString("LEAVE_TYPE_NAME"),
-                                                responseDataLeaveType.getString("CREATED_DT")
-                                            )
-                                            mReasonLeaveDao.insertReasonLeave(responseLeaveModel)
-                                        }
-                                        uiThread {
-                                            Log.d("###","success insert leave")
-                                            successDownload()
-                                        }
-                                    }
+                                uiThread {
+                                    Log.d("###","success insert leave")
+                                    successDownload()
                                 }
                             }
                         }

@@ -69,10 +69,8 @@ class ConfirmTaskViewModel (private val context : Context,
                     stConfirmTaskTimeInto.set(jObjConfirmAct.getString("TIME_TO"))
                     stConfirmCP.set(jObjConfirmAct.getString("PICCUSTOMER"))
                     stConfirmDescription.set(jObjConfirmAct.getString("DESCRIPTION"))
-                    val dtlDateFrom = jObjConfirmAct.getString("DATE_FROM").split("T")
-                    stConfirmTaskDateFrom.set(dtlDateFrom[0].trim())
-                    val dtlDateInto = jObjConfirmAct.getString("DATE_TO").split("T")
-                    stConfirmTaskDateInto.set(dtlDateInto[0].trim())
+                    stConfirmTaskDateFrom.set(jObjConfirmAct.getString("DATE_FROM").split("T")[0].trim())
+                    stConfirmTaskDateInto.set(jObjConfirmAct.getString("DATE_TO").split("T")[0].trim())
 
                     when(stTypeTask){
                         ConstantObject.vProjectTask -> {
