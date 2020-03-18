@@ -36,7 +36,7 @@ class ApiRepo {
                             callback.onDataError(errObj.getString("Message"))
                         }
                         else -> {
-                            Log.d("###_2","Login " +anError.errorBody.toString())
+                            Log.d("###_2","Login " +anError.message.toString())
                             callback.onDataError(anError.message.toString())
                         }
                     }
@@ -190,6 +190,34 @@ class ApiRepo {
                     callback.onDataError(anError?.message.toString())
                 }
             })
+    }
+
+    fun getTravelListData(unUser :String, fromTravelType : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        val urlTravel = when(fromTravelType.trim()){
+            ConstantObject.extra_fromIntentApproval -> BuildConfig.HRIS_URL+"gettravelrequestapprovalall/"+unUser.trim()
+            else -> BuildConfig.HRIS_URL+"gettravelrequestheaderbynik/"+unUser.trim()
+        }
+        Log.d("###", "url getTravel Data ${urlTravel.trim()}")
+        AndroidNetworking.get(urlTravel.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let {
+                        when{
+                            ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response)
+                        }
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","travel list data "+anError?.message.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+            })
+
     }
 
     //interface response from server

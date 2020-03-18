@@ -71,6 +71,9 @@ class SplashActivity : AppCompatActivity(), SplashInterface, DialogInterface {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        finish()
+        val startMain = Intent(Intent.ACTION_MAIN)
+        startMain.addCategory(Intent.CATEGORY_HOME)
+        startMain.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(startMain)
     }
 }
