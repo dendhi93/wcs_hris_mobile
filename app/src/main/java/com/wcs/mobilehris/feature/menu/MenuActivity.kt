@@ -23,7 +23,6 @@ import com.wcs.mobilehris.feature.dashboard.DashboardFragment
 import com.wcs.mobilehris.feature.notification.NotificationFragment
 import com.wcs.mobilehris.feature.request.RequestFragment
 import com.wcs.mobilehris.feature.setting.SettingFragment
-import com.wcs.mobilehris.feature.status.StatusFragment
 import com.wcs.mobilehris.feature.team.fragment.TeamFragment
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
@@ -95,10 +94,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_confirmation -> {
                 vFragment = ConfirmationFragment()
                 supportActionBar?.let { it.subtitle = "Confirmation" }
-            }
-            R.id.nav_status -> {
-                vFragment = StatusFragment()
-                supportActionBar?.let { it.subtitle = "Status" }
             }
             R.id.nav_absent -> {
                 vFragment = AbsentFragment()
@@ -186,12 +181,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     frTransaction.replace(R.id.frame_nav_container, ConfirmationFragment())
                 }
             }
-            EXTRA_FLAG_STATUS -> {
-                supportActionBar?.let {
-                    it.subtitle = "Status"
-                    frTransaction.replace(R.id.frame_nav_container, StatusFragment())
-                }
-            }
             EXTRA_FLAG_ABSENT -> {
                 supportActionBar?.let {
                     it.subtitle = "Absent"
@@ -247,14 +236,13 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         const val EXTRA_FLAG_REQUEST = 3
         const val EXTRA_FLAG_APPROVAL = 4
         const val EXTRA_FLAG_CONFIRMATION = 5
-        const val EXTRA_FLAG_STATUS = 6
-        const val EXTRA_FLAG_ABSENT = 7
-        const val EXTRA_FLAG_NOTIFICATION = 8
-        const val EXTRA_FLAG_TEAM= 9
-        const val EXTRA_FLAG_SETTING = 10
-        const val EXTRA_FLAG_LOGOUT = 11
+        const val EXTRA_FLAG_ABSENT = 6
+        const val EXTRA_FLAG_NOTIFICATION = 7
+        const val EXTRA_FLAG_TEAM= 8
+        const val EXTRA_FLAG_SETTING = 9
+        const val EXTRA_FLAG_LOGOUT = 10
         const val EXTRA_CALLER_ACTIVITY_FLAG = "hris_activity"
-        const val DIALOG_LOG_OUT = 12
+        const val DIALOG_LOG_OUT = 11
     }
 
 

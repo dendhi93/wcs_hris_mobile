@@ -2,6 +2,7 @@ package com.wcs.mobilehris.feature.requesttravellist
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -34,7 +35,6 @@ class RequestTravelListViewModel (private val context : Context,
         when(typeLoading){ConstantObject.vLoadWithProgressBar -> requestTravalListInterface.showUI(ConstantObject.vProgresBarUI) }
         requestTravalListInterface.hideUI(ConstantObject.vRecylerViewUI)
         requestTravalListInterface.showUI(ConstantObject.vGlobalUI)
-
         val listTravelList = mutableListOf<TravelListModel>()
         var travelListModel : TravelListModel
         apiRepo.getTravelListData(preference.getUn(), intentFrom.trim(), context, object : ApiRepo.ApiCallback<JSONObject>{

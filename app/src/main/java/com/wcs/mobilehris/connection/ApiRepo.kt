@@ -123,9 +123,7 @@ class ApiRepo {
             .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
                 override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
                     okHttpResponse?.let {
-                        when{
-                            ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response)
-                        }
+                        when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) }
                     }
                 }
 
@@ -155,9 +153,7 @@ class ApiRepo {
             .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
                 override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
                     okHttpResponse?.let {
-                       when{
-                           ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response)
-                       }
+                       when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) }
                    }
                 }
 
@@ -179,9 +175,7 @@ class ApiRepo {
             .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
                 override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
                     okHttpResponse?.let {
-                        when{
-                            ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response)
-                        }
+                        when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) }
                     }
                 }
 
@@ -206,9 +200,7 @@ class ApiRepo {
             .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
                 override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
                     okHttpResponse?.let {
-                        when{
-                            ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response)
-                        }
+                        when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) }
                     }
                 }
 
@@ -217,7 +209,52 @@ class ApiRepo {
                     callback.onDataError(anError?.message.toString())
                 }
             })
+    }
 
+    fun getCountAllApproval(unUser :String,context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###","count approval " +BuildConfig.HRIS_URL+"getcountallapproval/"+unUser.trim())
+        AndroidNetworking.get(BuildConfig.HRIS_URL+"getcountallapproval/"+unUser.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let {
+                        when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) }
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err count approval "+anError?.message.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+            })
+    }
+
+    fun getLeaveList(unUser : String ,leaveFrom : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        val urlLeave : String = when(leaveFrom){
+            ConstantObject.extra_fromIntentRequest -> BuildConfig.HRIS_URL+"getallleaverequest/"+unUser.trim()
+            else -> BuildConfig.HRIS_URL+"getleaverequestapprovalall/"+unUser.trim()
+        }
+        Log.d("###", "url leave $urlLeave")
+        AndroidNetworking.get(urlLeave.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let {
+                        when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) }
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err leave "+anError?.message.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+            })
     }
 
     //interface response from server

@@ -25,10 +25,6 @@
             android:icon="@mipmap/ic_confirmation"
             android:title="@string/confirmation_menu" />
         <item
-            android:id="@+id/nav_status"
-            android:icon="@mipmap/ic_detail"
-            android:title="@string/status_menu" />
-        <item
             android:id="@+id/nav_absent"
             android:icon="@mipmap/ic_finger"
             android:title="@string/absent_menu" />

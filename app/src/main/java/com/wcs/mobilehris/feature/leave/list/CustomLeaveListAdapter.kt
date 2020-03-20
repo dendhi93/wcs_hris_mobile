@@ -38,9 +38,9 @@ class CustomLeaveListAdapter(private val context : Context,
         holder.imgCustom.visibility = View.GONE
         holder.imgVIconStatus.visibility = View.VISIBLE
         when(model.leaveStatus){
-            "True" -> holder.imgVIconStatus.setImageResource(R.mipmap.ic_checklist_48)
-            "Waiting" -> holder.imgVIconStatus.setImageResource(R.mipmap.ic_waiting)
-            "False" -> holder.imgVIconStatus.setImageResource(R.mipmap.ic_block_32)
+            ConstantObject.vLeaveApprove -> holder.imgVIconStatus.setImageResource(R.mipmap.ic_checklist_48)
+            ConstantObject.vWaitingTask -> holder.imgVIconStatus.setImageResource(R.mipmap.ic_waiting)
+            ConstantObject.vLeaveReject -> holder.imgVIconStatus.setImageResource(R.mipmap.ic_block_32)
             else -> holder.imgVIconStatus.visibility = View.GONE
         }
         holder.cvCustomLeave.setOnClickListener {

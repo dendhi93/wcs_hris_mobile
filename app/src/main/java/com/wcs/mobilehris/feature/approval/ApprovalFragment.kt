@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.FragmentApprovalBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
@@ -20,7 +21,7 @@ class ApprovalFragment : Fragment(), ApprovalInterface {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         approvalBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_approval, container, false)
-        approvalBinding.viewModel = ApprovalViewModel(requireContext(), this)
+        approvalBinding.viewModel = ApprovalViewModel(requireContext(), this, ApiRepo())
 
         return approvalBinding.root
     }
@@ -45,6 +46,13 @@ class ApprovalFragment : Fragment(), ApprovalInterface {
     override fun onAlertApproval(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
         when(intTypeActionAlert){
             ALERT_APPROVAL_NO_CONNECTION -> MessageUtils.alertDialogDismiss(alertMessage, alertMessage, requireContext())
+        }
+    }
+
+    override fun onMessage(message: String, messageType: Int) {
+        when(messageType){
+            ConstantObject.vToastError -> MessageUtils.toastMessage(requireContext(), message, ConstantObject.vToastError)
+            else ->  MessageUtils.toastMessage(requireContext(), message, ConstantObject.vToastInfo)
         }
     }
 

@@ -14,11 +14,15 @@ object DateTimeUtils {
 
     fun getCurrentDate(): String { return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()) }
 
-    fun getChangeDateFormat(dateTime: String?): String? {
+    fun getChangeDateFormat(dateTime: String?, dateFormatType : Int): String? {
         return try {
-            val source = SimpleDateFormat("yyy-MM-dd, HH:mm:ss", Locale.getDefault())
+            val source = when(dateFormatType){
+                ConstantObject.dateTimeFormat_1 -> SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault())
+                else -> SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            }
+
             val dateSource = source.parse(dateTime.toString())
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy; HH:mm", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             if (dateSource != null) {
                 dateFormat.format(dateSource)
             } else { "" }

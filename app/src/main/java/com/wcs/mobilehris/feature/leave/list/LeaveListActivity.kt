@@ -7,6 +7,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.ActivityLeaveListBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
@@ -21,7 +22,7 @@ class LeaveListActivity : AppCompatActivity(), LeaveListInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityLeaveListBinding = DataBindingUtil.setContentView(this, R.layout.activity_leave_list)
-        activityLeaveListBinding.viewModel = LeaveListViewModel(this, this)
+        activityLeaveListBinding.viewModel = LeaveListViewModel(this, this, ApiRepo())
         activityLeaveListBinding.rcLeaveList.layoutManager = LinearLayoutManager(this)
         activityLeaveListBinding.rcLeaveList.setHasFixedSize(true)
     }

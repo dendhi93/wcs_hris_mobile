@@ -131,14 +131,4 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
             }
         }, 2000)
     }
-
-    fun onBackDtlTravel(intentTravelFrom : String){
-        val intent = Intent(context, MenuActivity::class.java)
-        when(intentTravelFrom){
-            ConstantObject.extra_fromIntentDtlTravel -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_REQUEST)
-            ConstantObject.extra_fromIntentConfirmTravel -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_CONFIRMATION)
-            else -> intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_APPROVAL)
-        }
-        context.startActivity(intent)
-    }
 }

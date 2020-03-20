@@ -23,8 +23,8 @@ class CustomDashboardAdapter(private val _context : Context, private val dashLis
     override fun getItemCount(): Int = dashList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var model : DashboardModel = dashList[position]
-        var titleContent = model.vtitleContent.trim()
+        val model : DashboardModel = dashList[position]
+        val titleContent = model.vtitleContent.trim()
         holder.cvCustomDasboard.setOnClickListener {
             var intent : Intent? = null
             when(titleContent.trim()){
@@ -55,10 +55,6 @@ class CustomDashboardAdapter(private val _context : Context, private val dashLis
                 _context.getString(R.string.notification_menu) -> {
                     intent = Intent(_context, MenuActivity::class.java)
                     intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_NOTIFICATION)
-                }
-                _context.getString(R.string.status_menu) -> {
-                    intent = Intent(_context, MenuActivity::class.java)
-                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_STATUS)
                 }
                 else -> MessageUtils.toastMessage(_context,"Tidak Ada Menu tersebut pada list", ConstantObject.vToastError)
             }

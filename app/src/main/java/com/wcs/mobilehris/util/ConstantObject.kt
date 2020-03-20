@@ -30,6 +30,8 @@ object ConstantObject {
     const val vRejected = "Rejected"
     const val vWaitingTask = "WAITING"
     const val vNoApproval = "No Approval"
+    const val vLeaveApprove = "APPROVE"
+    const val vLeaveReject = "REJECT"
 
     //type progressBar
     const val vLoadWithProgressBar = 11
@@ -44,10 +46,11 @@ object ConstantObject {
     const val vNotCreateEdit = "nonCreateEdit"
 
     //menu request
-    const val travelMenu = "Travel"
-    const val leaveMenu = "Leave"
-    const val benefitMenu = "Benefit"
-    const val travelClaimMenu = "Benefit"
+    const val travelMenu = "TRAVEL"
+    const val leaveMenu = "LEAVE"
+    const val benefitMenu = "BENEFIT"
+    const val travelClaimMenu = "TRAVEL CLAIM"
+    const val activityMenu = "ACTIVITY"
 
     //type intent
     const val extra_intent = "extra_intent"
@@ -69,4 +72,8 @@ object ConstantObject {
     const val keyTransType = "mTrans_type"
     const val keyReasonTravel = "mReason"
     const val keyLeaveType = "mLeaveType"
+
+    //date format from
+    const val dateTimeFormat_1 = 1
+    const val dateTimeFormat_2 = 2
 }

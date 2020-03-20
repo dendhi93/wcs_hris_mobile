@@ -2,17 +2,24 @@ package com.wcs.mobilehris.feature.leave.list
 
 import android.content.Context
 import android.content.Intent
-import android.os.Handler
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.feature.leave.transaction.LeaveTransactionActivity
 import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.DateTimeUtils
+import com.wcs.mobilehris.util.Preference
+import org.json.JSONArray
+import org.json.JSONObject
 
-class LeaveListViewModel (private val context: Context, private val leaveListInterface: LeaveListInterface):ViewModel(){
+class LeaveListViewModel (private val context: Context,
+                          private val leaveListInterface: LeaveListInterface,
+                        private val apiRepo: ApiRepo):ViewModel(){
     val isVisibleFabLeave = ObservableField(false)
+    private var preference: Preference = Preference(context)
 
     fun validateDataLeave(typeOfLoading : Int, intentLeaveFrom : String){
         when{
@@ -29,59 +36,120 @@ class LeaveListViewModel (private val context: Context, private val leaveListInt
         leaveListInterface.showUI(ConstantObject.vGlobalUI)
 
         val mutableLeaveList = mutableListOf<LeaveListModel>()
-        var leaveListModel : LeaveListModel?
-        when(intentLeaveFrom){
-            ConstantObject.extra_fromIntentRequest -> {
-                isVisibleFabLeave.set(true)
-                leaveListModel = LeaveListModel("1",
-                    "Annual Leave",
-                    "25/02/2020",
-                    "25/02/2020",
-                    "Waiting",
-                    "")
-                mutableLeaveList.add(leaveListModel)
-                leaveListModel = LeaveListModel("2",
-                    "Annual Leave",
-                    "26/02/2020",
-                    "26/02/2020",
-                    "True",
-                    "")
-                mutableLeaveList.add(leaveListModel)
-                leaveListModel = LeaveListModel("3",
-                    "Sick Leave",
-                    "26/02/2020",
-                    "26/02/2020",
-                    "False",
-                    "")
-                mutableLeaveList.add(leaveListModel)
-            }
-            else -> {
-                isVisibleFabLeave.set(false)
-                leaveListModel = LeaveListModel("1",
-                    "Annual Leave",
-                    "25/02/2020",
-                    "25/02/2020",
-                    "",
-                    "Deddy")
-                mutableLeaveList.add(leaveListModel)
-                leaveListModel = LeaveListModel("2",
-                    "Annual Leave",
-                    "26/02/2020",
-                    "26/02/2020",
-                    "",
-                    "Windy")
-                mutableLeaveList.add(leaveListModel)
-                leaveListModel = LeaveListModel("3",
-                    "Sick Leave",
-                    "26/02/2020",
-                    "26/02/2020",
-                    "",
-                    "Michael")
-                mutableLeaveList.add(leaveListModel)
-            }
-        }
+        var leaveListModel : LeaveListModel
+        apiRepo.getLeaveList(preference.getUn(),intentLeaveFrom, context, object : ApiRepo.ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val responseLeaveList = it.getString(ConstantObject.vResponseData)
+                    val jArrayLeaveList = JSONArray(responseLeaveList)
+                    when(intentLeaveFrom){
+                        ConstantObject.extra_fromIntentRequest -> {
+                            isVisibleFabLeave.set(true)
+                            for(i in 0 until jArrayLeaveList.length()) {
+                                val jObjReqLeave = jArrayLeaveList.getJSONObject(i)
+                                val leaveDateFrom = DateTimeUtils.getChangeDateFormat(jObjReqLeave.getString("DATE_FROM"), ConstantObject.dateTimeFormat_1)
+                                val leaveDateInto = DateTimeUtils.getChangeDateFormat(jObjReqLeave.getString("DATE_TO"), ConstantObject.dateTimeFormat_1)
+                                leaveListModel = LeaveListModel(
+                                    jObjReqLeave.getString("ID"),
+                                    jObjReqLeave.getString("LEAVE_TYPE_NAME"),
+                                    leaveDateFrom.toString(),
+                                    leaveDateInto.toString(),
+                                    jObjReqLeave.getString("LEAVE_STATUS"),
+                                    ""
+                                )
+                                mutableLeaveList.add(leaveListModel)
+                            }
+                            funcLeaveList(mutableLeaveList, typeOfLoading)
+                        }
+                        else -> {
+                            isVisibleFabLeave.set(false)
+                            for(j in 0 until jArrayLeaveList.length()) {
+                                val jObjApproveLeave = jArrayLeaveList.getJSONObject(j)
+                                val leaveApproveDateFrom = DateTimeUtils.getChangeDateFormat(jObjApproveLeave.getString("DATE_FROM"), ConstantObject.dateTimeFormat_2)
+                                val leaveApproveDateInto = DateTimeUtils.getChangeDateFormat(jObjApproveLeave.getString("DATE_TO"), ConstantObject.dateTimeFormat_2)
+                                var nameRequestor = jObjApproveLeave.getString("NIK").split("(")[1]
+                                nameRequestor = nameRequestor.split(")")[0]
 
-        when(mutableLeaveList.size){
+                                leaveListModel = LeaveListModel(
+                                    jObjApproveLeave.getString("ID"),
+                                    jObjApproveLeave.getString("LEAVE_TYPE_NAME"),
+                                    leaveApproveDateFrom.toString(),
+                                    leaveApproveDateInto.toString(),
+                                    "",
+                                    nameRequestor.trim()
+                                )
+                                mutableLeaveList.add(leaveListModel)
+                            }
+                            funcLeaveList(mutableLeaveList, typeOfLoading)
+                        }
+                    }
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                leaveListInterface.showUI(ConstantObject.vGlobalUI)
+                leaveListInterface.hideUI(ConstantObject.vRecylerViewUI)
+                when(typeOfLoading){
+                    ConstantObject.vLoadWithProgressBar -> leaveListInterface.hideUI(ConstantObject.vProgresBarUI)
+                    else -> leaveListInterface.onHideSwipeLeaveList()
+                }
+                leaveListInterface.onErrorMessage("Err Leave List " +error.toString().trim(), ConstantObject.vToastInfo)
+            }
+        })
+//        when(intentLeaveFrom){
+//            ConstantObject.extra_fromIntentRequest -> {
+//                isVisibleFabLeave.set(true)
+//                leaveListModel = LeaveListModel("1",
+//                    "Annual Leave",
+//                    "25/02/2020",
+//                    "25/02/2020",
+//                    "Waiting",
+//                    "")
+//                mutableLeaveList.add(leaveListModel)
+//                leaveListModel = LeaveListModel("2",
+//                    "Annual Leave",
+//                    "26/02/2020",
+//                    "26/02/2020",
+//                    "True",
+//                    "")
+//                mutableLeaveList.add(leaveListModel)
+//                leaveListModel = LeaveListModel("3",
+//                    "Sick Leave",
+//                    "26/02/2020",
+//                    "26/02/2020",
+//                    "False",
+//                    "")
+//                mutableLeaveList.add(leaveListModel)
+//            }
+//            else -> {
+//                isVisibleFabLeave.set(false)
+//                leaveListModel = LeaveListModel("1",
+//                    "Annual Leave",
+//                    "25/02/2020",
+//                    "25/02/2020",
+//                    "",
+//                    "Deddy")
+//                mutableLeaveList.add(leaveListModel)
+//                leaveListModel = LeaveListModel("2",
+//                    "Annual Leave",
+//                    "26/02/2020",
+//                    "26/02/2020",
+//                    "",
+//                    "Windy")
+//                mutableLeaveList.add(leaveListModel)
+//                leaveListModel = LeaveListModel("3",
+//                    "Sick Leave",
+//                    "26/02/2020",
+//                    "26/02/2020",
+//                    "",
+//                    "Michael")
+//                mutableLeaveList.add(leaveListModel)
+//            }
+//        }
+    }
+
+    private fun funcLeaveList(list : List<LeaveListModel>, typeOfLoading : Int){
+        when(list.size){
             0 -> {
                 leaveListInterface.showUI(ConstantObject.vGlobalUI)
                 leaveListInterface.hideUI(ConstantObject.vRecylerViewUI)
@@ -91,11 +159,7 @@ class LeaveListViewModel (private val context: Context, private val leaveListInt
                 }
                 leaveListInterface.onErrorMessage(context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
             }
-            else ->{
-                Handler().postDelayed({
-                    leaveListInterface.onLoadLeaveList(mutableLeaveList, typeOfLoading)
-                }, 2000)
-            }
+            else -> leaveListInterface.onLoadLeaveList(list, typeOfLoading)
         }
     }
 
