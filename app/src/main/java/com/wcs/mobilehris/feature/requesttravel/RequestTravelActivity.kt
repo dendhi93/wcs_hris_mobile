@@ -264,9 +264,17 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     }
 
     override fun getTeamData() {
-        val intent = Intent(this, TeamActivity::class.java)
-        intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentCreateTravel)
-        startActivityForResult(intent, RESULT_SUCCESS_CODE_TEAM)
+        val travelDepartDate = activityRequestTravelBinding.viewModel?.stDepartDate?.get()
+        val travelReturnDate = activityRequestTravelBinding.viewModel?.stReturnDate?.get()
+        if(travelDepartDate == "" || travelReturnDate == ""){
+            onMessage("Please Fill depart or Return Date", ConstantObject.vToastInfo)
+        }else{
+            val intent = Intent(this, TeamActivity::class.java)
+            intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentCreateTravel)
+            intent.putExtra(ConstantObject.extra_dateFrom_intent, travelDepartDate?.trim())
+            intent.putExtra(ConstantObject.extra_dateInto_intent, travelReturnDate?.trim())
+            startActivityForResult(intent, RESULT_SUCCESS_CODE_TEAM)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

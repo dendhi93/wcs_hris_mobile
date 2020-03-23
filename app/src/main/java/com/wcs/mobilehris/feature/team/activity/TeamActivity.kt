@@ -14,13 +14,13 @@ import androidx.core.view.MenuItemCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.TeamProjectActivityBinding
 import com.wcs.mobilehris.feature.createtask.CreateTaskActivity
 import com.wcs.mobilehris.feature.requesttravel.RequestTravelActivity
 import com.wcs.mobilehris.feature.team.fragment.*
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -33,11 +33,13 @@ class TeamActivity : AppCompatActivity(),
     private lateinit var teamAdapter: CustomTeamProjectAdapter
     private var backIntent : Intent? = null
     private lateinit var intentFrom : String
+    private lateinit var intentDateFrom : String
+    private lateinit var intentDateInto : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         teamProjectActivityBinding = DataBindingUtil.setContentView(this, R.layout.team_project_activity)
-        teamProjectActivityBinding.viewModel = TeamProjectViewModel(this, this)
+        teamProjectActivityBinding.viewModel = TeamProjectViewModel(this, this, ApiRepo())
     }
 
     override fun onStart() {
@@ -50,16 +52,16 @@ class TeamActivity : AppCompatActivity(),
         )
         teamAdapter.initSelectedCallBack(this)
         teamProjectActivityBinding.rcTeamProject.adapter = teamAdapter
-        teamProjectActivityBinding.viewModel?.initDataTeamProject()
         intentFrom = intent.getStringExtra(ConstantObject.extra_intent).toString()
+        intentDateFrom = intent.getStringExtra(ConstantObject.extra_dateFrom_intent).toString()
+        intentDateInto = intent.getStringExtra(ConstantObject.extra_dateInto_intent).toString()
     }
 
     override fun onLoadTeamProject(teamList: List<TeamProjectModel>) {
-        arrTeamList.clear()
         arrTeamList.addAll(teamList)
         teamAdapter.notifyDataSetChanged()
         teamProjectActivityBinding.viewModel?.isProgressVisibleTeam?.set(false)
-        teamProjectActivityBinding.viewModel?.isVisibleRecylerView?.set(false)
+        teamProjectActivityBinding.viewModel?.isVisibleRecylerView?.set(true)
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {
@@ -74,6 +76,10 @@ class TeamActivity : AppCompatActivity(),
             ALERT_TEAM_NO_CONNECTION -> {
                 MessageUtils.alertDialogDismiss(alertMessage, alertTitle, this@TeamActivity)}
         }
+    }
+
+    override fun clearList() {
+        arrTeamList.clear()
     }
 
 
@@ -94,28 +100,13 @@ class TeamActivity : AppCompatActivity(),
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                filterTeamName(newText.toString().trim())
+                newText?.trim()?.let {
+                    teamProjectActivityBinding.viewModel?.initDataTeamProject(it,intentDateFrom, intentDateInto)
+                }
                 return true
             }
         })
         return super.onCreateOptionsMenu(menu)
-    }
-
-    private fun filterTeamName(textFilter : String){
-        val arrListFilteredTeam: ArrayList<TeamProjectModel> = ArrayList()
-        val arrListTeamList : ArrayList<TeamProjectModel> = arrTeamList
-        teamProjectActivityBinding.viewModel?.isVisibleRecylerView?.set(true)
-        when{
-            arrListTeamList.isNotEmpty() -> {
-                for(itemTeam in arrListTeamList) {
-                    if (itemTeam.nameTeam.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(
-                            Locale.getDefault()))){
-                        arrListFilteredTeam.add(itemTeam)
-                    }
-                }
-                teamAdapter.filterListTeamProject(arrListFilteredTeam)
-            }
-        }
     }
 
     companion object{

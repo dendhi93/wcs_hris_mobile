@@ -42,8 +42,8 @@ class CustomTeamProjectAdapter(private val context : Context, private var teamPr
         var tvNameStatus : TextView = view.findViewById(R.id.tv_custom_content)
     }
 
-    fun filterListTeamProject(filterListteam : ArrayList<TeamProjectModel>){
-        teamProjectList = filterListteam
-        notifyDataSetChanged()
-    }
+//    fun filterListTeamProject(filterListteam : ArrayList<TeamProjectModel>){
+//        teamProjectList = filterListteam
+//        notifyDataSetChanged()
+//    }
 }

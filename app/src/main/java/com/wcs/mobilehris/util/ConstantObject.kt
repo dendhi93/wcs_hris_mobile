@@ -54,6 +54,8 @@ object ConstantObject {
 
     //type intent
     const val extra_intent = "extra_intent"
+    const val extra_dateFrom_intent = "extra_dateFrom_intent"
+    const val extra_dateInto_intent = "extra_dateInto_intent"
     const val extra_fromIntentCreateTask = "CreateTask"
     const val extra_fromIntentTeam = "team_fragment"
     const val extra_fromIntentProfile = "profile_activity"

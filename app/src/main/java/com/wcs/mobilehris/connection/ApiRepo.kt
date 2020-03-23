@@ -257,6 +257,29 @@ class ApiRepo {
             })
     }
 
+    fun searchDataTeam(teamName : String, selectedDateFrom : String, selectedDateInto : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        val teamUrl = BuildConfig.HRIS_URL+"getteamemployeebyname/"+
+                selectedDateFrom.trim()+"/"+
+                selectedDateInto.trim()+"/08:30/17:30/"+
+                teamName.trim()
+        Log.d("###", "url searchDataTeam $teamUrl")
+        AndroidNetworking.get(teamUrl.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err team search "+anError?.message.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+            })
+    }
+
     //interface response from server
     interface ApiCallback<T> {
         fun onDataLoaded(data: T?)

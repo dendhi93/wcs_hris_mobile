@@ -126,9 +126,17 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFri
     }
 
     override fun getTeamData() {
-        val intent = Intent(this, TeamActivity::class.java)
-        intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentCreateTask)
-        startActivityForResult(intent, RESULT_SUCCESS_CODE)
+        val stDateFrom = activityCreateTaskBinding.viewModel?.stDateTaskFrom?.get()
+        val stDateInto = activityCreateTaskBinding.viewModel?.stDateTaskInto?.get()
+        if(stDateFrom == "" || stDateInto == ""){
+            onMessage("Please fill Date From or Date Into", ConstantObject.vToastInfo)
+        }else{
+            val intent = Intent(this, TeamActivity::class.java)
+            intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentCreateTask)
+            intent.putExtra(ConstantObject.extra_dateFrom_intent, stDateFrom?.trim())
+            intent.putExtra(ConstantObject.extra_dateInto_intent, stDateInto?.trim())
+            startActivityForResult(intent, RESULT_SUCCESS_CODE)
+        }
     }
 
     override fun onSuccessCreateTask() {

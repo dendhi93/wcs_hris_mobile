@@ -6,9 +6,6 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
-import com.wcs.mobilehris.feature.team.fragment.TeamFragment
-import com.wcs.mobilehris.feature.team.fragment.TeamInterface
-import com.wcs.mobilehris.feature.team.fragment.TeamModel
 import com.wcs.mobilehris.util.ConstantObject
 
 class TeamViewModel (private val context : Context, private val teamInterface: TeamInterface) : ViewModel(){

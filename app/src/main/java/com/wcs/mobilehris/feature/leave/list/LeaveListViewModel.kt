@@ -93,59 +93,9 @@ class LeaveListViewModel (private val context: Context,
                     ConstantObject.vLoadWithProgressBar -> leaveListInterface.hideUI(ConstantObject.vProgresBarUI)
                     else -> leaveListInterface.onHideSwipeLeaveList()
                 }
-                leaveListInterface.onErrorMessage("Err Leave List " +error.toString().trim(), ConstantObject.vToastInfo)
+                leaveListInterface.onErrorMessage("Err Leave List " +error.toString().trim(), ConstantObject.vToastError)
             }
         })
-//        when(intentLeaveFrom){
-//            ConstantObject.extra_fromIntentRequest -> {
-//                isVisibleFabLeave.set(true)
-//                leaveListModel = LeaveListModel("1",
-//                    "Annual Leave",
-//                    "25/02/2020",
-//                    "25/02/2020",
-//                    "Waiting",
-//                    "")
-//                mutableLeaveList.add(leaveListModel)
-//                leaveListModel = LeaveListModel("2",
-//                    "Annual Leave",
-//                    "26/02/2020",
-//                    "26/02/2020",
-//                    "True",
-//                    "")
-//                mutableLeaveList.add(leaveListModel)
-//                leaveListModel = LeaveListModel("3",
-//                    "Sick Leave",
-//                    "26/02/2020",
-//                    "26/02/2020",
-//                    "False",
-//                    "")
-//                mutableLeaveList.add(leaveListModel)
-//            }
-//            else -> {
-//                isVisibleFabLeave.set(false)
-//                leaveListModel = LeaveListModel("1",
-//                    "Annual Leave",
-//                    "25/02/2020",
-//                    "25/02/2020",
-//                    "",
-//                    "Deddy")
-//                mutableLeaveList.add(leaveListModel)
-//                leaveListModel = LeaveListModel("2",
-//                    "Annual Leave",
-//                    "26/02/2020",
-//                    "26/02/2020",
-//                    "",
-//                    "Windy")
-//                mutableLeaveList.add(leaveListModel)
-//                leaveListModel = LeaveListModel("3",
-//                    "Sick Leave",
-//                    "26/02/2020",
-//                    "26/02/2020",
-//                    "",
-//                    "Michael")
-//                mutableLeaveList.add(leaveListModel)
-//            }
-//        }
     }
 
     private fun funcLeaveList(list : List<LeaveListModel>, typeOfLoading : Int){
