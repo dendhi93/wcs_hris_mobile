@@ -26,10 +26,22 @@
                 android:visibility="gone"
                 android:indeterminate="true" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_date_for_actual"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pb_actual"
+                android:layout_marginHorizontal="@dimen/space_07"
+                android:text="Date"
+                android:textColor="@color/text_color"
+                app:strokeColor="@color/colorGreen"/>
+
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/sw_actual"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_below="@+id/btn_date_for_actual">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rc_actual"

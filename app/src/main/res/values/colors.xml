@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">@color/colorGray200</color>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#B71C1C</color>
 
     <color name="colorWhite">#ffffff</color>
@@ -37,6 +37,9 @@
     <!--Background-->
     <color name="backgroundApp">#FFFEEE</color>
 
+    <!--Navigation Header-->
+    <color name="navigation_header_background">#FFFEEE</color>
+
     <!--Tool Bar-->
     <color name="toolbar_text_color">#080808</color>
     <color name="toolbar_drawer_color">#080808</color>
@@ -60,4 +63,10 @@
     <!--Card View-->
     <color name="card_view_background">#FFFFFF</color>
     <color name="card_view_divider">@color/backgroundApp</color>
+
+    <!--Alert Dialog-->
+    <color name="dialog_background">#FFFFFF</color>
+    <color name="positive_button_text_color">#64B5F6</color>
+    <color name="negative_button_text_color">#F44336</color>
+
 </resources>

@@ -1,20 +1,23 @@
 package com.wcs.mobilehris.feature.plan
 
+import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.util.Pair
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.FragmentPlanBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
-
-class PlanFragment : Fragment(), PlanInterface {
+class PlanFragment : Fragment(), PlanInterface, View.OnClickListener {
     private lateinit var planFragmentBinding : FragmentPlanBinding
     private var arrPlanList = ArrayList<ContentTaskModel>()
     private lateinit var planAdapter: CustomTaskAdapter
@@ -35,6 +38,7 @@ class PlanFragment : Fragment(), PlanInterface {
         planFragmentBinding.swPlan.setOnRefreshListener {
             planFragmentBinding.viewModel?.initPlan(ConstantObject.vLoadWithoutProgressBar)
         }
+        planFragmentBinding.btnDateForPlan.setOnClickListener(this)
     }
 
     override fun onLoadList(planList: List<ContentTaskModel>, typeLoading : Int) {
@@ -82,7 +86,41 @@ class PlanFragment : Fragment(), PlanInterface {
         }
     }
 
+    override fun onClick(v: View?) {
+        if (v != null) {
+            when (v.id) {
+                R.id.btn_date_for_plan -> {
+                    val builder: MaterialDatePicker.Builder<Pair<Long, Long>> = MaterialDatePicker.Builder.dateRangePicker()
+                    val constraintsBuilder = CalendarConstraints.Builder()
+
+                    try {
+                        builder.setCalendarConstraints(constraintsBuilder.build())
+                        val picker: MaterialDatePicker<*> = builder.build()
+                        getDateRange(picker)
+                        picker.show(this.activity!!.supportFragmentManager, picker.toString())
+                    } catch (e: IllegalArgumentException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getDateRange(materialCalendarPicker: MaterialDatePicker<out Any>) {
+        materialCalendarPicker.addOnPositiveButtonClickListener { selection: Any? ->
+            Log.e("DateRangeText",materialCalendarPicker.headerText)
+        }
+        materialCalendarPicker.addOnNegativeButtonClickListener { dialog: View? ->
+
+        }
+        materialCalendarPicker.addOnCancelListener { dialog: DialogInterface? ->
+
+        }
+    }
+
     companion object{
         const val ALERT_PLAN_NO_CONNECTION = 1
     }
+
+
 }

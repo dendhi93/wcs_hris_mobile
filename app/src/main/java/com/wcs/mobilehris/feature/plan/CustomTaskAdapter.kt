@@ -66,19 +66,23 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
         when(flagTask){
             ConstantObject.vPlanTask -> {
                 holder.btnPlan.isEnabled = false
-                holder.btnPlan.setBackgroundResource(R.drawable.bg_red_button)
+                holder.btnPlan.setBackgroundColor(Color.parseColor("#FF0000"))
+//                holder.btnPlan.setBackgroundResource(R.drawable.bg_red_button)
             }
             ConstantObject.vConfirmTask -> {
                 holder.btnPlan.isEnabled = true
-                holder.btnPlan.setBackgroundResource(R.drawable.bg_light_green_button)
+                holder.btnPlan.setBackgroundColor(Color.parseColor("#FFA500"))
+//                holder.btnPlan.setBackgroundResource(R.drawable.bg_light_green_button)
             }
             ConstantObject.vWaitingTask ->{
                 holder.btnPlan.isEnabled = true
-                holder.btnPlan.setBackgroundResource(R.drawable.bg_green_button)
+                holder.btnPlan.setBackgroundColor(Color.parseColor("#5EC64C"))
+//                holder.btnPlan.setBackgroundResource(R.drawable.bg_green_button)
             }
             else -> {
                 holder.btnPlan.isEnabled = false
-                holder.btnPlan.setBackgroundResource(R.drawable.bg_green_button)
+                holder.btnPlan.setBackgroundColor(Color.parseColor("#5EC64C"))
+//                holder.btnPlan.setBackgroundResource(R.drawable.bg_green_button)
             }
         }
         holder.btnPlan.setOnClickListener{

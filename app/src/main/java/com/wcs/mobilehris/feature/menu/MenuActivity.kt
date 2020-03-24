@@ -4,25 +4,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
-import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
-import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.android.material.navigation.NavigationView
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.ActivityMenuBinding
 import com.wcs.mobilehris.feature.absent.AbsentFragment
-import com.wcs.mobilehris.feature.profile.ProfileActivity
 import com.wcs.mobilehris.feature.activity.ActivityFragment
 import com.wcs.mobilehris.feature.approval.ApprovalFragment
 import com.wcs.mobilehris.feature.confirmation.ConfirmationFragment
 import com.wcs.mobilehris.feature.dashboard.DashboardFragment
 import com.wcs.mobilehris.feature.notification.NotificationFragment
+import com.wcs.mobilehris.feature.profile.ProfileActivity
 import com.wcs.mobilehris.feature.request.RequestFragment
 import com.wcs.mobilehris.feature.setting.SettingFragment
 import com.wcs.mobilehris.feature.status.StatusFragment
@@ -31,7 +29,6 @@ import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import com.wcs.mobilehris.util.Preference
 import com.wcs.mobilehris.utilinterface.DialogInterface
-
 
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     DialogInterface {

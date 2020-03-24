@@ -7,7 +7,9 @@ import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.wcs.mobilehris.R
 import com.wcs.mobilehris.utilinterface.DialogInterface
 import es.dmoral.toasty.Toasty
 
@@ -59,18 +61,18 @@ object MessageUtils {
     }
 
     fun alertDialogOkCancel(alertMessage : String, alertTitle : String,context: Context, dialogInterface: DialogInterface){
-        AlertDialog.Builder(context).setTitle(alertTitle)
+        MaterialAlertDialogBuilder(context, R.style.customAlertDialogStyle)
+            .setTitle(alertTitle)
             .setMessage(alertMessage)
-            .setPositiveButton(android.R.string.ok){
-                    dialog, _ ->
-                    dialog.dismiss()
-                    dialogInterface.onPositiveClick(Any())
+            .setPositiveButton(android.R.string.ok) {
+                dialog, which ->
+                dialog.dismiss()
+                dialogInterface.onPositiveClick(Any())
             }
-            .setNegativeButton(android.R.string.cancel){
-                    dialog, _ ->
-                    dialog.dismiss()
+            .setNegativeButton(android.R.string.cancel) {
+                dialog, which ->
+                dialog.dismiss()
                 dialogInterface.onNegativeClick(Any())
-
             }
             .setCancelable(false)
             .create()

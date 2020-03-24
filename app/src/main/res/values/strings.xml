@@ -61,6 +61,7 @@
     <string name="approval_leave_list_activity">Approval Leave Report</string>
     <string name="req_leave_activity">Request Leave</string>
     <string name="approval_leave_activity">Approval Leave</string>
+    <string name="approval_action_list_activity">Activity List</string>
 
     <!--permission form-->
     <string name="permission_button">IZINKAN</string>

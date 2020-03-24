@@ -4,7 +4,7 @@
     android:id="@+id/ln_nav_header"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@color/colorGray300"
+    android:background="@color/navigation_header_background"
     android:gravity="center"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -36,7 +36,5 @@
         android:textSize="@dimen/alph_size_small_3"
         android:layout_marginTop="@dimen/padding_medium2"
         android:text=""/>
-
-
 
 </LinearLayout>

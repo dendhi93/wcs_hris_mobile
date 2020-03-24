@@ -47,6 +47,7 @@
             android:label="@string/req_travel_activity" />
         <activity
             android:name=".feature.requesttravellist.RequestTravelListActivity"
+            android:theme="@style/AppTheme2"
             android:label="@string/req_travel_hist_activity" />
         <activity
             android:name=".feature.confirmtask.ConfirmTaskActivity"
@@ -93,6 +94,8 @@
             android:label="@string/dtl_notification_activity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
+        <activity android:name=".feature.approvallistofactivities.AppActionListActivity"
+            android:label="@string/approval_action_list_activity" />
 
     </application>
 </manifest>

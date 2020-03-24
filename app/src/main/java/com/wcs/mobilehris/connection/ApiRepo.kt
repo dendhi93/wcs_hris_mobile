@@ -16,6 +16,7 @@ class ApiRepo {
     fun getLogin(userName : String, passUn : String, context : Context, callback: ApiCallback<JSONObject>){
         AndroidNetworking.initialize(context)
         Log.d("###","url Login "+BuildConfig.HRIS_URL+"authenticates/"+userName.trim()+"/"+passUn.trim())
+
         AndroidNetworking.get(BuildConfig.HRIS_URL+"authenticates/"+userName.trim()+"/"+passUn.trim())
             .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
             .setPriority(Priority.MEDIUM)
