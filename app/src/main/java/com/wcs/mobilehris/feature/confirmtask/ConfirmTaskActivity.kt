@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.RadioButton
 import androidx.databinding.DataBindingUtil
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.ActivityConfirmTaskBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
@@ -22,7 +23,7 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityConfirmBinding = DataBindingUtil.setContentView(this, R.layout.activity_confirm_task)
-        activityConfirmBinding.viewModel = ConfirmTaskViewModel(this, this)
+        activityConfirmBinding.viewModel = ConfirmTaskViewModel(this, this, ApiRepo())
     }
 
     override fun onStart() {
@@ -39,9 +40,8 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
         activityConfirmBinding.viewModel?.stButtonName?.set(intentConfirmTaskFromMenu.toString().trim())
         when{
             intentConfirmTaskId != "" && intentConfirmTaskChargeCode != "" ->{
-                val confirmTaskSplitChargeCode = intentConfirmTaskChargeCode.toString().trim().split("|")
                 activityConfirmBinding.viewModel?.onLoadConfirmData(intentConfirmTaskId.toString().trim(),
-                    confirmTaskSplitChargeCode[0].trim())
+                    intentConfirmTaskChargeCode.toString().trim())
             }
         }
     }
@@ -49,6 +49,7 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
+                activityConfirmBinding.viewModel?.onBackConfirmTask()
                 finish()
                 return true
             }
@@ -64,7 +65,6 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
             else -> MessageUtils.toastMessage(this, message, ConstantObject.vToastSuccess)
         }
     }
-
 
     override fun onAlertConfirmTask(alertMessage: String, alertTitle: String, intTypeActionAlert: Int) {
         when(intTypeActionAlert){
@@ -91,6 +91,12 @@ class ConfirmTaskActivity : AppCompatActivity(), ConfirmTaskInterface, DialogInt
     }
 
     override fun onNegativeClick(o: Any) {}
+
+    override fun onBackPressed() {
+        activityConfirmBinding.viewModel?.onBackConfirmTask()
+        finish()
+        super.onBackPressed()
+    }
 
     companion object{
         const val ALERT_CONFIRM_TASK_NO_CONNECTION = 1

@@ -5,12 +5,18 @@ import android.content.Intent
 import android.os.Handler
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.feature.createtask.CreateTaskActivity
 import com.wcs.mobilehris.feature.plan.ContentTaskModel
 import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.DateTimeUtils
+import com.wcs.mobilehris.util.Preference
+import org.json.JSONArray
+import org.json.JSONObject
 
-class ActualViewModel(var _context : Context, var _actualnterface : ActualInterface ) : ViewModel(){
+class ActualViewModel(private var _context : Context, private var _actualnterface : ActualInterface, private var apiRepo: ApiRepo ) : ViewModel(){
+    private var preference: Preference = Preference(_context)
 
     fun initActual(typeOfLoading : Int){
         when{
@@ -30,62 +36,61 @@ class ActualViewModel(var _context : Context, var _actualnterface : ActualInterf
         _actualnterface.hideUI(ConstantObject.vRecylerViewUI)
         _actualnterface.showUI(ConstantObject.vGlobalUI)
         val listActual = mutableListOf<ContentTaskModel>()
-        var _actualModel = ContentTaskModel("F-0014-018|MILLS MOBILITY APPLICATION",
-            "Michael",
-            "18/12/2019 11.24",
-            "PT Sukanda",
-            "08:00",
-            "11:00",
-            "Confirm",
-            "20/12/2019",
-            "50",
-            0,
-            true,
-            "")
-        listActual.add(_actualModel)
-        _actualModel = ContentTaskModel("A-1003-096|BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
-            "Windy",
-            "19/12/2019 11.24",
-            "PT Heinz ABC",
-            "13:00",
-            "17:00",
-            "Confirm",
-            "20/12/2019",
-            "51",
-            0,
-            true,
-            "")
-        listActual.add(_actualModel)
-        _actualModel = ContentTaskModel("A-1003-096|BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
-            "Deddy",
-            "20/12/2019 11.24",
-            "PT Yakult",
-            "08:00",
-            "17:30",
-            "Confirm",
-            "20/12/2019",
-            "52",
-            0,
-            true,
-            "")
-        listActual.add(_actualModel)
+        apiRepo.getDataActivity(preference.getUn(),
+            DateTimeUtils.getCurrentDate(),
+            ConstantObject.vConfirmTask,
+            _context, object  : ApiRepo.ApiCallback<JSONObject> {
+                override fun onDataLoaded(data: JSONObject?) {
+                    data?.let {
+                        val responsePlanData = it.getString(ConstantObject.vResponseData)
+                        val jArrayDataPlan = JSONArray(responsePlanData)
+                        for (i in 0 until jArrayDataPlan.length()) {
+                            val jObjDataPlan = jArrayDataPlan.getJSONObject(i)
+                            val planModel = ContentTaskModel(
+                                jObjDataPlan.getString("CHARGE_CD") +"|"
+                                        +jObjDataPlan.getString("CHARGE_CD_NAME"),
+                                jObjDataPlan.getString("CREATED_BY_NAME"),
+                                jObjDataPlan.getString("CREATED_DATE"),
+                                jObjDataPlan.getString("CUSTOMER_NAME"),
+                                jObjDataPlan.getString("TIME_FROM"),
+                                jObjDataPlan.getString("TIME_TO"),
+                                "Confirm",
+                                jObjDataPlan.getString("DT_FROM") +" - "
+                                        + jObjDataPlan.getString("DT_TO"),
+                                jObjDataPlan.getString("ACTIVITY_HEADER_ID"),
+                                0,
+                                true,
+                                ""
+                            )
+                            listActual.add(planModel)
+                        }
+                        when{
+                            listActual.size > 0 -> _actualnterface.onDisplayList(listActual, typeLoading)
+                            else -> {
+                                _actualnterface.showUI(ConstantObject.vGlobalUI)
+                                _actualnterface.hideUI(ConstantObject.vRecylerViewUI)
 
-        when{
-            listActual.size > 0 -> {
-                Handler().postDelayed({
-                    _actualnterface.onDisplayList(listActual, typeLoading)
-                }, 2000)
-            }
-            else -> {
-                _actualnterface.showUI(ConstantObject.vGlobalUI)
-                _actualnterface.hideUI(ConstantObject.vRecylerViewUI)
-                _actualnterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
-                when(typeLoading){
-                    ConstantObject.vLoadWithProgressBar -> _actualnterface.hideUI(ConstantObject.vProgresBarUI)
-                    else -> _actualnterface.onHideSwipeRefresh()
+                                when(typeLoading){
+                                    ConstantObject.vLoadWithProgressBar -> _actualnterface.hideUI(ConstantObject.vProgresBarUI)
+                                    else -> _actualnterface.onHideSwipeRefresh()
+                                }
+                                _actualnterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
+                            }
+                        }
+                    }
                 }
-            }
-        }
+
+                override fun onDataError(error: String?) {
+                    _actualnterface.hideUI(ConstantObject.vRecylerViewUI)
+                    _actualnterface.showUI(ConstantObject.vGlobalUI)
+                    _actualnterface.onErrorMessage(" err "
+                            +error.toString().trim(), ConstantObject.vToastError)
+                    when(typeLoading){
+                        ConstantObject.vLoadWithProgressBar -> _actualnterface.hideUI(ConstantObject.vProgresBarUI)
+                        else -> _actualnterface.onHideSwipeRefresh()
+                    }
+                }
+            })
     }
 
     fun fabActualClick(){

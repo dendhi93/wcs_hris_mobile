@@ -8,6 +8,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.ActivityRequestTravelListBinding
 import com.wcs.mobilehris.feature.requesttravel.RequestTravelActivity
 import com.wcs.mobilehris.util.ConstantObject
@@ -23,7 +24,7 @@ class RequestTravelListActivity : AppCompatActivity(), ReqTravelListInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityRequestTravelListBinding = DataBindingUtil.setContentView(this, R.layout.activity_request_travel_list)
-        activityRequestTravelListBinding.viewModel = RequestTravelListViewModel(this, this)
+        activityRequestTravelListBinding.viewModel = RequestTravelListViewModel(this, this, ApiRepo())
         activityRequestTravelListBinding.rcReqTravelList.layoutManager = LinearLayoutManager(this)
         activityRequestTravelListBinding.rcReqTravelList.setHasFixedSize(true)
     }
@@ -99,11 +100,18 @@ class RequestTravelListActivity : AppCompatActivity(), ReqTravelListInterface {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
+                activityRequestTravelListBinding.viewModel?.onBackTravelList()
                 finish()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        activityRequestTravelListBinding.viewModel?.onBackTravelList()
+        finish()
+        super.onBackPressed()
     }
     companion object{
         const val ALERT_REQ_TRAVEL_HIST_NO_CONNECTION = 1

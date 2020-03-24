@@ -10,15 +10,19 @@ import java.util.concurrent.TimeUnit
 
 object DateTimeUtils {
 
-    fun getCurrentTime(): String { return SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()) }
+    fun getCurrentTime(): String { return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()) }
 
-    fun getCurrentDate(): String { return SimpleDateFormat("yyy-MM-dd", Locale.getDefault()).format(Date()) }
+    fun getCurrentDate(): String { return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()) }
 
-    fun getChangeDateFormat(dateTime: String?): String? {
+    fun getChangeDateFormat(dateTime: String?, dateFormatType : Int): String? {
         return try {
-            val source = SimpleDateFormat("yyy-MM-dd, HH:mm:ss", Locale.getDefault())
+            val source = when(dateFormatType){
+                ConstantObject.dateTimeFormat_1 -> SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault())
+                else -> SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            }
+
             val dateSource = source.parse(dateTime.toString())
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy; HH:mm", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             if (dateSource != null) {
                 dateFormat.format(dateSource)
             } else { "" }
@@ -52,5 +56,14 @@ object DateTimeUtils {
             val diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
             diffDays.toInt()
         }catch (e : Exception){ 0 }
+    }
+
+    fun getAdvancedDate(tenorDate : Int) : String?{
+        return try {
+            val calendar = Calendar.getInstance()
+            calendar.add(Calendar.DAY_OF_YEAR, tenorDate)
+            val formatedDate = SimpleDateFormat("yyy-MM-dd", Locale.getDefault())
+            formatedDate.format(calendar.time).toString()
+        }catch (e : java.lang.Exception){ "err $e" }
     }
 }

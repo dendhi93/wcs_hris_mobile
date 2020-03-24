@@ -24,11 +24,14 @@ object ConstantObject {
     //type flagTask Type
     const val vPlanTask = "Plan"
     const val vConfirmTask = "Confirm"
+    const val vCompletedTask = "Completed"
     const val vEditTask = "Edit"
     const val vApproved = "Approved"
     const val vRejected = "Rejected"
-    const val vWaitingTask = "Waiting"
+    const val vWaitingTask = "WAITING"
     const val vNoApproval = "No Approval"
+    const val vLeaveApprove = "APPROVE"
+    const val vLeaveReject = "REJECT"
 
     //type progressBar
     const val vLoadWithProgressBar = 11
@@ -43,13 +46,16 @@ object ConstantObject {
     const val vNotCreateEdit = "nonCreateEdit"
 
     //menu request
-    const val travelMenu = "Travel"
-    const val leaveMenu = "Leave"
-    const val benefitMenu = "Benefit"
-    const val travelClaimMenu = "Benefit"
+    const val travelMenu = "TRAVEL"
+    const val leaveMenu = "LEAVE"
+    const val benefitMenu = "BENEFIT"
+    const val travelClaimMenu = "TRAVEL CLAIM"
+    const val activityMenu = "ACTIVITY"
 
     //type intent
     const val extra_intent = "extra_intent"
+    const val extra_dateFrom_intent = "extra_dateFrom_intent"
+    const val extra_dateInto_intent = "extra_dateInto_intent"
     const val extra_fromIntentCreateTask = "CreateTask"
     const val extra_fromIntentTeam = "team_fragment"
     const val extra_fromIntentProfile = "profile_activity"
@@ -58,4 +64,18 @@ object ConstantObject {
     const val extra_fromIntentCreateTravel = "CreateTravel"
     const val extra_fromIntentRequest = "Request"
     const val extra_fromIntentApproval = "Approval"
+
+    //response API
+    const val vResponseData = "Data"
+    const val vResponseResult = "result"
+
+    //param tabel
+    const val keyChargeCode = "mChargecode"
+    const val keyTransType = "mTrans_type"
+    const val keyReasonTravel = "mReason"
+    const val keyLeaveType = "mLeaveType"
+
+    //date format from
+    const val dateTimeFormat_1 = 1
+    const val dateTimeFormat_2 = 2
 }

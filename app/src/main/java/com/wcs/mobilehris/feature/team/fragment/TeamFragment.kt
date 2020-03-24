@@ -1,4 +1,4 @@
-package com.wcs.mobilehris.feature.team
+package com.wcs.mobilehris.feature.team.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -18,14 +18,20 @@ import com.wcs.mobilehris.util.MessageUtils
 import java.util.*
 import kotlin.collections.ArrayList
 
-class TeamFragment : Fragment(), TeamInterface, SelectedTeamInterface {
+class TeamFragment : Fragment(),
+    TeamInterface,
+    SelectedTeamInterface {
     private lateinit var fragmentTeamBinding: FragmentTeamBinding
     private var arrTeamList = ArrayList<TeamModel>()
     private lateinit var teamAdapter: CustomTeamAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentTeamBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_team, container, false)
-        fragmentTeamBinding.viewModel = TeamViewModel(requireContext(), this)
+        fragmentTeamBinding.viewModel =
+            TeamViewModel(
+                requireContext(),
+                this
+            )
         return  fragmentTeamBinding.root
     }
 
@@ -33,7 +39,10 @@ class TeamFragment : Fragment(), TeamInterface, SelectedTeamInterface {
         super.onViewCreated(view, savedInstanceState)
         fragmentTeamBinding.rcTeam.layoutManager = LinearLayoutManager(requireContext())
         fragmentTeamBinding.rcTeam.setHasFixedSize(true)
-        teamAdapter = CustomTeamAdapter(requireContext(), arrTeamList)
+        teamAdapter = CustomTeamAdapter(
+            requireContext(),
+            arrTeamList
+        )
         teamAdapter.initSelectedCallBack(this)
         fragmentTeamBinding.rcTeam.adapter = teamAdapter
         fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.vLoadWithProgressBar)

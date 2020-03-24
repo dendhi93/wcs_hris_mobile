@@ -23,8 +23,7 @@ import com.wcs.mobilehris.feature.notification.NotificationFragment
 import com.wcs.mobilehris.feature.profile.ProfileActivity
 import com.wcs.mobilehris.feature.request.RequestFragment
 import com.wcs.mobilehris.feature.setting.SettingFragment
-import com.wcs.mobilehris.feature.status.StatusFragment
-import com.wcs.mobilehris.feature.team.TeamFragment
+import com.wcs.mobilehris.feature.team.fragment.TeamFragment
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import com.wcs.mobilehris.util.Preference
@@ -95,10 +94,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 vFragment = ConfirmationFragment()
                 supportActionBar?.let { it.title = "Confirmation" }
             }
-            R.id.nav_status -> {
-                vFragment = StatusFragment()
-                supportActionBar?.let { it.title = "Status" }
-            }
             R.id.nav_absent -> {
                 vFragment = AbsentFragment()
                 supportActionBar?.let { it.title = "Absent" }
@@ -117,17 +112,11 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_logout -> {
                 keyDialogActive = DIALOG_LOG_OUT
-                MessageUtils.alertDialogOkCancel(
-                    "Are you sure want to exit Apps ?",
-                    "Exit Apps",
-                    this,
-                    this
-                )
+                MessageUtils.alertDialogOkCancel("Are you sure want to exit Apps ?", "Exit Apps", this, this)
             }
         }
         if (vFragment != null) {
-            supportFragmentManager.beginTransaction().replace(R.id.frame_nav_container, vFragment)
-                .commit()
+            supportFragmentManager.beginTransaction().replace(R.id.frame_nav_container, vFragment).commit()
         }
         menuBinding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
@@ -178,20 +167,14 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             EXTRA_FLAG_APPROVAL -> {
                 supportActionBar?.let {
-                    it.title = "Approval"
-                    frTransaction.replace(R.id.frame_nav_container, RequestFragment())
+                    it.subtitle = "Approval"
+                    frTransaction.replace(R.id.frame_nav_container, ApprovalFragment())
                 }
             }
             EXTRA_FLAG_CONFIRMATION -> {
                 supportActionBar?.let {
                     it.title = "Confirmation"
                     frTransaction.replace(R.id.frame_nav_container, ConfirmationFragment())
-                }
-            }
-            EXTRA_FLAG_STATUS -> {
-                supportActionBar?.let {
-                    it.title = "Status"
-                    frTransaction.replace(R.id.frame_nav_container, StatusFragment())
                 }
             }
             EXTRA_FLAG_ABSENT -> {
@@ -220,12 +203,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             EXTRA_FLAG_LOGOUT -> {
                 keyDialogActive = DIALOG_LOG_OUT
-                MessageUtils.alertDialogOkCancel(
-                    "Are you sure want to exit Apps ?",
-                    ConstantObject.vAlertDialogConfirmation,
-                    MenuActivity@ this,
-                    this
-                )
+               MessageUtils.alertDialogOkCancel("Are you sure want to exit Apps ?", ConstantObject.vAlertDialogConfirmation, this, this)
             }
         }
         frTransaction.commit()
@@ -238,7 +216,10 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (keyDialogActive) {
             DIALOG_LOG_OUT -> {
                 preference.clearPreference()
-                finish()
+                val startMain = Intent(Intent.ACTION_MAIN)
+                startMain.addCategory(Intent.CATEGORY_HOME)
+                startMain.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(startMain)
             }
         }
     }
@@ -249,14 +230,13 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         const val EXTRA_FLAG_REQUEST = 3
         const val EXTRA_FLAG_APPROVAL = 4
         const val EXTRA_FLAG_CONFIRMATION = 5
-        const val EXTRA_FLAG_STATUS = 6
-        const val EXTRA_FLAG_ABSENT = 7
-        const val EXTRA_FLAG_NOTIFICATION = 8
-        const val EXTRA_FLAG_TEAM = 9
-        const val EXTRA_FLAG_SETTING = 10
-        const val EXTRA_FLAG_LOGOUT = 11
+        const val EXTRA_FLAG_ABSENT = 6
+        const val EXTRA_FLAG_NOTIFICATION = 7
+        const val EXTRA_FLAG_TEAM= 8
+        const val EXTRA_FLAG_SETTING = 9
+        const val EXTRA_FLAG_LOGOUT = 10
         const val EXTRA_CALLER_ACTIVITY_FLAG = "hris_activity"
-        const val DIALOG_LOG_OUT = 12
+        const val DIALOG_LOG_OUT = 11
     }
 
 }

@@ -25,12 +25,14 @@ import com.wcs.mobilehris.feature.city.CityActivity
 import com.wcs.mobilehris.feature.createtask.SelectedFriendInterface
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
 import com.wcs.mobilehris.feature.dtltask.FriendModel
-import com.wcs.mobilehris.feature.team.TeamActivity
+import com.wcs.mobilehris.feature.team.activity.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
 
-@Suppress("DEPRECATION", "UNREACHABLE_CODE")
+@Suppress("DEPRECATION", "UNREACHABLE_CODE",
+    "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
+)
 class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     SelectedFriendInterface, SelectedTravelInterface {
     private lateinit var activityRequestTravelBinding : ActivityRequestTravelBinding
@@ -91,7 +93,8 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                onAlertReqTravel("Are you sure do you want to exit this transaction ?",
+                    ConstantObject.vAlertDialogConfirmation, ALERT_REQ_TRAVEL_EXIT_CONF)
                 return true
             }
             R.id.menu_save -> {
@@ -165,6 +168,10 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             }
             ALERT_REQ_TRAVEL_GENERATE_TRAVEL -> {
                 keyDialogActive = ALERT_REQ_TRAVEL_GENERATE_TRAVEL
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
+            ALERT_REQ_TRAVEL_EXIT_CONF -> {
+                keyDialogActive = ALERT_REQ_TRAVEL_EXIT_CONF
                 MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
             }
         }
@@ -257,25 +264,36 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     }
 
     override fun getTeamData() {
-        val intent = Intent(this, TeamActivity::class.java)
-        intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentCreateTravel)
-        startActivityForResult(intent, RESULT_SUCCESS_CODE_TEAM)
+        val travelDepartDate = activityRequestTravelBinding.viewModel?.stDepartDate?.get()
+        val travelReturnDate = activityRequestTravelBinding.viewModel?.stReturnDate?.get()
+        if(travelDepartDate == "" || travelReturnDate == ""){
+            onMessage("Please Fill depart or Return Date", ConstantObject.vToastInfo)
+        }else{
+            val intent = Intent(this, TeamActivity::class.java)
+            intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentCreateTravel)
+            intent.putExtra(ConstantObject.extra_dateFrom_intent, travelDepartDate?.trim())
+            intent.putExtra(ConstantObject.extra_dateInto_intent, travelReturnDate?.trim())
+            startActivityForResult(intent, RESULT_SUCCESS_CODE_TEAM)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             RESULT_SUCCESS_CODE_TEAM -> {
-                val intentTeamName : String = data?.getStringExtra(RESULT_EXTRA_TRAVEL_TEAM_NAME).toString()
-                val intentTeamUserId : String = data?.getStringExtra(RESULT_EXTRA__TRAVEL_TEAM_USER_ID).toString()
-                activityRequestTravelBinding.viewModel?.validateTravelTeam(intentTeamUserId, intentTeamName)
+                data?.let {
+                    val intentTeamName : String = it.getStringExtra(RESULT_EXTRA_TRAVEL_TEAM_NAME).toString()
+                    val intentTeamUserId : String = it.getStringExtra(RESULT_EXTRA_TRAVEL_TEAM_USER_ID).toString()
+                    val intentTeamStatus : String = it.getStringExtra(RESULT_EXTRA_TRAVEL_STATUS_TEAM).toString()
+                    activityRequestTravelBinding.viewModel?.validateTravelTeam(intentTeamUserId, intentTeamName,intentTeamStatus)
+                }
             }
             RESULT_SUCCESS_DESTINATION_FROM -> {
-                val intentCityDepart : String = data?.getStringExtra(RESULT_EXTRA__TRAVEL_CITY_DESC).toString()
+                val intentCityDepart : String = data?.getStringExtra(RESULT_EXTRA_TRAVEL_CITY_DESC).toString()
                 when{intentCityDepart != "null" -> activityRequestTravelBinding.viewModel?.stDepartFrom?.set(intentCityDepart) }
             }
             RESULT_SUCCESS_DESTINATION_INTO -> {
-                val intentCityReturn : String = data?.getStringExtra(RESULT_EXTRA__TRAVEL_CITY_DESC).toString()
+                val intentCityReturn : String = data?.getStringExtra(RESULT_EXTRA_TRAVEL_CITY_DESC).toString()
                 when{
                     intentCityReturn != "null" -> { activityRequestTravelBinding.viewModel?.validateCityReturn(intentCityReturn) }
                 }
@@ -355,6 +373,10 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             ALERT_REQ_TRAVEL_SET_TRAVEL -> activityRequestTravelBinding.viewModel?.actionSetTravel()
             ALERT_REQ_TRAVEL_EDIT_TRAVEL -> activityRequestTravelBinding.viewModel?.actionEditTravel(arrCities)
             ALERT_REQ_TRAVEL_GENERATE_TRAVEL -> activityRequestTravelBinding.viewModel?.actionGenerateTravel(arrCities)
+            ALERT_REQ_TRAVEL_EXIT_CONF -> {
+                activityRequestTravelBinding.viewModel?.onBackReqTravelMenu()
+                finish()
+            }
         }
     }
 
@@ -363,6 +385,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             .setMessage("Are you sure do you want to exit this transaction ? ")
             .setPositiveButton(android.R.string.ok){
                     dialog, _ ->
+                activityRequestTravelBinding.viewModel?.onBackReqTravelMenu()
                 finish()
                 super.onBackPressed()
                 dialog.dismiss()
@@ -398,23 +421,25 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             true -> onChangeButtonBackground(true)
             else -> onChangeButtonBackground(false)
         }
-
     }
+
+
     companion object{
         const val ALERT_REQ_TRAVEL_NO_CONNECTION = 1
         const val ALERT_REQ_TRAVEL_CONFIRMATION = 5
         const val ALERT_REQ_TRAVEL_SET_TRAVEL = 7
         const val ALERT_REQ_TRAVEL_EDIT_TRAVEL = 9
         const val ALERT_REQ_TRAVEL_GENERATE_TRAVEL = 13
+        const val ALERT_REQ_TRAVEL_EXIT_CONF = 15
         const val RESULT_SUCCESS_DESTINATION_FROM = 11
         const val RESULT_SUCCESS_DESTINATION_INTO = 22
         const val RESULT_SUCCESS_CODE_TEAM = 33
         const val RESULT_EXTRA_TRAVEL_TEAM_NAME = "team_name"
-        const val RESULT_EXTRA__TRAVEL_TEAM_USER_ID = "team_user_id"
+        const val RESULT_EXTRA_TRAVEL_TEAM_USER_ID = "team_user_id"
+        const val RESULT_EXTRA_TRAVEL_STATUS_TEAM = "status_team_travel"
         const val RESULT_EXTRA_TRAVEL_CITY_CODE = "city_code"
-        const val RESULT_EXTRA__TRAVEL_CITY_DESC = "city_description"
-        const val RESULT_EXTRA__TRAVEL_COUNTRY_CODE = "city_code"
-
+        const val RESULT_EXTRA_TRAVEL_CITY_DESC = "city_description"
+        const val RESULT_EXTRA_TRAVEL_COUNTRY_CODE = "city_code"
         const val extra_city_intent = "extra_city_intent"
         const val extra_city_intentDepart = "extra_city_intent_depart"
         const val extra_city_intentReturn = "extra_city_intent_return"

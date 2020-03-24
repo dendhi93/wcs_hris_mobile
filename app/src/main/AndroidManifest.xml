@@ -36,7 +36,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".feature.leave.transaction.LeaveTransactionActivity"></activity>
+        <activity android:name=".feature.leave.transaction.LeaveTransactionActivity"/>
         <activity android:name=".feature.leave.list.LeaveListActivity" />
         <activity android:name=".feature.dtlreqtravel.DtlRequestTravelActivity" />
         <activity
@@ -53,7 +53,7 @@
             android:name=".feature.confirmtask.ConfirmTaskActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".feature.team.TeamActivity"
+            android:name=".feature.team.activity.TeamActivity"
             android:label="@string/search_team_activity" />
         <activity
             android:name=".feature.createtask.CreateTaskActivity"

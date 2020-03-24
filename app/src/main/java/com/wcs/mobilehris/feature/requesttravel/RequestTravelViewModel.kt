@@ -2,6 +2,7 @@ package com.wcs.mobilehris.feature.requesttravel
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import com.wcs.mobilehris.database.daos.ChargeCodeDao
 import com.wcs.mobilehris.database.daos.ReasonTravelDao
 import com.wcs.mobilehris.database.daos.TransTypeDao
 import com.wcs.mobilehris.feature.dtltask.FriendModel
+import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.DateTimeUtils
 import org.jetbrains.anko.doAsync
@@ -19,22 +21,22 @@ import org.jetbrains.anko.uiThread
 import java.util.*
 
 class RequestTravelViewModel (private val context : Context, private val requestTravelInterface: RequestTravelInterface): ViewModel(){
-    val stDepartDate = ObservableField<String>("")
-    val stReturnDate = ObservableField<String>("")
-    val stDepartFrom = ObservableField<String>("")
-    val stTravelInto = ObservableField<String>("")
-    val stChargeCode = ObservableField<String>("")
-    val stTravelDescription = ObservableField<String>("")
-    val stTravelCheckIn = ObservableField<String>("")
-    val stTravelCheckOut = ObservableField<String>("")
-    val stTransTypeCode = ObservableField<String>("")
-    val stReasonCode = ObservableField<String>("")
-    val stAddTeamButton = ObservableField<String>("")
-    val stHotelName = ObservableField<String>("")
-    val isTravelSelected = ObservableField<Boolean>(true)
-    val isProgressReqTravel = ObservableField<Boolean>(false)
-    val isSetTravel = ObservableField<Boolean>(false)
-    val isNonTB = ObservableField<Boolean>(false)
+    val stDepartDate = ObservableField("")
+    val stReturnDate = ObservableField("")
+    val stDepartFrom = ObservableField("")
+    val stTravelInto = ObservableField("")
+    val stChargeCode = ObservableField("")
+    val stTravelDescription = ObservableField("")
+    val stTravelCheckIn = ObservableField("")
+    val stTravelCheckOut = ObservableField("")
+    val stTransTypeCode = ObservableField("")
+    val stReasonCode = ObservableField("")
+    val stAddTeamButton = ObservableField("")
+    val stHotelName = ObservableField("")
+    val isTravelSelected = ObservableField(true)
+    val isProgressReqTravel = ObservableField(false)
+    val isSetTravel = ObservableField(false)
+    val isNonTB = ObservableField(false)
     private val listSelectedTeam = mutableListOf<FriendModel>()
     private lateinit var mTransTypeDao : TransTypeDao
     private lateinit var mChargeCodeDao : ChargeCodeDao
@@ -143,9 +145,14 @@ class RequestTravelViewModel (private val context : Context, private val request
         }
     }
 
-    fun validateTravelTeam(itemUserId : String, itemName : String){
-        if (itemUserId != "null" && itemName != "null"){
-            val itemFriendModel = FriendModel(itemUserId, itemName, "Free", false)
+    fun validateTravelTeam(itemUserId : String, itemName : String, stTeamStatus : String){
+        if (itemUserId != "null" && itemName != "null" && stTeamStatus != "null"){
+            val itemFriendModel = if(stTeamStatus.contains("Available")){
+                FriendModel(itemUserId, itemName, stTeamStatus.trim(), false)
+            }else {
+                FriendModel(itemUserId, itemName, stTeamStatus.trim(), true)
+            }
+
             listSelectedTeam.add(itemFriendModel)
             requestTravelInterface.onLoadTeam(listSelectedTeam)
         }
@@ -276,5 +283,11 @@ class RequestTravelViewModel (private val context : Context, private val request
         Handler().postDelayed({
             requestTravelInterface.onSuccessRequestTravel()
         }, 2000)
+    }
+
+    fun onBackReqTravelMenu(){
+        val intent = Intent(context, MenuActivity::class.java)
+        intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_REQUEST)
+        context.startActivity(intent)
     }
 }

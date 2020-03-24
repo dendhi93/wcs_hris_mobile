@@ -7,6 +7,7 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.OkHttpResponseAndJSONObjectRequestListener
 import com.wcs.mobilehris.BuildConfig
+import com.wcs.mobilehris.util.ConstantObject
 import okhttp3.Response
 import org.json.JSONObject
 
@@ -24,19 +25,258 @@ class ApiRepo {
             .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
                 override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
                     okHttpResponse?.let {
-                        when{ConnectionObject.checkHttpCode(okHttpResponse.code().toString()) -> callback.onDataLoaded(response) }
+                        when{ConnectionObject.checkSuccessHttpCode(okHttpResponse.code().toString()) -> callback.onDataLoaded(response) }
                     }
                 }
 
                 override fun onError(anError: ANError?) {
                     when{
                         anError?.errorCode != 0 -> {
-                            Log.d("errMessage","" +anError?.errorBody.toString())
+                            Log.d("###","Login " +anError?.errorBody.toString())
                             val errObj = JSONObject(anError?.errorBody.toString())
                             callback.onDataError(errObj.getString("Message"))
                         }
-                        else -> callback.onDataError(anError.errorBody.toString())
+                        else -> {
+                            Log.d("###_2","Login " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
                     }
+                }
+            })
+    }
+
+    fun getUpdateTableMaster(tableName : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###","url getUpdateTableMaster "+BuildConfig.HRIS_URL+"getlatestmaster/"+tableName.trim())
+        AndroidNetworking.get(BuildConfig.HRIS_URL+"getlatestmaster/"+tableName.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.LOW)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let {
+                        when{
+                            ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response)
+                            ConnectionObject.checkHttpNotFound(it.code()) -> callback.onDataError(response.toString())
+                        }
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","date Master " +anError?.message)
+                            callback.onDataError(anError?.errorBody.toString())
+                        }
+                        else -> {
+                            Log.d("###_2","date Master "+anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun getDataMaster(typeMaster : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###","url getDataMaster "+BuildConfig.HRIS_URL+typeMaster)
+        AndroidNetworking.get(BuildConfig.HRIS_URL+typeMaster)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.LOW)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let {
+                        when{
+                            ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response)
+                            ConnectionObject.checkHttpNotFound(it.code()) -> callback.onDataError(response.toString())
+                        }
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","masterData " +anError?.message)
+                            callback.onDataError(anError?.errorBody.toString())
+                        }
+                        else -> {
+                            Log.d("###_2","masterData "+anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun getDataActivity(unUser : String,selectedDate : String,activityFrom : String,context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        val urlActivity = when(activityFrom.trim()){
+            ConstantObject.vCompletedTask -> BuildConfig.HRIS_URL+"getcompletedactivitybynikandbydate/"+unUser.trim()+"/"+selectedDate.trim()
+            else -> BuildConfig.HRIS_URL+"getactivitybydate/"+selectedDate.trim()+"/"+unUser.trim()
+        }
+
+        Log.d("###", "url getDataActivity ${urlActivity.trim()}")
+        AndroidNetworking.get(urlActivity.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let {
+                        when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) }
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","activity " +anError?.message)
+                            callback.onDataError(anError?.errorBody.toString())
+                        }
+                        else -> {
+                            Log.d("###","activity "+anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun getHeaderActivity(idActivity : String,context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        val urlHeaderActivity = BuildConfig.HRIS_URL+"getactivityheaderbyid/"+idActivity.trim()
+        Log.d("###", "url getHeaderActivity ${urlHeaderActivity.trim()}")
+        AndroidNetworking.get(urlHeaderActivity.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let {
+                       when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) }
+                   }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","header activity "+anError?.message.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+            })
+    }
+
+    fun getDetailActivity(idDTlActivity : String,context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        val urlDtlActivity = BuildConfig.HRIS_URL+"getactivitydetailbyid/"+idDTlActivity.trim()
+        Log.d("###", "url getDtlActivity ${urlDtlActivity.trim()}")
+        AndroidNetworking.get(urlDtlActivity.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let {
+                        when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) }
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","dtl activity "+anError?.message.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+            })
+    }
+
+    fun getTravelListData(unUser :String, fromTravelType : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        val urlTravel = when(fromTravelType.trim()){
+            ConstantObject.extra_fromIntentApproval -> BuildConfig.HRIS_URL+"gettravelrequestapprovalall/"+unUser.trim()
+            else -> BuildConfig.HRIS_URL+"gettravelrequestheaderbynik/"+unUser.trim()
+        }
+        Log.d("###", "url getTravel Data ${urlTravel.trim()}")
+        AndroidNetworking.get(urlTravel.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let {
+                        when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) }
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","travel list data "+anError?.message.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+            })
+    }
+
+    fun getCountAllApproval(unUser :String,context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###","count approval " +BuildConfig.HRIS_URL+"getcountallapproval/"+unUser.trim())
+        AndroidNetworking.get(BuildConfig.HRIS_URL+"getcountallapproval/"+unUser.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let {
+                        when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) }
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err count approval "+anError?.message.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+            })
+    }
+
+    fun getLeaveList(unUser : String ,leaveFrom : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        val urlLeave : String = when(leaveFrom){
+            ConstantObject.extra_fromIntentRequest -> BuildConfig.HRIS_URL+"getallleaverequest/"+unUser.trim()
+            else -> BuildConfig.HRIS_URL+"getleaverequestapprovalall/"+unUser.trim()
+        }
+        Log.d("###", "url leave $urlLeave")
+        AndroidNetworking.get(urlLeave.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let {
+                        when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) }
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err leave "+anError?.message.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+            })
+    }
+
+    fun searchDataTeam(teamName : String, selectedDateFrom : String, selectedDateInto : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        val teamUrl = BuildConfig.HRIS_URL+"getteamemployeebyname/"+
+                selectedDateFrom.trim()+"/"+
+                selectedDateInto.trim()+"/08:30/17:30/"+
+                teamName.trim()
+        Log.d("###", "url searchDataTeam $teamUrl")
+        AndroidNetworking.get(teamUrl.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err team search "+anError?.message.toString())
+                    callback.onDataError(anError?.message.toString())
                 }
             })
     }

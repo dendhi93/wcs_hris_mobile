@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.ActivityDetailTaskBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
@@ -22,7 +23,7 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dtlTaskBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail_task)
-        dtlTaskBinding.viewModel = DtlTaskViewModel(this, this)
+        dtlTaskBinding.viewModel = DtlTaskViewModel(this, this, ApiRepo())
         dtlTaskBinding.rcDtlTask.layoutManager = LinearLayoutManager(this)
     }
 
@@ -36,8 +37,7 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
 
         when{
             intentTaskId != "" && intentDtlTaskChargeCode != "" ->{
-                val dtlTaskSplitChargeCode = intentDtlTaskChargeCode.toString().trim().split("|")
-                dtlTaskBinding.viewModel?.initDataDtl(intentTaskId.toString().trim(), dtlTaskSplitChargeCode[0].trim())
+                dtlTaskBinding.viewModel?.initDataDtl(intentTaskId.toString().trim(), intentDtlTaskChargeCode.toString().trim())
                 supportActionBar?.title = getString(R.string.dtl_task_activity)
             }
         }
@@ -80,11 +80,18 @@ class DetailTaskActivity : AppCompatActivity(), DtlTaskInterface {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
+                dtlTaskBinding.viewModel?.onBackPressMenu()
                 finish()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        dtlTaskBinding.viewModel?.onBackPressMenu()
+        finish()
+        super.onBackPressed()
     }
 
     companion object{

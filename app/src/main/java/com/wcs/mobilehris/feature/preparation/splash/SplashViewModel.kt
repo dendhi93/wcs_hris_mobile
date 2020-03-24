@@ -6,177 +6,289 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.application.WcsHrisApps
+import com.wcs.mobilehris.connection.ApiRepo
+import com.wcs.mobilehris.connection.ApiRepo.ApiCallback
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.database.daos.*
 import com.wcs.mobilehris.database.entity.*
 import com.wcs.mobilehris.util.ConstantObject
-import com.wcs.mobilehris.util.DateTimeUtils
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import org.json.JSONArray
+import org.json.JSONObject
 
 
-class SplashViewModel(private var _context : Context, private var _splashInterface: SplashInterface) : ViewModel() {
+class SplashViewModel(private var _context : Context,
+                      private var _splashInterface: SplashInterface,
+                      private var apiRepo: ApiRepo) : ViewModel() {
 
-    val stErrDownload = ObservableField<String>("")
-    val isPrgBarVisible = ObservableField<Boolean>(false)
-    val isBtnVisible = ObservableField<Boolean>(false)
+    val stErrDownload = ObservableField("")
+    val isPrgBarVisible = ObservableField(false)
+    val isBtnVisible = ObservableField(false)
+    private val arrJsonUpdateMaster = mutableListOf<UpdateMasterEntity>()
     private lateinit var mUpdateMasterDataDao : UpdateMasterDao
     private lateinit var mChargeCodeDao : ChargeCodeDao
     private lateinit var mTransTypeDao : TransTypeDao
     private lateinit var mReasonTravelDao : ReasonTravelDao
     private lateinit var mReasonLeaveDao : ReasonLeaveDao
-    private val arrJsonUpdateMaster = mutableListOf<UpdateMasterEntity>()
-    private val arrJsonChargeCode = mutableListOf<ChargeCodeEntity>()
-    private val arrJsonTransType = mutableListOf<TransportTypeEntity>()
-    private val arrJsonReasonTravel = mutableListOf<ReasonTravelEntity>()
-    private val arrJsonReasonLeave = mutableListOf<ReasonLeaveEntity>()
     private var countDataChargeCode = 0
     private var countDataTransType = 0
     private var countDataReasonTravel = 0
     private var countDataReasonLeave = 0
-    private var transTime = DateTimeUtils.getCurrentTime()
+    private var TAG = "Splash"
 
-    fun processDownload(){
-        when{
-            !ConnectionObject.isNetworkAvailable(_context) -> {
-                _splashInterface.onAlertSplash(_context.getString(R.string.alert_no_connection),
-                    ConstantObject.vAlertDialogNoConnection,SplashActivity.DIALOG_NO_INTERNET)
-            }
-            else -> validateMaster()
-        }
-    }
-
-    private fun successDownload(){ _splashInterface.successSplash() }
-
-    private fun validateMaster(){
-        isPrgBarVisible.set(true)
-        //arraylist master data dari json
-        arrJsonUpdateMaster.add(UpdateMasterEntity(1,"mCharge_code",DateTimeUtils.getCurrentDate()))
-        arrJsonUpdateMaster.add(UpdateMasterEntity(2,"mTrans_type",DateTimeUtils.getCurrentDate()))
-        arrJsonUpdateMaster.add(UpdateMasterEntity(3,"mReason_Travel",DateTimeUtils.getCurrentDate()))
-        arrJsonUpdateMaster.add(UpdateMasterEntity(4,"mReason_leave",DateTimeUtils.getCurrentDate()))
-
-        //arraylist master chargecode dari json
-        arrJsonChargeCode.add(ChargeCodeEntity(1, "A-1003-096",
-            "BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY",
-            "PT Wilmar Consultancy Services", "","",transTime))
-        arrJsonChargeCode.add(ChargeCodeEntity(2, "A-1003-097",
-            "HCM DEMO FOR PRESALES ACTIVITY",
-            "PT Wilmar Consultancy Services", "","",transTime))
-        arrJsonChargeCode.add(ChargeCodeEntity(3, "B-1014-001",
-            "TRAINING FOR FRESH GRADUATE",
-            "PT Wilmar Consultancy Services", "","",transTime))
-        arrJsonChargeCode.add(ChargeCodeEntity(4, "B-1014-006",
-            "TRAINING SAP - OUTSYSTEM",
-            "","", "",transTime))
-        arrJsonChargeCode.add(ChargeCodeEntity(5, "C-1003-006",
-            "GENERAL MANAGEMENT INTL",
-            "PT Wilmar Consultancy Services", "","",transTime))
-        arrJsonChargeCode.add(ChargeCodeEntity(6, "C-1014-001",
-            "GENERAL MANAGEMENT INTL - SALES FILLING AND DOCUMENTATION",
-            "PT Wilmar Consultancy Services", "","",transTime))
-        arrJsonChargeCode.add(ChargeCodeEntity(7, "D-1001-002",
-            "ANNUAL LEAVE",
-            "", "","",transTime))
-        arrJsonChargeCode.add(ChargeCodeEntity(8, "D-1001-003",
-            "SICK LEAVE",
-            "", "","",transTime))
-        arrJsonChargeCode.add(ChargeCodeEntity(9, "F-0014-017",
-            "MILLS MOBILITY APPLICATION",
-            "PT Heinz ABC", "Johnson","534343",transTime))
-        arrJsonChargeCode.add(ChargeCodeEntity(10, "F-0014-018",
-            "SAP IMPLEMENTATION TO LION SUPER INDO",
-            "PT SUPER INDO", "Jesaja Waterkamp","634343",transTime))
-
-        //arraylist master transtype from json
-        arrJsonTransType.add(TransportTypeEntity(1, "BS", "BUS", transTime))
-        arrJsonTransType.add(TransportTypeEntity(2, "CCR", "COMPANY CAR", transTime))
-        arrJsonTransType.add(TransportTypeEntity(3, "COP", "COP VECHILE", transTime))
-        arrJsonTransType.add(TransportTypeEntity(4, "PBL", "OTHER PUBLIC", transTime))
-        arrJsonTransType.add(TransportTypeEntity(5, "OCR", "OWN CAR", transTime))
-        arrJsonTransType.add(TransportTypeEntity(6, "PLN", "PLANE", transTime))
-        arrJsonTransType.add(TransportTypeEntity(7, "SHP", "SHIP", transTime))
-        arrJsonTransType.add(TransportTypeEntity(8, "TX", "TAXI", transTime))
-        arrJsonTransType.add(TransportTypeEntity(9, "TRN", "TRAIN", transTime))
-        arrJsonTransType.add(TransportTypeEntity(10, "TRV", "TRAVEL", transTime))
-
-        //arraylist master reason travel from json
-        arrJsonReasonTravel.add(ReasonTravelEntity(1, "IMPL", "Implementasi", transTime))
-        arrJsonReasonTravel.add(ReasonTravelEntity(2, "AUDT", "Audit", transTime))
-        arrJsonReasonTravel.add(ReasonTravelEntity(3, "MEET", "Meeting", transTime))
-        arrJsonReasonTravel.add(ReasonTravelEntity(4, "TRA", "Training/Seminar/Workshop", transTime))
-        arrJsonReasonTravel.add(ReasonTravelEntity(5, "VIS", "Customer Visit / Area Visit", transTime))
-        arrJsonReasonTravel.add(ReasonTravelEntity(6, "EXHB", "Exhibition", transTime))
-        arrJsonReasonTravel.add(ReasonTravelEntity(7, "SOC", "Social Responsibilities", transTime))
-        arrJsonReasonTravel.add(ReasonTravelEntity(8, "ROU", "Routine Duty", transTime))
-        arrJsonReasonTravel.add(ReasonTravelEntity(9, "OTH", "Others", transTime))
-
-        //arraylist master reason leave from json
-        arrJsonReasonLeave.add(ReasonLeaveEntity(1, "AAAAA", "Annual Leave", transTime))
-        arrJsonReasonLeave.add(ReasonLeaveEntity(2, "D-001002", "Sick Leave", transTime))
-        arrJsonReasonLeave.add(ReasonLeaveEntity(3, "CCCCC", "2 Hour Leave", transTime))
-        arrJsonReasonLeave.add(ReasonLeaveEntity(4, "DDDDD", "4 Hour Leave", transTime))
-
+    fun validateUpdateMaster(){
         mUpdateMasterDataDao = WcsHrisApps.database.updateMasterDao()
         mChargeCodeDao = WcsHrisApps.database.chargeCodeDao()
         mTransTypeDao = WcsHrisApps.database.transTypeDao()
         mReasonTravelDao = WcsHrisApps.database.reasonTravelDao()
         mReasonLeaveDao = WcsHrisApps.database.reasonLeaveDao()
+        isBtnVisible.set(false)
 
         doAsync{
             val listUpdate = mUpdateMasterDataDao.getDataUpdate()
             when{
-                listUpdate.isNotEmpty() -> validateDataMaster(listUpdate)
-                else -> insertDataMaster()
+                listUpdate.isNotEmpty() -> processDownload(false)
+                else -> processDownload(true)
             }
         }
     }
-    //insert first time
-    private fun insertDataMaster(){
-        var tableMasters : UpdateMasterEntity
-        for(i in arrJsonUpdateMaster.indices){
-            tableMasters = UpdateMasterEntity(arrJsonUpdateMaster[i].id
-                , arrJsonTransType[i].mTransTypeDescription.trim(),
-                arrJsonUpdateMaster[i].mUpdateDate.trim())
-            mUpdateMasterDataDao.insertUpdateMaster(tableMasters)
+
+    fun retryDownload(){ processDownload(false) }
+
+    private fun processDownload(isFirstInsert : Boolean){
+        when{
+            !ConnectionObject.isNetworkAvailable(_context) -> _splashInterface.onAlertSplash(_context.getString(R.string.alert_no_connection),
+                    ConstantObject.vAlertDialogNoConnection,SplashActivity.DIALOG_NO_INTERNET)
+            else -> getDataUpdateDate(ConstantObject.keyChargeCode, isFirstInsert)
         }
-        insertDeleteTableData(true, "")
     }
 
-    private fun validateDataMaster(listData : List<UpdateMasterEntity>){
-        for(i in listData.indices){
-            val updatedDate = listData[i].mUpdateDate.trim()
-            val tableDesc = listData[i].mTableDescription.trim()
-            for(j in arrJsonUpdateMaster.indices){
-                val jsonTableDesc = arrJsonUpdateMaster[i].mTableDescription
-                val jsonUpdatedDate = arrJsonUpdateMaster[i].mUpdateDate
-                when(tableDesc){
-                    jsonTableDesc -> {
-                        when{
-                            updatedDate != jsonUpdatedDate -> { insertDeleteTableData(false, tableDesc) }
+    private fun getDataUpdateDate(typeData : String, isFirst: Boolean){
+        isPrgBarVisible.set(true)
+        apiRepo.getUpdateTableMaster(typeData,_context, object : ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val responseData = it.getString(ConstantObject.vResponseResult)
+                    val jObjDateMaster = JSONObject(responseData)
+                    val updateDateTable = jObjDateMaster.getString("CREATED_DT")
+                    val descTable = jObjDateMaster.getString("DESC")
+                    if(updateDateTable == "null" && descTable == "null"){
+                        _splashInterface.onErrorMessage(_context.getString(R.string.problem_occured_alert), ConstantObject.vToastError)
+                        isPrgBarVisible.set(false)
+                    }else{
+                        when(typeData){
+                            ConstantObject.keyChargeCode -> {
+                                when{
+                                    isFirst -> {
+                                        doAsync {
+                                            val maxId = mUpdateMasterDataDao.getDataUpdateMaxId()
+                                            val updateModel = UpdateMasterEntity(maxId+1, ConstantObject.keyChargeCode, updateDateTable)
+                                            mUpdateMasterDataDao.insertUpdateMaster(updateModel)
+                                            uiThread {
+                                                Log.d("###","success insert date charge code" )
+                                                getDataUpdateDate(ConstantObject.keyTransType, isFirst)
+                                            }
+                                        }
+                                    }
+                                    else -> {
+                                        arrJsonUpdateMaster.add(UpdateMasterEntity(1, descTable, updateDateTable))
+                                        getDataUpdateDate(ConstantObject.keyTransType, isFirst)
+                                    }
+
+                                }
+                            }
+                            ConstantObject.keyTransType -> {
+                                when{
+                                    isFirst -> {
+                                        doAsync {
+                                            val maxId = mUpdateMasterDataDao.getDataUpdateMaxId()
+                                            val updateModel = UpdateMasterEntity(maxId+1, ConstantObject.keyTransType, updateDateTable)
+                                            mUpdateMasterDataDao.insertUpdateMaster(updateModel)
+                                            uiThread {
+                                                Log.d("###","success insert date trans type" )
+                                                getDataUpdateDate(ConstantObject.keyReasonTravel, isFirst)
+                                            }
+                                        }
+                                    }
+                                    else -> {
+                                        arrJsonUpdateMaster.add(UpdateMasterEntity(2, descTable, updateDateTable))
+                                        getDataUpdateDate(ConstantObject.keyReasonTravel, isFirst)
+                                    }
+                                }
+                            }
+                            ConstantObject.keyReasonTravel -> {
+                                when{
+                                    isFirst -> {
+                                        doAsync {
+                                            val maxId = mUpdateMasterDataDao.getDataUpdateMaxId()
+                                            val updateModel = UpdateMasterEntity(maxId+1, ConstantObject.keyReasonTravel , updateDateTable)
+                                            mUpdateMasterDataDao.insertUpdateMaster(updateModel)
+                                            uiThread {
+                                                Log.d("###","success insert date reason travel")
+                                                getDataUpdateDate(ConstantObject.keyLeaveType, isFirst)
+                                            }
+                                        }
+                                    }
+                                    else ->{
+                                        arrJsonUpdateMaster.add(UpdateMasterEntity(3, descTable, updateDateTable))
+                                        getDataUpdateDate(ConstantObject.keyLeaveType, isFirst)
+                                    }
+                                }
+                            }
+                            else -> {
+                                when{
+                                    isFirst -> {
+                                        doAsync {
+                                            val maxId = mUpdateMasterDataDao.getDataUpdateMaxId()
+                                            val updateModel = UpdateMasterEntity(maxId+1, ConstantObject.keyLeaveType, updateDateTable)
+                                            mUpdateMasterDataDao.insertUpdateMaster(updateModel)
+                                            uiThread {
+                                                Log.d("###","success insert date leave" )
+                                                processGetDataMaster("getlatestmasterchargecode", true)
+                                            }
+                                        }
+                                    }
+                                    else -> {
+                                        arrJsonUpdateMaster.add(UpdateMasterEntity(4, descTable, updateDateTable))
+                                        validateToTableUpdate(arrJsonUpdateMaster)
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
 
+            override fun onDataError(error: String?) {
+                Log.d(TAG, " err $error")
+                _splashInterface.onErrorMessage(" err on " + typeData +
+                        "\n" +error.toString().trim(), ConstantObject.vToastError)
+                isPrgBarVisible.set(false)
+                isBtnVisible.set(true)
+            }
+        })
+    }
+
+    private fun processGetDataMaster(masterType : String, isFirstInsert : Boolean){
+        apiRepo.getDataMaster(masterType, _context, object  : ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val responseData = it.getString(ConstantObject.vResponseResult)
+                    val jArrayDateMaster = JSONArray(responseData)
+                    when(masterType){
+                        "getlatestmasterchargecode" -> {
+                            doAsync {
+                                for (i in 0 until jArrayDateMaster.length()) {
+                                    val jObjChargeCode = jArrayDateMaster.getJSONObject(i)
+                                    val chargeCodeModel = ChargeCodeEntity(i+1,
+                                        jObjChargeCode.getString("CHARGE_CD"),
+                                        jObjChargeCode.getString("CHARGE_NAME"),
+                                        jObjChargeCode.getString("CUSTOMER_NAME"),
+                                        jObjChargeCode.getString("PM_NAME"),
+                                        jObjChargeCode.getString("WCS_PM_NIK"),
+                                        jObjChargeCode.getString("VALID_FROM"),
+                                        jObjChargeCode.getString("VALID_TO"),
+                                        jObjChargeCode.getString("CREATED_DT")
+                                    )
+                                    mChargeCodeDao.insertChargeCode(chargeCodeModel)
+                                }
+                                uiThread {
+                                    Log.d("###","success insert charge code")
+                                    if(isFirstInsert){
+                                        processGetDataMaster("getlatestmastertransport",true)
+                                    }else{getDataUpdateDate(ConstantObject.keyChargeCode, false)}
+                                }
+                            }
+                        }
+                        "getlatestmastertransport" -> {
+                            doAsync {
+                                for (j in 0 until jArrayDateMaster.length()) {
+                                    val responseDataTransport = jArrayDateMaster.getJSONObject(j)
+                                    val transportModel = TransportTypeEntity(j+1,
+                                        responseDataTransport.getString("TRANSPORT_CODE"),
+                                        responseDataTransport.getString("TRANSPORT_NAME"),
+                                        responseDataTransport.getString("CREATED_DT")
+                                    )
+                                    mTransTypeDao.insertTransType(transportModel)
+                                }
+                                uiThread {
+                                    Log.d("###","success insert trans type")
+                                    if(isFirstInsert){ processGetDataMaster("getlatestmasterreason",true)
+                                    }else{getDataUpdateDate(ConstantObject.keyChargeCode, false)}
+                                }
+                            }
+                        }
+                        "getlatestmasterreason" ->{
+                            doAsync {
+                                for(m in 0 until jArrayDateMaster.length()){
+                                    val responseDatamReason = jArrayDateMaster.getJSONObject(m)
+                                    val reasonTravelModel = ReasonTravelEntity(
+                                        m+1,
+                                        responseDatamReason.getString("REASON_CODE"),
+                                        responseDatamReason.getString("REASON_NAME"),
+                                        responseDatamReason.getString("CREATED_DT")
+                                    )
+                                    mReasonTravelDao.insertReasonTravel(reasonTravelModel)
+                                    uiThread {
+                                        Log.d("###","success insert reason travel")
+                                        if(isFirstInsert){ processGetDataMaster("getlatestmasterleavetype",true)
+                                        }else{getDataUpdateDate(ConstantObject.keyChargeCode, false)}
+                                    }
+                                }
+                            }
+                        }
+                        else -> {
+                            doAsync {
+                                for (k in 0 until jArrayDateMaster.length()) {
+                                    val responseDataLeaveType = jArrayDateMaster.getJSONObject(k)
+                                    val responseLeaveModel = ReasonLeaveEntity(
+                                        k+1,
+                                        responseDataLeaveType.getString("CHARGE_CD"),
+                                        responseDataLeaveType.getString("LEAVE_TYPE_NAME"),
+                                        responseDataLeaveType.getString("CREATED_DT")
+                                    )
+                                    mReasonLeaveDao.insertReasonLeave(responseLeaveModel)
+                                }
+                                uiThread {
+                                    Log.d("###","success insert leave")
+                                    successDownload()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                Log.d(TAG, " err $error")
+                _splashInterface.onErrorMessage(" err on " + masterType +
+                        "\n" +error.toString().trim(), ConstantObject.vToastError)
+                isPrgBarVisible.set(false)
+                isBtnVisible.set(true)
+            }
+        })
+    }
+
+    private fun successDownload(){
         doAsync {
             countDataChargeCode = mChargeCodeDao.getCountChargeCode()
             countDataTransType = mTransTypeDao.getCountTransType()
             countDataReasonTravel = mReasonTravelDao.getCountReasonTravel()
             countDataReasonLeave = mReasonLeaveDao.getCountReasonLeave()
-            Log.d("###_1", "chargeCode qty $countDataChargeCode")
-            Log.d("###_1", "transType qty $countDataTransType")
-            Log.d("###_1", "reasonTravel qty $countDataReasonTravel")
-            Log.d("###_1", "reasonLeave qty $countDataReasonLeave")
+            Log.d("###", "chargeCode qty $countDataChargeCode")
+            Log.d("###", "transType qty $countDataTransType")
+            Log.d("###", "reasonTravel qty $countDataReasonTravel")
+            Log.d("###", "reasonLeave qty $countDataReasonLeave")
             uiThread {
                 when{
                     countDataChargeCode > 0 &&
-                    countDataTransType > 0 &&
-                    countDataReasonTravel > 0 &&
-                    countDataReasonLeave > 0 -> successDownload()
+                            countDataTransType > 0 &&
+                            countDataReasonTravel > 0 &&
+                            countDataReasonLeave > 0 -> _splashInterface.successSplash()
                     else -> {
-                        _splashInterface.onErrorMessage("Data not yet success to save ", ConstantObject.vToastError)
+                        _splashInterface.onErrorMessage("Master Data not yet success to save.Please try again ", ConstantObject.vToastError)
+                        isPrgBarVisible.set(false)
                         isBtnVisible.set(true)
                     }
                 }
@@ -184,136 +296,54 @@ class SplashViewModel(private var _context : Context, private var _splashInterfa
         }
     }
 
-    //hrs diinsert pertable
-    private fun insertDeleteTableData(isFirstInsert : Boolean, tableDesc : String){
-        var insertChargeCodeModel : ChargeCodeEntity
-        var insertTransTypeModel : TransportTypeEntity
-        var insertReasonTravelModel : ReasonTravelEntity
-        var insertReasonLeaveModel : ReasonLeaveEntity
-        //insert charge code
-        when(tableDesc){
-            "mCharge_code" -> {
+    private fun validateToTableUpdate(jsonList : List<UpdateMasterEntity>){
+        when{
+            jsonList.isNotEmpty() -> {
                 doAsync {
-                    mChargeCodeDao.deleteAllChargeCode()
-                }
-                for(i in arrJsonChargeCode.indices){
-                    insertChargeCodeModel = ChargeCodeEntity(arrJsonChargeCode[i].id,
-                        arrJsonChargeCode[i].mChargeCodeNo.trim(),
-                        arrJsonChargeCode[i].mDescriptionChargeCode.trim(),
-                        arrJsonChargeCode[i].mCompanyName.trim(),
-                        arrJsonChargeCode[i].mProjectManagerName.trim(),
-                        arrJsonChargeCode[i].mProjectManagerNik.trim(),
-                        arrJsonChargeCode[i].mUpdateDate.trim())
-                    mChargeCodeDao.insertChargeCode(insertChargeCodeModel)
-                }
-                Log.d("###","Success Insert Data Charge code")
-            }
-            "mTrans_type" -> {
-                //insert transtype
-                doAsync {
-                    mTransTypeDao.deleteAllTransType()
-                }
-                for(j in arrJsonTransType.indices){
-                    insertTransTypeModel = TransportTypeEntity(arrJsonTransType[j].id,
-                        arrJsonTransType[j].mTransCode.trim(),
-                        arrJsonTransType[j].mTransTypeDescription.trim(),
-                        arrJsonTransType[j].mTransUpdateDate.trim())
-                    mTransTypeDao.insertTransType(insertTransTypeModel)
-                }
-                Log.d("###","Success Insert Data Transtype")
-            }
-            "mReason_Travel" -> {
-                doAsync {
-                    mReasonTravelDao.deleteAllReasonTravel()
-                }
-                for(k in arrJsonReasonTravel.indices){
-                    insertReasonTravelModel = ReasonTravelEntity(arrJsonReasonTravel[k].id,
-                        arrJsonReasonTravel[k].mReasonCode.trim(),
-                        arrJsonReasonTravel[k].mReasonDescription.trim(),
-                        arrJsonReasonTravel[k].mReasonUpdateDate.trim()
-                    )
-                    mReasonTravelDao.insertReasonTravel(insertReasonTravelModel)
-                }
-                Log.d("###","Success Insert Data reason travel")
-            }
-            "mReason_leave" -> {
-                doAsync {
-                    mReasonLeaveDao.deleteAllReasonLeave()
-                }
-                for(l in arrJsonReasonLeave.indices){
-                    insertReasonLeaveModel = ReasonLeaveEntity(
-                        arrJsonReasonLeave[l].id,
-                        arrJsonReasonLeave[l].mLeaveCode,
-                        arrJsonReasonLeave[l].mLeaveDescription,
-                        arrJsonReasonLeave[l].mLeaveUpdateDate
-                    )
-                    mReasonLeaveDao.insertReasonLeave(insertReasonLeaveModel)
-                }
-                Log.d("###","Success Insert Data reason leave")
-            }
-            else -> {
-                for(i in arrJsonChargeCode.indices){
-                    insertChargeCodeModel = ChargeCodeEntity(arrJsonChargeCode[i].id,
-                        arrJsonChargeCode[i].mChargeCodeNo.trim(),
-                        arrJsonChargeCode[i].mDescriptionChargeCode.trim(),
-                        arrJsonChargeCode[i].mCompanyName.trim(),
-                        arrJsonChargeCode[i].mProjectManagerName.trim(),
-                        arrJsonChargeCode[i].mProjectManagerNik.trim(),
-                        arrJsonChargeCode[i].mUpdateDate.trim())
-                    mChargeCodeDao.insertChargeCode(insertChargeCodeModel)
-                }
-                Log.d("###","Success Insert Data Transtype")
-                for(j in arrJsonTransType.indices){
-                    insertTransTypeModel = TransportTypeEntity(arrJsonTransType[j].id,
-                        arrJsonTransType[j].mTransCode.trim(),
-                        arrJsonTransType[j].mTransTypeDescription.trim(),
-                        arrJsonTransType[j].mTransUpdateDate.trim())
-                    mTransTypeDao.insertTransType(insertTransTypeModel)
-                }
-                Log.d("###","Success Insert Data Transtype")
-                for(k in arrJsonReasonTravel.indices){
-                    insertReasonTravelModel = ReasonTravelEntity(arrJsonReasonTravel[k].id,
-                        arrJsonReasonTravel[k].mReasonCode.trim(),
-                        arrJsonReasonTravel[k].mReasonDescription.trim(),
-                        arrJsonReasonTravel[k].mReasonUpdateDate.trim()
-                    )
-                    mReasonTravelDao.insertReasonTravel(insertReasonTravelModel)
-                }
-                Log.d("###","Success Insert Data reason travel")
-
-                for(l in arrJsonReasonLeave.indices){
-                    insertReasonLeaveModel = ReasonLeaveEntity(
-                        arrJsonReasonLeave[l].id,
-                        arrJsonReasonLeave[l].mLeaveCode,
-                        arrJsonReasonLeave[l].mLeaveDescription,
-                        arrJsonReasonLeave[l].mLeaveUpdateDate
-                    )
-                    mReasonLeaveDao.insertReasonLeave(insertReasonLeaveModel)
-                }
-                Log.d("###","Success Insert Data reason Leave")
-            }
-        }
-
-        doAsync {
-            countDataChargeCode = mChargeCodeDao.getCountChargeCode()
-            countDataTransType = mTransTypeDao.getCountTransType()
-            countDataReasonTravel = mReasonTravelDao.getCountReasonTravel()
-            countDataReasonLeave = mReasonLeaveDao.getCountReasonLeave()
-            uiThread {
-                Log.d("###_2", "chargeCode qty $countDataChargeCode")
-                Log.d("###_2", "transType qty $countDataTransType")
-                Log.d("###_2", "reasonTravel qty $countDataReasonTravel")
-                Log.d("###_2", "reasonLeave qty $countDataReasonLeave")
-
-                when{
-                    countDataChargeCode > 0
-                            && countDataTransType > 0
-                            && countDataReasonTravel > 0
-                            && countDataReasonLeave > 0
-                            && isFirstInsert -> successDownload()
-                    else -> {
-                        _splashInterface.onErrorMessage("Data not yet success to save ", ConstantObject.vToastError)
-                        isBtnVisible.set(true)
+                    for(i in jsonList.indices){
+                        val listTable = mUpdateMasterDataDao.getDataByDesc(jsonList[i].mTableDescription)
+                        when(listTable[0].mUpdateDate){
+                             jsonList[i].mUpdateDate -> {
+                                when(i){
+                                    3  -> successDownload()
+                                    else -> Log.d("###","" +i)
+                                }
+                            }
+                            else -> {
+                                when{
+                                    !ConnectionObject.isNetworkAvailable(_context)-> _splashInterface.onAlertSplash(_context.getString(R.string.alert_no_connection),
+                                    ConstantObject.vAlertDialogNoConnection,SplashActivity.DIALOG_NO_INTERNET)
+                                    else -> {
+                                        when(jsonList[i].mTableDescription){
+                                            ConstantObject.keyChargeCode ->{
+                                                doAsync {
+                                                    mChargeCodeDao.deleteAllChargeCode()
+                                                }
+                                             processGetDataMaster("getlatestmasterchargecode", false)
+                                            }
+                                            ConstantObject.keyTransType ->{
+                                                doAsync {
+                                                    mTransTypeDao.deleteAllTransType()
+                                                }
+                                                processGetDataMaster("getlatestmastertransport", false)
+                                            }
+                                            ConstantObject.keyReasonTravel -> {
+                                                doAsync {
+                                                    mReasonTravelDao.deleteAllReasonTravel()
+                                                }
+                                                processGetDataMaster("getlatestmasterreason", false)
+                                            }
+                                            else -> {
+                                                doAsync {
+                                                    mReasonLeaveDao.deleteAllReasonLeave()
+                                                }
+                                                processGetDataMaster("getlatestmasterleavetype", false)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

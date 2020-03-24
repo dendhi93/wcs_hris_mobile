@@ -5,6 +5,7 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
+import android.content.Intent
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -12,6 +13,7 @@ import com.wcs.mobilehris.application.WcsHrisApps
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.database.daos.ChargeCodeDao
 import com.wcs.mobilehris.feature.dtltask.FriendModel
+import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.DateTimeUtils
 import org.jetbrains.anko.doAsync
@@ -21,21 +23,24 @@ import java.util.*
 
 class CreateTaskViewModel(private val context : Context, private val createTaskInterface : CreateTaskInterface) :
     ViewModel(){
-    val isProgressCreateTask = ObservableField<Boolean>(false)
-    val isHiddenRv = ObservableField<Boolean>(false)
-    val isHiddenSolmanTv = ObservableField<Boolean>(false)
-    val isHiddenPMTv = ObservableField<Boolean>(false)
-    val isEnableCompanyNameTxt = ObservableField<Boolean>(false)
-    val isEnablePMTxt = ObservableField<Boolean>(false)
-    val stDateTask = ObservableField<String>("")
-    val stDateTimeFrom = ObservableField<String>("")
-    val stDateTimeInto = ObservableField<String>("")
-    val stCompanyName = ObservableField<String>("")
-    val stContactPerson = ObservableField<String>("")
-    val stDescriptionTask = ObservableField<String>("")
-    val stSolmanNoTask = ObservableField<String>("")
-    val stPMTask = ObservableField<String>("")
-    val stPMCode = ObservableField<String>("")
+    val isProgressCreateTask = ObservableField(false)
+    val isHiddenRv = ObservableField(false)
+    val isHiddenSolmanTv = ObservableField(false)
+    val isHiddenPMTv = ObservableField(false)
+    val isEnableCompanyNameTxt = ObservableField(false)
+    val isEnablePMTxt = ObservableField(false)
+    val stDateTaskFrom = ObservableField("")
+    val stDateTaskInto = ObservableField("")
+    val stChargeCodeValidFrom = ObservableField("")
+    val stChargeCodeValidInto = ObservableField("")
+    val stDateTimeFrom = ObservableField("")
+    val stDateTimeInto = ObservableField("")
+    val stCompanyName = ObservableField("")
+    val stContactPerson = ObservableField("")
+    val stDescriptionTask = ObservableField("")
+    val stSolmanNoTask = ObservableField("")
+    val stPMTask = ObservableField("")
+    val stPMCode = ObservableField("")
     private val calendar : Calendar = Calendar.getInstance()
     private var mChargeCode : String = ""
     private var mTypeTask : String = ""
@@ -55,17 +60,49 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
         mChargeCodeDao = WcsHrisApps.database.chargeCodeDao()
     }
 
-    fun initDate(){
+    private fun initDate(dateColumn : String){
         mYear = calendar.get(Calendar.YEAR)
         mMonth = calendar.get(Calendar.MONTH)
         mDay = calendar.get(Calendar.DAY_OF_MONTH)
         val datePickerDialog = DatePickerDialog(context, OnDateSetListener { view, year, month, dayOfMonth ->
                     val selectedMonth: String = if (month < 10) { "0" + (month + 1) } else { month.toString() }
                     val selectedDay: String = if (dayOfMonth < 10) { "0$dayOfMonth" } else { dayOfMonth.toString() }
-                    stDateTask.set("$year-$selectedMonth-$selectedDay")
+            when(dateColumn){
+                CreateTaskActivity.chooseDateFrom -> validateDate(CreateTaskActivity.chooseDateFrom,"$year-$selectedMonth-$selectedDay")
+                else -> validateDate(CreateTaskActivity.chooseDateInto,"$year-$selectedMonth-$selectedDay")
+            }
+
             }, mYear, mMonth, mDay
         )
         datePickerDialog.show()
+    }
+
+    fun initDateFrom(){initDate(CreateTaskActivity.chooseDateFrom)}
+    fun initDateInto(){
+        when{
+            stDateTaskFrom.get().equals("") -> createTaskInterface.onMessage("Please fill Date from ", ConstantObject.vSnackBarWithButton)
+            else -> initDate(CreateTaskActivity.chooseDateInto)
+        }
+    }
+
+    private fun validateDate(dateColumn : String, dateChoosen : String){
+        when(dateColumn){
+            CreateTaskActivity.chooseDateInto -> {
+                val intEndDiff = DateTimeUtils.getDifferentDate(stDateTaskFrom.get().toString(), dateChoosen)
+                when{
+                    intEndDiff < 0 -> createTaskInterface.onMessage("Date To less then Date From, Please fill again ", ConstantObject.vSnackBarWithButton)
+                    intEndDiff < 1 -> createTaskInterface.onMessage("Date to less then one day, Please fill again ", ConstantObject.vSnackBarWithButton)
+                    else -> stDateTaskInto.set(dateChoosen.trim())
+                }
+            }
+            else -> {
+                val intFromDiff = DateTimeUtils.getDifferentDate(DateTimeUtils.getCurrentDate(), dateChoosen)
+                when{
+                    intFromDiff < 0 -> createTaskInterface.onMessage("Date From Should be today, Please fill again ", ConstantObject.vSnackBarWithButton)
+                    else -> stDateTaskFrom.set(dateChoosen)
+                }
+            }
+        }
     }
 
     fun onAddTeam(){ createTaskInterface.getTeamData() }
@@ -150,6 +187,8 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                 when{
                     listDtlChargeCode.isNotEmpty() ->{
                         val compName = listDtlChargeCode[0].mCompanyName.trim()
+                        stChargeCodeValidFrom.set(listDtlChargeCode[0].mValidFrom.trim())
+                        stChargeCodeValidInto.set(listDtlChargeCode[0].mValidInto.trim())
                         when{
                             compName.isNotEmpty() -> {
                                 stCompanyName.set(compName)
@@ -177,10 +216,14 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
         }
     }
 
-    fun validateTeam(itemUserId : String, itemName : String){
-        if (itemUserId != "null" && itemName != "null"){
+    fun validateTeam(itemUserId : String, itemName : String, stTeamStatus : String){
+        if (itemUserId != "null" && itemName != "null" && stTeamStatus != "null"){
             val listSelectedTeam = mutableListOf<FriendModel>()
-            val itemFriendModel = FriendModel(itemUserId, itemName, "Free", false)
+            val itemFriendModel = if(stTeamStatus.contains("Available")){
+                FriendModel(itemUserId, itemName, stTeamStatus.trim(), false)
+            }else {
+                FriendModel(itemUserId, itemName, stTeamStatus.trim(), true)
+            }
 
             listSelectedTeam.add(itemFriendModel)
             createTaskInterface.onLoadTeam(listSelectedTeam)
@@ -192,7 +235,7 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
                 stDateTimeFrom.get().equals("")
                         || stDateTimeInto.get().equals("")
                         || stCompanyName.get().equals("")
-                        || stDateTask.get().equals("")
+                        || stDateTaskFrom.get().equals("")
                         || stContactPerson.get().equals("")
                         || stDescriptionTask.get().equals("")
                         || mTypeTask == "" -> return false
@@ -205,5 +248,11 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
     fun submitTask(){
         isProgressCreateTask.set(true)
         createTaskInterface.onSuccessCreateTask()
+    }
+
+    fun onBackCreateTaskMenu(){
+        val intent = Intent(context, MenuActivity::class.java)
+        intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_ACTIVITY)
+        context.startActivity(intent)
     }
 }

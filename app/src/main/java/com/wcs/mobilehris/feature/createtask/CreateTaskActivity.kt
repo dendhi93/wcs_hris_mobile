@@ -3,7 +3,6 @@ package com.wcs.mobilehris.feature.createtask
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.MenuItem
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -16,12 +15,13 @@ import com.wcs.mobilehris.database.entity.ChargeCodeEntity
 import com.wcs.mobilehris.databinding.ActivityCreateTaskBinding
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
 import com.wcs.mobilehris.feature.dtltask.FriendModel
-import com.wcs.mobilehris.feature.team.TeamActivity
+import com.wcs.mobilehris.feature.team.activity.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import kotlin.collections.ArrayList
 
 
+@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFriendInterface {
     private lateinit var activityCreateTaskBinding: ActivityCreateTaskBinding
     private lateinit var createTaskAdapter : CustomDetailTaskAdapter
@@ -126,9 +126,17 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFri
     }
 
     override fun getTeamData() {
-        val intent = Intent(this, TeamActivity::class.java)
-        intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentCreateTask)
-        startActivityForResult(intent, RESULT_SUCCESS_CODE)
+        val stDateFrom = activityCreateTaskBinding.viewModel?.stDateTaskFrom?.get()
+        val stDateInto = activityCreateTaskBinding.viewModel?.stDateTaskInto?.get()
+        if(stDateFrom == "" || stDateInto == ""){
+            onMessage("Please fill Date From or Date Into", ConstantObject.vToastInfo)
+        }else{
+            val intent = Intent(this, TeamActivity::class.java)
+            intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentCreateTask)
+            intent.putExtra(ConstantObject.extra_dateFrom_intent, stDateFrom?.trim())
+            intent.putExtra(ConstantObject.extra_dateInto_intent, stDateInto?.trim())
+            startActivityForResult(intent, RESULT_SUCCESS_CODE)
+        }
     }
 
     override fun onSuccessCreateTask() {
@@ -143,9 +151,12 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFri
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
                 RESULT_SUCCESS_CODE -> {
-                    val intentTeamName : String = data?.getStringExtra(RESULT_EXTRA_TEAM_NAME).toString()
-                    val intentTeamUserId : String = data?.getStringExtra(RESULT_EXTRA_TEAM_USER_ID).toString()
-                    activityCreateTaskBinding.viewModel?.validateTeam(intentTeamUserId, intentTeamName)
+                    data?.let {
+                        val intentTeamName : String = it.getStringExtra(RESULT_EXTRA_TEAM_NAME).toString()
+                        val intentTeamUserId : String = it.getStringExtra(RESULT_EXTRA_TEAM_USER_ID).toString()
+                        val intentTeamStatus : String = it.getStringExtra(RESULT_EXTRA_TEAM_STATUS).toString()
+                        activityCreateTaskBinding.viewModel?.validateTeam(intentTeamUserId, intentTeamName,intentTeamStatus)
+                    }
                 }
         }
     }
@@ -153,11 +164,18 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFri
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
+                activityCreateTaskBinding.viewModel?.onBackCreateTaskMenu()
                 finish()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        activityCreateTaskBinding.viewModel?.onBackCreateTaskMenu()
+        finish()
+        super.onBackPressed()
     }
 
     companion object{
@@ -167,7 +185,10 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFri
         const val RESULT_SUCCESS_CODE = 3
         const val RESULT_EXTRA_TEAM_NAME = "team_name"
         const val RESULT_EXTRA_TEAM_USER_ID = "team_user_id"
+        const val RESULT_EXTRA_TEAM_STATUS = "team_status"
         const val ALERT_CREATE_TASK_CONFIRMATION = 5
+        const val chooseDateFrom = "date_from"
+        const val chooseDateInto = "date_into"
         const val chooseTimeFrom = "time_from"
         const val chooseTimeInto = "time_into"
     }

@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.ActivityProfileBinding
-import com.wcs.mobilehris.feature.team.TeamFragment
+import com.wcs.mobilehris.feature.team.fragment.TeamFragment
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.Preference
 

@@ -29,12 +29,13 @@ class CustomApprovalAdapter (private val _context : Context,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val model : ApprovalModel = approvalList[position]
-        val stMenu = model.itemMenu.trim()+" ("+ model.qtyApproval.toString() +")"
+        val stMenu = model.itemMenu.trim()
+        val stContentMenu ="Qty " +model.qtyApproval.toString()
         when{
             model.qtyApproval > 0 ->  holder.cvCustom.setCardBackgroundColor(Color.LTGRAY)
         }
         holder.tvMenu.text = stMenu.trim()
-        holder.tvMenuContent.text = model.itemMenuContent.trim()
+        holder.tvMenuContent.text = stContentMenu.trim()
         holder.imgCustom.setImageResource(model.imgItemMenu)
         holder.cvCustom.setOnClickListener {
             when(model.itemMenu){

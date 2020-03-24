@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.FragmentPlanBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
@@ -21,10 +22,11 @@ class PlanFragment : Fragment(), PlanInterface, View.OnClickListener {
     private lateinit var planFragmentBinding : FragmentPlanBinding
     private var arrPlanList = ArrayList<ContentTaskModel>()
     private lateinit var planAdapter: CustomTaskAdapter
+    private var tenorDate = 1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         planFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_plan, container, false)
-        planFragmentBinding.viewModel = PlanViewModel(requireContext(), this)
+        planFragmentBinding.viewModel = PlanViewModel(requireContext(), this, ApiRepo())
         return planFragmentBinding.root
     }
 
@@ -34,17 +36,35 @@ class PlanFragment : Fragment(), PlanInterface, View.OnClickListener {
         planFragmentBinding.rcPlan.setHasFixedSize(true)
         planAdapter = CustomTaskAdapter(requireContext(), arrPlanList)
         planFragmentBinding.rcPlan.adapter = planAdapter
-        planFragmentBinding.viewModel?.initPlan(ConstantObject.vLoadWithProgressBar)
+        planFragmentBinding.viewModel?.initPlan(ConstantObject.vLoadWithProgressBar, tenorDate)
         planFragmentBinding.swPlan.setOnRefreshListener {
-            planFragmentBinding.viewModel?.initPlan(ConstantObject.vLoadWithoutProgressBar)
+            tenorDate += 1
+            planFragmentBinding.viewModel?.initPlan(ConstantObject.vLoadWithoutProgressBar, tenorDate)
         }
         planFragmentBinding.btnDateForPlan.setOnClickListener(this)
     }
 
     override fun onLoadList(planList: List<ContentTaskModel>, typeLoading : Int) {
-        arrPlanList.clear()
-        arrPlanList.addAll(planList)
-        planAdapter.notifyDataSetChanged()
+//        arrPlanList.clear()
+
+        when(arrPlanList.size){
+            0 -> {
+                arrPlanList.addAll(planList)
+                planAdapter.notifyDataSetChanged()
+            }
+            else -> {
+                for(j in arrPlanList.indices){
+                    val insideDateTask = arrPlanList[j].taskDate.trim()
+                    for(i in planList.indices){
+                        val onLoadDateTask = planList[i].taskDate.trim()
+                        if(insideDateTask != onLoadDateTask){
+                            arrPlanList.addAll(planList)
+                        }
+                    }
+                    planAdapter.notifyDataSetChanged()
+                }
+            }
+        }
 
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)

@@ -12,5 +12,7 @@ data class ChargeCodeEntity(
     @ColumnInfo(name = "mCompanyName") var mCompanyName : String,
     @ColumnInfo(name = "mProjectManagerName") var mProjectManagerName : String,
     @ColumnInfo(name = "mProjectManagerNik") var mProjectManagerNik : String,
+    @ColumnInfo(name = "mValidFrom") var mValidFrom : String,
+    @ColumnInfo(name = "mValidInto") var mValidInto : String,
     @ColumnInfo(name = "mUpdateDate") var mUpdateDate : String
     )

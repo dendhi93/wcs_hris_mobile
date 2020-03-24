@@ -1,4 +1,4 @@
-package com.wcs.mobilehris.feature.team
+package com.wcs.mobilehris.feature.team.fragment
 
 data class TeamModel (
     val userId : String,
