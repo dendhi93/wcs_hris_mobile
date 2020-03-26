@@ -27,6 +27,7 @@ class CustomDetailTaskAdapter(private val context : Context, private val dtlTask
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.imgVIconIsConflick.visibility = View.VISIBLE
+        holder.tvCustomContent.visibility =View.GONE
         holder.imgVIconUser.setBackgroundResource(R.mipmap.ic_user_black)
         holder.imgv_2.setBackgroundResource(R.mipmap.ic_trash_24)
         when(listFrom){
@@ -40,7 +41,6 @@ class CustomDetailTaskAdapter(private val context : Context, private val dtlTask
             else -> holder.imgVIconIsConflick.setImageResource(R.mipmap.ic_checklist_48)
         }
         holder.tvCustom.text = model.teamName.trim()
-        holder.tvCustomContent.text = model.descriptionTeam.trim()
         holder.imgv_2.setOnClickListener {
             when(listFrom){
                 ConstantObject.vCreateEdit -> selectedFriendInterface.selectedItemFriend(model)

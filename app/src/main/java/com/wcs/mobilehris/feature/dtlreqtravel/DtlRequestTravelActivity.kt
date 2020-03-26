@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.ActivityDtlRequestTravelBinding
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
 import com.wcs.mobilehris.feature.dtltask.FriendModel
@@ -39,7 +40,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dtlTravelActivityBinding = DataBindingUtil.setContentView(this,R.layout.activity_dtl_request_travel)
-        dtlTravelActivityBinding.viewModel = DtlTravelViewModel(this, this)
+        dtlTravelActivityBinding.viewModel = DtlTravelViewModel(this, this, ApiRepo())
         dtlTravelActivityBinding.rcDtlReqTravel.layoutManager = LinearLayoutManager(this)
         dtlTravelActivityBinding.rcDtlReqTravel.setHasFixedSize(true)
         dtlTravelActivityBinding.rcDtlReqTravelCities.layoutManager = LinearLayoutManager(this)
@@ -121,13 +122,11 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
         finish()
     }
 
-    override fun selectedTravelWayRadio(booleanTravelWay: Boolean?) {
+    override fun selectedTravelWayRadio(stTravelWay: String) {
         dtlTravelActivityBinding.rgDtlReqTravelTypeWay.clearCheck()
-        booleanTravelWay?.let {
-            when{
-                it -> dtlTravelActivityBinding.rbDtlReqTravelTb.isChecked = true
-                else -> dtlTravelActivityBinding.rbDtlReqTravelNonTb.isChecked = true
-            }
+        when(stTravelWay){
+            "TB" -> dtlTravelActivityBinding.rbDtlReqTravelTb.isChecked = true
+            else -> dtlTravelActivityBinding.rbDtlReqTravelNonTb.isChecked = true
         }
     }
 

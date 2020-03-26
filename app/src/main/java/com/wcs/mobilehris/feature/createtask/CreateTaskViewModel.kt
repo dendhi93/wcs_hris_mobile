@@ -220,9 +220,9 @@ class CreateTaskViewModel(private val context : Context, private val createTaskI
         if (itemUserId != "null" && itemName != "null" && stTeamStatus != "null"){
             val listSelectedTeam = mutableListOf<FriendModel>()
             val itemFriendModel = if(stTeamStatus.contains("Available")){
-                FriendModel(itemUserId, itemName, stTeamStatus.trim(), false)
+                FriendModel(itemUserId, itemName, false)
             }else {
-                FriendModel(itemUserId, itemName, stTeamStatus.trim(), true)
+                FriendModel(itemUserId, itemName, true)
             }
 
             listSelectedTeam.add(itemFriendModel)

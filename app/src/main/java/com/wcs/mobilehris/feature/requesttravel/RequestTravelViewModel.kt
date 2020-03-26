@@ -148,9 +148,9 @@ class RequestTravelViewModel (private val context : Context, private val request
     fun validateTravelTeam(itemUserId : String, itemName : String, stTeamStatus : String){
         if (itemUserId != "null" && itemName != "null" && stTeamStatus != "null"){
             val itemFriendModel = if(stTeamStatus.contains("Available")){
-                FriendModel(itemUserId, itemName, stTeamStatus.trim(), false)
+                FriendModel(itemUserId, itemName, false)
             }else {
-                FriendModel(itemUserId, itemName, stTeamStatus.trim(), true)
+                FriendModel(itemUserId, itemName, true)
             }
 
             listSelectedTeam.add(itemFriendModel)

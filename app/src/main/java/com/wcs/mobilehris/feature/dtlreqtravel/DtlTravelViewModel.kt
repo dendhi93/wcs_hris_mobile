@@ -1,18 +1,25 @@
 package com.wcs.mobilehris.feature.dtlreqtravel
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Handler
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
+import com.wcs.mobilehris.BuildConfig
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.feature.dtltask.FriendModel
-import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.feature.requesttravel.ReqTravelModel
 import com.wcs.mobilehris.util.ConstantObject
+import org.json.JSONArray
+import org.json.JSONObject
 
-class DtlTravelViewModel (private val context : Context, private val dtlTravelInterface: DtlTravelInterface) : ViewModel(){
+class DtlTravelViewModel (private val context : Context,
+                          private val dtlTravelInterface: DtlTravelInterface,
+                          private val apiRepo: ApiRepo) : ViewModel(){
     val isProgressDtlReqTravel = ObservableField(false)
     val isHideDtlTravelUI = ObservableField(false)
     val isConfirmTravelMenu = ObservableField(false)
@@ -24,7 +31,6 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
     val stDtlTravelReason = ObservableField("")
     val stDtlTravelNotes = ObservableField("")
     val stButtonSubmitTravel = ObservableField("")
-    private val stDtlTravelIsTB = ObservableField(false)
 
     private var stIntentFromMenu : String? = null
     private var stIntentTravelId : String? = null
@@ -42,52 +48,154 @@ class DtlTravelViewModel (private val context : Context, private val dtlTravelIn
         stIntentTravelId = intentTravelId.trim()
         isProgressDtlReqTravel.set(true)
         isHideDtlTravelUI.set(true)
-        isConfirmTravelMenu.set(false)
+        if (intentFrom == ConstantObject.extra_fromIntentConfirmTravel ||
+                    intentFrom == ConstantObject.extra_fromIntentApproval){
+            isConfirmTravelMenu.set(true)
+        }else { isConfirmTravelMenu.set(false) }
         when(stIntentFromMenu){
             ConstantObject.extra_fromIntentConfirmTravel -> stButtonSubmitTravel.set(context.getString(R.string.confirm_save))
             else -> stButtonSubmitTravel.set(context.getString(R.string.save))
         }
+        apiRepo.getHeaderTravel(BuildConfig.HRIS_URL+"gettravelrequestbyid/"+intentTravelId, context, object : ApiRepo.ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val responseTravelHeader = it.getString(ConstantObject.vResponseData)
+                    val jObjHeaderTravel = JSONObject(responseTravelHeader)
+                    stDtlTravelChargeCode.set(jObjHeaderTravel.getString("CHARGE_CD_NAME"))
+                    stDtlTravelDepartDate.set(jObjHeaderTravel.getString("DEPART_DATE").split("T")[0])
+                    stDtlTravelReturnDate.set(jObjHeaderTravel.getString("RETURN_DATE").split("T")[0])
+                    dtlTravelInterface.selectedTravelWayRadio(jObjHeaderTravel.getString("TRAVEL_TYPE_CD"))
+                    stDtlTravelReason.set(jObjHeaderTravel.getString("REASON_DESCRIPTION"))
+                    stDtlTravelDescription.set(jObjHeaderTravel.getString("DESCRIPTION"))
+                    AsyncDtlTravel().execute()
+                }
+            }
 
-        Handler().postDelayed({
-            stDtlTravelChargeCode.set("A-1003-096 BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY")
-            stDtlTravelDepartDate.set("11-02-2020")
-            stDtlTravelReturnDate.set("18-02-2020")
-            stDtlTravelIsTB.set(false)
-            dtlTravelInterface.selectedTravelWayRadio(stDtlTravelIsTB.get())
-            stDtlTravelReason.set("Routine Duty")
-            stDtlTravelDescription.set("Test Mobile")
+            override fun onDataError(error: String?) {
+                isProgressDtlReqTravel.set(false)
+                isHideDtlTravelUI.set(false)
+                dtlTravelInterface.onMessage("failed header " +error.toString(), ConstantObject.vToastError)
+            }
+        })
+//        Handler().postDelayed({
+//            stDtlTravelChargeCode.set("A-1003-096 BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY")
+//            stDtlTravelDepartDate.set("11-02-2020")
+//            stDtlTravelReturnDate.set("18-02-2020")
+//            stDtlTravelIsTB.set(false)
+//            dtlTravelInterface.selectedTravelWayRadio(stDtlTravelIsTB.get())
+//            stDtlTravelReason.set("Routine Duty")
+//            stDtlTravelDescription.set("Test Mobile")
+//
+//
+//            var friendModel = FriendModel("62664930","Windy", "Free", false)
+//            dtlListFriend.add(friendModel)
+//            friendModel = FriendModel("62405890","Michael Saputra", "Conflict With Heinz ABC", true)
+//            dtlListFriend.add(friendModel)
+//            when{dtlListFriend.isNotEmpty() -> dtlTravelInterface.onLoadTeam(dtlListFriend) }
+//
+//
+//            var reqTravelModel = ReqTravelModel("Jakarta",
+//                "Bandung",
+//                "11-02-2020",
+//                "12-02-2020",
+//                "TX-TAXI",
+//                "Airy Room")
+//            dtlListCityTravel.add(reqTravelModel)
+//            reqTravelModel = ReqTravelModel("Bandung",
+//                "Solo",
+//                "12-02-2020",
+//                "14-02-2020",
+//                "TR-TRAIN",
+//                "Mercure Hotel")
+//            dtlListCityTravel.add(reqTravelModel)
+//            when{dtlListCityTravel.isNotEmpty() -> dtlTravelInterface.onLoadCitiesTravel(dtlListCityTravel)}
+//
+//            isProgressDtlReqTravel.set(false)
+//            isHideDtlTravelUI.set(false)
+//        }, 2000)
+    }
 
-            val dtlListFriend = mutableListOf<FriendModel>()
-            var friendModel = FriendModel("62664930","Windy", "Free", false)
-            dtlListFriend.add(friendModel)
-            friendModel = FriendModel("62405890","Michael Saputra", "Conflict With Heinz ABC", true)
-            dtlListFriend.add(friendModel)
-            when{dtlListFriend.isNotEmpty() -> dtlTravelInterface.onLoadTeam(dtlListFriend) }
+    private fun getDataTeam(){
+        val dtlListFriend = mutableListOf<FriendModel>()
+        var friendModel : FriendModel
+        apiRepo.getHeaderTravel(BuildConfig.HRIS_URL+"gettravelrequestmemberdetailbyheaderid/"+stIntentTravelId,
+            context, object : ApiRepo.ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val objectResponseFriend = it.getString(ConstantObject.vResponseData)
+                    val jObjArrayFriend = JSONArray(objectResponseFriend)
+                    for(i in 0 until jObjArrayFriend.length()){
+                        val jObjFriendList = jObjArrayFriend.getJSONObject(i)
+                        val booleanStatusTeam = when(jObjFriendList.getString("AVAILABLE")){
+                            "Y" -> true
+                            else -> false
+                        }
+                        friendModel = FriendModel(
+                            jObjFriendList.getString("NIK"),
+                            jObjFriendList.getString("FULL_NAME"),
+                            booleanStatusTeam
+                        )
+                        dtlListFriend.add(friendModel)
+                    }
+                    when{dtlListFriend.isNotEmpty() -> dtlTravelInterface.onLoadTeam(dtlListFriend) }
+                }
+            }
 
-            val dtlListCityTravel = mutableListOf<ReqTravelModel>()
-            var reqTravelModel = ReqTravelModel("Jakarta",
-                "Bandung",
-                "11-02-2020",
-                "12-02-2020",
-                "TX-TAXI",
-                "Airy Room")
-            dtlListCityTravel.add(reqTravelModel)
-            reqTravelModel = ReqTravelModel("Bandung",
-                "Solo",
-                "12-02-2020",
-                "14-02-2020",
-                "TR-TRAIN",
-                "Mercure Hotel")
-            dtlListCityTravel.add(reqTravelModel)
-            when{dtlListCityTravel.isNotEmpty() -> dtlTravelInterface.onLoadCitiesTravel(dtlListCityTravel)}
+            override fun onDataError(error: String?) {
+                isProgressDtlReqTravel.set(false)
+                isHideDtlTravelUI.set(false)
+                dtlTravelInterface.onMessage("failed get team " +error.toString(), ConstantObject.vToastError)
+            }
+        })
+    }
 
-            isProgressDtlReqTravel.set(false)
-            isHideDtlTravelUI.set(false)
-            if (intentFrom == ConstantObject.extra_fromIntentConfirmTravel ||
-                    intentFrom == ConstantObject.extra_fromIntentApproval){
-                isConfirmTravelMenu.set(true)
-            }else { isConfirmTravelMenu.set(false) }
-        }, 2000)
+    private fun getDestinationTravel(){
+        val dtlListCityTravel = mutableListOf<ReqTravelModel>()
+        var reqTravelModel : ReqTravelModel
+        apiRepo.getHeaderTravel(BuildConfig.HRIS_URL+"gettravelrequestdetailbyheaderid/"+stIntentTravelId,
+            context, object : ApiRepo.ApiCallback<JSONObject>{
+                override fun onDataLoaded(data: JSONObject?) {
+                    data?.let {
+                        val objectResponseDestination = it.getString(ConstantObject.vResponseData)
+                        val jObjArrayDestination = JSONArray(objectResponseDestination)
+                        for(i in 0 until jObjArrayDestination.length()){
+                            val jObjDestination = jObjArrayDestination.getJSONObject(i)
+                            reqTravelModel = ReqTravelModel(
+                                jObjDestination.getString("DESTINATION_FROM"),
+                                jObjDestination.getString("DESTINATION_TO"),
+                                jObjDestination.getString("START_DATE").split("T")[0],
+                                jObjDestination.getString("END_DATE").split("T")[0],
+                                jObjDestination.getString("TRANSPORT_NAME")+"-"+jObjDestination.getString("TRANSPORT_NAME"),
+                                jObjDestination.getString("ACCOMODATION_NAME")
+                            )
+                            dtlListCityTravel.add(reqTravelModel)
+                            when{dtlListCityTravel.isNotEmpty() -> dtlTravelInterface.onLoadCitiesTravel(dtlListCityTravel)}
+                            isProgressDtlReqTravel.set(false)
+                            isHideDtlTravelUI.set(false)
+                        }
+                    }
+                }
+
+                override fun onDataError(error: String?) {
+                    isProgressDtlReqTravel.set(false)
+                    isHideDtlTravelUI.set(false)
+                    dtlTravelInterface.onMessage("failed get city " +error.toString(), ConstantObject.vToastError)
+                }
+            })
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    inner class AsyncDtlTravel: AsyncTask<Void, Void, String>(){
+
+        override fun doInBackground(vararg params: Void?): String {
+            return "OK"
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            getDataTeam()
+            getDestinationTravel()
+        }
     }
 
     fun viewCities(){

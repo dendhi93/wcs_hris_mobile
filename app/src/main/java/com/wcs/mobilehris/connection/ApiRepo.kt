@@ -280,6 +280,25 @@ class ApiRepo {
             })
     }
 
+    fun getHeaderTravel(urlTravel : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url header travel $urlTravel")
+        AndroidNetworking.get(urlTravel)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err travel header "+anError?.message.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+            })
+    }
+
     //interface response from server
     interface ApiCallback<T> {
         fun onDataLoaded(data: T?)
