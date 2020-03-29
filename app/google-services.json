@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "334394985903",
+    "firebase_url": "https://wcs-hris.firebaseio.com",
+    "project_id": "wcs-hris",
+    "storage_bucket": "wcs-hris.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334394985903:android:ccc224450582caac4d735a",
+        "android_client_info": {
+          "package_name": "com.wcs.mobilehris"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334394985903-p01ngfe56b3lpmbpbf563kcafprib1gq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wcs.mobilehris",
+            "certificate_hash": "a8b1814071bf04be7ea881f1f54d13eae81b3d13"
+          }
+        },
+        {
+          "client_id": "334394985903-h59r69dti3k197iid3t21p47c7pfsudn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8ZztFXiCIPqo_PY3btuIuwCdoWbYT8iE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334394985903-h59r69dti3k197iid3t21p47c7pfsudn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,6 +8,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
 import com.androidnetworking.interceptors.HttpLoggingInterceptor
+import com.google.firebase.iid.FirebaseInstanceId
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 
@@ -59,4 +60,11 @@ object ConnectionObject {
 
         return builder.build()
     }
+
+    fun getFirebaseToken():String{
+        return try{
+            FirebaseInstanceId.getInstance().token.toString()
+        }catch (e:java.lang.Exception){return ""}
+    }
+
 }

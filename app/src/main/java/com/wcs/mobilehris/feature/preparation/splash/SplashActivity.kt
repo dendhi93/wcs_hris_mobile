@@ -32,7 +32,7 @@ class SplashActivity : AppCompatActivity(), SplashInterface, DialogInterface {
 
     override fun onResume() {
         super.onResume()
-        bindingSplash.viewModel?.validateUpdateMaster()
+        bindingSplash.viewModel?.getFirebaseToken()
     }
 
     override fun onNegativeClick(o: Any) {}

@@ -12,6 +12,7 @@ import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.database.daos.*
 import com.wcs.mobilehris.database.entity.*
 import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.Preference
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.json.JSONArray
@@ -36,8 +37,9 @@ class SplashViewModel(private var _context : Context,
     private var countDataReasonTravel = 0
     private var countDataReasonLeave = 0
     private var TAG = "Splash"
+    private var preference = Preference(_context)
 
-    fun validateUpdateMaster(){
+    private fun validateUpdateMaster(){
         mUpdateMasterDataDao = WcsHrisApps.database.updateMasterDao()
         mChargeCodeDao = WcsHrisApps.database.chargeCodeDao()
         mTransTypeDao = WcsHrisApps.database.transTypeDao()
@@ -50,6 +52,28 @@ class SplashViewModel(private var _context : Context,
             when{
                 listUpdate.isNotEmpty() -> processDownload(false)
                 else -> processDownload(true)
+            }
+        }
+    }
+
+    fun getFirebaseToken(){
+        when {
+            !ConnectionObject.isNetworkAvailable(_context) -> _splashInterface.onAlertSplash(
+                _context.getString(R.string.alert_no_connection),
+                ConstantObject.vAlertDialogNoConnection, SplashActivity.DIALOG_NO_INTERNET
+            )
+            else -> {
+                val fToken = ConnectionObject.getFirebaseToken()
+                when(preference.getFirebaseToken()){
+                    "" -> preference.saveFirebaseToken(fToken)
+                    else -> {
+                        if(fToken != preference.getFirebaseToken()){
+                            preference.saveFirebaseToken(fToken)
+                        }
+                    }
+                }
+                Log.d("###", "token $fToken")
+//                validateUpdateMaster()
             }
         }
     }
