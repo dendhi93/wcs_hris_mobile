@@ -33,7 +33,7 @@ class ApiRepo {
                         anError?.errorCode != 0 -> {
                             Log.d("###","Login " +anError?.errorBody.toString())
                             val errObj = JSONObject(anError?.errorBody.toString())
-                            callback.onDataError(errObj.getString("Message"))
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
                         }
                         else -> {
                             Log.d("###_2","Login " +anError.message.toString())
@@ -64,11 +64,12 @@ class ApiRepo {
                 override fun onError(anError: ANError?) {
                     when{
                         anError?.errorCode != 0 -> {
-                            Log.d("###","date Master " +anError?.message)
-                            callback.onDataError(anError?.errorBody.toString())
+                            Log.d("###","Login " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
                         }
                         else -> {
-                            Log.d("###_2","date Master "+anError.message.toString())
+                            Log.d("###_2","Login " +anError.message.toString())
                             callback.onDataError(anError.message.toString())
                         }
                     }
@@ -96,11 +97,12 @@ class ApiRepo {
                 override fun onError(anError: ANError?) {
                     when{
                         anError?.errorCode != 0 -> {
-                            Log.d("###","masterData " +anError?.message)
-                            callback.onDataError(anError?.errorBody.toString())
+                            Log.d("###","data master " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
                         }
                         else -> {
-                            Log.d("###_2","masterData "+anError.message.toString())
+                            Log.d("###_2","data master " +anError.message.toString())
                             callback.onDataError(anError.message.toString())
                         }
                     }
@@ -130,11 +132,12 @@ class ApiRepo {
                 override fun onError(anError: ANError?) {
                     when{
                         anError?.errorCode != 0 -> {
-                            Log.d("###","activity " +anError?.message)
-                            callback.onDataError(anError?.errorBody.toString())
+                            Log.d("###","activity " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
                         }
                         else -> {
-                            Log.d("###","activity "+anError.message.toString())
+                            Log.d("###_2","activity " +anError.message.toString())
                             callback.onDataError(anError.message.toString())
                         }
                     }
@@ -158,8 +161,17 @@ class ApiRepo {
                 }
 
                 override fun onError(anError: ANError?) {
-                    Log.d("###","header activity "+anError?.message.toString())
-                    callback.onDataError(anError?.message.toString())
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","header activity " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","header activity " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
                 }
             })
     }
@@ -180,8 +192,17 @@ class ApiRepo {
                 }
 
                 override fun onError(anError: ANError?) {
-                    Log.d("###","dtl activity "+anError?.message.toString())
-                    callback.onDataError(anError?.message.toString())
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","detail activity " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","detail activity " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
                 }
             })
     }
@@ -205,8 +226,17 @@ class ApiRepo {
                 }
 
                 override fun onError(anError: ANError?) {
-                    Log.d("###","travel list data "+anError?.message.toString())
-                    callback.onDataError(anError?.message.toString())
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","travel list data " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","travel list data" +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
                 }
             })
     }
@@ -251,8 +281,17 @@ class ApiRepo {
                 }
 
                 override fun onError(anError: ANError?) {
-                    Log.d("###","err leave "+anError?.message.toString())
-                    callback.onDataError(anError?.message.toString())
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","leave list " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","leave list " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
                 }
             })
     }
@@ -274,8 +313,17 @@ class ApiRepo {
                 }
 
                 override fun onError(anError: ANError?) {
-                    Log.d("###","err team search "+anError?.message.toString())
-                    callback.onDataError(anError?.message.toString())
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","search team " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","search team " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
                 }
             })
     }
@@ -293,8 +341,45 @@ class ApiRepo {
                 }
 
                 override fun onError(anError: ANError?) {
-                    Log.d("###","err travel header "+anError?.message.toString())
-                    callback.onDataError(anError?.message.toString())
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","travel header " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","travel header " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun getDtlLeave(leaveId : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url dtl leave " +BuildConfig.HRIS_URL+"getleaverequestbyid/"+leaveId.trim())
+        AndroidNetworking.get(BuildConfig.HRIS_URL+"getleaverequestbyid/"+leaveId.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","detail leave " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","detail leave " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
                 }
             })
     }

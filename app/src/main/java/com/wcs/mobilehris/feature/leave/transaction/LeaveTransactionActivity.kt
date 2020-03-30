@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.database.entity.ReasonLeaveEntity
 import com.wcs.mobilehris.databinding.ActivityLeaveTransactionBinding
 import com.wcs.mobilehris.util.ConstantObject
@@ -36,7 +37,7 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         leaveActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_leave_transaction)
-        leaveActivityBinding.viewModel = LeaveTransViewModel(this, this)
+        leaveActivityBinding.viewModel = LeaveTransViewModel(this, this, ApiRepo())
     }
 
     override fun onStart() {
@@ -57,7 +58,7 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface,
                 else -> it.title = ConstantObject.vEditTask
             }
         }
-        leaveActivityBinding.viewModel?.onInitLeaveData(intentLeaveType)
+        leaveActivityBinding.viewModel?.onInitLeaveData(intentLeaveType, intentLeaveId.trim())
         leaveActivityBinding.viewModel?.onValidateFromMenu(intentLeaveType)
         leaveActivityBinding.viewModel?.initReasonSpinner()
     }

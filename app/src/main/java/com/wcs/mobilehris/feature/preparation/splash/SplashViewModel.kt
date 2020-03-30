@@ -73,7 +73,7 @@ class SplashViewModel(private var _context : Context,
                     }
                 }
                 Log.d("###", "token $fToken")
-//                validateUpdateMaster()
+                validateUpdateMaster()
             }
         }
     }

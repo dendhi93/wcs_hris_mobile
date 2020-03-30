@@ -68,6 +68,8 @@ object ConstantObject {
     //response API
     const val vResponseData = "Data"
     const val vResponseResult = "result"
+    const val vResponseMessage = "Message"
+
 
     //param tabel
     const val keyChargeCode = "mChargecode"
@@ -78,4 +80,5 @@ object ConstantObject {
     //date format from
     const val dateTimeFormat_1 = 1
     const val dateTimeFormat_2 = 2
+    const val dateTimeFormat_3 = 3
 }

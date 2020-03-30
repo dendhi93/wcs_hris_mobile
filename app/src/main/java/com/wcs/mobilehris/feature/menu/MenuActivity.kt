@@ -244,6 +244,4 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         const val EXTRA_CALLER_ACTIVITY_FLAG = "hris_activity"
         const val DIALOG_LOG_OUT = 11
     }
-
-
 }

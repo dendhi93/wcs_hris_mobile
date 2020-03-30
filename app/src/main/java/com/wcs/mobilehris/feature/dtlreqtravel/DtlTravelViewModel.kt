@@ -77,42 +77,6 @@ class DtlTravelViewModel (private val context : Context,
                 dtlTravelInterface.onMessage("failed header " +error.toString(), ConstantObject.vToastError)
             }
         })
-//        Handler().postDelayed({
-//            stDtlTravelChargeCode.set("A-1003-096 BUSINESS DEVELOPMENT FOR MOBILITY ACTIVITY")
-//            stDtlTravelDepartDate.set("11-02-2020")
-//            stDtlTravelReturnDate.set("18-02-2020")
-//            stDtlTravelIsTB.set(false)
-//            dtlTravelInterface.selectedTravelWayRadio(stDtlTravelIsTB.get())
-//            stDtlTravelReason.set("Routine Duty")
-//            stDtlTravelDescription.set("Test Mobile")
-//
-//
-//            var friendModel = FriendModel("62664930","Windy", "Free", false)
-//            dtlListFriend.add(friendModel)
-//            friendModel = FriendModel("62405890","Michael Saputra", "Conflict With Heinz ABC", true)
-//            dtlListFriend.add(friendModel)
-//            when{dtlListFriend.isNotEmpty() -> dtlTravelInterface.onLoadTeam(dtlListFriend) }
-//
-//
-//            var reqTravelModel = ReqTravelModel("Jakarta",
-//                "Bandung",
-//                "11-02-2020",
-//                "12-02-2020",
-//                "TX-TAXI",
-//                "Airy Room")
-//            dtlListCityTravel.add(reqTravelModel)
-//            reqTravelModel = ReqTravelModel("Bandung",
-//                "Solo",
-//                "12-02-2020",
-//                "14-02-2020",
-//                "TR-TRAIN",
-//                "Mercure Hotel")
-//            dtlListCityTravel.add(reqTravelModel)
-//            when{dtlListCityTravel.isNotEmpty() -> dtlTravelInterface.onLoadCitiesTravel(dtlListCityTravel)}
-//
-//            isProgressDtlReqTravel.set(false)
-//            isHideDtlTravelUI.set(false)
-//        }, 2000)
     }
 
     private fun getDataTeam(){
