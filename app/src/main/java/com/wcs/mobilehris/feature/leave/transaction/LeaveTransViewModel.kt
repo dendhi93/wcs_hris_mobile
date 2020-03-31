@@ -84,26 +84,26 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
         if(fromLeaveMenu != ConstantObject.extra_fromIntentRequest){
             isProgressLeaveTrans.set(true)
             isHiddenContent.set(true)
-                Handler().postDelayed({
-                    stLeaveDateFrom.set("05/02/2020")
-                    stLeaveDateInto.set("05/02/2020")
-                    stLeaveCountTime.set("8")
-                    stLeaveTimeFrom.set("08:30")
-                    stLeaveTimeInto.set("17:30")
-                    when (fromLeaveMenu) {
-                        LeaveTransactionActivity.valueLeaveDtlType, ConstantObject.vEditTask -> {
-                            leaveTransInterface.onSelectedSpinner("Sick Leave")
-                            stLeaveNotes.set("Sakit Panas")
-                        }
-                        ConstantObject.extra_fromIntentApproval -> {
-                            leaveTransInterface.onSelectedSpinner("Sick Leave")
-                            validateReasonLeave("Sick Leave", "D-001002")
-                            stLeaveNotes.set("Sakit Panas")
-                        }
+            Handler().postDelayed({
+                stLeaveDateFrom.set("05/02/2020")
+                stLeaveDateInto.set("05/02/2020")
+                stLeaveCountTime.set("8")
+                stLeaveTimeFrom.set("08:30")
+                stLeaveTimeInto.set("17:30")
+                when (fromLeaveMenu) {
+                    LeaveTransactionActivity.valueLeaveDtlType, ConstantObject.vEditTask -> {
+                        leaveTransInterface.onSelectedSpinner("Sick Leave")
+                        stLeaveNotes.set("Sakit Panas")
                     }
-                    isProgressLeaveTrans.set(false)
-                    isHiddenContent.set(false)
-                }, 2000)
+                    ConstantObject.extra_fromIntentApproval -> {
+                        leaveTransInterface.onSelectedSpinner("Sick Leave")
+                        validateReasonLeave("Sick Leave", "D-001002")
+                        stLeaveNotes.set("Sakit Panas")
+                    }
+                }
+                isProgressLeaveTrans.set(false)
+                isHiddenContent.set(false)
+            }, 2000)
         }
 
         when(fromLeaveMenu){
@@ -239,8 +239,10 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
             !ConnectionObject.isNetworkAvailable(context) -> leaveTransInterface.onAlertLeaveTrans(context.getString(
                 R.string.alert_no_connection),
                 ConstantObject.vAlertDialogNoConnection, LeaveTransactionActivity.ALERT_LEAVE_TRANS_NO_CONNECTION)
+
             intentFromLeave == ConstantObject.vEditTask -> leaveTransInterface.onAlertLeaveTrans(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT)
+
             intentFromLeave == ConstantObject.extra_fromIntentRequest ->{
                 when {
                     !validateLeave() -> leaveTransInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
@@ -248,21 +250,22 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
                         ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST)
                 }
             }
+
             intentFromLeave == ConstantObject.extra_fromIntentApproval -> leaveTransInterface.onAlertLeaveTrans(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_APPROVE)
         }
     }
 
-     fun onSubmitLeave(clickAlertFrom : Int){
-         isProgressLeaveTrans.set(true)
-         Handler().postDelayed({
-             when(clickAlertFrom) {
-                 LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Edited")
-                 LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST -> leaveTransInterface.onSuccessLeaveTrans(context.getString(R.string.alert_transaction_success))
-                 LeaveTransactionActivity.ALERT_LEAVE_TRANS_APPROVE -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Approved")
-                 else -> leaveTransInterface.onSuccessLeaveTrans("Transaction Successful rejected")
-             }
-         }, 2000)
+    fun onSubmitLeave(clickAlertFrom : Int){
+        isProgressLeaveTrans.set(true)
+        Handler().postDelayed({
+            when(clickAlertFrom) {
+                LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Edited")
+                LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST -> leaveTransInterface.onSuccessLeaveTrans(context.getString(R.string.alert_transaction_success))
+                LeaveTransactionActivity.ALERT_LEAVE_TRANS_APPROVE -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Approved")
+                else -> leaveTransInterface.onSuccessLeaveTrans("Transaction Successful rejected")
+            }
+        }, 2000)
     }
 
     fun clickLeaveReject() {
