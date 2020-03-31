@@ -23,6 +23,7 @@ class DtlTravelViewModel (private val context : Context,
     val isProgressDtlReqTravel = ObservableField(false)
     val isHideDtlTravelUI = ObservableField(false)
     val isConfirmTravelMenu = ObservableField(false)
+    val isHiddenReject = ObservableField(false)
     val isCitiesView = ObservableField(true)
     val stDtlTravelChargeCode = ObservableField("")
     val stDtlTravelDepartDate = ObservableField("")
@@ -49,8 +50,12 @@ class DtlTravelViewModel (private val context : Context,
         isProgressDtlReqTravel.set(true)
         isHideDtlTravelUI.set(true)
         if (intentFrom == ConstantObject.extra_fromIntentConfirmTravel ||
-                    intentFrom == ConstantObject.extra_fromIntentApproval){
+                    intentFrom == ConstantObject.extra_fromIntentApproval ) {
             isConfirmTravelMenu.set(true)
+            isHiddenReject.set(false)
+        }else if (intentFrom == ConstantObject.vEditTask){
+            isConfirmTravelMenu.set(true)
+            isHiddenReject.set(true)
         }else { isConfirmTravelMenu.set(false) }
         when(stIntentFromMenu){
             ConstantObject.extra_fromIntentConfirmTravel -> stButtonSubmitTravel.set(context.getString(R.string.confirm_save))

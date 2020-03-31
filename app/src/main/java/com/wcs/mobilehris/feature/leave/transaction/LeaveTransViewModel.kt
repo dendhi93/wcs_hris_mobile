@@ -14,9 +14,11 @@ import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.database.daos.ReasonLeaveDao
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.DateTimeUtils
+import com.wcs.mobilehris.util.Preference
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.json.JSONObject
+import java.lang.Exception
 import java.util.*
 
 class LeaveTransViewModel (private val context: Context,
@@ -45,9 +47,11 @@ class LeaveTransViewModel (private val context: Context,
     private var mHour : Int = 0
     private var mMinute : Int = 0
     private var mSecond : Int = 0
+    private var leaveId : Int = 0
     private var reasonCode : String = ""
     private var reasonLeaveDescription : String = ""
     private var intentFromLeave : String = ""
+    private var preference = Preference(context)
 
     fun onInitLeaveData(fromLeaveMenu : String, intentLeaveId : String){
         intentFromLeave = fromLeaveMenu
@@ -118,26 +122,6 @@ class LeaveTransViewModel (private val context: Context,
                     leaveTransInterface.onMessage("failed leave " +error.toString(), ConstantObject.vToastError)
                 }
             })
-//                Handler().postDelayed({
-//                    stLeaveDateFrom.set("05/02/2020")
-//                    stLeaveDateInto.set("05/02/2020")
-//                    stLeaveCountTime.set("8")
-//                    stLeaveTimeFrom.set("08:30")
-//                    stLeaveTimeInto.set("17:30")
-//                    when (fromLeaveMenu) {
-//                        LeaveTransactionActivity.valueLeaveDtlType, ConstantObject.vEditTask -> {
-//                            leaveTransInterface.onSelectedSpinner("Sick Leave")
-//                            stLeaveNotes.set("Sakit Panas")
-//                        }
-//                        ConstantObject.extra_fromIntentApproval -> {
-//                            leaveTransInterface.onSelectedSpinner("Sick Leave")
-//                            validateReasonLeave("Sick Leave", "D-001002")
-//                            stLeaveNotes.set("Sakit Panas")
-//                        }
-//                    }
-//                    isProgressLeaveTrans.set(false)
-//                    isHiddenContent.set(false)
-//                }, 2000)
         }else{ isHiddenDocText.set(true)}
 
         when(fromLeaveMenu){
@@ -287,16 +271,80 @@ class LeaveTransViewModel (private val context: Context,
         }
     }
 
+    //todo add api here
      fun onSubmitLeave(clickAlertFrom : Int){
          isProgressLeaveTrans.set(true)
-         Handler().postDelayed({
-             when(clickAlertFrom) {
-                 LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Edited")
-                 LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST -> leaveTransInterface.onSuccessLeaveTrans(context.getString(R.string.alert_transaction_success))
-                 LeaveTransactionActivity.ALERT_LEAVE_TRANS_APPROVE -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Approved")
-                 else -> leaveTransInterface.onSuccessLeaveTrans("Transaction Successful rejected")
-             }
-         }, 2000)
+        when(clickAlertFrom) {
+            LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST -> postReqLeave()
+            else ->{
+                Handler().postDelayed({
+                    when(clickAlertFrom) {
+                        LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Edited")
+                        LeaveTransactionActivity.ALERT_LEAVE_TRANS_APPROVE -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Approved")
+                        else -> leaveTransInterface.onSuccessLeaveTrans("Transaction Successful rejected")
+                    }
+                }, 2000)
+            }
+        }
+    }
+
+    private fun postReqLeave(){
+        apiRepo.insertLeave(preference.getUn(), context, jObjReqLeave(), object : ApiRepo.ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    Log.d("###", "json $data")
+                    val responseSuccess = it.getString(ConstantObject.vResponseStatus)
+                    if(responseSuccess.contains(ConstantObject.vValueResponseSuccess)){leaveTransInterface.onSuccessLeaveTrans(context.getString(R.string.alert_transaction_success))}
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                isProgressLeaveTrans.set(false)
+                leaveTransInterface.onMessage("failed leave " +error.toString(), ConstantObject.vToastError)
+            }
+        })
+    }
+    private fun jObjReqLeave():JSONObject{
+        val paramLeaveReq = JSONObject()
+        paramLeaveReq.put("ID", 0)
+        paramLeaveReq.put("CHARGE_CD", reasonCode)
+        paramLeaveReq.put("DOCUMENT_NO", null)
+        paramLeaveReq.put("DOCUMENT_DT", null)
+        paramLeaveReq.put("LEAVE_TYPE_CD", leaveId.toString())
+        paramLeaveReq.put("LEAVE_TYPE_NAME", reasonLeaveDescription)
+        paramLeaveReq.put("LEAVE_REASON", stLeaveNotes.get().toString().trim())
+        paramLeaveReq.put("NIK", preference.getUn().trim())
+        paramLeaveReq.put("DATE_FROM", stLeaveDateFrom.get().toString().trim())
+        paramLeaveReq.put("DATE_TO", stLeaveDateInto.get().toString().trim())
+        paramLeaveReq.put("TIME_FROM", DateTimeUtils.getChangeEnglishTimeFormat(stLeaveTimeFrom.get().toString()))
+        paramLeaveReq.put("TIME_TO", DateTimeUtils.getChangeEnglishTimeFormat(stLeaveTimeInto.get().toString()))
+        paramLeaveReq.put("LEAVE_DAY", countDay())
+        paramLeaveReq.put("LEAVE_HOUR", stLeaveCountTime.get()?.toInt())
+        paramLeaveReq.put("IS_APPROVED", null)
+        paramLeaveReq.put("IS_CANCELLED", null)
+        paramLeaveReq.put("IS_REJECTED", null)
+        paramLeaveReq.put("LEAVE_STATUS_CD", null)
+        paramLeaveReq.put("LEAVE_STATUS", null)
+        paramLeaveReq.put("APPROVED_DT", null)
+        paramLeaveReq.put("CREATED_BY", null)
+        paramLeaveReq.put("CREATED_DT", null)
+        paramLeaveReq.put("MODIFIED_BY", null)
+        paramLeaveReq.put("MODIFIED_DT", null)
+        paramLeaveReq.put("isEdit", "False")
+        paramLeaveReq.put("STATUS_DESC", null)
+
+        return paramLeaveReq
+    }
+
+    private fun countDay():Int{
+        return try{
+            when(reasonLeaveDescription.trim()){
+                LeaveTransactionActivity.valueTwoHour -> 0
+                LeaveTransactionActivity.valueFourHours -> 0
+                else -> DateTimeUtils.getDifferentDate(stLeaveDateFrom.get().toString(), stLeaveDateInto.get().toString().trim())+1
+            }
+        }catch (e: Exception){0}
+
     }
 
     fun clickLeaveReject() {
@@ -337,6 +385,12 @@ class LeaveTransViewModel (private val context: Context,
     fun validateReasonLeave(reasonDesc : String, codeLeave : String){
         reasonCode = codeLeave
         reasonLeaveDescription = reasonDesc
+        doAsync {
+            val reasonLeaveList = mReasonLeaveDao.getDtlReason(reasonLeaveDescription.trim())
+            uiThread {
+                leaveId = reasonLeaveList[0].id
+            }
+        }
         when(reasonDesc){
             LeaveTransactionActivity.valueAnnualLeave ->{
                 stLeaveCountTime.set("8")

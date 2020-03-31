@@ -269,7 +269,7 @@ class RequestTravelViewModel (private val context : Context, private val request
 
     fun actionGenerateTravel(listCities : List<ReqTravelModel>){
         when{
-            isSetTravel.get() == false -> requestTravelInterface.onMessage("You have not transaction yet", ConstantObject.vToastInfo)
+            isSetTravel.get() == false -> requestTravelInterface.onMessage("please set travel first", ConstantObject.vToastInfo)
             else -> {
                 when{listCities.isEmpty() -> requestTravelInterface.onMessage("Please set your destination", ConstantObject.vToastInfo)
                     else -> getGenerateTravel()

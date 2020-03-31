@@ -58,6 +58,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
             when(intentFromForm){
                 ConstantObject.extra_fromIntentDtlTravel -> it.title = ConstantObject.extra_fromIntentDtlTravel
                 ConstantObject.extra_fromIntentConfirmTravel -> it.title = ConstantObject.extra_fromIntentConfirmTravel
+                ConstantObject.vEditTask -> it.title = ConstantObject.vEditTask
                 else -> {
                     it.title = getString(R.string.approval_travel_activity)
                     it.subtitle = intentTravelRequestor.trim()

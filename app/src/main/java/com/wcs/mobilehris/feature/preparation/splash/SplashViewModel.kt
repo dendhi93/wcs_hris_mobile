@@ -1,6 +1,7 @@
 package com.wcs.mobilehris.feature.preparation.splash
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import com.wcs.mobilehris.connection.ApiRepo.ApiCallback
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.database.daos.*
 import com.wcs.mobilehris.database.entity.*
+import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.Preference
 import org.jetbrains.anko.doAsync
@@ -100,6 +102,7 @@ class SplashViewModel(private var _context : Context,
                     if(updateDateTable == "null" && descTable == "null"){
                         _splashInterface.onErrorMessage(_context.getString(R.string.problem_occured_alert), ConstantObject.vToastError)
                         isPrgBarVisible.set(false)
+                        isBtnVisible.set(true)
                     }else{
                         when(typeData){
                             ConstantObject.keyChargeCode -> {

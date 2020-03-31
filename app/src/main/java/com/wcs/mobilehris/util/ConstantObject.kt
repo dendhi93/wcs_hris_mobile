@@ -69,6 +69,8 @@ object ConstantObject {
     const val vResponseData = "Data"
     const val vResponseResult = "result"
     const val vResponseMessage = "Message"
+    const val vResponseStatus = "Status"
+    const val vValueResponseSuccess = "Success"
 
 
     //param tabel

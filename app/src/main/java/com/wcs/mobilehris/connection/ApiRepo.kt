@@ -19,7 +19,7 @@ class ApiRepo {
         Log.d("###","url Login "+BuildConfig.HRIS_URL+"authenticates/"+userName.trim()+"/"+passUn.trim())
         AndroidNetworking.get(BuildConfig.HRIS_URL+"authenticates/"+userName.trim()+"/"+passUn.trim())
             .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
-            .setPriority(Priority.MEDIUM)
+            .setPriority(Priority.MEDIUM)   
             .build()
             .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
                 override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
@@ -360,6 +360,35 @@ class ApiRepo {
         AndroidNetworking.initialize(context)
         Log.d("###", "url dtl leave " +BuildConfig.HRIS_URL+"getleaverequestbyid/"+leaveId.trim())
         AndroidNetworking.get(BuildConfig.HRIS_URL+"getleaverequestbyid/"+leaveId.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","detail leave " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","detail leave " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun insertLeave(unUser : String, context: Context, jObjLeave : JSONObject, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url insert leave " +BuildConfig.HRIS_URL+"createleaverequest/"+unUser.trim())
+        AndroidNetworking.post(BuildConfig.HRIS_URL+"createleaverequest/"+unUser.trim())
+            .addJSONObjectBody(jObjLeave)
             .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
             .setPriority(Priority.MEDIUM)
             .build()

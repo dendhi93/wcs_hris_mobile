@@ -332,6 +332,7 @@
                     android:layout_marginEnd="@dimen/spacing_tiny_3"
                     android:onClick="@{() -> viewModel.onSubmitReject()}"
                     android:enabled="@{!viewModel.isProgressDtlReqTravel}"
+                    android:visibility="@{viewModel.isHiddenReject ? View.GONE : View.VISIBLE}"
                     android:id="@+id/btn_dtlReqTravel_reject"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/button_height"

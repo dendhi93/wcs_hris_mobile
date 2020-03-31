@@ -24,6 +24,16 @@ object DateTimeUtils {
             timeFormat.format(finalTimeSource)
         }catch (e : Exception){""}
     }
+
+    fun getChangeEnglishTimeFormat(selectedTime : String) : String{
+        return try{
+            val timeSource = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+            val finalTimeSource = timeSource.parse(selectedTime.trim())
+            val timeFormat = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
+            timeFormat.format(finalTimeSource)
+        }catch (e : Exception){""}
+    }
+
     fun getChangeDateFormat(dateTime: String, dateFormatType : Int): String? {
         return try {
             val source = when(dateFormatType){

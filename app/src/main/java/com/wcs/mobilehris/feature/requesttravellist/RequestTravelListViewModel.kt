@@ -53,7 +53,7 @@ class RequestTravelListViewModel (private val context : Context,
                                     jObjApprovalTravel.getString("DEPART_DATE").split("T")[0].trim(),
                                     jObjApprovalTravel.getString("RETURN_DATE").split("T")[0].trim(),
                                     jObjApprovalTravel.getString("DESCRIPTION"),
-                                    jObjApprovalTravel.getString("TRAVEL_TYPE_NAME"),
+                                    jObjApprovalTravel.getString("STATUS_CD"),
                                     "",
                                     jObjApprovalTravel.getString("REQUESTOR_NAME")
                                 )
@@ -72,7 +72,7 @@ class RequestTravelListViewModel (private val context : Context,
                                     jObjReqTravel.getString("RETURN_DATE").split("T")[0].trim(),
                                     jObjReqTravel.getString("DESCRIPTION"),
                                     jObjReqTravel.getString("TRAVEL_TYPE_NAME"),
-                                    jObjReqTravel.getString("STATUS_NAME"),
+                                    jObjReqTravel.getString("STATUS_CD"),
                                     ""
                                 )
                                 listTravelList.add(travelListModel)
