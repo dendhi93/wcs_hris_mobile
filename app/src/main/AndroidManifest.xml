@@ -36,35 +36,45 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".feature.leave.transaction.LeaveTransactionActivity"/>
-        <activity android:name=".feature.leave.list.LeaveListActivity" />
+
+        <activity android:name=".feature.leave.list.LeaveListActivity"
+            android:theme="@style/AppTheme2"/>
+
         <activity android:name=".feature.dtlreqtravel.DtlRequestTravelActivity" />
+
         <activity
             android:name=".feature.city.CityActivity"
             android:label="@string/search_city_activity" />
+
         <activity
             android:name=".feature.requesttravel.RequestTravelActivity"
             android:label="@string/req_travel_activity" />
+
         <activity
             android:name=".feature.requesttravellist.RequestTravelListActivity"
             android:theme="@style/AppTheme2"
             android:label="@string/req_travel_hist_activity" />
+
         <activity
             android:name=".feature.confirmtask.ConfirmTaskActivity"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".feature.team.activity.TeamActivity"
             android:label="@string/search_team_activity" />
+
         <activity
             android:name=".feature.createtask.CreateTaskActivity"
             android:label="@string/create_task_activity"
             android:windowSoftInputMode="stateHidden" />
+
         <activity android:name=".feature.dtltask.DetailTaskActivity" />
 
         <activity android:name=".feature.preparation.permission.PermissionActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -84,7 +94,8 @@
         <activity android:name=".feature.login.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
-            tools:ignore="LockedOrientationActivity" />
+            tools:ignore="LockedOrientationActivity">
+        </activity>
 
         <activity android:name=".feature.preparation.splash.SplashActivity"
             android:screenOrientation="portrait"
@@ -94,6 +105,7 @@
             android:label="@string/dtl_notification_activity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
+
         <activity android:name=".feature.approvallistofactivities.AppActionListActivity"
             android:label="@string/approval_action_list_activity" />
 

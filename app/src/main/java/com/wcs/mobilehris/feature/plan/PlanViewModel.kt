@@ -34,6 +34,7 @@ class PlanViewModel (private var _context : Context, private var _planInterface 
         _planInterface.hideUI(ConstantObject.vRecylerViewUI)
         _planInterface.showUI(ConstantObject.vGlobalUI)
         val listPlan = mutableListOf<ContentTaskModel>()
+
         apiRepo.getDataActivity(preference.getUn(),
             DateTimeUtils.getAdvancedDate(intTenorDate).toString(),
             ConstantObject.vPlanTask,

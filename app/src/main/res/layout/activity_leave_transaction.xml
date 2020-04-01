@@ -59,6 +59,38 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_marginStart="@dimen/spacing_tiny_3"
+                        android:layout_marginEnd="@dimen/spacing_tiny_3"
+                        android:layout_marginBottom="@dimen/spacing_tiny_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/text_fields_height"
+                        android:visibility="@{viewModel.isHiddenDocText ? View.GONE : View.VISIBLE}"
+                        app:boxStrokeWidth="@dimen/text_fields_box_width"
+                        app:boxStrokeColor="@color/text_fields_box_color"
+                        app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                        app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                        app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                        app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_leaveTrans_doc"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
+                            android:gravity="center_vertical"
+                            android:textColor="@color/colorBlack"
+                            android:textColorHint="@color/colorBlack"
+                            android:hint="@string/time_label"
+                            android:enabled="false"
+                            android:text="@={viewModel.stLeaveDoc}"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textSize="@dimen/text_fields_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -264,6 +296,47 @@
                             android:textSize="@dimen/text_fields_text_size" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_above="@+id/ln_leaveTrans_bottom"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_delete_request_leave"
+                        style="@style/Widget.MaterialComponents.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_height="56dp"
+                        android:layout_marginHorizontal="@dimen/space_06"
+                        android:onClick="@{() -> viewModel.deleteRequestLeave()}"
+                        android:stateListAnimator="@null"
+                        android:text="@string/delete_task"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/button_text_size"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/colorRed"
+                        app:cornerRadius="@dimen/button_radius" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_edit_request_leave"
+                        android:layout_weight="1"
+                        style="@style/Widget.MaterialComponents.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"
+                        android:layout_marginHorizontal="@dimen/space_06"
+                        android:onClick="@{() -> viewModel.editRequestLeave()}"
+                        android:stateListAnimator="@null"
+                        android:text="@string/edit_task"
+                        android:textColor="@color/button_text_color"
+                        android:textSize="@dimen/button_text_size"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/button_color"
+                        app:cornerRadius="@dimen/button_radius" />
 
                 </LinearLayout>
 

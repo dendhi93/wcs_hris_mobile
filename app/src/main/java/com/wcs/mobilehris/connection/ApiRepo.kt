@@ -281,6 +281,147 @@ class ApiRepo {
             })
     }
 
+    fun insertActivity(data: JSONObject, context: Context, callback: ApiCallback<JSONObject>) {
+        AndroidNetworking.initialize(context)
+
+        AndroidNetworking.post(BuildConfig.HRIS_URL + "insertactivity")
+            .addJSONObjectBody(data)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err insert activity "+anError?.message.toString())
+                    callback.onDataError(anError?.errorDetail.toString())
+                }
+
+            })
+    }
+
+    fun updateActivity(data: JSONObject, context: Context, callback: ApiCallback<JSONObject>) {
+        AndroidNetworking.initialize(context)
+
+        AndroidNetworking.post(BuildConfig.HRIS_URL + "updateactivitydetailbymember")
+            .addJSONObjectBody(data)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err update activity "+anError?.message.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+
+            })
+    }
+
+    fun deleteRejectActivity(activityHeaderId : String, nik : String, context : Context, callback: ApiCallback<JSONObject>) {
+        AndroidNetworking.initialize(context)
+
+        AndroidNetworking.post(BuildConfig.HRIS_URL + "deleteactivitybyheaderid/" + activityHeaderId.trim() + "/" + nik)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err delete or reject activity "+anError?.errorDetail.toString())
+                    Log.d("###","err delete or reject activity "+anError?.errorBody.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+
+            })
+    }
+
+    fun getDtlLeave(leaveId : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url dtl leave " +BuildConfig.HRIS_URL+"getleaverequestbyid/"+leaveId.trim())
+        AndroidNetworking.get(BuildConfig.HRIS_URL+"getleaverequestbyid/"+leaveId.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","detail leave " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","detail leave " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun insertLeave(unUser : String, context: Context, jObjLeave : JSONObject, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url insert leave " +BuildConfig.HRIS_URL+"createleaverequest/"+unUser.trim())
+        AndroidNetworking.post(BuildConfig.HRIS_URL+"createleaverequest/"+unUser.trim())
+            .addJSONObjectBody(jObjLeave)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","detail leave " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","detail leave " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun deleteLeave(userId : String, idLeave : String, context : Context, callback: ApiCallback<JSONObject>) {
+        AndroidNetworking.initialize(context)
+
+        AndroidNetworking.post(BuildConfig.HRIS_URL + "deleteleaverequest/" + userId.trim() + "/" + idLeave)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err delete Leave "+anError?.errorDetail.toString())
+                    Log.d("###","err delete or Leave "+anError?.errorBody.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+
+            })
+    }
+
     //interface response from server
     interface ApiCallback<T> {
         fun onDataLoaded(data: T?)

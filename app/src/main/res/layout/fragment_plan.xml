@@ -36,6 +36,7 @@
                 android:layout_below="@+id/pb_plan"
                 android:layout_marginHorizontal="@dimen/space_07"
                 android:text="Date"
+                android:visibility="gone"
                 android:textColor="@color/text_color"
                 app:strokeColor="@color/colorRed"/>
 

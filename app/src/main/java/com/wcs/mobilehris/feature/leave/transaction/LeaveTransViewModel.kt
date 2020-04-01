@@ -9,28 +9,36 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.application.WcsHrisApps
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.database.daos.ReasonLeaveDao
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.DateTimeUtils
+import com.wcs.mobilehris.util.Preference
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import org.json.JSONObject
+import java.lang.Exception
 import java.util.*
 
-class LeaveTransViewModel (private val context: Context, private val leaveTransInterface: LeaveTransInterface) : ViewModel(){
-    val isProgressLeaveTrans = ObservableField<Boolean>(false)
-    val isDtlLeaveMenu = ObservableField<Boolean>(false)
-    val isHiddenContent = ObservableField<Boolean>(false)
-    val isHiddenButton = ObservableField<Boolean>(false)
-    val isHiddenRejectButton = ObservableField<Boolean>(false)
-    val stLeaveSubmitButton = ObservableField<String>("")
-    val stLeaveDateFrom = ObservableField<String>("")
-    val stLeaveDateInto = ObservableField<String>("")
-    val stLeaveTimeFrom = ObservableField<String>("")
-    val stLeaveTimeInto = ObservableField<String>("")
-    val stLeaveCountTime = ObservableField<String>("")
-    val stLeaveNotes = ObservableField<String>("")
-    val stLeaveRejectNotes = ObservableField<String>("")
+class LeaveTransViewModel (private val context: Context,
+                           private val leaveTransInterface: LeaveTransInterface,
+                           private val apiRepo: ApiRepo) : ViewModel(){
+    val isProgressLeaveTrans = ObservableField(false)
+    val isDtlLeaveMenu = ObservableField(false)
+    val isHiddenContent = ObservableField(false)
+    val isHiddenButton = ObservableField(false)
+    val isHiddenRejectButton = ObservableField(false)
+    val isHiddenDocText = ObservableField(false)
+    val stLeaveSubmitButton = ObservableField("")
+    val stLeaveDateFrom = ObservableField("")
+    val stLeaveDateInto = ObservableField("")
+    val stLeaveTimeFrom = ObservableField("")
+    val stLeaveTimeInto = ObservableField("")
+    val stLeaveCountTime = ObservableField("")
+    val stLeaveNotes = ObservableField("")
+    val stLeaveRejectNotes = ObservableField("")
+    val stLeaveDoc = ObservableField("")
     private lateinit var mReasonLeaveDao : ReasonLeaveDao
     private val calendar : Calendar = Calendar.getInstance()
     private var mYear : Int = 0
@@ -39,17 +47,21 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
     private var mHour : Int = 0
     private var mMinute : Int = 0
     private var mSecond : Int = 0
+    private var leaveId : Int = 0
     private var reasonCode : String = ""
     private var reasonLeaveDescription : String = ""
     private var intentFromLeave : String = ""
+    private var preference = Preference(context)
+    private var strIdLeave : String = ""
+    private var strDocNo : String = ""
 
-    fun onInitLeaveData(fromLeaveMenu : String){
+    fun onInitLeaveData(fromLeaveMenu : String, intentLeaveId : String){
         intentFromLeave = fromLeaveMenu
         when{
             !ConnectionObject.isNetworkAvailable(context) -> leaveTransInterface.onAlertLeaveTrans(context.getString(
                 R.string.alert_no_connection),
                 ConstantObject.vAlertDialogNoConnection, LeaveTransactionActivity.ALERT_LEAVE_TRANS_NO_CONNECTION)
-            else -> getLeaveData(fromLeaveMenu)
+            else -> getLeaveData(fromLeaveMenu, intentLeaveId)
         }
     }
 
@@ -80,31 +92,43 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
         }
     }
 
-    private fun getLeaveData(fromLeaveMenu : String){
+    private fun getLeaveData(fromLeaveMenu : String, fromLeaveId : String){
         if(fromLeaveMenu != ConstantObject.extra_fromIntentRequest){
+            isHiddenDocText.set(false)
             isProgressLeaveTrans.set(true)
             isHiddenContent.set(true)
-            Handler().postDelayed({
-                stLeaveDateFrom.set("05/02/2020")
-                stLeaveDateInto.set("05/02/2020")
-                stLeaveCountTime.set("8")
-                stLeaveTimeFrom.set("08:30")
-                stLeaveTimeInto.set("17:30")
-                when (fromLeaveMenu) {
-                    LeaveTransactionActivity.valueLeaveDtlType, ConstantObject.vEditTask -> {
-                        leaveTransInterface.onSelectedSpinner("Sick Leave")
-                        stLeaveNotes.set("Sakit Panas")
-                    }
-                    ConstantObject.extra_fromIntentApproval -> {
-                        leaveTransInterface.onSelectedSpinner("Sick Leave")
-                        validateReasonLeave("Sick Leave", "D-001002")
-                        stLeaveNotes.set("Sakit Panas")
+            apiRepo.getDtlLeave(fromLeaveId.trim(), context, object : ApiRepo.ApiCallback<JSONObject>{
+                override fun onDataLoaded(data: JSONObject?) {
+                    data?.let {
+                        val responseLeave = it.getString(ConstantObject.vResponseData)
+                        Log.d("###", "getLeaveData -> response = $data")
+                        val jObjLeave = JSONObject(responseLeave)
+                        strIdLeave = jObjLeave.getString("ID")
+                        strDocNo = jObjLeave.getString("DOCUMENT_NO")
+
+                        stLeaveDateFrom.set(DateTimeUtils.getChangeDateFormat(jObjLeave.getString("DATE_FROM"), ConstantObject.dateTimeFormat_3))
+                        stLeaveDateInto.set(DateTimeUtils.getChangeDateFormat(jObjLeave.getString("DATE_TO"), ConstantObject.dateTimeFormat_3))
+                        stLeaveCountTime.set(jObjLeave.getString("LEAVE_HOUR"))
+                        stLeaveTimeFrom.set(DateTimeUtils.getChangeTimeFormat(jObjLeave.getString("TIME_FROM")))
+                        stLeaveTimeInto.set(DateTimeUtils.getChangeTimeFormat(jObjLeave.getString("TIME_TO")))
+                        stLeaveNotes.set(jObjLeave.getString("LEAVE_REASON"))
+                        stLeaveDoc.set(jObjLeave.getString("DOCUMENT_NO"))
+                        leaveTransInterface.onSelectedSpinner(jObjLeave.getString("LEAVE_TYPE_NAME"))
+                        when (fromLeaveMenu) {
+                            ConstantObject.extra_fromIntentApproval -> validateReasonLeave(jObjLeave.getString("LEAVE_TYPE_NAME"),
+                                jObjLeave.getString("CHARGE_CD"))
+                        }
+                        isProgressLeaveTrans.set(false)
+                        isHiddenContent.set(false)
                     }
                 }
-                isProgressLeaveTrans.set(false)
-                isHiddenContent.set(false)
-            }, 2000)
-        }
+
+                override fun onDataError(error: String?) {
+                    isProgressLeaveTrans.set(false)
+                    leaveTransInterface.onMessage("failed leave " +error.toString(), ConstantObject.vToastError)
+                }
+            })
+        }else{ isHiddenDocText.set(true)}
 
         when(fromLeaveMenu){
             ConstantObject.extra_fromIntentRequest ->{
@@ -239,10 +263,8 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
             !ConnectionObject.isNetworkAvailable(context) -> leaveTransInterface.onAlertLeaveTrans(context.getString(
                 R.string.alert_no_connection),
                 ConstantObject.vAlertDialogNoConnection, LeaveTransactionActivity.ALERT_LEAVE_TRANS_NO_CONNECTION)
-
             intentFromLeave == ConstantObject.vEditTask -> leaveTransInterface.onAlertLeaveTrans(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT)
-
             intentFromLeave == ConstantObject.extra_fromIntentRequest ->{
                 when {
                     !validateLeave() -> leaveTransInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
@@ -250,22 +272,132 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
                         ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST)
                 }
             }
-
             intentFromLeave == ConstantObject.extra_fromIntentApproval -> leaveTransInterface.onAlertLeaveTrans(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_APPROVE)
         }
     }
 
+    //todo add api here
     fun onSubmitLeave(clickAlertFrom : Int){
         isProgressLeaveTrans.set(true)
-        Handler().postDelayed({
-            when(clickAlertFrom) {
-                LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Edited")
-                LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST -> leaveTransInterface.onSuccessLeaveTrans(context.getString(R.string.alert_transaction_success))
-                LeaveTransactionActivity.ALERT_LEAVE_TRANS_APPROVE -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Approved")
-                else -> leaveTransInterface.onSuccessLeaveTrans("Transaction Successful rejected")
+        when(clickAlertFrom) {
+            LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST -> postReqLeave()
+            else ->{
+                Handler().postDelayed({
+                    when(clickAlertFrom) {
+                        LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Edited")
+                        LeaveTransactionActivity.ALERT_LEAVE_TRANS_APPROVE -> leaveTransInterface.onSuccessLeaveTrans("Transaction Success Approved")
+                        else -> leaveTransInterface.onSuccessLeaveTrans("Transaction Successful rejected")
+                    }
+                }, 2000)
             }
-        }, 2000)
+        }
+    }
+
+    private fun postReqLeave(){
+        apiRepo.insertLeave(preference.getUn(), context, jObjReqLeave(0, ""), object : ApiRepo.ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    Log.d("###", "json $data")
+                    val responseSuccess = it.getString(ConstantObject.vResponseStatus)
+                    if(responseSuccess.contains(ConstantObject.vValueResponseSuccess)){leaveTransInterface.onSuccessLeaveTrans(context.getString(R.string.alert_transaction_success))}
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                isProgressLeaveTrans.set(false)
+                leaveTransInterface.onMessage("failed leave " +error.toString(), ConstantObject.vToastError)
+            }
+        })
+    }
+
+    private fun jObjReqLeave(strIdLeave : Int, strDocNumber : String):JSONObject{
+        val paramLeaveReq = JSONObject()
+        paramLeaveReq.put("ID", strIdLeave)
+        paramLeaveReq.put("CHARGE_CD", reasonCode)
+        paramLeaveReq.put("DOCUMENT_NO", strDocNumber)
+        paramLeaveReq.put("DOCUMENT_DT", null)
+        paramLeaveReq.put("LEAVE_TYPE_CD", leaveId.toString())
+        paramLeaveReq.put("LEAVE_TYPE_NAME", reasonLeaveDescription)
+        paramLeaveReq.put("LEAVE_REASON", stLeaveNotes.get().toString().trim())
+        paramLeaveReq.put("NIK", preference.getUn().trim())
+        paramLeaveReq.put("DATE_FROM", stLeaveDateFrom.get().toString().trim())
+        paramLeaveReq.put("DATE_TO", stLeaveDateInto.get().toString().trim())
+        paramLeaveReq.put("TIME_FROM", DateTimeUtils.getChangeEnglishTimeFormat(stLeaveTimeFrom.get().toString()))
+        paramLeaveReq.put("TIME_TO", DateTimeUtils.getChangeEnglishTimeFormat(stLeaveTimeInto.get().toString()))
+        paramLeaveReq.put("LEAVE_DAY", countDay())
+        paramLeaveReq.put("LEAVE_HOUR", stLeaveCountTime.get()?.toInt())
+        paramLeaveReq.put("IS_APPROVED", null)
+        paramLeaveReq.put("IS_CANCELLED", null)
+        paramLeaveReq.put("IS_REJECTED", null)
+        paramLeaveReq.put("LEAVE_STATUS_CD", null)
+        paramLeaveReq.put("LEAVE_STATUS", null)
+        paramLeaveReq.put("APPROVED_DT", null)
+        paramLeaveReq.put("CREATED_BY", null)
+        paramLeaveReq.put("CREATED_DT", null)
+        paramLeaveReq.put("MODIFIED_BY", null)
+        paramLeaveReq.put("MODIFIED_DT", null)
+        paramLeaveReq.put("isEdit", "False")
+        paramLeaveReq.put("STATUS_DESC", null)
+
+        return paramLeaveReq
+    }
+
+    fun editRequestLeave() {
+        leaveTransInterface.enableUI()
+    }
+
+    fun processEditLeave() {
+        apiRepo.insertLeave(preference.getUn(), context, jObjReqLeave(strIdLeave.toInt(), strDocNo), object : ApiRepo.ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val objectResponse = it.getString(ConstantObject.vResponseData)
+                    Log.d("###", "updateActivity -> response = $data")
+
+                    val responseSuccess = it.getString(ConstantObject.vResponseStatus)
+                    if(responseSuccess.contains(ConstantObject.vValueResponseSuccess)) {
+                        leaveTransInterface.disableUI()
+                        leaveTransInterface.onSuccessLeaveTrans(context.getString(R.string.alert_transaction_success))
+                    }
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                isProgressLeaveTrans.set(false)
+                leaveTransInterface.onMessage("failed leave " +error.toString(), ConstantObject.vToastError)
+            }
+        })
+    }
+
+    fun deleteRequestLeave() {
+
+
+        apiRepo.deleteLeave(preference.getUn(), strIdLeave, context, object : ApiRepo.ApiCallback<JSONObject> {
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val objectResponse = it.getString(ConstantObject.vResponseData)
+                    Log.d("###", "deleteActivity -> response = $data")
+                    leaveTransInterface.onSuccessDeleteTask()
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                isProgressLeaveTrans.set(false)
+                leaveTransInterface.onMessage("failed delete " +error.toString(), ConstantObject.vToastError)
+            }
+
+        })
+    }
+
+    private fun countDay():Int{
+        return try{
+            when(reasonLeaveDescription.trim()){
+                LeaveTransactionActivity.valueTwoHour -> 0
+                LeaveTransactionActivity.valueFourHours -> 0
+                else -> DateTimeUtils.getDifferentDate(stLeaveDateFrom.get().toString(), stLeaveDateInto.get().toString().trim())+1
+            }
+        }catch (e: Exception){0}
+
     }
 
     fun clickLeaveReject() {
@@ -306,6 +438,12 @@ class LeaveTransViewModel (private val context: Context, private val leaveTransI
     fun validateReasonLeave(reasonDesc : String, codeLeave : String){
         reasonCode = codeLeave
         reasonLeaveDescription = reasonDesc
+        doAsync {
+            val reasonLeaveList = mReasonLeaveDao.getDtlReason(reasonLeaveDescription.trim())
+            uiThread {
+                leaveId = reasonLeaveList[0].id
+            }
+        }
         when(reasonDesc){
             LeaveTransactionActivity.valueAnnualLeave ->{
                 stLeaveCountTime.set("8")

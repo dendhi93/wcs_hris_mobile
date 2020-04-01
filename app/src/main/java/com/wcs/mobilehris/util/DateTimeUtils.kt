@@ -14,6 +14,24 @@ object DateTimeUtils {
 
     fun getCurrentDate(): String { return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()) }
 
+    fun getChangeTimeFormat(selectedTime : String) : String{
+        return try{
+            val timeSource = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
+            val finalTimeSource = timeSource.parse(selectedTime.trim())
+            val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+            timeFormat.format(finalTimeSource)
+        }catch (e : Exception){""}
+    }
+
+    fun getChangeEnglishTimeFormat(selectedTime : String) : String{
+        return try{
+            val timeSource = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+            val finalTimeSource = timeSource.parse(selectedTime.trim())
+            val timeFormat = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
+            timeFormat.format(finalTimeSource)
+        }catch (e : Exception){""}
+    }
+
     fun getChangeDateFormat(dateTime: String?, dateFormatType : Int): String? {
         return try {
             val source = when(dateFormatType){

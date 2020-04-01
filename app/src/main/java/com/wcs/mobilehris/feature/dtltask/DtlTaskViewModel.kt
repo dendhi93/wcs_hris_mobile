@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -11,12 +12,16 @@ import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.DateTimeUtils
+import com.wcs.mobilehris.util.Preference
 import org.json.JSONArray
 import org.json.JSONObject
 
 class DtlTaskViewModel(private val context : Context,
                        private val dtlTaskInterface : DtlTaskInterface,
                        private val apiRepo: ApiRepo) :ViewModel(){
+    private var preference: Preference = Preference(context)
+
     val stChargeCode = ObservableField("")
     val stCompanyName = ObservableField("")
     val stDtlTaskDateFrom = ObservableField("")
@@ -33,6 +38,8 @@ class DtlTaskViewModel(private val context : Context,
     val isHiddenProjectManager = ObservableField(false)
     private var stIntentTaskId : String = ""
     private var stIntentTypeTask : String = ""
+    private var stActID = ""
+    private var stHeaderID : String = ""
 
     fun initDataDtl(taskId : String, chargeCode : String){
         stIntentTaskId = taskId.trim()
@@ -59,10 +66,17 @@ class DtlTaskViewModel(private val context : Context,
                 data?.let {
                     val responseHeaderActivity = it.getString(ConstantObject.vResponseData)
                     val jObjHeaderAct = JSONObject(responseHeaderActivity)
-                    stCompanyName.set(jObjHeaderAct.getString("CUSTOMER_NAME"))
+
+                    Log.d("###", "HEADER = $data")
+                    Log.d("###", "HEADER = $jObjHeaderAct")
+
+                    stActID = jObjHeaderAct.getString("ID")
+                    stHeaderID = jObjHeaderAct.getString("ACTIVITY_HEADER_ID")
+                    Log.d("###", "stHeaderID = $stHeaderID")
+                    stCompanyName.set(it.getString("Company"))
                     stDtlTaskTimeFrom.set(jObjHeaderAct.getString("TIME_FROM"))
                     stDtlTaskTimeInto.set(jObjHeaderAct.getString("TIME_TO"))
-                    stDtlContactPerson.set(jObjHeaderAct.getString("PICCUSTOMER"))
+                    stDtlContactPerson.set(jObjHeaderAct.getString("CUSTOMER_NAME"))
                     stDtlDescription.set(jObjHeaderAct.getString("DESCRIPTION"))
                     stDtlTaskDateFrom.set(jObjHeaderAct.getString("DATE_FROM").split("T")[0].trim())
                     stDtlTaskDateInto.set(jObjHeaderAct.getString("DATE_TO").split("T")[0].trim())
@@ -100,6 +114,10 @@ class DtlTaskViewModel(private val context : Context,
                     data?.let {
                         val responsePlanData = it.getString(ConstantObject.vResponseData)
                         val jArrayDataFriend = JSONArray(responsePlanData)
+
+                        Log.d("###", "DETAIL = $data")
+                        Log.d("###", "DETAIL = $jArrayDataFriend")
+
                         for (i in 0 until jArrayDataFriend.length()) {
                             val jObjFriend = jArrayDataFriend.getJSONObject(i)
                             when(jObjFriend.getString("AVAILABLE")){
@@ -143,6 +161,72 @@ class DtlTaskViewModel(private val context : Context,
             initDtlTask()
             initListTeam()
         }
+    }
+
+    fun editTask() {
+        dtlTaskInterface.enableUI()
+    }
+
+    fun processEditTask() {
+        apiRepo.updateActivity(initBodyParameter(), context, object : ApiRepo.ApiCallback<JSONObject> {
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val objectResponse = it.getString(ConstantObject.vResponseData)
+                    Log.d("###", "updateActivity -> response = $data")
+                    val jObjData = JSONObject(objectResponse)
+                    Log.d("###", "updateActivity ->  Data = $jObjData")
+                    dtlTaskInterface.onSuccessEditTask()
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                dtlTaskInterface.onErrorMessage(error.toString(), ConstantObject.vToastError)
+            }
+
+        })
+    }
+
+    private fun initBodyParameter(): JSONObject {
+        var requestParameter = JSONObject()
+
+        requestParameter.put("ID", stActID)
+        requestParameter.put("ACTIVITY_HEADER_ID", stHeaderID)
+        requestParameter.put("IDINVITER", preference.getUn())
+        requestParameter.put("NIK", preference.getUn())
+        requestParameter.put("PLAN_MANDAYS", 0)
+        requestParameter.put("MANDAYS_REMAIN", 0)
+        requestParameter.put("PLAN_MANHOURS", 0)
+        requestParameter.put("MANHOURS_REMAIN", 0)
+        requestParameter.put("DATE_FROM", stDtlTaskDateFrom.get().toString())
+        requestParameter.put("DATE_TO", stDtlTaskDateInto.get().toString())
+        requestParameter.put("TIME_FROM", stDtlTaskTimeFrom.get().toString())
+        requestParameter.put("TIME_TO", stDtlTaskTimeInto.get().toString())
+        requestParameter.put("NEW_FLAG", "N")
+        requestParameter.put("DELETED_FLAG", "N")
+        requestParameter.put("UPDATE_FLAG", "Y")
+        requestParameter.put("CREATED_BY", "")
+        requestParameter.put("CREATED_DT", "")
+        requestParameter.put("MODIFIED_BY", preference.getUn())
+        requestParameter.put("MODIFIED_DT", DateTimeUtils.getCurrentDate())
+
+        return requestParameter
+    }
+
+    fun deleteTask() {
+        apiRepo.deleteRejectActivity(stHeaderID, preference.getUn(), context, object : ApiRepo.ApiCallback<JSONObject> {
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val objectResponse = it.getString(ConstantObject.vResponseData)
+                    Log.d("###", "deleteActivity -> response = $data")
+                    dtlTaskInterface.onSuccessDeleteTask()
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                dtlTaskInterface.onErrorMessage(error.toString(), ConstantObject.vToastError)
+            }
+
+        })
     }
 
     fun onBackPressMenu(){

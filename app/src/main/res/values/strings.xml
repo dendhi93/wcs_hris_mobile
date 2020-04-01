@@ -97,6 +97,9 @@
     <string name="travel_business">Travel Business</string>
     <string name="not_travel_business">Non Travel Business</string>
     <string name="address">Address</string>
+    <string name="edit_task">EDIT</string>
+    <string name="delete_task">DELETE</string>
+    <string name="finish_task">DONE</string>
 
     <!--create task content form-->
     <string name="add_team">Add Team</string>

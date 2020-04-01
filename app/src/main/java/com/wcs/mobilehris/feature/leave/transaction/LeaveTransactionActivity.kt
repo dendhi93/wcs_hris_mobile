@@ -14,13 +14,13 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.database.entity.ReasonLeaveEntity
 import com.wcs.mobilehris.databinding.ActivityLeaveTransactionBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import com.wcs.mobilehris.utilinterface.CustomBottomSheetInterface
 import com.wcs.mobilehris.utilinterface.DialogInterface
-
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface,
@@ -36,7 +36,7 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         leaveActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_leave_transaction)
-        leaveActivityBinding.viewModel = LeaveTransViewModel(this, this)
+        leaveActivityBinding.viewModel = LeaveTransViewModel(this, this, ApiRepo())
     }
 
     override fun onStart() {
@@ -57,7 +57,7 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface,
                 else -> it.title = ConstantObject.vEditTask
             }
         }
-        leaveActivityBinding.viewModel?.onInitLeaveData(intentLeaveType)
+        leaveActivityBinding.viewModel?.onInitLeaveData(intentLeaveType, intentLeaveId.trim())
         leaveActivityBinding.viewModel?.onValidateFromMenu(intentLeaveType)
         leaveActivityBinding.viewModel?.initReasonSpinner()
     }
@@ -179,6 +179,41 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface,
             columnTimeFrom -> leaveActivityBinding.txtLeaveTransTimeFrom.isEnabled = false
             columnTimeInto -> leaveActivityBinding.txtLeaveTransTimeInto.isEnabled = false
         }
+    }
+
+    override fun enableUI() {
+        leaveActivityBinding.btnDeleteRequestLeave.isEnabled = false
+        leaveActivityBinding.txtLeaveTransDoc.isEnabled = true
+        leaveActivityBinding.txtLeaveTransQtyTime.isEnabled = true
+        leaveActivityBinding.txtLeaveTransDateFrom.isEnabled = true
+        leaveActivityBinding.txtLeaveTransDateInto.isEnabled = true
+        leaveActivityBinding.txtLeaveTransTimeFrom.isEnabled = true
+        leaveActivityBinding.txtLeaveTransTimeInto.isEnabled = true
+        leaveActivityBinding.txtCreateTaskDescription.isEnabled = true
+        leaveActivityBinding.btnEditRequestLeave.text = getString(R.string.finish_task)
+        leaveActivityBinding.btnEditRequestLeave.setOnClickListener {
+            leaveActivityBinding.viewModel!!.processEditLeave()
+        }
+    }
+
+    override fun disableUI() {
+        leaveActivityBinding.btnDeleteRequestLeave.isEnabled = true
+        leaveActivityBinding.txtLeaveTransDoc.isEnabled = false
+        leaveActivityBinding.txtLeaveTransQtyTime.isEnabled = false
+        leaveActivityBinding.txtLeaveTransDateFrom.isEnabled = false
+        leaveActivityBinding.txtLeaveTransDateInto.isEnabled = false
+        leaveActivityBinding.txtLeaveTransTimeFrom.isEnabled = false
+        leaveActivityBinding.txtLeaveTransTimeInto.isEnabled = false
+        leaveActivityBinding.txtCreateTaskDescription.isEnabled = false
+        leaveActivityBinding.btnEditRequestLeave.text = getString(R.string.edit_task)
+    }
+
+    override fun onSuccessEditTask() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSuccessDeleteTask() {
+        TODO("Not yet implemented")
     }
 
     override fun onPositiveClick(o: Any) {

@@ -53,31 +53,33 @@
                         android:padding="@dimen/spacing_tiny_2"
                         android:orientation="vertical">
 
-                            <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/text_fields_height"
+                            android:layout_margin="@dimen/spacing_tiny_2"
+                            app:boxStrokeWidth="@dimen/text_fields_box_width"
+                            app:boxStrokeColor="@color/text_fields_box_color"
+                            app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
+                            app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/act_createTask_chargeCode"
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/text_fields_height"
-                                android:layout_margin="@dimen/spacing_tiny_2"
-                                app:boxStrokeWidth="@dimen/text_fields_box_width"
-                                app:boxStrokeColor="@color/text_fields_box_color"
-                                app:boxCornerRadiusBottomEnd="@dimen/text_fields_radius"
-                                app:boxCornerRadiusBottomStart="@dimen/text_fields_radius"
-                                app:boxCornerRadiusTopEnd="@dimen/text_fields_radius"
-                                app:boxCornerRadiusTopStart="@dimen/text_fields_radius">
+                                android:layout_height="match_parent"
+                                android:paddingHorizontal="@dimen/space_06"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!?- "
+                                android:gravity="center_vertical"
+                                android:hint="@string/charge_code"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorBlack"
+                                android:inputType="text"
+                                android:text="@={viewModel.stChargeCode}"
+                                android:textSize="@dimen/text_fields_text_size" />
 
-                                <AutoCompleteTextView
-                                    android:id="@+id/act_createTask_chargeCode"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!?- "
-                                    android:gravity="center_vertical"
-                                    android:hint="@string/charge_code"
-                                    android:textColor="@color/colorBlack"
-                                    android:textColorHint="@color/colorBlack"
-                                    android:inputType="text"
-                                    android:textSize="@dimen/text_fields_text_size" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -477,6 +479,7 @@
                 </ScrollView>
             </androidx.cardview.widget.CardView>
         </RelativeLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rc_createTask"
             android:layout_below="@+id/rl_createTask_top"
@@ -484,6 +487,7 @@
             android:visibility="@{viewModel.isHiddenRv ? View.VISIBLE : View.GONE}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
     </RelativeLayout>
 
 </layout>

@@ -11,10 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.database.entity.ChargeCodeEntity
 import com.wcs.mobilehris.databinding.ActivityCreateTaskBinding
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
 import com.wcs.mobilehris.feature.dtltask.FriendModel
+import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.feature.team.activity.TeamActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
@@ -32,7 +34,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFri
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityCreateTaskBinding = DataBindingUtil.setContentView(this, R.layout.activity_create_task)
-        activityCreateTaskBinding.viewModel = CreateTaskViewModel(this, this)
+        activityCreateTaskBinding.viewModel = CreateTaskViewModel(this, this, ApiRepo())
         activityCreateTaskBinding.rcCreateTask.layoutManager = LinearLayoutManager(this)
     }
 
@@ -143,6 +145,9 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFri
         Handler().postDelayed({
             onMessage(getString(R.string.alert_transaction_success), ConstantObject.vToastSuccess)
             activityCreateTaskBinding.viewModel?.isProgressCreateTask?.set(false)
+            val intent = Intent(this, MenuActivity::class.java)
+            intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_DASHBOARD)
+            startActivity(intent)
             finish()
         }, 2000)
     }

@@ -32,6 +32,7 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_below="@+id/pb_completed"
                 android:layout_marginHorizontal="@dimen/space_07"
                 android:text="Date"

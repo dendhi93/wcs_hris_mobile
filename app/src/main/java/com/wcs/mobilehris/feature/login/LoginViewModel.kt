@@ -2,6 +2,7 @@ package com.wcs.mobilehris.feature.login
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Handler
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
@@ -68,6 +69,16 @@ class LoginViewModel(private var _context : Context, private var _loginInterface
                     isVisibleProgress.set(false)
                 }
             })
+
+        //offline mode
+        /*Handler().postDelayed({
+            preference.saveUn(stUserId.get().toString().trim(),
+                "Untitled",
+                "0878900679",
+                "untitled-id@id.wilmar-intl.com",
+                "ABDC1234")
+            _loginInterface.onSuccessLogin()
+        }, 2000)*/
     }
 
     fun validateLogin(){
