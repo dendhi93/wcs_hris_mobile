@@ -32,18 +32,16 @@ class LoginViewModel(private var _context : Context, private var _loginInterface
             stPassword.get().isNullOrEmpty() -> _loginInterface.onErrorMessage("Please fill password", ConstantObject.vSnackBarNoButton)
             !ConnectionObject.isNetworkAvailable(_context) -> {_loginInterface.onAlertLogin(_context.getString(R.string.alert_no_connection),
                 ConstantObject.vAlertDialogNoConnection, LoginActivity.DIALOG_NO_INTERNET)}
+            preference.getFirebaseToken() == "null" -> _loginInterface.onErrorMessage("firebase token is null, please exit and login again", ConstantObject.vToastError)
             else -> processLogin()
         }
     }
 
-    fun intentForgotPass(){
-        _loginInterface.onErrorMessage("Under Maintenance", ConstantObject.vToastInfo)
-    }
+    fun intentForgotPass(){ _loginInterface.onErrorMessage("Under Maintenance", ConstantObject.vToastInfo) }
 
     private fun processLogin(){
         isVisibleProgress.set(true)
-        apiRepo.getLogin(stUserId.get().toString().trim(),
-            stPassword.get().toString().trim(),
+        apiRepo.getLogin(initjObjLogin(),
             _context,
             object : ApiRepo.ApiCallback<JSONObject>{
                 override fun onDataLoaded(data: JSONObject?) {
@@ -70,9 +68,45 @@ class LoginViewModel(private var _context : Context, private var _loginInterface
             })
     }
 
+    private fun initjObjValidateToken() : JSONObject{
+        val reqTokenParam  = JSONObject()
+        reqTokenParam.put("NIK", preference.getUn().trim())
+        reqTokenParam.put("TOKEN", preference.getApiToken().trim())
+
+        return reqTokenParam
+    }
+
+    private fun initjObjLogin() : JSONObject{
+        val reqLoginParam  = JSONObject()
+        reqLoginParam.put("USERID", stUserId.get().toString().trim())
+        reqLoginParam.put("PASSWORD", stPassword.get().toString().trim())
+        reqLoginParam.put("DEVICEID", preference.getFirebaseToken().trim())
+
+        return reqLoginParam
+    }
+
     fun validateLogin(){
         if(preference.getUn().isNotEmpty()){
-            _loginInterface.onSuccessLogin()
+            Log.d("###",""+preference.getApiToken().trim())
+            isVisibleProgress.set(true)
+            apiRepo.validateToken(initjObjValidateToken(), _context, object : ApiRepo.ApiCallback<JSONObject>{
+                override fun onDataLoaded(data: JSONObject?) {
+                    data?.let {
+                        val responseValidate = it.getString(ConstantObject.vResponseMessage)
+                        Log.d("###", "Message $responseValidate")
+                        Log.d("###", "data "+it.getString(ConstantObject.vResponseData))
+                        isVisibleProgress.set(false)
+                        if(responseValidate != "Not Verified"){
+                            _loginInterface.onSuccessLogin()
+                        }
+                    }
+                }
+
+                override fun onDataError(error: String?) {
+                    isVisibleProgress.set(false)
+                    _loginInterface.onErrorMessage("err Login " +error.toString(), ConstantObject.vToastError)
+                }
+            })
         }
     }
 }

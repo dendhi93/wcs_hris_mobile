@@ -1,17 +1,22 @@
 package com.wcs.mobilehris.feature.dashboard
 
 import android.content.Context
-import android.os.AsyncTask
-import android.os.Handler
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.Preference
+import org.json.JSONArray
+import org.json.JSONObject
 
-class DashboardViewModel(val _context : Context, val _dashboardInterface : DashboardInterface) : ViewModel(){
-    val stLeaveQty = ObservableField<String>("")
-    val stLateQty = ObservableField<String>("")
+class DashboardViewModel(private val _context : Context,
+                         private val _dashboardInterface : DashboardInterface,
+                         private val apiRepo: ApiRepo) : ViewModel(){
+    val stLeaveQty = ObservableField("")
+    val stLateQty = ObservableField("")
+    private val preference = Preference(_context)
 
     fun initDataDashboard(){
         when{
@@ -20,7 +25,7 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
                     ConstantObject.vAlertDialogNoConnection,
                     DashboardFragment.ALERT_DASH_NO_CONNECTION)
             }
-            else -> DashAsyncTask().execute()
+            else -> getDashboardList(ConstantObject.vLoadWithProgressBar)
         }
     }
     fun onInitDashboardMenu(){
@@ -45,23 +50,40 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
         _dashboardInterface.hideUI(ConstantObject.vRecylerViewUI)
         _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
         val listDashboard = mutableListOf<DashboardModel>()
-        var dashBoardModel = DashboardModel("Activity","Meeting at 13.00" +
-                "\nInterview new Candidate at  15.00" +
-                "\nand 2 others")
-        listDashboard.add(dashBoardModel)
-        dashBoardModel = DashboardModel("Notification","Blood Donation will be held  at 10.00")
-        listDashboard.add(dashBoardModel)
-        dashBoardModel = DashboardModel("Request","Request by Michael at December 19, about weekend overtime" +
-                "\nRequest by Alvin at December 19, about Travel")
-        listDashboard.add(dashBoardModel)
+        var dashboardModel : DashboardModel
+        apiRepo.getDataDashboard(preference.getUn().trim(), _context, object : ApiRepo.ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val responseDashboardData = it.getString(ConstantObject.vResponseData)
+                    val jObjDashHeader = JSONObject(responseDashboardData)
+                    stLeaveQty.set("Leave " +jObjDashHeader.getString("LEAVE_QTY"))
+                    stLateQty.set("Lateness " +jObjDashHeader.getString("LATENESS_QTY"))
+                    val jArrayMenu = JSONArray(jObjDashHeader.getString("MENU"))
+                    for(i in 0 until jArrayMenu.length()){
+                        val jObjDashboardList = jArrayMenu.getJSONObject(i)
+                        dashboardModel = DashboardModel(jObjDashboardList.getString("MENU_NAME"), jObjDashboardList.getString("DESCRIPTION"))
+                        listDashboard.add(dashboardModel)
+                    }
 
-        when{
-            listDashboard.size > 0 -> {
-                Handler().postDelayed({
-                    _dashboardInterface.onLoadList(listDashboard, typeLoading)
-                }, 2000)
+                    when{
+                        listDashboard.size > 0 -> _dashboardInterface.onLoadList(listDashboard, typeLoading)
+                        else -> {
+                            _dashboardInterface.showUI(DashboardFragment.TEXTVIEW_UI)
+                            _dashboardInterface.hideUI(ConstantObject.vRecylerViewUI)
+                            _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
+
+                            when(typeLoading){
+                                ConstantObject.vLoadWithProgressBar -> { _dashboardInterface.hideUI(ConstantObject.vProgresBarUI) }
+                                else -> _dashboardInterface.hideSwipeRefreshLayout()
+                            }
+                            _dashboardInterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
+                        }
+                    }
+
+                }
             }
-            else -> {
+
+            override fun onDataError(error: String?) {
                 _dashboardInterface.showUI(DashboardFragment.TEXTVIEW_UI)
                 _dashboardInterface.hideUI(ConstantObject.vRecylerViewUI)
                 _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
@@ -70,31 +92,8 @@ class DashboardViewModel(val _context : Context, val _dashboardInterface : Dashb
                     ConstantObject.vLoadWithProgressBar -> { _dashboardInterface.hideUI(ConstantObject.vProgresBarUI) }
                     else -> _dashboardInterface.hideSwipeRefreshLayout()
                 }
-                _dashboardInterface.onErrorMessage(_context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
+                _dashboardInterface.onErrorMessage(error.toString(), ConstantObject.vToastError)
             }
-        }
-
+        })
     }
-
-    //by deddy for get lateness qty and leave qty data
-    private fun getLateness(){
-        _dashboardInterface.hideUI(ConstantObject.vGlobalUI)
-        Handler().postDelayed({
-            stLeaveQty.set("Leave 10")
-            stLateQty.set("Lateness 2")
-        }, 1000)
-    }
-
-    inner class DashAsyncTask() : AsyncTask<Void, Void, String>(){
-        override fun doInBackground(vararg params: Void?): String {
-            return "OK"
-        }
-
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
-            getLateness()
-            getDashboardList(ConstantObject.vLoadWithProgressBar)
-        }
-    }
-
 }

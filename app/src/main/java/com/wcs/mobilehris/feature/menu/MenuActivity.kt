@@ -13,6 +13,7 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.ActivityMenuBinding
 import com.wcs.mobilehris.feature.absent.AbsentFragment
 import com.wcs.mobilehris.feature.profile.ProfileActivity
@@ -28,6 +29,7 @@ import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import com.wcs.mobilehris.util.Preference
 import com.wcs.mobilehris.utilinterface.DialogInterface
+import org.json.JSONObject
 
 
 @Suppress("DEPRECATION")
@@ -37,6 +39,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var lnHeader : LinearLayout
     private lateinit var preference: Preference
     private var keyDialogActive = 0
+    private var apiRepo = ApiRepo()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -216,17 +219,33 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         menuBinding.drawerLayout.closeDrawer(GravityCompat.START)
     }
 
+    private fun getLogoutDevice(){
+        MessageUtils.toastMessage(this@MenuActivity, "Please Wait ...",ConstantObject.vToastInfo)
+        apiRepo.getLogout(preference.getUn(), this, object : ApiRepo.ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val responseLogout = it.getString(ConstantObject.vResponseStatus)
+                    if(responseLogout.contains(ConstantObject.vValueResponseSuccess)){
+                        preference.clearPreference()
+                        val startMain = Intent(Intent.ACTION_MAIN)
+                        startMain.addCategory(Intent.CATEGORY_HOME)
+                        startMain.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(startMain)
+                    }
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                MessageUtils.toastMessage(this@MenuActivity, ""+error.toString(),ConstantObject.vToastError)
+            }
+        })
+    }
+
     override fun onNegativeClick(o: Any) {}
 
     override fun onPositiveClick(o: Any) {
         when(keyDialogActive){
-            DIALOG_LOG_OUT -> {
-                preference.clearPreference()
-                val startMain = Intent(Intent.ACTION_MAIN)
-                startMain.addCategory(Intent.CATEGORY_HOME)
-                startMain.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(startMain)
-            }
+            DIALOG_LOG_OUT -> getLogoutDevice()
         }
     }
 

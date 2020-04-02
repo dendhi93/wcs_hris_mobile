@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.database.entity.ChargeCodeEntity
 import com.wcs.mobilehris.database.entity.ReasonTravelEntity
 import com.wcs.mobilehris.database.entity.TransportTypeEntity
@@ -50,7 +51,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityRequestTravelBinding = DataBindingUtil.setContentView(this, R.layout.activity_request_travel)
-        activityRequestTravelBinding.viewModel = RequestTravelViewModel(this, this)
+        activityRequestTravelBinding.viewModel = RequestTravelViewModel(this, this, ApiRepo())
         activityRequestTravelBinding.rcReqTravelTeam.layoutManager = LinearLayoutManager(this)
         activityRequestTravelBinding.rcReqTravelCities.layoutManager = LinearLayoutManager(this)
     }
@@ -84,8 +85,8 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
         activityRequestTravelBinding.rgReqTravelIsTB.setOnCheckedChangeListener{ group, checkedId ->
             val radio: RadioButton? = findViewById(checkedId)
             when("${radio?.text}"){
-                getString(R.string.travel_business) -> activityRequestTravelBinding.viewModel?.isNonTB?.set(true)
-                else -> activityRequestTravelBinding.viewModel?.isNonTB?.set(false)
+                getString(R.string.travel_business) -> activityRequestTravelBinding.viewModel?.isNonTB?.set(false)
+                else -> activityRequestTravelBinding.viewModel?.isNonTB?.set(true)
             }
         }
     }
