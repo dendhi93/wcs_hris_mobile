@@ -45,6 +45,7 @@ class RequestTravelViewModel (private val context : Context,
     val isSetTravel = ObservableField(false)
     val isNonTB = ObservableField(false)
     private val listSelectedTeam = mutableListOf<FriendModel>()
+    private val travelDestinationList = mutableListOf<ReqTravelModel>()
     private lateinit var mTransTypeDao : TransTypeDao
     private lateinit var mChargeCodeDao : ChargeCodeDao
     private lateinit var mReasonTravelDao : ReasonTravelDao
@@ -82,7 +83,7 @@ class RequestTravelViewModel (private val context : Context,
         mYear = calendar.get(Calendar.YEAR)
         mMonth = calendar.get(Calendar.MONTH)
         mDay = calendar.get(Calendar.DAY_OF_MONTH)
-        val datePickerDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        val datePickerDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 val selectedMonth: String = if (month < 10) { "0" + (month + 1) } else { month.toString() }
                 val selectedDay: String = if (dayOfMonth < 10) { "0$dayOfMonth" } else { dayOfMonth.toString() }
                 val finalDate = "$year-$selectedMonth-$selectedDay"
@@ -193,7 +194,6 @@ class RequestTravelViewModel (private val context : Context,
     }
 
     private fun saveDestination(){
-            val travelDestinationList = mutableListOf<ReqTravelModel>()
             val saveModel = ReqTravelModel(stDepartFrom.get().toString().trim(),
                 stTravelInto.get().toString().trim(),
                 stDepartDate.get().toString().trim(),
@@ -218,7 +218,7 @@ class RequestTravelViewModel (private val context : Context,
         }
     }
 
-    fun actionSubmitTravel(){
+    fun actionSubmitConfirmTravel(){
         isProgressReqTravel.set(true)
         requestTravelInterface.onSuccessRequestTravel()
     }
@@ -280,23 +280,46 @@ class RequestTravelViewModel (private val context : Context,
             isSetTravel.get() == false -> requestTravelInterface.onMessage("please set travel first", ConstantObject.vToastInfo)
             else -> {
                 when{listCities.isEmpty() -> requestTravelInterface.onMessage("Please set your destination", ConstantObject.vToastInfo)
-                    else -> getGenerateTravel()
+                    else -> submitReqTravel()
                 }
             }
         }
     }
 
-    private fun getGenerateTravel(){
-        isProgressReqTravel.set(true)
-        Handler().postDelayed({
-            requestTravelInterface.onSuccessRequestTravel()
-        }, 2000)
-    }
+//    private fun getGenerateTravel(){
+//        isProgressReqTravel.set(true)
+//        Handler().postDelayed({
+//            requestTravelInterface.onSuccessRequestTravel()
+//        }, 2000)
+//    }
 
     fun onBackReqTravelMenu(){
         val intent = Intent(context, MenuActivity::class.java)
         intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_REQUEST)
         context.startActivity(intent)
+    }
+
+    private fun submitReqTravel(){
+        isProgressReqTravel.set(true)
+        apiRepo.postReqTravelReq(initjObjReqTravel(listSelectedTeam, travelDestinationList),
+            context, object :ApiRepo.ApiCallback<JSONObject>{
+                override fun onDataLoaded(data: JSONObject?) {
+                    data?.let {
+                        val responseTravel = it.getString(ConstantObject.vResponseMessage)
+                        if(responseTravel.trim() == "Travel Request Successfully Added"){
+                            requestTravelInterface.onSuccessRequestTravel()
+                        }else{
+                            requestTravelInterface.onMessage(responseTravel.trim(), ConstantObject.vToastError)
+                            isProgressReqTravel.set(false)
+                        }
+                    }
+                }
+
+                override fun onDataError(error: String?) {
+                    requestTravelInterface.onMessage("err Req Travel " +error.toString(), ConstantObject.vToastError)
+                    isProgressReqTravel.set(false)
+                }
+            })
     }
 
     private fun initjObjReqTravel(listTeam: List<FriendModel>, listCity: List<ReqTravelModel>) : JSONObject{
@@ -310,38 +333,38 @@ class RequestTravelViewModel (private val context : Context,
         for(i in listTeam.indices){
             jObjTravelHeader.put("ID",0)
             jObjTravelHeader.put("ID_TR_HEADER",0)
-            jObjTravelHeader.put("REASON",0)
-            jObjTravelHeader.put("DESCRIPTION",0)
+            jObjTravelHeader.put("REASON",stReasonCode.get().toString())
+            jObjTravelHeader.put("DESCRIPTION",stTravelDescription.get().toString())
             jObjTravelHeader.put("CHARGE_CD",stChargeCode.get().toString())
             if(isNonTB.get() == false){
                 jObjTravelHeader.put("TRAVEL_TYPE_CD","TB")
             }else {
                 jObjTravelHeader.put("TRAVEL_TYPE_CD","NTB")
             }
-
-            jObjTravelHeader.put("REQUESTOR_NIK",0)
-            jObjTravelHeader.put("DURATION",0)
-            jObjTravelHeader.put("DEPART_DATE",0)
-            jObjTravelHeader.put("RETURN_DATE",0)
-            jObjTravelHeader.put("DOCUMENT_NUMBER",0)
-            jObjTravelHeader.put("DOCUMENT_DATE",0)
-            jObjTravelHeader.put("TRIP_ADVANCE",0)
-            jObjTravelHeader.put("STATUS_CD",0)
-            jObjTravelHeader.put("REMARK_REJECTED",0)
-            jObjTravelHeader.put("CREATED_BY",0)
-            jObjTravelHeader.put("CREATED_DT",0)
-            jObjTravelHeader.put("MODIFIED_BY",0)
-            jObjTravelHeader.put("MODIFIED_DT",0)
-            jObjTravelHeader.put("APPROVED_BY",0)
-            jObjTravelHeader.put("APPROVED_DT",0)
-            jObjTravelHeader.put("REJECTED_BY",0)
-            jObjTravelHeader.put("REJECTED_DT",0)
-            jObjTravelHeader.put("ISDELETED",0)
-            jObjTravelHeader.put("ISMEMBER_CONFIRM",0)
-            jObjTravelHeader.put("ISAPPROVED",0)
-            jObjTravelHeader.put("ISMEMBER_REJECTED",0)
-            jObjTravelHeader.put("ISREJECTED",0)
-            jObjTravelHeader.put("ISCOMPLETED",0)
+            jObjTravelHeader.put("NIK",listTeam[i].friendId)
+            jObjTravelHeader.put("REQUESTOR_NIK",preference.getUn())
+            jObjTravelHeader.put("DURATION",DateTimeUtils.getDifferentDate(stDepartDate.get().toString().trim(), stReturnDate.get().toString().trim())+1)
+            jObjTravelHeader.put("DEPART_DATE",stDepartDate.get().toString())
+            jObjTravelHeader.put("RETURN_DATE",stReturnDate.get().toString())
+            jObjTravelHeader.put("DOCUMENT_NUMBER",null)
+            jObjTravelHeader.put("DOCUMENT_DATE",null)
+            jObjTravelHeader.put("TRIP_ADVANCE",null)
+            jObjTravelHeader.put("STATUS_CD","W")
+            jObjTravelHeader.put("REMARK_REJECTED",null)
+            jObjTravelHeader.put("CREATED_BY",preference.getUn())
+            jObjTravelHeader.put("CREATED_DT",DateTimeUtils.getCurrentDate())
+            jObjTravelHeader.put("MODIFIED_BY",null)
+            jObjTravelHeader.put("MODIFIED_DT",null)
+            jObjTravelHeader.put("APPROVED_BY",null)
+            jObjTravelHeader.put("APPROVED_DT",null)
+            jObjTravelHeader.put("REJECTED_BY",null)
+            jObjTravelHeader.put("REJECTED_DT",null)
+            jObjTravelHeader.put("ISDELETED",null)
+            jObjTravelHeader.put("ISMEMBER_CONFIRM",null)
+            jObjTravelHeader.put("ISAPPROVED",null)
+            jObjTravelHeader.put("ISMEMBER_REJECTED",null)
+            jObjTravelHeader.put("ISREJECTED",null)
+            jObjTravelHeader.put("ISCOMPLETED",null)
 
             jArrayTravelHeaders.put(jObjTravelHeader)
         }
@@ -349,34 +372,33 @@ class RequestTravelViewModel (private val context : Context,
         for(i in listCity.indices){
             jObjTravelDtl.put("ID",0)
             jObjTravelDtl.put("ID_TR_HEADER",0)
-            jObjTravelDtl.put("TRANSPORT_TYPE_CODE",0)
-            jObjTravelDtl.put("TRANSPORT_NAME",0)
-            jObjTravelDtl.put("TRANSPORT_NUMBER",0)
-            jObjTravelDtl.put("TRANSPORT_FROM",0)
-            jObjTravelDtl.put("TRANSPORT_TO",0)
-            jObjTravelDtl.put("TRANSPORT_DATE",0)
-            jObjTravelDtl.put("TRANSPORT_TIME",0)
-            jObjTravelDtl.put("DESTINATION_FROM",0)
-            jObjTravelDtl.put("DESTINATION_TO",0)
-            jObjTravelDtl.put("START_DATE",0)
-            jObjTravelDtl.put("END_DATE",0)
-            jObjTravelDtl.put("DURATION",0)
-            jObjTravelDtl.put("ACCOMODATION_NAME",0)
-            jObjTravelDtl.put("ACCOMODATION_LOCATION",0)
-            jObjTravelDtl.put("CHECK_IN",0)
-            jObjTravelDtl.put("CHECK_OUT",0)
-            jObjTravelDtl.put("REMARK",0)
-            jObjTravelDtl.put("CREATED_BY",0)
-            jObjTravelDtl.put("MODIFIED_BY",0)
-            jObjTravelDtl.put("MODIFIED_BY",0)
-            jObjTravelDtl.put("CREATED_DT",0)
+            jObjTravelDtl.put("TRANSPORT_TYPE_CODE",listCity[i].transType.trim().split("-")[0])
+            jObjTravelDtl.put("TRANSPORT_NAME",null)
+            jObjTravelDtl.put("TRANSPORT_NUMBER",null)
+            jObjTravelDtl.put("TRANSPORT_FROM", null)
+            jObjTravelDtl.put("TRANSPORT_TO",null)
+            jObjTravelDtl.put("TRANSPORT_DATE",null)
+            jObjTravelDtl.put("TRANSPORT_TIME",null)
+            jObjTravelDtl.put("DESTINATION_FROM",listCity[i].depart.trim())
+            jObjTravelDtl.put("DESTINATION_TO",listCity[i].arrival.trim())
+            jObjTravelDtl.put("START_DATE",stDepartDate.get().toString())
+            jObjTravelDtl.put("END_DATE",stReturnDate.get().toString())
+            jObjTravelDtl.put("DURATION",DateTimeUtils.getDifferentDate(stDepartDate.get().toString().trim(), stReturnDate.get().toString().trim())+1)
+            jObjTravelDtl.put("ACCOMODATION_NAME",stHotelName.get().toString())
+            jObjTravelDtl.put("ACCOMODATION_LOCATION",stTravelInto.get().toString())
+            jObjTravelDtl.put("CHECK_IN",listCity[i].dateCheckIn)
+            jObjTravelDtl.put("CHECK_OUT",listCity[i].dateCheckOut)
+            jObjTravelDtl.put("REMARK","")
+            jObjTravelDtl.put("CREATED_BY",preference.getUn())
+            jObjTravelDtl.put("CREATED_DT",DateTimeUtils.getCurrentDate())
+            jObjTravelDtl.put("MODIFIED_BY",null)
+            jObjTravelDtl.put("MODIFIED_DT",null)
             jObjTravelDtl.put("ISDELETED","False")
 
             jArrayTravelDtls.put(jObjTravelDtl)
         }
-
-        reqTravelParam.put("TravelRequestHeader",jArrayTravelHeaders)
         reqTravelParam.put("TravelRequestDetail",jArrayTravelDtls)
+        reqTravelParam.put("TravelRequestHeader",jArrayTravelHeaders)
 
         return reqTravelParam
     }

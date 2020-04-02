@@ -128,6 +128,7 @@
     <string name="set_travel">Set Travel</string>
     <string name="transport">Trans and Acommodation</string>
     <string name="save">Save</string>
+    <string name="appr_button">Approve</string>
     <string name="edit_travel">Edit Set Travel</string>
 
     <!--req leave content form-->

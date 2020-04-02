@@ -32,6 +32,7 @@ class DtlTravelViewModel (private val context : Context,
     val stDtlTravelReason = ObservableField("")
     val stDtlTravelNotes = ObservableField("")
     val stButtonSubmitTravel = ObservableField("")
+    val stDocNumber = ObservableField("")
 
     private var stIntentFromMenu : String? = null
     private var stIntentTravelId : String? = null
@@ -59,7 +60,7 @@ class DtlTravelViewModel (private val context : Context,
         }else { isConfirmTravelMenu.set(false) }
         when(stIntentFromMenu){
             ConstantObject.extra_fromIntentConfirmTravel -> stButtonSubmitTravel.set(context.getString(R.string.confirm_save))
-            else -> stButtonSubmitTravel.set(context.getString(R.string.save))
+            else -> stButtonSubmitTravel.set(context.getString(R.string.appr_button))
         }
         apiRepo.getHeaderTravel(BuildConfig.HRIS_URL+"gettravelrequestbyid/"+intentTravelId, context, object : ApiRepo.ApiCallback<JSONObject>{
             override fun onDataLoaded(data: JSONObject?) {
@@ -197,15 +198,38 @@ class DtlTravelViewModel (private val context : Context,
         }
     }
 
+    //add api here
     fun onProcessConfirm(chooseConfirm : Int){
         isProgressDtlReqTravel.set(true)
-        Handler().postDelayed({
-            when(chooseConfirm){
-                DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT ->  dtlTravelInterface.onSuccessDtlTravel("Transaction Successful accepted")
-                DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT -> dtlTravelInterface.onSuccessDtlTravel("Transaction Successful rejected")
-                DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_ACCEPT -> dtlTravelInterface.onSuccessDtlTravel("Transaction Successful approved")
-                else -> dtlTravelInterface.onSuccessDtlTravel("Transaction Successful rejected")
+        when(chooseConfirm){
+            DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_ACCEPT -> submitApproveTravel()
+            else ->{
+                Handler().postDelayed({
+                    when(chooseConfirm){
+                        DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT ->  dtlTravelInterface.onSuccessDtlTravel("Transaction Successful accepted")
+                        DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT -> dtlTravelInterface.onSuccessDtlTravel("Transaction Successful rejected")
+                        else -> dtlTravelInterface.onSuccessDtlTravel("Transaction Successful rejected")
+                    }
+                }, 2000)
             }
-        }, 2000)
+        }
+    }
+
+    private fun submitApproveTravel(){
+        apiRepo.postApproveTravel(stDocNumber.get().toString().trim(), context, object : ApiRepo.ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val responseAcceptTravel = it.getString(ConstantObject.vResponseData)
+                    val jObjAccept = JSONObject(responseAcceptTravel)
+                    val stSuccess = jObjAccept.getString("STATUS")
+                    if(stSuccess == "SUCCESS"){dtlTravelInterface.onSuccessDtlTravel("Transaction successfully approved")}
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                dtlTravelInterface.onMessage("err approve " +error.toString(), ConstantObject.vToastError)
+                isProgressDtlReqTravel.set(true)
+            }
+        })
     }
 }

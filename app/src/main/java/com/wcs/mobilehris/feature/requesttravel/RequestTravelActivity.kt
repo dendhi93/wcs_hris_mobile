@@ -136,11 +136,16 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             }
             else -> {
                 val selectedFriendModel = listTeam[0]
+                var trueToAdd = true
                 //ngecek data yang sama di array
-                val isMatch = arrTeamTravel.contains(selectedFriendModel)
-                if(isMatch){
-                    onMessage("Data already on the list", ConstantObject.vToastInfo)
-                }else{
+                for(i in arrTeamTravel.indices){
+                   if(selectedFriendModel.teamName == arrTeamTravel[i].teamName){
+                       break
+                       onMessage("Data already on the list", ConstantObject.vToastInfo)
+                       trueToAdd = false
+                   }
+                }
+                if(trueToAdd){
                     arrTeamTravel.addAll(listTeam)
                     travelAdapter.notifyDataSetChanged()
                 }
@@ -388,7 +393,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
 
     override fun onPositiveClick(o: Any) {
         when(keyDialogActive){
-            ALERT_REQ_TRAVEL_CONFIRMATION -> activityRequestTravelBinding.viewModel?.actionSubmitTravel()
+            ALERT_REQ_TRAVEL_CONFIRMATION -> activityRequestTravelBinding.viewModel?.actionSubmitConfirmTravel()
             ALERT_REQ_TRAVEL_SET_TRAVEL -> activityRequestTravelBinding.viewModel?.actionSetTravel()
             ALERT_REQ_TRAVEL_EDIT_TRAVEL -> activityRequestTravelBinding.viewModel?.actionEditTravel(arrCities)
             ALERT_REQ_TRAVEL_GENERATE_TRAVEL -> activityRequestTravelBinding.viewModel?.actionGenerateTravel(arrCities)

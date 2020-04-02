@@ -2,6 +2,7 @@ package com.wcs.mobilehris.feature.requesttravellist
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +51,7 @@ class CustomTravelListAdapter  (private val context : Context,
                             intent.putExtra(ConstantObject.extra_intent, ConstantObject.vEditTask)
                             intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.travelId)
                             intent.putExtra(DtlRequestTravelActivity.extraTravelRequestor, "")
+                            intent.putExtra(DtlRequestTravelActivity.extraTravelDocNumber, "")
                             context.startActivity(intent)
                         }
                         else -> {
@@ -57,6 +59,7 @@ class CustomTravelListAdapter  (private val context : Context,
                             intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentDtlTravel)
                             intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.travelId)
                             intent.putExtra(DtlRequestTravelActivity.extraTravelRequestor, "")
+                            intent.putExtra(DtlRequestTravelActivity.extraTravelDocNumber, "")
                             context.startActivity(intent)
                         }
                     }
@@ -66,6 +69,7 @@ class CustomTravelListAdapter  (private val context : Context,
                     intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentApproval)
                     intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.travelId)
                     intent.putExtra(DtlRequestTravelActivity.extraTravelRequestor, model.requestor)
+                    intent.putExtra(DtlRequestTravelActivity.extraTravelDocNumber, model.docNo)
                     context.startActivity(intent)
                 }
             }

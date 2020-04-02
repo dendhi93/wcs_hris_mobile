@@ -8,5 +8,6 @@ data class TravelListModel (
     val travelDescription : String,
     val travelBusinessType : String,
     val statusTravel : String,
-    val requestor : String
+    val requestor : String,
+    val docNo : String
 )

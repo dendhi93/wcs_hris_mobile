@@ -24,7 +24,9 @@ import com.wcs.mobilehris.util.MessageUtils
 import com.wcs.mobilehris.utilinterface.CustomBottomSheetInterface
 
 
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
+    "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
+)
 class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
     CustomBottomSheetInterface {
     private lateinit var dtlTravelActivityBinding : ActivityDtlRequestTravelBinding
@@ -52,6 +54,8 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
         intentFromForm = intent.getStringExtra(ConstantObject.extra_intent)
         intentTravelId = intent.getStringExtra(extraTravelId)
         intentTravelRequestor = intent.getStringExtra(extraTravelRequestor)
+        dtlTravelActivityBinding.viewModel?.stDocNumber?.set(intent.getStringExtra(extraTravelDocNumber).trim().trim())
+
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
@@ -190,6 +194,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
         const val ALERT_DTL_APPROVE_TRAVEL_REJECT = 9
         const val extraTravelId = "travel_id"
         const val extraTravelRequestor = "requestor"
+        const val extraTravelDocNumber = "doc_number"
     }
 
     class CustomBottomSheetDialogFragment(private val callback: CustomBottomSheetInterface) : BottomSheetDialogFragment() {
