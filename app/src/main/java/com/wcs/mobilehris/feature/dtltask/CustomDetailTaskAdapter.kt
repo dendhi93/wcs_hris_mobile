@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.feature.createtask.SelectedFriendInterface
@@ -42,13 +43,15 @@ class CustomDetailTaskAdapter(private val context : Context, private val dtlTask
         }
         holder.tvCustom.text = model.teamName.trim()
         holder.imgv_2.setOnClickListener {
-            when(listFrom){
-                ConstantObject.vCreateEdit -> selectedFriendInterface.selectedItemFriend(model)
-            }
+            if(listFrom == ConstantObject.vCreateEdit){selectedFriendInterface.selectedItemFriend(model)}
+        }
+        holder.cvCustom.setOnClickListener {
+            if(isUserConflict){ selectedFriendInterface.selectedDisplayFriend(model) }
         }
     }
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
+        var cvCustom : CardView = view.findViewById(R.id.cv_custom)
         var imgVIconUser : ImageView = view.findViewById(R.id.imgV_custom)
         var imgVIconIsConflick : ImageView = view.findViewById(R.id.imgV_custom_1)
         var tvCustom : TextView = view.findViewById(R.id.tv_custom)

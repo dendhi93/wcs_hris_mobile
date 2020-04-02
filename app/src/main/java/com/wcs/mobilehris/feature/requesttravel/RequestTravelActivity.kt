@@ -1,6 +1,7 @@
 package com.wcs.mobilehris.feature.requesttravel
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -368,6 +369,23 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
         citiesAdapter.notifyDataSetChanged()
     }
 
+    override fun onShowConflict(listConflicted: List<ConflictedFriendModel>) {
+        val adConflict = AlertDialog.Builder(this)
+        adConflict.setTitle("INFO")
+        adConflict.setIcon(R.mipmap.ic_logo_wcs)
+        val arrayAdapter = ArrayAdapter<String>(this@RequestTravelActivity, android.R.layout.select_dialog_item)
+        for(i in listConflicted.indices){
+            arrayAdapter.add(listConflicted[i].custName+"\n"+
+                    listConflicted[i].dateFrom+" - "+
+                    listConflicted[i].dateInto)
+        }
+        adConflict.setAdapter(arrayAdapter, object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface?, which: Int) {}
+        })
+        adConflict.show()
+    }
+
+
     override fun onPositiveClick(o: Any) {
         when(keyDialogActive){
             ALERT_REQ_TRAVEL_CONFIRMATION -> activityRequestTravelBinding.viewModel?.actionSubmitTravel()
@@ -408,6 +426,11 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             }
             else -> onMessage("Request Travel was set, transaction not allowed", ConstantObject.vToastInfo)
         }
+    }
+
+    override fun selectedDisplayFriend(friendModel: FriendModel) {
+        //todo search conflicted
+        activityRequestTravelBinding.viewModel?.getConflictedFriend(friendModel.friendId.trim())
     }
 
     override fun selectedItemTravel(travelModel: ReqTravelModel) {

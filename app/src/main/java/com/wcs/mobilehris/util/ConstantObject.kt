@@ -64,6 +64,8 @@ object ConstantObject {
     const val extra_fromIntentCreateTravel = "CreateTravel"
     const val extra_fromIntentRequest = "Request"
     const val extra_fromIntentApproval = "Approval"
+    const val extra_fromIntentSearchTeam = "Team"
+    const val extra_fromIntentSearchConflict = "Conflict"
 
     //response API
     const val vResponseData = "Data"

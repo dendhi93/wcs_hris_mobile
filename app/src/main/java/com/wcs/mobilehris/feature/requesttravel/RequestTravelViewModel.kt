@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
@@ -378,5 +379,51 @@ class RequestTravelViewModel (private val context : Context,
         reqTravelParam.put("TravelRequestDetail",jArrayTravelDtls)
 
         return reqTravelParam
+    }
+
+    fun getConflictedFriend(selectedNik :String){
+        isProgressReqTravel.set(true)
+        val listConflictFriend = mutableListOf<ConflictedFriendModel>()
+        var conflictedFriendModel : ConflictedFriendModel
+        Log.d("###",""+selectedNik)
+        apiRepo.searchDataTeam(ConstantObject.extra_fromIntentSearchConflict,
+            selectedNik.trim(),
+            stDepartDate.get().toString().trim(),
+            stReturnDate.get().toString().trim(),
+            context, object : ApiRepo.ApiCallback<JSONObject>{
+                override fun onDataLoaded(data: JSONObject?) {
+                    data?.let {
+                        val responseConflict = it.getString(ConstantObject.vResponseData)
+                        val jArrayConflict = JSONArray(responseConflict)
+                        for(i in 0 until jArrayConflict.length()){
+                            val jObjConflict = jArrayConflict.getJSONObject(i)
+                            conflictedFriendModel = ConflictedFriendModel(
+                                jObjConflict.getString("CUSTOMER_NAME"),
+                                jObjConflict.getString("SUBJECT"),
+                                jObjConflict.getString("CHARGE_CD"),
+                                jObjConflict.getString("DATE_FROM"),
+                                jObjConflict.getString("DATE_TO")
+                            )
+                            listConflictFriend.add(conflictedFriendModel)
+                        }
+
+                        when(listConflictFriend.size){
+                            0 ->{
+                                requestTravelInterface.onMessage(context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
+                                isProgressReqTravel.set(false)
+                            }
+                            else ->{
+                                isProgressReqTravel.set(false)
+                                requestTravelInterface.onShowConflict(listConflictFriend)
+                            }
+                        }
+                    }
+                }
+
+                override fun onDataError(error: String?) {
+                    isProgressReqTravel.set(false)
+                    requestTravelInterface.onMessage(error.toString(), ConstantObject.vToastError)
+                }
+            })
     }
 }

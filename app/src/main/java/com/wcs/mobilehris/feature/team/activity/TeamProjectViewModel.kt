@@ -28,7 +28,7 @@ class TeamProjectViewModel (private val context: Context, private val teamProjec
         isProgressVisibleTeam.set(true)
         val listTeamProject = mutableListOf<TeamProjectModel>()
         var teamPrjModel : TeamProjectModel
-        apiRepo.searchDataTeam(selectedTeamName, teamDateFrom, teamDateInto, context, object : ApiRepo.ApiCallback<JSONObject>{
+        apiRepo.searchDataTeam(ConstantObject.extra_fromIntentTeam, selectedTeamName, teamDateFrom, teamDateInto, context, object : ApiRepo.ApiCallback<JSONObject>{
             override fun onDataLoaded(data: JSONObject?) {
                 data?.let {
                     val responseSearchTeam = it.getString(ConstantObject.vResponseData)

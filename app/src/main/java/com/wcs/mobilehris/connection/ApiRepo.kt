@@ -296,12 +296,24 @@ class ApiRepo {
             })
     }
 
-    fun searchDataTeam(teamName : String, selectedDateFrom : String, selectedDateInto : String, context: Context, callback: ApiCallback<JSONObject>){
+    fun searchDataTeam(fromMenu : String, teamName : String, selectedDateFrom : String, selectedDateInto : String, context: Context, callback: ApiCallback<JSONObject>){
         AndroidNetworking.initialize(context)
-        val teamUrl = BuildConfig.HRIS_URL+"getteamemployeeallbyemployename/"+
-                selectedDateFrom.trim()+"/"+
-                selectedDateInto.trim()+"/08:30/17:30/"+
-                teamName.trim()
+
+        val teamUrl = when(fromMenu){
+            ConstantObject.extra_fromIntentTeam ->{
+                     BuildConfig.HRIS_URL+"getteamemployeeallbyemployename/"+
+                        selectedDateFrom.trim()+"/"+
+                        selectedDateInto.trim()+"/08:30/17:30/"+
+                        teamName.trim()
+            }
+            else ->{
+                BuildConfig.HRIS_URL+"getconflictedplan/"+
+                        teamName.trim()+"/"+
+                        selectedDateFrom.trim()+"/"+
+                        selectedDateInto.trim()+"/08:30/17:30"
+            }
+        }
+
         Log.d("###", "url searchDataTeam $teamUrl")
         AndroidNetworking.get(teamUrl.trim())
             .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))

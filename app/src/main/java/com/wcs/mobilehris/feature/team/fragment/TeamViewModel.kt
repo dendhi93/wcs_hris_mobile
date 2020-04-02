@@ -30,7 +30,7 @@ class TeamViewModel (private val context : Context,
         teamInterface.showUI(ConstantObject.vProgresBarUI)
         val listTeam = mutableListOf<TeamModel>()
         var teamModel : TeamModel
-        apiRepo.searchDataTeam(teamName, DateTimeUtils.getCurrentDate(), DateTimeUtils.getCurrentDate(), context, object : ApiRepo.ApiCallback<JSONObject>{
+        apiRepo.searchDataTeam(ConstantObject.extra_fromIntentSearchTeam, teamName, DateTimeUtils.getCurrentDate(), DateTimeUtils.getCurrentDate(), context, object : ApiRepo.ApiCallback<JSONObject>{
             override fun onDataLoaded(data: JSONObject?) {
                 data?.let {
                     val responseSearchTeam = it.getString(ConstantObject.vResponseData)
