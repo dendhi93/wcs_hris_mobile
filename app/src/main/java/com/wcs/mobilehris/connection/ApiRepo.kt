@@ -7,6 +7,7 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.OkHttpResponseAndJSONObjectRequestListener
 import com.wcs.mobilehris.BuildConfig
+import com.wcs.mobilehris.feature.dtlreqtravel.DtlRequestTravelActivity
 import com.wcs.mobilehris.util.ConstantObject
 import okhttp3.Response
 import org.json.JSONObject
@@ -482,6 +483,7 @@ class ApiRepo {
     }
 
     fun postReqTravelReq(jObjReqTravel : JSONObject, context: Context,  callback: ApiCallback<JSONObject>){
+        Log.d("###", "json $jObjReqTravel")
         AndroidNetworking.initialize(context)
         Log.d("###", "url insert leave " +BuildConfig.HRIS_URL+"inserttravelrequest")
         AndroidNetworking.post(BuildConfig.HRIS_URL+"inserttravelrequest")
@@ -539,10 +541,14 @@ class ApiRepo {
             })
     }
 
-    fun postApproveTravel(docNumber : String, context: Context,  callback: ApiCallback<JSONObject>){
+    fun postApproveTravel(docNumber : String, reasonReject : String, travelReqFrom : String,context: Context,  callback: ApiCallback<JSONObject>){
         AndroidNetworking.initialize(context)
-        Log.d("###", "url accept travel " +BuildConfig.HRIS_URL+"travelrequestapprove/"+docNumber.trim())
-        AndroidNetworking.post(BuildConfig.HRIS_URL+"travelrequestapprove/"+docNumber.trim())
+        val urlApprovalTravel = when(travelReqFrom){
+            DtlRequestTravelActivity.approvalAccept -> BuildConfig.HRIS_URL+"travelrequestapprove/"+docNumber.trim()
+            else -> BuildConfig.HRIS_URL+"travelrequestreject/"+docNumber.trim()+"/"+reasonReject.trim()
+        }
+        Log.d("###", "url accept travel $urlApprovalTravel")
+        AndroidNetworking.post(urlApprovalTravel)
             .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
             .setPriority(Priority.MEDIUM)
             .build()
@@ -560,6 +566,34 @@ class ApiRepo {
                         }
                         else -> {
                             Log.d("###_2","accept travel " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun deleteTravelReq(idTravel : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url delete travel" +BuildConfig.HRIS_URL+"travelrequestdelete/"+idTravel.trim())
+        AndroidNetworking.post(BuildConfig.HRIS_URL+"travelrequestdelete/"+idTravel)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","delete travel " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","delete travel " +anError.message.toString())
                             callback.onDataError(anError.message.toString())
                         }
                     }

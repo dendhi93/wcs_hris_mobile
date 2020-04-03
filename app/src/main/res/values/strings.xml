@@ -110,6 +110,7 @@
 
     <!--detail req travel content form-->
     <string name="reject_save">Reject</string>
+    <string name="delete_save">Delete</string>
     <string name="list_cities">List Cities</string>
     <string name="list_friends">List Friends</string>
     <string name="reason_dtlTravel">Reason</string>

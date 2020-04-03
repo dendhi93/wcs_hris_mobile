@@ -48,6 +48,7 @@ class RequestTravelListViewModel (private val context : Context,
                             for(j in 0 until jArrayTravelList.length()){
                                 val jObjApprovalTravel = jArrayTravelList.getJSONObject(j)
                                 travelListModel = TravelListModel(
+                                    jObjApprovalTravel.getString("ID"),
                                     jObjApprovalTravel.getString("ID_TR_HEADER"),
                                     jObjApprovalTravel.getString("REASON_NAME"),
                                     jObjApprovalTravel.getString("DEPART_DATE").split("T")[0].trim(),
@@ -67,6 +68,7 @@ class RequestTravelListViewModel (private val context : Context,
                             for(i in 0 until jArrayTravelList.length()) {
                                 val jObjReqTravel = jArrayTravelList.getJSONObject(i)
                                 travelListModel = TravelListModel(
+                                    jObjReqTravel.getString("ID"),
                                     jObjReqTravel.getString("ID_TR_HEADER"),
                                     jObjReqTravel.getString("REASON_DESCRIPTION"),
                                     jObjReqTravel.getString("DEPART_DATE").split("T")[0].trim(),

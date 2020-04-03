@@ -95,7 +95,6 @@ class LoginViewModel(private var _context : Context, private var _loginInterface
                         val responseValidate = it.getString(ConstantObject.vResponseMessage)
                         Log.d("###", "Message $responseValidate")
                         Log.d("###", "data "+it.getString(ConstantObject.vResponseData))
-                        isVisibleProgress.set(false)
                         if(responseValidate != "Not Verified"){
                             _loginInterface.onSuccessLogin()
                         }

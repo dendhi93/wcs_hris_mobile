@@ -2,6 +2,7 @@ package com.wcs.mobilehris.feature.requesttravellist
 
 data class TravelListModel (
     val travelId : String,
+    val travelHeaderId : String,
     val reasonDesc : String,
     val departDate : String,
     val returnDate : String,

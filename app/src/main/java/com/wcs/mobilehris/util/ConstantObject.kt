@@ -30,7 +30,7 @@ object ConstantObject {
     const val vRejected = "Rejected"
     const val vWaitingTask = "WAITING"
     const val vNoApproval = "No Approval"
-    const val vLeaveApprove = "APPROVE"
+    const val vLeaveApprove = "APPROVED"
     const val vLeaveReject = "REJECT"
 
     //type progressBar

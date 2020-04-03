@@ -54,6 +54,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
         intentFromForm = intent.getStringExtra(ConstantObject.extra_intent)
         intentTravelId = intent.getStringExtra(extraTravelId)
         intentTravelRequestor = intent.getStringExtra(extraTravelRequestor)
+        dtlTravelActivityBinding.viewModel?.stIntentTravelHeaderId?.set(intent.getStringExtra(extraTravelHeaderId))
         dtlTravelActivityBinding.viewModel?.stDocNumber?.set(intent.getStringExtra(extraTravelDocNumber).trim().trim())
 
         supportActionBar?.let {
@@ -112,6 +113,14 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
                 onKeyAlertActive = ALERT_DTL_APPROVE_TRAVEL_REJECT
                 MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
             }
+            ALERT_DTL_APPROVE_TRAVEL_DELETE -> {
+                onKeyAlertActive = ALERT_DTL_APPROVE_TRAVEL_DELETE
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
+            ALERT_DTL_APPROVE_TRAVEL_EDIT -> {
+                onKeyAlertActive = ALERT_DTL_APPROVE_TRAVEL_EDIT
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
         }
     }
 
@@ -153,7 +162,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
     }
 
     override fun onRejectTransaction(notesReject: String) {
-        dtlTravelActivityBinding.viewModel?.stDtlTravelNotes?.set(notesReject.trim())
+        dtlTravelActivityBinding.viewModel?.stDtlTravelNotesReject?.set(notesReject.trim())
         when(intentFromForm){
             ConstantObject.extra_fromIntentConfirmTravel -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT)
             ConstantObject.extra_fromIntentApproval -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_APPROVE_TRAVEL_REJECT)
@@ -164,13 +173,11 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
     override fun onPositiveClick(o: Any) {
         when(onKeyAlertActive){
             ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT)
-            ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT -> {
-                CustomBottomSheetDialogFragment(this).show(supportFragmentManager, "Dialog")
-            }
+            ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT -> CustomBottomSheetDialogFragment(this).show(supportFragmentManager, "Dialog")
             ALERT_DTL_APPROVE_TRAVEL_ACCEPT -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_APPROVE_TRAVEL_ACCEPT)
-            else -> {
-                CustomBottomSheetDialogFragment(this).show(supportFragmentManager, "Dialog")
-            }
+            ALERT_DTL_APPROVE_TRAVEL_DELETE -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_APPROVE_TRAVEL_DELETE)
+            ALERT_DTL_APPROVE_TRAVEL_EDIT -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_APPROVE_TRAVEL_EDIT)
+            else -> CustomBottomSheetDialogFragment(this).show(supportFragmentManager, "Dialog")
         }
     }
 
@@ -192,9 +199,14 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
         const val ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT = 5
         const val ALERT_DTL_APPROVE_TRAVEL_ACCEPT = 7
         const val ALERT_DTL_APPROVE_TRAVEL_REJECT = 9
+        const val ALERT_DTL_APPROVE_TRAVEL_DELETE = 11
+        const val ALERT_DTL_APPROVE_TRAVEL_EDIT = 13
         const val extraTravelId = "travel_id"
+        const val extraTravelHeaderId = "travel_header_id"
         const val extraTravelRequestor = "requestor"
         const val extraTravelDocNumber = "doc_number"
+        const val approvalAccept = "approval_accept"
+        const val approvalReject = "approval_reject"
     }
 
     class CustomBottomSheetDialogFragment(private val callback: CustomBottomSheetInterface) : BottomSheetDialogFragment() {

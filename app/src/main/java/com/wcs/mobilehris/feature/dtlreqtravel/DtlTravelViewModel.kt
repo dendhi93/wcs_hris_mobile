@@ -2,9 +2,9 @@ package com.wcs.mobilehris.feature.dtlreqtravel
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.AsyncTask
 import android.os.Handler
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.BuildConfig
@@ -14,6 +14,8 @@ import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.feature.requesttravel.ReqTravelModel
 import com.wcs.mobilehris.util.ConstantObject
+import com.wcs.mobilehris.util.DateTimeUtils
+import com.wcs.mobilehris.util.Preference
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -25,17 +27,26 @@ class DtlTravelViewModel (private val context : Context,
     val isConfirmTravelMenu = ObservableField(false)
     val isHiddenReject = ObservableField(false)
     val isCitiesView = ObservableField(true)
+    val isEditTravel = ObservableField(false)
     val stDtlTravelChargeCode = ObservableField("")
     val stDtlTravelDepartDate = ObservableField("")
     val stDtlTravelReturnDate = ObservableField("")
     val stDtlTravelDescription = ObservableField("")
     val stDtlTravelReason = ObservableField("")
-    val stDtlTravelNotes = ObservableField("")
+    val stDtlTravelNotesReject = ObservableField("")
     val stButtonSubmitTravel = ObservableField("")
+    val stButtonRejectTravel = ObservableField("")
     val stDocNumber = ObservableField("")
-
-    private var stIntentFromMenu : String? = null
-    private var stIntentTravelId : String? = null
+    val stIntentTravelHeaderId = ObservableField("")
+    private val dtlListFriend = mutableListOf<FriendModel>()
+    private val dtlListCityTravel = mutableListOf<ReqTravelModel>()
+    private var stIntentFromMenu : String? = ""
+    private var stIntentTravelId : String? = ""
+    private var stDtlReasonCode : String? = ""
+    private var stDtlCodeofChargeCode : String? = ""
+    private var stDtlTBType : String? = ""
+    private var stDtlDocDate : String? = ""
+    private var preference = Preference(context)
 
     fun validateDataTravel(intentFrom : String, intentTravelId : String){
         when {
@@ -56,11 +67,24 @@ class DtlTravelViewModel (private val context : Context,
             isHiddenReject.set(false)
         }else if (intentFrom == ConstantObject.vEditTask){
             isConfirmTravelMenu.set(true)
-            isHiddenReject.set(true)
+            isHiddenReject.set(false)
         }else { isConfirmTravelMenu.set(false) }
         when(stIntentFromMenu){
-            ConstantObject.extra_fromIntentConfirmTravel -> stButtonSubmitTravel.set(context.getString(R.string.confirm_save))
-            else -> stButtonSubmitTravel.set(context.getString(R.string.appr_button))
+            ConstantObject.extra_fromIntentConfirmTravel -> {
+                stButtonSubmitTravel.set(context.getString(R.string.confirm_save))
+                stButtonRejectTravel.set(context.getString(R.string.reject_save))
+                isEditTravel.set(false)
+            }
+            ConstantObject.vEditTask -> {
+                stButtonSubmitTravel.set(context.getString(R.string.save))
+                stButtonRejectTravel.set(context.getString(R.string.delete_save))
+                isEditTravel.set(true)
+            }
+            else -> {
+                stButtonSubmitTravel.set(context.getString(R.string.appr_button))
+                stButtonRejectTravel.set(context.getString(R.string.reject_save))
+                isEditTravel.set(false)
+            }
         }
         apiRepo.getHeaderTravel(BuildConfig.HRIS_URL+"gettravelrequestbyid/"+intentTravelId, context, object : ApiRepo.ApiCallback<JSONObject>{
             override fun onDataLoaded(data: JSONObject?) {
@@ -68,10 +92,14 @@ class DtlTravelViewModel (private val context : Context,
                     val responseTravelHeader = it.getString(ConstantObject.vResponseData)
                     val jObjHeaderTravel = JSONObject(responseTravelHeader)
                     stDtlTravelChargeCode.set(jObjHeaderTravel.getString("CHARGE_CD_NAME"))
+                    stDtlCodeofChargeCode = jObjHeaderTravel.getString("CHARGE_CD")
                     stDtlTravelDepartDate.set(jObjHeaderTravel.getString("DEPART_DATE").split("T")[0])
                     stDtlTravelReturnDate.set(jObjHeaderTravel.getString("RETURN_DATE").split("T")[0])
-                    dtlTravelInterface.selectedTravelWayRadio(jObjHeaderTravel.getString("TRAVEL_TYPE_CD"))
+                    stDtlTBType = jObjHeaderTravel.getString("TRAVEL_TYPE_CD")
+                    stDtlDocDate = jObjHeaderTravel.getString("DOCUMENT_DATE").split("T")[0]
+                    dtlTravelInterface.selectedTravelWayRadio(stDtlTBType.toString().trim())
                     stDtlTravelReason.set(jObjHeaderTravel.getString("REASON_DESCRIPTION"))
+                    stDtlReasonCode = jObjHeaderTravel.getString("REASON")
                     stDtlTravelDescription.set(jObjHeaderTravel.getString("DESCRIPTION"))
                     AsyncDtlTravel().execute()
                 }
@@ -86,9 +114,8 @@ class DtlTravelViewModel (private val context : Context,
     }
 
     private fun getDataTeam(){
-        val dtlListFriend = mutableListOf<FriendModel>()
         var friendModel : FriendModel
-        apiRepo.getHeaderTravel(BuildConfig.HRIS_URL+"gettravelrequestmemberdetailbyheaderid/"+stIntentTravelId,
+        apiRepo.getHeaderTravel(BuildConfig.HRIS_URL+"gettravelrequestmemberdetailbyheaderid/"+stIntentTravelHeaderId.get()?.trim(),
             context, object : ApiRepo.ApiCallback<JSONObject>{
             override fun onDataLoaded(data: JSONObject?) {
                 data?.let {
@@ -120,9 +147,8 @@ class DtlTravelViewModel (private val context : Context,
     }
 
     private fun getDestinationTravel(){
-        val dtlListCityTravel = mutableListOf<ReqTravelModel>()
         var reqTravelModel : ReqTravelModel
-        apiRepo.getHeaderTravel(BuildConfig.HRIS_URL+"gettravelrequestdetailbyheaderid/"+stIntentTravelId,
+        apiRepo.getHeaderTravel(BuildConfig.HRIS_URL+"gettravelrequestdetailbyheaderid/"+stIntentTravelHeaderId.get()?.trim(),
             context, object : ApiRepo.ApiCallback<JSONObject>{
                 override fun onDataLoaded(data: JSONObject?) {
                     data?.let {
@@ -135,7 +161,7 @@ class DtlTravelViewModel (private val context : Context,
                                 jObjDestination.getString("DESTINATION_TO"),
                                 jObjDestination.getString("START_DATE").split("T")[0],
                                 jObjDestination.getString("END_DATE").split("T")[0],
-                                jObjDestination.getString("TRANSPORT_NAME")+"-"+jObjDestination.getString("TRANSPORT_NAME"),
+                                jObjDestination.getString("TRANSPORT_TYPE_CODE").trim()+"-"+jObjDestination.getString("TRANSPORT_NAME"),
                                 jObjDestination.getString("ACCOMODATION_NAME")
                             )
                             dtlListCityTravel.add(reqTravelModel)
@@ -184,6 +210,8 @@ class DtlTravelViewModel (private val context : Context,
                 ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT)
             stIntentFromMenu == ConstantObject.extra_fromIntentApproval -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_ACCEPT)
+            stIntentFromMenu == ConstantObject.vEditTask -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
+                ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_EDIT)
         }
 
     }
@@ -195,6 +223,8 @@ class DtlTravelViewModel (private val context : Context,
                 ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT)
             stIntentFromMenu == ConstantObject.extra_fromIntentApproval -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_REJECT)
+            stIntentFromMenu == ConstantObject.vEditTask -> dtlTravelInterface.onAlertDtlReqTravel(context.getString(R.string.transaction_alert_confirmation),
+                ConstantObject.vAlertDialogConfirmation, DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_DELETE)
         }
     }
 
@@ -203,12 +233,14 @@ class DtlTravelViewModel (private val context : Context,
         isProgressDtlReqTravel.set(true)
         when(chooseConfirm){
             DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_ACCEPT -> submitApproveTravel()
+            DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_REJECT -> submitRejectTravel()
+            DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_DELETE -> deleteTravelReq()
+            DtlRequestTravelActivity.ALERT_DTL_APPROVE_TRAVEL_EDIT -> editReqTravel()
             else ->{
                 Handler().postDelayed({
                     when(chooseConfirm){
                         DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT ->  dtlTravelInterface.onSuccessDtlTravel("Transaction Successful accepted")
-                        DtlRequestTravelActivity.ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT -> dtlTravelInterface.onSuccessDtlTravel("Transaction Successful rejected")
-                        else -> dtlTravelInterface.onSuccessDtlTravel("Transaction Successful rejected")
+                        else -> dtlTravelInterface.onSuccessDtlTravel("Transaction confirmation Successful rejected")
                     }
                 }, 2000)
             }
@@ -216,7 +248,9 @@ class DtlTravelViewModel (private val context : Context,
     }
 
     private fun submitApproveTravel(){
-        apiRepo.postApproveTravel(stDocNumber.get().toString().trim(), context, object : ApiRepo.ApiCallback<JSONObject>{
+        apiRepo.postApproveTravel(stDocNumber.get().toString().trim(),
+            "",DtlRequestTravelActivity.approvalAccept,
+            context, object : ApiRepo.ApiCallback<JSONObject>{
             override fun onDataLoaded(data: JSONObject?) {
                 data?.let {
                     val responseAcceptTravel = it.getString(ConstantObject.vResponseData)
@@ -231,5 +265,144 @@ class DtlTravelViewModel (private val context : Context,
                 isProgressDtlReqTravel.set(true)
             }
         })
+    }
+
+    private fun submitRejectTravel(){
+        apiRepo.postApproveTravel(stDocNumber.get().toString().trim(),
+            stDtlTravelNotesReject.get().toString().trim(),DtlRequestTravelActivity.approvalReject,
+            context, object : ApiRepo.ApiCallback<JSONObject>{
+                override fun onDataLoaded(data: JSONObject?) {
+                    data?.let {
+                        val responseAcceptTravel = it.getString(ConstantObject.vResponseData)
+                        val jObjAccept = JSONObject(responseAcceptTravel)
+                        val stSuccess = jObjAccept.getString("STATUS")
+                        if(stSuccess == "SUCCESS"){dtlTravelInterface.onSuccessDtlTravel("Transaction Successful rejected")}
+                    }
+                }
+
+                override fun onDataError(error: String?) {
+                    dtlTravelInterface.onMessage("err approve travel" +error.toString(), ConstantObject.vToastError)
+                    isProgressDtlReqTravel.set(false)
+                }
+            })
+    }
+
+    private fun deleteTravelReq(){
+        apiRepo.deleteTravelReq(stIntentTravelId.toString().trim(), context, object :ApiRepo.ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val responseDelTravel = it.getString(ConstantObject.vResponseStatus)
+                    if(responseDelTravel == ConstantObject.vValueResponseSuccess){dtlTravelInterface.onSuccessDtlTravel("Transaction successfully deleted")}
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                dtlTravelInterface.onMessage("err delete travel " +error.toString(), ConstantObject.vToastError)
+                isProgressDtlReqTravel.set(false)
+            }
+        })
+    }
+
+    private fun editReqTravel(){
+        apiRepo.postReqTravelReq(initjObjEditTravel(dtlListFriend, dtlListCityTravel), context, object :ApiRepo.ApiCallback<JSONObject>{
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val responseEditTravel = it.getString(ConstantObject.vResponseMessage)
+                    if(responseEditTravel.trim() == "Travel Request Successfully Added"){
+                        dtlTravelInterface.onSuccessDtlTravel("Transaction successfully edited")
+                    }else{
+                        dtlTravelInterface.onMessage(responseEditTravel.trim(), ConstantObject.vToastInfo)
+                        isProgressDtlReqTravel.set(false)
+                    }
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                dtlTravelInterface.onMessage("err edit travel " +error.toString(), ConstantObject.vToastError)
+                Log.d("###",""+error.toString())
+                isProgressDtlReqTravel.set(false)
+            }
+        })
+    }
+
+    private fun initjObjEditTravel(listTeam: List<FriendModel>, listCity: List<ReqTravelModel>) : JSONObject{
+        val reqTravelParam  = JSONObject()
+        val jObjTravelHeader = JSONObject()
+        val jObjTravelDtl = JSONObject()
+        val jArrayTravelHeaders = JSONArray()
+        val jArrayTravelDtls = JSONArray()
+
+        for(k in listTeam.indices){
+            Log.d("###", "loop $k")
+            Log.d("###", "loop friend "+listTeam[k].friendId)
+
+            jObjTravelHeader.put("ID",stIntentTravelId?.toInt())
+            jObjTravelHeader.put("ID_TR_HEADER",stIntentTravelHeaderId.get()?.toInt())
+            jObjTravelHeader.put("REASON",stDtlReasonCode.toString().trim())
+            jObjTravelHeader.put("DESCRIPTION",stDtlTravelDescription.get().toString())
+            jObjTravelHeader.put("CHARGE_CD",stDtlCodeofChargeCode.toString().trim())
+            jObjTravelHeader.put("TRAVEL_TYPE_CD",stDtlTBType.toString().trim())
+            jObjTravelHeader.put("NIK",listTeam[k].friendId)
+            jObjTravelHeader.put("REQUESTOR_NIK",preference.getUn())
+            jObjTravelHeader.put("DURATION",DateTimeUtils.getDifferentDate(stDtlTravelDepartDate.get().toString().trim(), stDtlTravelReturnDate.get().toString().trim())+1)
+            jObjTravelHeader.put("DEPART_DATE",stDtlTravelDepartDate.get().toString())
+            jObjTravelHeader.put("RETURN_DATE",stDtlTravelReturnDate.get().toString())
+            jObjTravelHeader.put("DOCUMENT_NUMBER","")
+            jObjTravelHeader.put("DOCUMENT_DATE",stDtlDocDate.toString().trim())
+            jObjTravelHeader.put("TRIP_ADVANCE",0)
+            jObjTravelHeader.put("STATUS_CD","W")
+            jObjTravelHeader.put("REMARK_REJECTED","")
+            jObjTravelHeader.put("CREATED_BY",preference.getUn())
+            jObjTravelHeader.put("CREATED_DT","")
+            jObjTravelHeader.put("MODIFIED_BY","")
+            jObjTravelHeader.put("MODIFIED_DT","")
+            jObjTravelHeader.put("APPROVED_BY","")
+            jObjTravelHeader.put("APPROVED_DT","")
+            jObjTravelHeader.put("REJECTED_BY","")
+            jObjTravelHeader.put("REJECTED_DT","")
+            jObjTravelHeader.put("ISDELETED","")
+            jObjTravelHeader.put("ISMEMBER_CONFIRM","")
+            jObjTravelHeader.put("ISAPPROVED","")
+            jObjTravelHeader.put("ISMEMBER_REJECTED","")
+            jObjTravelHeader.put("ISREJECTED","")
+            jObjTravelHeader.put("ISCOMPLETED","")
+
+            jArrayTravelHeaders.put(jObjTravelHeader)
+        }
+
+        for(l in listCity.indices){
+            jObjTravelDtl.put("ID",stIntentTravelId?.toInt())
+            jObjTravelDtl.put("ID_TR_HEADER",stIntentTravelHeaderId.get()?.toInt())
+            jObjTravelDtl.put("TRANSPORT_TYPE_CODE",listCity[l].transType.trim().split("-")[0])
+            jObjTravelDtl.put("TRANSPORT_NAME","")
+            jObjTravelDtl.put("TRANSPORT_NUMBER","")
+            jObjTravelDtl.put("TRANSPORT_FROM", "")
+            jObjTravelDtl.put("TRANSPORT_TO","")
+            jObjTravelDtl.put("TRANSPORT_DATE","")
+            jObjTravelDtl.put("TRANSPORT_TIME","")
+            jObjTravelDtl.put("DESTINATION_FROM",listCity[l].depart.trim())
+            jObjTravelDtl.put("DESTINATION_TO",listCity[l].arrival.trim())
+            jObjTravelDtl.put("START_DATE",stDtlTravelDepartDate.get().toString())
+            jObjTravelDtl.put("END_DATE",stDtlTravelReturnDate.get().toString())
+            jObjTravelDtl.put("DURATION", DateTimeUtils.getDifferentDate(stDtlTravelDepartDate.get().toString().trim(), stDtlTravelReturnDate.get().toString().trim())+1)
+            jObjTravelDtl.put("ACCOMODATION_NAME",listCity[l].hotelName)
+            jObjTravelDtl.put("ACCOMODATION_LOCATION",stDtlTravelReturnDate.get().toString())
+            jObjTravelDtl.put("CHECK_IN",listCity[l].dateCheckIn)
+            jObjTravelDtl.put("CHECK_OUT",listCity[l].dateCheckOut)
+            jObjTravelDtl.put("REMARK","")
+            jObjTravelDtl.put("CREATED_BY",preference.getUn())
+            jObjTravelDtl.put("CREATED_DT",DateTimeUtils.getCurrentDate())
+            jObjTravelDtl.put("MODIFIED_BY","")
+            jObjTravelDtl.put("MODIFIED_DT","")
+            jObjTravelDtl.put("ISDELETED","False")
+
+            jArrayTravelDtls.put(jObjTravelDtl)
+        }
+
+        reqTravelParam.put("TravelRequestHeader",jArrayTravelHeaders)
+        reqTravelParam.put("TravelRequestDetail",jArrayTravelDtls)
+
+
+        return reqTravelParam
     }
 }

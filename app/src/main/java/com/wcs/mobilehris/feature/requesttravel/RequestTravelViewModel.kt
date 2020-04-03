@@ -384,7 +384,7 @@ class RequestTravelViewModel (private val context : Context,
             jObjTravelDtl.put("START_DATE",stDepartDate.get().toString())
             jObjTravelDtl.put("END_DATE",stReturnDate.get().toString())
             jObjTravelDtl.put("DURATION",DateTimeUtils.getDifferentDate(stDepartDate.get().toString().trim(), stReturnDate.get().toString().trim())+1)
-            jObjTravelDtl.put("ACCOMODATION_NAME",stHotelName.get().toString())
+            jObjTravelDtl.put("ACCOMODATION_NAME",listCity[i].hotelName)
             jObjTravelDtl.put("ACCOMODATION_LOCATION",stTravelInto.get().toString())
             jObjTravelDtl.put("CHECK_IN",listCity[i].dateCheckIn)
             jObjTravelDtl.put("CHECK_OUT",listCity[i].dateCheckOut)
