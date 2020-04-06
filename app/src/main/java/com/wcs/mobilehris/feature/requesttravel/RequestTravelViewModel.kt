@@ -45,6 +45,7 @@ class RequestTravelViewModel (private val context : Context,
     val isSetTravel = ObservableField(false)
     val isNonTB = ObservableField(false)
     private val listSelectedTeam = mutableListOf<FriendModel>()
+    private val copyListTeam = mutableListOf<FriendModel>()
     private val travelDestinationList = mutableListOf<ReqTravelModel>()
     private lateinit var mTransTypeDao : TransTypeDao
     private lateinit var mChargeCodeDao : ChargeCodeDao
@@ -286,13 +287,6 @@ class RequestTravelViewModel (private val context : Context,
         }
     }
 
-//    private fun getGenerateTravel(){
-//        isProgressReqTravel.set(true)
-//        Handler().postDelayed({
-//            requestTravelInterface.onSuccessRequestTravel()
-//        }, 2000)
-//    }
-
     fun onBackReqTravelMenu(){
         val intent = Intent(context, MenuActivity::class.java)
         intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_REQUEST)
@@ -301,7 +295,7 @@ class RequestTravelViewModel (private val context : Context,
 
     private fun submitReqTravel(){
         isProgressReqTravel.set(true)
-        apiRepo.postReqTravelReq(initjObjReqTravel(listSelectedTeam, travelDestinationList),
+        apiRepo.postReqTravelReq(initjObjReqTravel(copyListTeam, travelDestinationList),
             context, object :ApiRepo.ApiCallback<JSONObject>{
                 override fun onDataLoaded(data: JSONObject?) {
                     data?.let {
@@ -331,16 +325,15 @@ class RequestTravelViewModel (private val context : Context,
 
 
         for(i in listTeam.indices){
+            Log.d("###","jml team " +listTeam.size)
+
             jObjTravelHeader.put("ID",0)
             jObjTravelHeader.put("ID_TR_HEADER",0)
             jObjTravelHeader.put("REASON",stReasonCode.get().toString())
             jObjTravelHeader.put("DESCRIPTION",stTravelDescription.get().toString())
             jObjTravelHeader.put("CHARGE_CD",stChargeCode.get().toString())
-            if(isNonTB.get() == false){
-                jObjTravelHeader.put("TRAVEL_TYPE_CD","TB")
-            }else {
-                jObjTravelHeader.put("TRAVEL_TYPE_CD","NTB")
-            }
+            if(isNonTB.get() == false){ jObjTravelHeader.put("TRAVEL_TYPE_CD","TB")
+            }else { jObjTravelHeader.put("TRAVEL_TYPE_CD","NTB") }
             jObjTravelHeader.put("NIK",listTeam[i].friendId)
             jObjTravelHeader.put("REQUESTOR_NIK",preference.getUn())
             jObjTravelHeader.put("DURATION",DateTimeUtils.getDifferentDate(stDepartDate.get().toString().trim(), stReturnDate.get().toString().trim())+1)
@@ -368,6 +361,8 @@ class RequestTravelViewModel (private val context : Context,
 
             jArrayTravelHeaders.put(jObjTravelHeader)
         }
+        Log.d("###","jml "+jArrayTravelHeaders.length())
+        reqTravelParam.put("TravelRequestHeader",jArrayTravelHeaders)
 
         for(i in listCity.indices){
             jObjTravelDtl.put("ID",0)
@@ -398,8 +393,6 @@ class RequestTravelViewModel (private val context : Context,
             jArrayTravelDtls.put(jObjTravelDtl)
         }
         reqTravelParam.put("TravelRequestDetail",jArrayTravelDtls)
-        reqTravelParam.put("TravelRequestHeader",jArrayTravelHeaders)
-
         return reqTravelParam
     }
 
@@ -447,5 +440,10 @@ class RequestTravelViewModel (private val context : Context,
                     requestTravelInterface.onMessage(error.toString(), ConstantObject.vToastError)
                 }
             })
+    }
+
+    fun onCopyListTeam(listAllTeam : List<FriendModel>){
+        copyListTeam.clear()
+        copyListTeam.addAll(listAllTeam)
     }
 }

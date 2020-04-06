@@ -38,12 +38,17 @@ object DateTimeUtils {
         return try {
             val source = when(dateFormatType){
                 ConstantObject.dateTimeFormat_1 -> SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault())
-                ConstantObject.dateTimeFormat_2 -> SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                else -> SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                ConstantObject.dateTimeFormat_2  -> SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                ConstantObject.dateTimeFormat_3  -> SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                else -> SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             }
 
             val dateSource = source.parse(dateTime.trim())
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val dateFormat = when(dateFormatType){
+                ConstantObject.dateTimeFormat_4 ->SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault())
+                else -> SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            }
+
             if (dateSource != null) {
                 dateFormat.format(dateSource)
             } else { "" }

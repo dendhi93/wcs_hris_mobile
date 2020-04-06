@@ -129,28 +129,10 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     }
 
     override fun onLoadTeam(listTeam: List<FriendModel>) {
-        when(arrTeamTravel.size){
-            0 -> {
-                arrTeamTravel.addAll(listTeam)
-                travelAdapter.notifyDataSetChanged()
-            }
-            else -> {
-                val selectedFriendModel = listTeam[0]
-                var trueToAdd = true
-                //ngecek data yang sama di array
-                for(i in arrTeamTravel.indices){
-                   if(selectedFriendModel.teamName == arrTeamTravel[i].teamName){
-                       break
-                       onMessage("Data already on the list", ConstantObject.vToastInfo)
-                       trueToAdd = false
-                   }
-                }
-                if(trueToAdd){
-                    arrTeamTravel.addAll(listTeam)
-                    travelAdapter.notifyDataSetChanged()
-                }
-            }
-        }
+        arrTeamTravel.clear()
+        arrTeamTravel.addAll(listTeam)
+        travelAdapter.notifyDataSetChanged()
+        activityRequestTravelBinding.viewModel?.onCopyListTeam(arrTeamTravel)
     }
 
     override fun onMessage(message: String, messageType: Int) {

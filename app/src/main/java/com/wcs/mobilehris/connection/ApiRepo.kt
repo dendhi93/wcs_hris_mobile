@@ -483,7 +483,7 @@ class ApiRepo {
     }
 
     fun postReqTravelReq(jObjReqTravel : JSONObject, context: Context,  callback: ApiCallback<JSONObject>){
-        Log.d("###", "json $jObjReqTravel")
+        Log.d("###", "json travel $jObjReqTravel")
         AndroidNetworking.initialize(context)
         Log.d("###", "url insert leave " +BuildConfig.HRIS_URL+"inserttravelrequest")
         AndroidNetworking.post(BuildConfig.HRIS_URL+"inserttravelrequest")

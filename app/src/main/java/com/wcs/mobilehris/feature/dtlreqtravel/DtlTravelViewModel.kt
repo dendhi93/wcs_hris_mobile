@@ -329,13 +329,12 @@ class DtlTravelViewModel (private val context : Context,
         val reqTravelParam  = JSONObject()
         val jObjTravelHeader = JSONObject()
         val jObjTravelDtl = JSONObject()
-        val jArrayTravelHeaders = JSONArray()
-        val jArrayTravelDtls = JSONArray()
+        var jArrayTravelHeaders  = JSONArray()
+        var jArrayTravelDtls = JSONArray()
 
         for(k in listTeam.indices){
-            Log.d("###", "loop $k")
-            Log.d("###", "loop friend "+listTeam[k].friendId)
 
+            jArrayTravelHeaders = JSONArray()
             jObjTravelHeader.put("ID",stIntentTravelId?.toInt())
             jObjTravelHeader.put("ID_TR_HEADER",stIntentTravelHeaderId.get()?.toInt())
             jObjTravelHeader.put("REASON",stDtlReasonCode.toString().trim())
@@ -347,7 +346,7 @@ class DtlTravelViewModel (private val context : Context,
             jObjTravelHeader.put("DURATION",DateTimeUtils.getDifferentDate(stDtlTravelDepartDate.get().toString().trim(), stDtlTravelReturnDate.get().toString().trim())+1)
             jObjTravelHeader.put("DEPART_DATE",stDtlTravelDepartDate.get().toString())
             jObjTravelHeader.put("RETURN_DATE",stDtlTravelReturnDate.get().toString())
-            jObjTravelHeader.put("DOCUMENT_NUMBER","")
+            jObjTravelHeader.put("DOCUMENT_NUMBER",stDocNumber.get().toString().trim())
             jObjTravelHeader.put("DOCUMENT_DATE",stDtlDocDate.toString().trim())
             jObjTravelHeader.put("TRIP_ADVANCE",0)
             jObjTravelHeader.put("STATUS_CD","W")
@@ -370,7 +369,10 @@ class DtlTravelViewModel (private val context : Context,
             jArrayTravelHeaders.put(jObjTravelHeader)
         }
 
+        reqTravelParam.put("TravelRequestHeader",jArrayTravelHeaders)
         for(l in listCity.indices){
+
+            jArrayTravelDtls = JSONArray()
             jObjTravelDtl.put("ID",stIntentTravelId?.toInt())
             jObjTravelDtl.put("ID_TR_HEADER",stIntentTravelHeaderId.get()?.toInt())
             jObjTravelDtl.put("TRANSPORT_TYPE_CODE",listCity[l].transType.trim().split("-")[0])
@@ -382,13 +384,13 @@ class DtlTravelViewModel (private val context : Context,
             jObjTravelDtl.put("TRANSPORT_TIME","")
             jObjTravelDtl.put("DESTINATION_FROM",listCity[l].depart.trim())
             jObjTravelDtl.put("DESTINATION_TO",listCity[l].arrival.trim())
-            jObjTravelDtl.put("START_DATE",stDtlTravelDepartDate.get().toString())
-            jObjTravelDtl.put("END_DATE",stDtlTravelReturnDate.get().toString())
+            jObjTravelDtl.put("START_DATE",DateTimeUtils.getChangeDateFormat(stDtlTravelDepartDate.get().toString(), ConstantObject.dateTimeFormat_4))
+            jObjTravelDtl.put("END_DATE",DateTimeUtils.getChangeDateFormat(stDtlTravelReturnDate.get().toString(), ConstantObject.dateTimeFormat_4))
             jObjTravelDtl.put("DURATION", DateTimeUtils.getDifferentDate(stDtlTravelDepartDate.get().toString().trim(), stDtlTravelReturnDate.get().toString().trim())+1)
             jObjTravelDtl.put("ACCOMODATION_NAME",listCity[l].hotelName)
             jObjTravelDtl.put("ACCOMODATION_LOCATION",stDtlTravelReturnDate.get().toString())
-            jObjTravelDtl.put("CHECK_IN",listCity[l].dateCheckIn)
-            jObjTravelDtl.put("CHECK_OUT",listCity[l].dateCheckOut)
+            jObjTravelDtl.put("CHECK_IN",DateTimeUtils.getChangeDateFormat(listCity[l].dateCheckIn, ConstantObject.dateTimeFormat_4))
+            jObjTravelDtl.put("CHECK_OUT",DateTimeUtils.getChangeDateFormat(listCity[l].dateCheckOut, ConstantObject.dateTimeFormat_4))
             jObjTravelDtl.put("REMARK","")
             jObjTravelDtl.put("CREATED_BY",preference.getUn())
             jObjTravelDtl.put("CREATED_DT",DateTimeUtils.getCurrentDate())
@@ -399,10 +401,7 @@ class DtlTravelViewModel (private val context : Context,
             jArrayTravelDtls.put(jObjTravelDtl)
         }
 
-        reqTravelParam.put("TravelRequestHeader",jArrayTravelHeaders)
         reqTravelParam.put("TravelRequestDetail",jArrayTravelDtls)
-
-
         return reqTravelParam
     }
 }
