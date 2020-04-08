@@ -22,4 +22,5 @@ interface RequestTravelInterface : DialogInterface {
     fun onChangeButtonBackground(isTravelSelected : Boolean)
     fun onLoadCitiesTravel(listCity : List<ReqTravelModel>)
     fun onResetCities()
+    fun onShowConflict(listConflicted : List<ConflictedFriendModel>)
 }

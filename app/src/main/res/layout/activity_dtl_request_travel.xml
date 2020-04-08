@@ -233,7 +233,7 @@
                                 android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789qwertyuiopasdfghjklzxcvbnm/_,.()!? "
                                 android:gravity="center_vertical"
                                 android:textColor="@color/colorBlack"
-                                android:enabled="false"
+                                android:enabled="@{viewModel.isEditTravel}"
                                 android:textColorHint="@color/colorBlack"
                                 android:hint="@string/description"
                                 android:text="@={viewModel.stDtlTravelDescription}"
@@ -332,11 +332,12 @@
                     android:layout_marginEnd="@dimen/spacing_tiny_3"
                     android:onClick="@{() -> viewModel.onSubmitReject()}"
                     android:enabled="@{!viewModel.isProgressDtlReqTravel}"
+                    android:visibility="@{viewModel.isHiddenReject ? View.GONE : View.VISIBLE}"
                     android:id="@+id/btn_dtlReqTravel_reject"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/button_height"
                     android:layout_weight="1"
-                    android:text="@string/reject_save"
+                    android:text="@={viewModel.stButtonRejectTravel}"
                     android:background="@drawable/bg_transparent_button"/>
             </LinearLayout>
 

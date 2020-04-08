@@ -4,10 +4,12 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.application.WcsHrisApps
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.database.daos.ChargeCodeDao
 import com.wcs.mobilehris.database.daos.ReasonTravelDao
@@ -16,11 +18,16 @@ import com.wcs.mobilehris.feature.dtltask.FriendModel
 import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.DateTimeUtils
+import com.wcs.mobilehris.util.Preference
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import org.json.JSONArray
+import org.json.JSONObject
 import java.util.*
 
-class RequestTravelViewModel (private val context : Context, private val requestTravelInterface: RequestTravelInterface): ViewModel(){
+class RequestTravelViewModel (private val context : Context,
+                              private val requestTravelInterface: RequestTravelInterface,
+                              private val apiRepo: ApiRepo): ViewModel(){
     val stDepartDate = ObservableField("")
     val stReturnDate = ObservableField("")
     val stDepartFrom = ObservableField("")
@@ -38,6 +45,8 @@ class RequestTravelViewModel (private val context : Context, private val request
     val isSetTravel = ObservableField(false)
     val isNonTB = ObservableField(false)
     private val listSelectedTeam = mutableListOf<FriendModel>()
+    private val copyListTeam = mutableListOf<FriendModel>()
+    private val travelDestinationList = mutableListOf<ReqTravelModel>()
     private lateinit var mTransTypeDao : TransTypeDao
     private lateinit var mChargeCodeDao : ChargeCodeDao
     private lateinit var mReasonTravelDao : ReasonTravelDao
@@ -45,6 +54,7 @@ class RequestTravelViewModel (private val context : Context, private val request
     private var mYear : Int = 0
     private var mMonth : Int = 0
     private var mDay : Int = 0
+    private var preference = Preference(context)
 
     fun initTravelDateFrom(){displayCalendar(RequestTravelActivity.chooseDateFrom)}
     fun initTravelDateInto(){
@@ -74,7 +84,7 @@ class RequestTravelViewModel (private val context : Context, private val request
         mYear = calendar.get(Calendar.YEAR)
         mMonth = calendar.get(Calendar.MONTH)
         mDay = calendar.get(Calendar.DAY_OF_MONTH)
-        val datePickerDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        val datePickerDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 val selectedMonth: String = if (month < 10) { "0" + (month + 1) } else { month.toString() }
                 val selectedDay: String = if (dayOfMonth < 10) { "0$dayOfMonth" } else { dayOfMonth.toString() }
                 val finalDate = "$year-$selectedMonth-$selectedDay"
@@ -148,9 +158,9 @@ class RequestTravelViewModel (private val context : Context, private val request
     fun validateTravelTeam(itemUserId : String, itemName : String, stTeamStatus : String){
         if (itemUserId != "null" && itemName != "null" && stTeamStatus != "null"){
             val itemFriendModel = if(stTeamStatus.contains("Available")){
-                FriendModel(itemUserId, itemName, stTeamStatus.trim(), false)
+                FriendModel(itemUserId, itemName, false)
             }else {
-                FriendModel(itemUserId, itemName, stTeamStatus.trim(), true)
+                FriendModel(itemUserId, itemName, true)
             }
 
             listSelectedTeam.add(itemFriendModel)
@@ -185,7 +195,6 @@ class RequestTravelViewModel (private val context : Context, private val request
     }
 
     private fun saveDestination(){
-            val travelDestinationList = mutableListOf<ReqTravelModel>()
             val saveModel = ReqTravelModel(stDepartFrom.get().toString().trim(),
                 stTravelInto.get().toString().trim(),
                 stDepartDate.get().toString().trim(),
@@ -210,7 +219,7 @@ class RequestTravelViewModel (private val context : Context, private val request
         }
     }
 
-    fun actionSubmitTravel(){
+    fun actionSubmitConfirmTravel(){
         isProgressReqTravel.set(true)
         requestTravelInterface.onSuccessRequestTravel()
     }
@@ -269,25 +278,172 @@ class RequestTravelViewModel (private val context : Context, private val request
 
     fun actionGenerateTravel(listCities : List<ReqTravelModel>){
         when{
-            isSetTravel.get() == false -> requestTravelInterface.onMessage("You have not transaction yet", ConstantObject.vToastInfo)
+            isSetTravel.get() == false -> requestTravelInterface.onMessage("please set travel first", ConstantObject.vToastInfo)
             else -> {
                 when{listCities.isEmpty() -> requestTravelInterface.onMessage("Please set your destination", ConstantObject.vToastInfo)
-                    else -> getGenerateTravel()
+                    else -> submitReqTravel()
                 }
             }
         }
-    }
-
-    private fun getGenerateTravel(){
-        isProgressReqTravel.set(true)
-        Handler().postDelayed({
-            requestTravelInterface.onSuccessRequestTravel()
-        }, 2000)
     }
 
     fun onBackReqTravelMenu(){
         val intent = Intent(context, MenuActivity::class.java)
         intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_REQUEST)
         context.startActivity(intent)
+    }
+
+    private fun submitReqTravel(){
+        isProgressReqTravel.set(true)
+        apiRepo.postReqTravelReq(initjObjReqTravel(copyListTeam, travelDestinationList),
+            context, object :ApiRepo.ApiCallback<JSONObject>{
+                override fun onDataLoaded(data: JSONObject?) {
+                    data?.let {
+                        val responseTravel = it.getString(ConstantObject.vResponseMessage)
+                        if(responseTravel.trim() == "Travel Request Successfully Added"){
+                            requestTravelInterface.onSuccessRequestTravel()
+                        }else{
+                            requestTravelInterface.onMessage(responseTravel.trim(), ConstantObject.vToastError)
+                            isProgressReqTravel.set(false)
+                        }
+                    }
+                }
+
+                override fun onDataError(error: String?) {
+                    requestTravelInterface.onMessage("err Req Travel " +error.toString(), ConstantObject.vToastError)
+                    isProgressReqTravel.set(false)
+                }
+            })
+    }
+
+    private fun initjObjReqTravel(listTeam: List<FriendModel>, listCity: List<ReqTravelModel>) : JSONObject{
+        val reqTravelParam  = JSONObject()
+        val jObjTravelHeader = JSONObject()
+        val jObjTravelDtl = JSONObject()
+        val jArrayTravelHeaders = JSONArray()
+        val jArrayTravelDtls = JSONArray()
+
+
+        for(i in listTeam.indices){
+            Log.d("###","jml team " +listTeam.size)
+
+            jObjTravelHeader.put("ID",0)
+            jObjTravelHeader.put("ID_TR_HEADER",0)
+            jObjTravelHeader.put("REASON",stReasonCode.get().toString())
+            jObjTravelHeader.put("DESCRIPTION",stTravelDescription.get().toString())
+            jObjTravelHeader.put("CHARGE_CD",stChargeCode.get().toString())
+            if(isNonTB.get() == false){ jObjTravelHeader.put("TRAVEL_TYPE_CD","TB")
+            }else { jObjTravelHeader.put("TRAVEL_TYPE_CD","NTB") }
+            jObjTravelHeader.put("NIK",listTeam[i].friendId)
+            jObjTravelHeader.put("REQUESTOR_NIK",preference.getUn())
+            jObjTravelHeader.put("DURATION",DateTimeUtils.getDifferentDate(stDepartDate.get().toString().trim(), stReturnDate.get().toString().trim())+1)
+            jObjTravelHeader.put("DEPART_DATE",stDepartDate.get().toString())
+            jObjTravelHeader.put("RETURN_DATE",stReturnDate.get().toString())
+            jObjTravelHeader.put("DOCUMENT_NUMBER",null)
+            jObjTravelHeader.put("DOCUMENT_DATE",null)
+            jObjTravelHeader.put("TRIP_ADVANCE",null)
+            jObjTravelHeader.put("STATUS_CD","W")
+            jObjTravelHeader.put("REMARK_REJECTED",null)
+            jObjTravelHeader.put("CREATED_BY",preference.getUn())
+            jObjTravelHeader.put("CREATED_DT",DateTimeUtils.getCurrentDate())
+            jObjTravelHeader.put("MODIFIED_BY",null)
+            jObjTravelHeader.put("MODIFIED_DT",null)
+            jObjTravelHeader.put("APPROVED_BY",null)
+            jObjTravelHeader.put("APPROVED_DT",null)
+            jObjTravelHeader.put("REJECTED_BY",null)
+            jObjTravelHeader.put("REJECTED_DT",null)
+            jObjTravelHeader.put("ISDELETED",null)
+            jObjTravelHeader.put("ISMEMBER_CONFIRM",null)
+            jObjTravelHeader.put("ISAPPROVED",null)
+            jObjTravelHeader.put("ISMEMBER_REJECTED",null)
+            jObjTravelHeader.put("ISREJECTED",null)
+            jObjTravelHeader.put("ISCOMPLETED",null)
+
+            jArrayTravelHeaders.put(jObjTravelHeader)
+        }
+        Log.d("###","jml "+jArrayTravelHeaders.length())
+        reqTravelParam.put("TravelRequestHeader",jArrayTravelHeaders)
+
+        for(i in listCity.indices){
+            jObjTravelDtl.put("ID",0)
+            jObjTravelDtl.put("ID_TR_HEADER",0)
+            jObjTravelDtl.put("TRANSPORT_TYPE_CODE",listCity[i].transType.trim().split("-")[0])
+            jObjTravelDtl.put("TRANSPORT_NAME",null)
+            jObjTravelDtl.put("TRANSPORT_NUMBER",null)
+            jObjTravelDtl.put("TRANSPORT_FROM", null)
+            jObjTravelDtl.put("TRANSPORT_TO",null)
+            jObjTravelDtl.put("TRANSPORT_DATE",null)
+            jObjTravelDtl.put("TRANSPORT_TIME",null)
+            jObjTravelDtl.put("DESTINATION_FROM",listCity[i].depart.trim())
+            jObjTravelDtl.put("DESTINATION_TO",listCity[i].arrival.trim())
+            jObjTravelDtl.put("START_DATE",stDepartDate.get().toString())
+            jObjTravelDtl.put("END_DATE",stReturnDate.get().toString())
+            jObjTravelDtl.put("DURATION",DateTimeUtils.getDifferentDate(stDepartDate.get().toString().trim(), stReturnDate.get().toString().trim())+1)
+            jObjTravelDtl.put("ACCOMODATION_NAME",listCity[i].hotelName)
+            jObjTravelDtl.put("ACCOMODATION_LOCATION",stTravelInto.get().toString())
+            jObjTravelDtl.put("CHECK_IN",listCity[i].dateCheckIn)
+            jObjTravelDtl.put("CHECK_OUT",listCity[i].dateCheckOut)
+            jObjTravelDtl.put("REMARK","")
+            jObjTravelDtl.put("CREATED_BY",preference.getUn())
+            jObjTravelDtl.put("CREATED_DT",DateTimeUtils.getCurrentDate())
+            jObjTravelDtl.put("MODIFIED_BY",null)
+            jObjTravelDtl.put("MODIFIED_DT",null)
+            jObjTravelDtl.put("ISDELETED","False")
+
+            jArrayTravelDtls.put(jObjTravelDtl)
+        }
+        reqTravelParam.put("TravelRequestDetail",jArrayTravelDtls)
+        return reqTravelParam
+    }
+
+    fun getConflictedFriend(selectedNik :String){
+        isProgressReqTravel.set(true)
+        val listConflictFriend = mutableListOf<ConflictedFriendModel>()
+        var conflictedFriendModel : ConflictedFriendModel
+        Log.d("###",""+selectedNik)
+        apiRepo.searchDataTeam(ConstantObject.extra_fromIntentSearchConflict,
+            selectedNik.trim(),
+            stDepartDate.get().toString().trim(),
+            stReturnDate.get().toString().trim(),
+            context, object : ApiRepo.ApiCallback<JSONObject>{
+                override fun onDataLoaded(data: JSONObject?) {
+                    data?.let {
+                        val responseConflict = it.getString(ConstantObject.vResponseData)
+                        val jArrayConflict = JSONArray(responseConflict)
+                        for(i in 0 until jArrayConflict.length()){
+                            val jObjConflict = jArrayConflict.getJSONObject(i)
+                            conflictedFriendModel = ConflictedFriendModel(
+                                jObjConflict.getString("CUSTOMER_NAME"),
+                                jObjConflict.getString("SUBJECT"),
+                                jObjConflict.getString("CHARGE_CD"),
+                                jObjConflict.getString("DATE_FROM"),
+                                jObjConflict.getString("DATE_TO")
+                            )
+                            listConflictFriend.add(conflictedFriendModel)
+                        }
+
+                        when(listConflictFriend.size){
+                            0 ->{
+                                requestTravelInterface.onMessage(context.getString(R.string.no_data_found), ConstantObject.vToastInfo)
+                                isProgressReqTravel.set(false)
+                            }
+                            else ->{
+                                isProgressReqTravel.set(false)
+                                requestTravelInterface.onShowConflict(listConflictFriend)
+                            }
+                        }
+                    }
+                }
+
+                override fun onDataError(error: String?) {
+                    isProgressReqTravel.set(false)
+                    requestTravelInterface.onMessage(error.toString(), ConstantObject.vToastError)
+                }
+            })
+    }
+
+    fun onCopyListTeam(listAllTeam : List<FriendModel>){
+        copyListTeam.clear()
+        copyListTeam.addAll(listAllTeam)
     }
 }

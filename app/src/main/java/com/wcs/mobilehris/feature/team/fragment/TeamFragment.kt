@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.FragmentTeamBinding
 import com.wcs.mobilehris.feature.profile.ProfileActivity
 import com.wcs.mobilehris.util.ConstantObject
@@ -30,7 +31,8 @@ class TeamFragment : Fragment(),
         fragmentTeamBinding.viewModel =
             TeamViewModel(
                 requireContext(),
-                this
+                this,
+                ApiRepo()
             )
         return  fragmentTeamBinding.root
     }
@@ -45,10 +47,6 @@ class TeamFragment : Fragment(),
         )
         teamAdapter.initSelectedCallBack(this)
         fragmentTeamBinding.rcTeam.adapter = teamAdapter
-        fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.vLoadWithProgressBar)
-        fragmentTeamBinding.swTeam.setOnRefreshListener {
-            fragmentTeamBinding.viewModel?.initDataTeam(ConstantObject.vLoadWithoutProgressBar)
-        }
         searchTeam()
     }
 
@@ -61,45 +59,20 @@ class TeamFragment : Fragment(),
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                filterTeamName(newText.toString().trim())
+                newText?.let {
+                    fragmentTeamBinding.viewModel?.initDataTeam(it)
+                }
                 return true
             }
-
         })
     }
 
-    private fun filterTeamName(textFilter : String){
-        val arrListFilteredTeam: ArrayList<TeamModel> = ArrayList()
-        val arrListTeamList : ArrayList<TeamModel> = arrTeamList
+    override fun onLoadTeam(teamList: List<TeamModel>) {
+        arrTeamList.addAll(teamList)
+        hideUI(ConstantObject.vProgresBarUI)
+        teamAdapter.notifyDataSetChanged()
         hideUI(ConstantObject.vGlobalUI)
         showUI(ConstantObject.vRecylerViewUI)
-        when{
-            arrListTeamList.isNotEmpty() -> {
-                for(itemTeam in arrListTeamList) {
-                    if (itemTeam.name.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
-                        || itemTeam.email.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))
-                        || itemTeam.phone.toLowerCase(Locale.getDefault()).contains(textFilter.toLowerCase(Locale.getDefault()))){
-                        arrListFilteredTeam.add(itemTeam)
-                    }
-                }
-                teamAdapter.filterListTeam(arrListFilteredTeam)
-            }
-        }
-
-    }
-
-    override fun onLoadTeam(teamList: List<TeamModel>, typeLoading: Int) {
-        arrTeamList.clear()
-        arrTeamList.addAll(teamList)
-        when(typeLoading){
-            ConstantObject.vLoadWithProgressBar -> hideUI(ConstantObject.vProgresBarUI)
-            else -> {
-                teamAdapter.notifyDataSetChanged()
-                hideUI(ConstantObject.vGlobalUI)
-                showUI(ConstantObject.vRecylerViewUI)
-                onHideSwipeRefresh()
-            }
-        }
     }
 
     override fun onErrorMessage(message: String, messageType: Int) {
@@ -115,7 +88,7 @@ class TeamFragment : Fragment(),
         }
     }
 
-    override fun onHideSwipeRefresh() { fragmentTeamBinding.swTeam.isRefreshing = false }
+    override fun onClearTeamList() { arrTeamList.clear() }
 
     override fun hideUI(typeUI: Int) {
         when(typeUI){

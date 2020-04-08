@@ -2,6 +2,7 @@ package com.wcs.mobilehris.feature.leave.list
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +46,7 @@ class CustomLeaveListAdapter(private val context : Context,
         }
         holder.cvCustomLeave.setOnClickListener {
             val intent = Intent(context, LeaveTransactionActivity::class.java)
+            Log.d("###",""+model.leaveStatus)
             when(customIntentLeaveFrom){
                 ConstantObject.extra_fromIntentRequest -> {
                     when(model.leaveStatus){

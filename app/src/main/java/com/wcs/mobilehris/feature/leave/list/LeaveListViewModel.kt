@@ -87,6 +87,10 @@ class LeaveListViewModel (private val context: Context,
             }
 
             override fun onDataError(error: String?) {
+                when(intentLeaveFrom){
+                    ConstantObject.extra_fromIntentRequest -> isVisibleFabLeave.set(true)
+                    else -> isVisibleFabLeave.set(false)
+                }
                 leaveListInterface.showUI(ConstantObject.vGlobalUI)
                 leaveListInterface.hideUI(ConstantObject.vRecylerViewUI)
                 when(typeOfLoading){

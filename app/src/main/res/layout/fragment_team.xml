@@ -53,20 +53,13 @@
                 </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:layout_below="@+id/cv_team"
-            android:id="@+id/sw_team"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
             <androidx.recyclerview.widget.RecyclerView
+                android:layout_below="@+id/cv_team"
                 android:id="@+id/rc_team"
                 android:visibility="gone"
                 android:layoutAnimation="@anim/layout_animation_up_to_down"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <TextView
             android:id="@+id/tv_team_empty"

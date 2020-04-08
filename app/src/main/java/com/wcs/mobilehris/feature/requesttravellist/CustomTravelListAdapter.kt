@@ -2,6 +2,7 @@ package com.wcs.mobilehris.feature.requesttravellist
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +31,7 @@ class CustomTravelListAdapter  (private val context : Context,
         val finalTravelTime = model.departDate.trim() + " - " + model.returnDate.trim()
         val isAccepted = model.statusTravel
         holder.imgCustom.visibility = View.GONE
-        holder.imgVIconIsConflick.visibility = View.VISIBLE
+        holder.imgVIconStatus.visibility = View.VISIBLE
         holder.tvTravelDescription.visibility = View.VISIBLE
         holder.tvTravelBusinessType.visibility = View.VISIBLE
         mainContent = when(customIntentTravelFrom){
@@ -44,26 +45,42 @@ class CustomTravelListAdapter  (private val context : Context,
         holder.cvCustomTravel.setOnClickListener {
             when(customIntentTravelFrom){
                 ConstantObject.extra_fromIntentRequest ->{
-                    val intent = Intent(context, DtlRequestTravelActivity::class.java)
-                    intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentDtlTravel)
-                    intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.travelId)
-                    intent.putExtra(DtlRequestTravelActivity.extraTravelRequestor, "")
-                    context.startActivity(intent)
+                    when(isAccepted){
+                        "W" -> {
+                            val intent = Intent(context, DtlRequestTravelActivity::class.java)
+                            intent.putExtra(ConstantObject.extra_intent, ConstantObject.vEditTask)
+                            intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.travelId)
+                            intent.putExtra(DtlRequestTravelActivity.extraTravelHeaderId, model.travelHeaderId)
+                            intent.putExtra(DtlRequestTravelActivity.extraTravelRequestor, "")
+                            intent.putExtra(DtlRequestTravelActivity.extraTravelDocNumber, "")
+                            context.startActivity(intent)
+                        }
+                        else -> {
+                            val intent = Intent(context, DtlRequestTravelActivity::class.java)
+                            intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentDtlTravel)
+                            intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.travelId)
+                            intent.putExtra(DtlRequestTravelActivity.extraTravelHeaderId, model.travelHeaderId)
+                            intent.putExtra(DtlRequestTravelActivity.extraTravelRequestor, "")
+                            intent.putExtra(DtlRequestTravelActivity.extraTravelDocNumber, "")
+                            context.startActivity(intent)
+                        }
+                    }
                 }
                 else -> {
                     val intent = Intent(context, DtlRequestTravelActivity::class.java)
                     intent.putExtra(ConstantObject.extra_intent, ConstantObject.extra_fromIntentApproval)
                     intent.putExtra(DtlRequestTravelActivity.extraTravelId, model.travelId)
                     intent.putExtra(DtlRequestTravelActivity.extraTravelRequestor, model.requestor)
+                    intent.putExtra(DtlRequestTravelActivity.extraTravelDocNumber, model.docNo)
                     context.startActivity(intent)
                 }
             }
         }
         when(isAccepted){
-            "True" -> holder.imgVIconIsConflick.setImageResource(R.mipmap.ic_checklist_48)
-            "Waiting" -> holder.imgVIconIsConflick.setImageResource(R.mipmap.ic_waiting)
-            "False" -> holder.imgVIconIsConflick.setImageResource(R.mipmap.ic_block_32)
-            else -> holder.imgVIconIsConflick.visibility = View.GONE
+            "A" -> holder.imgVIconStatus.setImageResource(R.mipmap.ic_checklist_48)
+            "W" -> holder.imgVIconStatus.setImageResource(R.mipmap.ic_waiting)
+            "R" -> holder.imgVIconStatus.setImageResource(R.mipmap.ic_block_32)
+            else -> holder.imgVIconStatus.visibility = View.GONE
         }
     }
 
@@ -74,7 +91,7 @@ class CustomTravelListAdapter  (private val context : Context,
         var tvTravelTime : TextView = view.findViewById(R.id.tv_custom_content)
         var tvTravelDescription : TextView = view.findViewById(R.id.tv_custom_content_2)
         var tvTravelBusinessType : TextView = view.findViewById(R.id.tv_custom_content_3)
-        var imgVIconIsConflick : ImageView = view.findViewById(R.id.imgV_custom_1)
+        var imgVIconStatus : ImageView = view.findViewById(R.id.imgV_custom_2)
     }
 
 }

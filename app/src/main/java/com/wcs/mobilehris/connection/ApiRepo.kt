@@ -7,18 +7,18 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.OkHttpResponseAndJSONObjectRequestListener
 import com.wcs.mobilehris.BuildConfig
+import com.wcs.mobilehris.feature.dtlreqtravel.DtlRequestTravelActivity
 import com.wcs.mobilehris.util.ConstantObject
 import okhttp3.Response
 import org.json.JSONObject
 
 //class untuk ambil data ke server
 class ApiRepo {
-
-    fun getLogin(userName : String, passUn : String, context : Context, callback: ApiCallback<JSONObject>){
+    fun getLogin(jObjLogin : JSONObject,context : Context, callback: ApiCallback<JSONObject>){
         AndroidNetworking.initialize(context)
-        Log.d("###","url Login "+BuildConfig.HRIS_URL+"authenticates/"+userName.trim()+"/"+passUn.trim())
-
-        AndroidNetworking.get(BuildConfig.HRIS_URL+"authenticates/"+userName.trim()+"/"+passUn.trim())
+        Log.d("###","url Login "+BuildConfig.HRIS_URL+"mobileauthenticates")
+        AndroidNetworking.post(BuildConfig.HRIS_URL+"mobileauthenticates")
+            .addJSONObjectBody(jObjLogin)
             .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
             .setPriority(Priority.MEDIUM)
             .build()
@@ -34,7 +34,7 @@ class ApiRepo {
                         anError?.errorCode != 0 -> {
                             Log.d("###","Login " +anError?.errorBody.toString())
                             val errObj = JSONObject(anError?.errorBody.toString())
-                            callback.onDataError(errObj.getString("Message"))
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
                         }
                         else -> {
                             Log.d("###_2","Login " +anError.message.toString())
@@ -65,11 +65,12 @@ class ApiRepo {
                 override fun onError(anError: ANError?) {
                     when{
                         anError?.errorCode != 0 -> {
-                            Log.d("###","date Master " +anError?.message)
-                            callback.onDataError(anError?.errorBody.toString())
+                            Log.d("###","Login " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
                         }
                         else -> {
-                            Log.d("###_2","date Master "+anError.message.toString())
+                            Log.d("###_2","Login " +anError.message.toString())
                             callback.onDataError(anError.message.toString())
                         }
                     }
@@ -97,11 +98,12 @@ class ApiRepo {
                 override fun onError(anError: ANError?) {
                     when{
                         anError?.errorCode != 0 -> {
-                            Log.d("###","masterData " +anError?.message)
-                            callback.onDataError(anError?.errorBody.toString())
+                            Log.d("###","data master " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
                         }
                         else -> {
-                            Log.d("###_2","masterData "+anError.message.toString())
+                            Log.d("###_2","data master " +anError.message.toString())
                             callback.onDataError(anError.message.toString())
                         }
                     }
@@ -131,11 +133,12 @@ class ApiRepo {
                 override fun onError(anError: ANError?) {
                     when{
                         anError?.errorCode != 0 -> {
-                            Log.d("###","activity " +anError?.message)
-                            callback.onDataError(anError?.errorBody.toString())
+                            Log.d("###","activity " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
                         }
                         else -> {
-                            Log.d("###","activity "+anError.message.toString())
+                            Log.d("###_2","activity " +anError.message.toString())
                             callback.onDataError(anError.message.toString())
                         }
                     }
@@ -159,8 +162,17 @@ class ApiRepo {
                 }
 
                 override fun onError(anError: ANError?) {
-                    Log.d("###","header activity "+anError?.message.toString())
-                    callback.onDataError(anError?.message.toString())
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","header activity " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","header activity " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
                 }
             })
     }
@@ -181,8 +193,17 @@ class ApiRepo {
                 }
 
                 override fun onError(anError: ANError?) {
-                    Log.d("###","dtl activity "+anError?.message.toString())
-                    callback.onDataError(anError?.message.toString())
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","detail activity " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","detail activity " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
                 }
             })
     }
@@ -206,8 +227,17 @@ class ApiRepo {
                 }
 
                 override fun onError(anError: ANError?) {
-                    Log.d("###","travel list data "+anError?.message.toString())
-                    callback.onDataError(anError?.message.toString())
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","travel list data " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","travel list data" +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
                 }
             })
     }
@@ -252,18 +282,39 @@ class ApiRepo {
                 }
 
                 override fun onError(anError: ANError?) {
-                    Log.d("###","err leave "+anError?.message.toString())
-                    callback.onDataError(anError?.message.toString())
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","leave list " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","leave list " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
                 }
             })
     }
 
-    fun searchDataTeam(teamName : String, selectedDateFrom : String, selectedDateInto : String, context: Context, callback: ApiCallback<JSONObject>){
+    fun searchDataTeam(fromMenu : String, teamName : String, selectedDateFrom : String, selectedDateInto : String, context: Context, callback: ApiCallback<JSONObject>){
         AndroidNetworking.initialize(context)
-        val teamUrl = BuildConfig.HRIS_URL+"getteamemployeebyname/"+
-                selectedDateFrom.trim()+"/"+
-                selectedDateInto.trim()+"/08:30/17:30/"+
-                teamName.trim()
+
+        val teamUrl = when(fromMenu){
+            ConstantObject.extra_fromIntentTeam ->{
+                     BuildConfig.HRIS_URL+"getteamemployeeallbyemployename/"+
+                        selectedDateFrom.trim()+"/"+
+                        selectedDateInto.trim()+"/08:30/17:30/"+
+                        teamName.trim()
+            }
+            else ->{
+                BuildConfig.HRIS_URL+"getconflictedplan/"+
+                        teamName.trim()+"/"+
+                        selectedDateFrom.trim()+"/"+
+                        selectedDateInto.trim()+"/08:30/17:30"
+            }
+        }
+
         Log.d("###", "url searchDataTeam $teamUrl")
         AndroidNetworking.get(teamUrl.trim())
             .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
@@ -275,8 +326,277 @@ class ApiRepo {
                 }
 
                 override fun onError(anError: ANError?) {
-                    Log.d("###","err team search "+anError?.message.toString())
-                    callback.onDataError(anError?.message.toString())
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","search team " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","search team " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun getHeaderTravel(urlTravel : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url header travel $urlTravel")
+        AndroidNetworking.get(urlTravel)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","travel header " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","travel header " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun getDtlLeave(leaveId : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url dtl leave " +BuildConfig.HRIS_URL+"getleaverequestbyid/"+leaveId.trim())
+        AndroidNetworking.get(BuildConfig.HRIS_URL+"getleaverequestbyid/"+leaveId.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","detail leave " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","detail leave " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun insertLeave(unUser : String, context: Context, jObjLeave : JSONObject, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url insert leave " +BuildConfig.HRIS_URL+"createleaverequest/"+unUser.trim())
+        AndroidNetworking.post(BuildConfig.HRIS_URL+"createleaverequest/"+unUser.trim())
+            .addJSONObjectBody(jObjLeave)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","insert leave " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","insert leave " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun getDataDashboard(unUser : String, context: Context,  callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url dashboard " +BuildConfig.HRIS_URL+"getmobiledashboard/"+unUser.trim())
+        AndroidNetworking.get(BuildConfig.HRIS_URL+"getmobiledashboard/"+unUser.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","dashboard " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","dashboard " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun getLogout(unUser : String, context: Context,  callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url Logout " +BuildConfig.HRIS_URL+"logout/"+unUser.trim())
+        AndroidNetworking.get(BuildConfig.HRIS_URL+"logout/"+unUser.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","Logout " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","Logout " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun postReqTravelReq(jObjReqTravel : JSONObject, context: Context,  callback: ApiCallback<JSONObject>){
+        Log.d("###", "json travel $jObjReqTravel")
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url insert leave " +BuildConfig.HRIS_URL+"inserttravelrequest")
+        AndroidNetworking.post(BuildConfig.HRIS_URL+"inserttravelrequest")
+            .addJSONObjectBody(jObjReqTravel)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","insert travel " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","insert travel " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun validateToken(jObjToken : JSONObject, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url validate token " +BuildConfig.HRIS_URL+"checktoken")
+        AndroidNetworking.post(BuildConfig.HRIS_URL+"checktoken")
+            .addJSONObjectBody(jObjToken)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","validate Token " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","validate Token " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun postApproveTravel(docNumber : String, reasonReject : String, travelReqFrom : String,context: Context,  callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        val urlApprovalTravel = when(travelReqFrom){
+            DtlRequestTravelActivity.approvalAccept -> BuildConfig.HRIS_URL+"travelrequestapprove/"+docNumber.trim()
+            else -> BuildConfig.HRIS_URL+"travelrequestreject/"+docNumber.trim()+"/"+reasonReject.trim()
+        }
+        Log.d("###", "url accept travel $urlApprovalTravel")
+        AndroidNetworking.post(urlApprovalTravel)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","accept travel " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","accept travel " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    fun deleteTravelReq(idTravel : String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+        Log.d("###", "url delete travel" +BuildConfig.HRIS_URL+"travelrequestdelete/"+idTravel.trim())
+        AndroidNetworking.post(BuildConfig.HRIS_URL+"travelrequestdelete/"+idTravel)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    when{
+                        anError?.errorCode != 0 -> {
+                            Log.d("###","delete travel " +anError?.errorBody.toString())
+                            val errObj = JSONObject(anError?.errorBody.toString())
+                            callback.onDataError(errObj.getString(ConstantObject.vResponseMessage))
+                        }
+                        else -> {
+                            Log.d("###_2","delete travel " +anError.message.toString())
+                            callback.onDataError(anError.message.toString())
+                        }
+                    }
                 }
             })
     }

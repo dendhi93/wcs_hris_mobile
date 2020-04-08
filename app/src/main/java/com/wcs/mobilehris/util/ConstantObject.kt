@@ -30,7 +30,7 @@ object ConstantObject {
     const val vRejected = "Rejected"
     const val vWaitingTask = "WAITING"
     const val vNoApproval = "No Approval"
-    const val vLeaveApprove = "APPROVE"
+    const val vLeaveApprove = "APPROVED"
     const val vLeaveReject = "REJECT"
 
     //type progressBar
@@ -64,6 +64,8 @@ object ConstantObject {
     const val extra_fromIntentCreateTravel = "CreateTravel"
     const val extra_fromIntentRequest = "Request"
     const val extra_fromIntentApproval = "Approval"
+    const val extra_fromIntentSearchTeam = "Team"
+    const val extra_fromIntentSearchConflict = "Conflict"
 
     //response API
     const val vResponseData = "Data"
@@ -71,6 +73,7 @@ object ConstantObject {
     const val vResponseMessage = "Message"
     const val vResponseStatus = "Status"
     const val vValueResponseSuccess = "Success"
+
 
     //param tabel
     const val keyChargeCode = "mChargecode"
@@ -82,4 +85,5 @@ object ConstantObject {
     const val dateTimeFormat_1 = 1
     const val dateTimeFormat_2 = 2
     const val dateTimeFormat_3 = 3
+    const val dateTimeFormat_4 = 4
 }

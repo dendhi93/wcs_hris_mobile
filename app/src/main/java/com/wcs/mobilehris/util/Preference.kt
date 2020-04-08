@@ -11,7 +11,8 @@ class Preference(private var _context : Context){
     private val keYProfileName = "name"
     private val keyPhoneProfile = "phone"
     private val keyEmailProfile = "email"
-    private val keyToken = "token"
+    private val keyApiToken = "token"
+    private val keyFirebaseToken = "firebase_token"
 
     init {
         editor = sharedPreferences.edit()
@@ -22,7 +23,12 @@ class Preference(private var _context : Context){
         editor.putString(keYProfileName, name)
         editor.putString(keyPhoneProfile, phone)
         editor.putString(keyEmailProfile, email)
-        editor.putString(keyToken, unToken)
+        editor.putString(keyApiToken, unToken)
+        editor.apply()
+    }
+
+    fun saveFirebaseToken(fToken : String){
+        editor.putString(keyFirebaseToken, fToken)
         editor.apply()
     }
 
@@ -30,7 +36,8 @@ class Preference(private var _context : Context){
     fun getName(): String { return sharedPreferences.getString(keYProfileName, "").toString() }
     fun getPhone(): String { return sharedPreferences.getString(keyPhoneProfile, "").toString() }
     fun getEmail(): String { return sharedPreferences.getString(keyEmailProfile, "").toString() }
-    fun getToken(): String { return sharedPreferences.getString(keyToken, "").toString() }
+    fun getApiToken(): String { return sharedPreferences.getString(keyApiToken, "").toString() }
+    fun getFirebaseToken(): String { return sharedPreferences.getString(keyFirebaseToken, "").toString() }
 
     fun clearPreference() {
         editor.clear()

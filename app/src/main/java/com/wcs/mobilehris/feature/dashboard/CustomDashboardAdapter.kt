@@ -32,29 +32,25 @@ class CustomDashboardAdapter(private val _context : Context, private val dashLis
                     intent = Intent(_context, MenuActivity::class.java)
                     intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_TEAM)
                 }
-                _context.getString(R.string.approval_menu) -> {
+                "LEAVE REQUEST APPROVAL" -> {
                     intent = Intent(_context, MenuActivity::class.java)
                     intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_APPROVAL)
                 }
-                _context.getString(R.string.request_menu) -> {
+                "TRAVEL REQUEST APPROVAL" -> {
+                    intent = Intent(_context, MenuActivity::class.java)
+                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_APPROVAL)
+                }
+                "LEAVE REQUEST" -> {
                     intent = Intent(_context, MenuActivity::class.java)
                     intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_REQUEST)
                 }
-                _context.getString(R.string.activity_menu) -> {
+                "TRAVEL REQUEST" -> {
+                    intent = Intent(_context, MenuActivity::class.java)
+                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_REQUEST)
+                }
+                "ACTIVITY" -> {
                     intent = Intent(_context, MenuActivity::class.java)
                     intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_ACTIVITY)
-                }
-                _context.getString(R.string.absent_menu) -> {
-                    intent = Intent(_context, MenuActivity::class.java)
-                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_ABSENT)
-                }
-                _context.getString(R.string.confirmation_menu) -> {
-                    intent = Intent(_context, MenuActivity::class.java)
-                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_CONFIRMATION)
-                }
-                _context.getString(R.string.notification_menu) -> {
-                    intent = Intent(_context, MenuActivity::class.java)
-                    intent.putExtra(MenuActivity.EXTRA_CALLER_ACTIVITY_FLAG, MenuActivity.EXTRA_FLAG_NOTIFICATION)
                 }
                 else -> MessageUtils.toastMessage(_context,"Tidak Ada Menu tersebut pada list", ConstantObject.vToastError)
             }

@@ -124,13 +124,13 @@ class DtlTaskViewModel(private val context : Context,
                                 "Y" -> {
                                     friendModel = FriendModel(jObjFriend.getString("NIK"),
                                         jObjFriend.getString("EMPLOYEE_NAME"),
-                                        "Free", false)
+                                         false)
                                     listFriend.add(friendModel)
                                 }
                                 else -> {
                                     friendModel = FriendModel(jObjFriend.getString("NIK"),
                                         jObjFriend.getString("EMPLOYEE_NAME"),
-                                        "Conflict", true)
+                                         true)
                                     listFriend.add(friendModel)
                                 }
                             }

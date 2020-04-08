@@ -210,4 +210,6 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskInterface, SelectedFri
         arrTeamTaskList.remove(friendModel)
         createTaskAdapter.notifyDataSetChanged()
     }
+
+    override fun selectedDisplayFriend(friendModel: FriendModel) {}
 }

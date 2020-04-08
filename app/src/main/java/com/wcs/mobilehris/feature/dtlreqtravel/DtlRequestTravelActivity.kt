@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.databinding.ActivityDtlRequestTravelBinding
 import com.wcs.mobilehris.feature.dtltask.CustomDetailTaskAdapter
 import com.wcs.mobilehris.feature.dtltask.FriendModel
@@ -23,7 +24,9 @@ import com.wcs.mobilehris.util.MessageUtils
 import com.wcs.mobilehris.utilinterface.CustomBottomSheetInterface
 
 
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
+    "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
+)
 class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
     CustomBottomSheetInterface {
     private lateinit var dtlTravelActivityBinding : ActivityDtlRequestTravelBinding
@@ -39,7 +42,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dtlTravelActivityBinding = DataBindingUtil.setContentView(this,R.layout.activity_dtl_request_travel)
-        dtlTravelActivityBinding.viewModel = DtlTravelViewModel(this, this)
+        dtlTravelActivityBinding.viewModel = DtlTravelViewModel(this, this, ApiRepo())
         dtlTravelActivityBinding.rcDtlReqTravel.layoutManager = LinearLayoutManager(this)
         dtlTravelActivityBinding.rcDtlReqTravel.setHasFixedSize(true)
         dtlTravelActivityBinding.rcDtlReqTravelCities.layoutManager = LinearLayoutManager(this)
@@ -51,12 +54,16 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
         intentFromForm = intent.getStringExtra(ConstantObject.extra_intent)
         intentTravelId = intent.getStringExtra(extraTravelId)
         intentTravelRequestor = intent.getStringExtra(extraTravelRequestor)
+        dtlTravelActivityBinding.viewModel?.stIntentTravelHeaderId?.set(intent.getStringExtra(extraTravelHeaderId))
+        dtlTravelActivityBinding.viewModel?.stDocNumber?.set(intent.getStringExtra(extraTravelDocNumber).trim().trim())
+
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
             when(intentFromForm){
                 ConstantObject.extra_fromIntentDtlTravel -> it.title = ConstantObject.extra_fromIntentDtlTravel
                 ConstantObject.extra_fromIntentConfirmTravel -> it.title = ConstantObject.extra_fromIntentConfirmTravel
+                ConstantObject.vEditTask -> it.title = ConstantObject.vEditTask
                 else -> {
                     it.title = getString(R.string.approval_travel_activity)
                     it.subtitle = intentTravelRequestor.trim()
@@ -106,6 +113,14 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
                 onKeyAlertActive = ALERT_DTL_APPROVE_TRAVEL_REJECT
                 MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
             }
+            ALERT_DTL_APPROVE_TRAVEL_DELETE -> {
+                onKeyAlertActive = ALERT_DTL_APPROVE_TRAVEL_DELETE
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
+            ALERT_DTL_APPROVE_TRAVEL_EDIT -> {
+                onKeyAlertActive = ALERT_DTL_APPROVE_TRAVEL_EDIT
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
         }
     }
 
@@ -121,13 +136,11 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
         finish()
     }
 
-    override fun selectedTravelWayRadio(booleanTravelWay: Boolean?) {
+    override fun selectedTravelWayRadio(stTravelWay: String) {
         dtlTravelActivityBinding.rgDtlReqTravelTypeWay.clearCheck()
-        booleanTravelWay?.let {
-            when{
-                it -> dtlTravelActivityBinding.rbDtlReqTravelTb.isChecked = true
-                else -> dtlTravelActivityBinding.rbDtlReqTravelNonTb.isChecked = true
-            }
+        when(stTravelWay){
+            "TB" -> dtlTravelActivityBinding.rbDtlReqTravelTb.isChecked = true
+            else -> dtlTravelActivityBinding.rbDtlReqTravelNonTb.isChecked = true
         }
     }
 
@@ -149,7 +162,7 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
     }
 
     override fun onRejectTransaction(notesReject: String) {
-        dtlTravelActivityBinding.viewModel?.stDtlTravelNotes?.set(notesReject.trim())
+        dtlTravelActivityBinding.viewModel?.stDtlTravelNotesReject?.set(notesReject.trim())
         when(intentFromForm){
             ConstantObject.extra_fromIntentConfirmTravel -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT)
             ConstantObject.extra_fromIntentApproval -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_APPROVE_TRAVEL_REJECT)
@@ -160,13 +173,11 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
     override fun onPositiveClick(o: Any) {
         when(onKeyAlertActive){
             ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_REQ_TRAVEL_CONFIRMATION_ACCEPT)
-            ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT -> {
-                CustomBottomSheetDialogFragment(this).show(supportFragmentManager, "Dialog")
-            }
+            ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT -> CustomBottomSheetDialogFragment(this).show(supportFragmentManager, "Dialog")
             ALERT_DTL_APPROVE_TRAVEL_ACCEPT -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_APPROVE_TRAVEL_ACCEPT)
-            else -> {
-                CustomBottomSheetDialogFragment(this).show(supportFragmentManager, "Dialog")
-            }
+            ALERT_DTL_APPROVE_TRAVEL_DELETE -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_APPROVE_TRAVEL_DELETE)
+            ALERT_DTL_APPROVE_TRAVEL_EDIT -> dtlTravelActivityBinding.viewModel?.onProcessConfirm(ALERT_DTL_APPROVE_TRAVEL_EDIT)
+            else -> CustomBottomSheetDialogFragment(this).show(supportFragmentManager, "Dialog")
         }
     }
 
@@ -188,8 +199,14 @@ class DtlRequestTravelActivity : AppCompatActivity(), DtlTravelInterface,
         const val ALERT_DTL_REQ_TRAVEL_CONFIRMATION_REJECT = 5
         const val ALERT_DTL_APPROVE_TRAVEL_ACCEPT = 7
         const val ALERT_DTL_APPROVE_TRAVEL_REJECT = 9
+        const val ALERT_DTL_APPROVE_TRAVEL_DELETE = 11
+        const val ALERT_DTL_APPROVE_TRAVEL_EDIT = 13
         const val extraTravelId = "travel_id"
+        const val extraTravelHeaderId = "travel_header_id"
         const val extraTravelRequestor = "requestor"
+        const val extraTravelDocNumber = "doc_number"
+        const val approvalAccept = "approval_accept"
+        const val approvalReject = "approval_reject"
     }
 
     class CustomBottomSheetDialogFragment(private val callback: CustomBottomSheetInterface) : BottomSheetDialogFragment() {

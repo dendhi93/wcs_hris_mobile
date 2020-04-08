@@ -2,6 +2,7 @@ package com.wcs.mobilehris.feature.dtlnotification
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import com.wcs.mobilehris.R
@@ -28,9 +29,11 @@ class DetailNotificationActivity : AppCompatActivity() {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
         }
-        intentCreateDate = intent?.getStringExtra(INTENT_DATE).toString()
-        intentTitle = intent?.getStringExtra(INTENT_TITLE).toString()
-        intentContent = intent?.getStringExtra(INTENT_CONTENT).toString()
+        try{
+            intentCreateDate = intent?.getStringExtra(INTENT_DATE).toString()
+            intentTitle = intent?.getStringExtra(INTENT_TITLE).toString()
+            intentContent = intent?.getStringExtra(INTENT_CONTENT).toString()
+        }catch (e : Exception){ Log.d("###", "coba dl")}
 
         when{
             intentCreateDate != "" || intentTitle != "" || intentContent != "" -> dtlNotificationBinding.viewModel?.loadDtl(

@@ -64,19 +64,5 @@ class ApprovalViewModel(private val _context : Context,
                 isVisibleApprovalUI.set(false)
             }
         })
-//        var _approvalModel = ApprovalModel("Travel", R.mipmap.ic_train, 2, "Last request by Andika about an hour ago")
-//        listApprovalMenu.add(_approvalModel)
-//        _approvalModel = ApprovalModel("Leave", R.mipmap.ic_edit_user, 0, "You got none")
-//        listApprovalMenu.add(_approvalModel)
-//        _approvalModel = ApprovalModel("Benefit", R.mipmap.ic_benefit, 1, "Last request by Andika less than an hour ago")
-//        listApprovalMenu.add(_approvalModel)
-//        _approvalModel = ApprovalModel("Travel Claim", R.mipmap.ic_edit_pen, 10, "Last request by Jean less than two hour ago")
-//        listApprovalMenu.add(_approvalModel)
-//        _approvalModel = ApprovalModel("Activity", R.mipmap.ic_checklist_64, 20, "Last request by Jean less than two hour ago")
-//        listApprovalMenu.add(_approvalModel)
-//
-//        Handler().postDelayed({
-//            _approvalInterface.loadApprovalMenu(listApprovalMenu)
-//        }, 2000)
     }
 }

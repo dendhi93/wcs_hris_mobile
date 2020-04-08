@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.feature.createtask.SelectedFriendInterface
@@ -27,6 +28,7 @@ class CustomDetailTaskAdapter(private val context : Context, private val dtlTask
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.imgVIconIsConflick.visibility = View.VISIBLE
+        holder.tvCustomContent.visibility =View.GONE
         holder.imgVIconUser.setBackgroundResource(R.mipmap.ic_user_black)
         holder.imgv_2.setBackgroundResource(R.mipmap.ic_trash_24)
         when(listFrom){
@@ -40,15 +42,16 @@ class CustomDetailTaskAdapter(private val context : Context, private val dtlTask
             else -> holder.imgVIconIsConflick.setImageResource(R.mipmap.ic_checklist_48)
         }
         holder.tvCustom.text = model.teamName.trim()
-        holder.tvCustomContent.text = model.descriptionTeam.trim()
         holder.imgv_2.setOnClickListener {
-            when(listFrom){
-                ConstantObject.vCreateEdit -> selectedFriendInterface.selectedItemFriend(model)
-            }
+            if(listFrom == ConstantObject.vCreateEdit){selectedFriendInterface.selectedItemFriend(model)}
+        }
+        holder.cvCustom.setOnClickListener {
+            if(isUserConflict){ selectedFriendInterface.selectedDisplayFriend(model) }
         }
     }
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
+        var cvCustom : CardView = view.findViewById(R.id.cv_custom)
         var imgVIconUser : ImageView = view.findViewById(R.id.imgV_custom)
         var imgVIconIsConflick : ImageView = view.findViewById(R.id.imgV_custom_1)
         var tvCustom : TextView = view.findViewById(R.id.tv_custom)

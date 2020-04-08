@@ -10,6 +10,6 @@ interface DtlTravelInterface : DialogInterface {
     fun onAlertDtlReqTravel(alertMessage : String, alertTitle : String, intTypeActionAlert : Int)
     fun onLoadCitiesTravel(listCities : List<ReqTravelModel>)
     fun onSuccessDtlTravel(message : String)
-    fun selectedTravelWayRadio(booleanTravelWay: Boolean?)
+    fun selectedTravelWayRadio(stTravelWay: String)
     fun onChangeButtonBackground(booleanCityView : Boolean?)
 }

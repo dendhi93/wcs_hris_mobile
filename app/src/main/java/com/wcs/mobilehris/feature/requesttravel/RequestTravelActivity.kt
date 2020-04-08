@@ -1,6 +1,7 @@
 package com.wcs.mobilehris.feature.requesttravel
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.database.entity.ChargeCodeEntity
 import com.wcs.mobilehris.database.entity.ReasonTravelEntity
 import com.wcs.mobilehris.database.entity.TransportTypeEntity
@@ -50,7 +52,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityRequestTravelBinding = DataBindingUtil.setContentView(this, R.layout.activity_request_travel)
-        activityRequestTravelBinding.viewModel = RequestTravelViewModel(this, this)
+        activityRequestTravelBinding.viewModel = RequestTravelViewModel(this, this, ApiRepo())
         activityRequestTravelBinding.rcReqTravelTeam.layoutManager = LinearLayoutManager(this)
         activityRequestTravelBinding.rcReqTravelCities.layoutManager = LinearLayoutManager(this)
     }
@@ -84,8 +86,8 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
         activityRequestTravelBinding.rgReqTravelIsTB.setOnCheckedChangeListener{ group, checkedId ->
             val radio: RadioButton? = findViewById(checkedId)
             when("${radio?.text}"){
-                getString(R.string.travel_business) -> activityRequestTravelBinding.viewModel?.isNonTB?.set(true)
-                else -> activityRequestTravelBinding.viewModel?.isNonTB?.set(false)
+                getString(R.string.travel_business) -> activityRequestTravelBinding.viewModel?.isNonTB?.set(false)
+                else -> activityRequestTravelBinding.viewModel?.isNonTB?.set(true)
             }
         }
     }
@@ -127,23 +129,10 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     }
 
     override fun onLoadTeam(listTeam: List<FriendModel>) {
-        when(arrTeamTravel.size){
-            0 -> {
-                arrTeamTravel.addAll(listTeam)
-                travelAdapter.notifyDataSetChanged()
-            }
-            else -> {
-                val selectedFriendModel = listTeam[0]
-                //ngecek data yang sama di array
-                val isMatch = arrTeamTravel.contains(selectedFriendModel)
-                if(isMatch){
-                    onMessage("Data already on the list", ConstantObject.vToastInfo)
-                }else{
-                    arrTeamTravel.addAll(listTeam)
-                    travelAdapter.notifyDataSetChanged()
-                }
-            }
-        }
+        arrTeamTravel.clear()
+        arrTeamTravel.addAll(listTeam)
+        travelAdapter.notifyDataSetChanged()
+        activityRequestTravelBinding.viewModel?.onCopyListTeam(arrTeamTravel)
     }
 
     override fun onMessage(message: String, messageType: Int) {
@@ -367,9 +356,26 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
         citiesAdapter.notifyDataSetChanged()
     }
 
+    override fun onShowConflict(listConflicted: List<ConflictedFriendModel>) {
+        val adConflict = AlertDialog.Builder(this)
+        adConflict.setTitle("INFO")
+        adConflict.setIcon(R.mipmap.ic_logo_wcs)
+        val arrayAdapter = ArrayAdapter<String>(this@RequestTravelActivity, android.R.layout.select_dialog_item)
+        for(i in listConflicted.indices){
+            arrayAdapter.add(listConflicted[i].custName+"\n"+
+                    listConflicted[i].dateFrom+" - "+
+                    listConflicted[i].dateInto)
+        }
+        adConflict.setAdapter(arrayAdapter, object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface?, which: Int) {}
+        })
+        adConflict.show()
+    }
+
+
     override fun onPositiveClick(o: Any) {
         when(keyDialogActive){
-            ALERT_REQ_TRAVEL_CONFIRMATION -> activityRequestTravelBinding.viewModel?.actionSubmitTravel()
+            ALERT_REQ_TRAVEL_CONFIRMATION -> activityRequestTravelBinding.viewModel?.actionSubmitConfirmTravel()
             ALERT_REQ_TRAVEL_SET_TRAVEL -> activityRequestTravelBinding.viewModel?.actionSetTravel()
             ALERT_REQ_TRAVEL_EDIT_TRAVEL -> activityRequestTravelBinding.viewModel?.actionEditTravel(arrCities)
             ALERT_REQ_TRAVEL_GENERATE_TRAVEL -> activityRequestTravelBinding.viewModel?.actionGenerateTravel(arrCities)
@@ -407,6 +413,11 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
             }
             else -> onMessage("Request Travel was set, transaction not allowed", ConstantObject.vToastInfo)
         }
+    }
+
+    override fun selectedDisplayFriend(friendModel: FriendModel) {
+        //todo search conflicted
+        activityRequestTravelBinding.viewModel?.getConflictedFriend(friendModel.friendId.trim())
     }
 
     override fun selectedItemTravel(travelModel: ReqTravelModel) {

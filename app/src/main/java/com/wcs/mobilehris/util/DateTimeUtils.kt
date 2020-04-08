@@ -1,15 +1,13 @@
-@file:Suppress("DEPRECATION", "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+@file:Suppress("DEPRECATION", "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
+    "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
+)
 
 package com.wcs.mobilehris.util
 
-import android.net.ParseException
-import android.util.Log
 import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.math.log
-
 
 object DateTimeUtils {
 
@@ -35,15 +33,40 @@ object DateTimeUtils {
         }catch (e : Exception){""}
     }
 
+    fun getChangeDateFormat(dateTime: String, dateFormatType : Int): String? {
+    fun getChangeTimeFormat(selectedTime : String) : String{
+        return try{
+            val timeSource = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
+            val finalTimeSource = timeSource.parse(selectedTime.trim())
+            val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+            timeFormat.format(finalTimeSource)
+        }catch (e : Exception){""}
+    }
+
+    fun getChangeEnglishTimeFormat(selectedTime : String) : String{
+        return try{
+            val timeSource = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+            val finalTimeSource = timeSource.parse(selectedTime.trim())
+            val timeFormat = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
+            timeFormat.format(finalTimeSource)
+        }catch (e : Exception){""}
+    }
+
     fun getChangeDateFormat(dateTime: String?, dateFormatType : Int): String? {
         return try {
             val source = when(dateFormatType){
                 ConstantObject.dateTimeFormat_1 -> SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault())
+                ConstantObject.dateTimeFormat_2  -> SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                ConstantObject.dateTimeFormat_3  -> SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
                 else -> SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             }
 
-            val dateSource = source.parse(dateTime.toString())
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val dateSource = source.parse(dateTime.trim())
+            val dateFormat = when(dateFormatType){
+                ConstantObject.dateTimeFormat_4 ->SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault())
+                else -> SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            }
+
             if (dateSource != null) {
                 dateFormat.format(dateSource)
             } else { "" }
