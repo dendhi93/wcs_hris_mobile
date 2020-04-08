@@ -1,5 +1,6 @@
 package com.wcs.mobilehris.feature.leave.transaction
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,7 @@ import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ApiRepo
 import com.wcs.mobilehris.database.entity.ReasonLeaveEntity
 import com.wcs.mobilehris.databinding.ActivityLeaveTransactionBinding
+import com.wcs.mobilehris.feature.leave.list.LeaveListActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import com.wcs.mobilehris.utilinterface.CustomBottomSheetInterface
@@ -54,7 +56,9 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface,
                     it.title = getString(R.string.approval_leave_activity)
                     it.subtitle = intentRequestor.trim()
                 }
-                else -> it.title = ConstantObject.vEditTask
+                else -> {
+                    it.title = ConstantObject.vEditTask
+                }
             }
         }
         leaveActivityBinding.viewModel?.onInitLeaveData(intentLeaveType, intentLeaveId.trim())
@@ -90,6 +94,10 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface,
             }
             ALERT_LEAVE_TRANS_EDIT -> {
                 onKeyAlertActive = ALERT_LEAVE_TRANS_EDIT
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
+            ALERT_LEAVE_TRANS_DELETE -> {
+                onKeyAlertActive = ALERT_LEAVE_TRANS_DELETE
                 MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
             }
             ALERT_LEAVE_TRANS_APPROVE -> {
@@ -181,45 +189,11 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface,
         }
     }
 
-    override fun enableUI() {
-        leaveActivityBinding.btnDeleteRequestLeave.isEnabled = false
-        leaveActivityBinding.txtLeaveTransDoc.isEnabled = true
-        leaveActivityBinding.txtLeaveTransQtyTime.isEnabled = true
-        leaveActivityBinding.txtLeaveTransDateFrom.isEnabled = true
-        leaveActivityBinding.txtLeaveTransDateInto.isEnabled = true
-        leaveActivityBinding.txtLeaveTransTimeFrom.isEnabled = true
-        leaveActivityBinding.txtLeaveTransTimeInto.isEnabled = true
-        leaveActivityBinding.txtCreateTaskDescription.isEnabled = true
-        leaveActivityBinding.btnEditRequestLeave.text = getString(R.string.finish_task)
-        leaveActivityBinding.btnEditRequestLeave.setOnClickListener {
-            leaveActivityBinding.viewModel!!.processEditLeave()
-        }
-    }
-
-    override fun disableUI() {
-        leaveActivityBinding.btnDeleteRequestLeave.isEnabled = true
-        leaveActivityBinding.txtLeaveTransDoc.isEnabled = false
-        leaveActivityBinding.txtLeaveTransQtyTime.isEnabled = false
-        leaveActivityBinding.txtLeaveTransDateFrom.isEnabled = false
-        leaveActivityBinding.txtLeaveTransDateInto.isEnabled = false
-        leaveActivityBinding.txtLeaveTransTimeFrom.isEnabled = false
-        leaveActivityBinding.txtLeaveTransTimeInto.isEnabled = false
-        leaveActivityBinding.txtCreateTaskDescription.isEnabled = false
-        leaveActivityBinding.btnEditRequestLeave.text = getString(R.string.edit_task)
-    }
-
-    override fun onSuccessEditTask() {
-        TODO("Not yet implemented")
-    }
-
-    override fun onSuccessDeleteTask() {
-        TODO("Not yet implemented")
-    }
-
     override fun onPositiveClick(o: Any) {
         when(onKeyAlertActive){
-            ALERT_LEAVE_TRANS_EDIT -> leaveActivityBinding.viewModel?.onSubmitLeave(ALERT_LEAVE_TRANS_EDIT)
             ALERT_LEAVE_TRANS_REQUEST -> leaveActivityBinding.viewModel?.onSubmitLeave(ALERT_LEAVE_TRANS_REQUEST)
+            ALERT_LEAVE_TRANS_EDIT -> leaveActivityBinding.viewModel?.onSubmitLeave(ALERT_LEAVE_TRANS_EDIT)
+            ALERT_LEAVE_TRANS_DELETE -> leaveActivityBinding.viewModel?.onSubmitLeave(ALERT_LEAVE_TRANS_DELETE)
             ALERT_LEAVE_TRANS_APPROVE -> leaveActivityBinding.viewModel?.onSubmitLeave(ALERT_LEAVE_TRANS_APPROVE)
             ALERT_LEAVE_TRANS_REJECT -> CustomBottomSheetDialogFragment(this).show(supportFragmentManager, "Dialog")
         }
@@ -231,8 +205,9 @@ class LeaveTransactionActivity : AppCompatActivity(), LeaveTransInterface,
         const val ALERT_LEAVE_TRANS_NO_CONNECTION = 1
         const val ALERT_LEAVE_TRANS_REQUEST = 2
         const val ALERT_LEAVE_TRANS_EDIT = 3
-        const val ALERT_LEAVE_TRANS_APPROVE = 4
-        const val ALERT_LEAVE_TRANS_REJECT = 5
+        const val ALERT_LEAVE_TRANS_DELETE = 4
+        const val ALERT_LEAVE_TRANS_APPROVE = 5
+        const val ALERT_LEAVE_TRANS_REJECT = 6
         const val columnDateFrom = 11
         const val columnDateInto = 22
         const val columnTimeFrom = 33

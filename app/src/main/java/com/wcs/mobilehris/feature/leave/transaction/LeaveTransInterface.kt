@@ -9,8 +9,4 @@ interface LeaveTransInterface : ActionInterface {
     fun onSuccessLeaveTrans(message : String)
     fun onLoadReasonLeave(listLeave : List<ReasonLeaveEntity>)
     fun onSelectedSpinner(selectedReason : String)
-    fun enableUI()
-    fun disableUI()
-    fun onSuccessEditTask()
-    fun onSuccessDeleteTask()
 }

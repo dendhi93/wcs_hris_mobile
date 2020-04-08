@@ -213,7 +213,7 @@ class DtlTaskViewModel(private val context : Context,
     }
 
     fun deleteTask() {
-        apiRepo.deleteRejectActivity(stHeaderID, preference.getUn(), context, object : ApiRepo.ApiCallback<JSONObject> {
+        apiRepo.deleteActivity(stHeaderID, preference.getUn(), context, object : ApiRepo.ApiCallback<JSONObject> {
             override fun onDataLoaded(data: JSONObject?) {
                 data?.let {
                     val objectResponse = it.getString(ConstantObject.vResponseData)

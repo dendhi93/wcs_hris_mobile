@@ -48,7 +48,7 @@ class CustomLeaveListAdapter(private val context : Context,
             when(customIntentLeaveFrom){
                 ConstantObject.extra_fromIntentRequest -> {
                     when(model.leaveStatus){
-                        "Waiting" -> intent.putExtra(ConstantObject.extra_intent, ConstantObject.vEditTask)
+                        "WAITING" -> intent.putExtra(ConstantObject.extra_intent, ConstantObject.vEditTask)
                         else -> intent.putExtra(ConstantObject.extra_intent, LeaveTransactionActivity.valueLeaveDtlType)
                     }
                     intent.putExtra(LeaveTransactionActivity.extraLeaveRequestor, "")

@@ -108,6 +108,7 @@
 
         <activity android:name=".feature.approvallistofactivities.AppActionListActivity"
             android:label="@string/approval_action_list_activity" />
+        <activity android:name=".feature.approvallistofactivities.detail.DetailApprovalActivity" />
 
     </application>
 </manifest>

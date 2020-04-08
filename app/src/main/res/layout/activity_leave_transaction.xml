@@ -302,47 +302,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_above="@+id/ln_leaveTrans_bottom"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_delete_request_leave"
-                        style="@style/Widget.MaterialComponents.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_height="56dp"
-                        android:layout_marginHorizontal="@dimen/space_06"
-                        android:onClick="@{() -> viewModel.deleteRequestLeave()}"
-                        android:stateListAnimator="@null"
-                        android:text="@string/delete_task"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/button_text_size"
-                        android:textStyle="bold"
-                        app:backgroundTint="@color/colorRed"
-                        app:cornerRadius="@dimen/button_radius" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_edit_request_leave"
-                        android:layout_weight="1"
-                        style="@style/Widget.MaterialComponents.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="56dp"
-                        android:layout_marginHorizontal="@dimen/space_06"
-                        android:onClick="@{() -> viewModel.editRequestLeave()}"
-                        android:stateListAnimator="@null"
-                        android:text="@string/edit_task"
-                        android:textColor="@color/button_text_color"
-                        android:textSize="@dimen/button_text_size"
-                        android:textStyle="bold"
-                        app:backgroundTint="@color/button_color"
-                        app:cornerRadius="@dimen/button_radius" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:id="@+id/ln_leaveTrans_bottom"
                     android:layout_margin="@dimen/spacing_tiny_2"
                     android:layout_alignParentBottom="true"
@@ -356,6 +315,19 @@
 
                         <Button
                             style="?android:attr/buttonBarButtonStyle"
+                            android:onClick="@{() -> viewModel.clickLeaveReject()}"
+                            android:enabled="@{!viewModel.isProgressLeaveTrans}"
+                            android:visibility="@{viewModel.isHiddenRejectButton ? View.GONE : View.VISIBLE}"
+                            android:id="@+id/btn_dtlReqTravel_reject"
+                            android:layout_width="0dp"
+                            android:layout_marginHorizontal="@dimen/spacing_tiny_3"
+                            android:layout_height="@dimen/button_height"
+                            android:layout_weight="1"
+                            android:text="@={viewModel.stLeaveRejectButton}"
+                            android:background="@drawable/bg_transparent_button"/>
+
+                        <Button
+                            style="?android:attr/buttonBarButtonStyle"
                             android:id="@+id/btn_leaveTrans_save"
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -364,21 +336,9 @@
                             android:onClick="@{() -> viewModel.clickLeave()}"
                             android:text="@={viewModel.stLeaveSubmitButton}"
                             android:enabled="@{!viewModel.isProgressLeaveTrans}"
-                            android:layout_marginBottom="@dimen/spacing_tiny"
+                            android:layout_marginHorizontal="@dimen/spacing_tiny_3"
                             android:background="@drawable/bg_blue_button"/>
 
-                        <Button
-                            style="?android:attr/buttonBarButtonStyle"
-                            android:onClick="@{() -> viewModel.clickLeaveReject()}"
-                            android:enabled="@{!viewModel.isProgressLeaveTrans}"
-                            android:visibility="@{viewModel.isHiddenRejectButton ? View.GONE : View.VISIBLE}"
-                            android:id="@+id/btn_dtlReqTravel_reject"
-                            android:layout_width="0dp"
-                            android:layout_marginStart="@dimen/spacing_tiny_3"
-                            android:layout_height="@dimen/button_height"
-                            android:layout_weight="1"
-                            android:text="@string/reject_save"
-                            android:background="@drawable/bg_transparent_button"/>
                     </LinearLayout>
 
                     <androidx.coordinatorlayout.widget.CoordinatorLayout

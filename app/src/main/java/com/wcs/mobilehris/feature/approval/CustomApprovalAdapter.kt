@@ -3,6 +3,7 @@ package com.wcs.mobilehris.feature.approval
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.feature.approvallistofactivities.AppActionListActivity
 import com.wcs.mobilehris.feature.leave.list.LeaveListActivity
 import com.wcs.mobilehris.feature.requesttravellist.RequestTravelListActivity
 import com.wcs.mobilehris.util.ConstantObject
@@ -47,6 +49,10 @@ class CustomApprovalAdapter (private val _context : Context,
                 ConstantObject.leaveMenu -> {
                     val intent = Intent(_context, LeaveListActivity::class.java)
                     intent.putExtra(ConstantObject.extra_intent, customIntentFrom)
+                    _context.startActivity(intent)
+                }
+                ConstantObject.activityMenu -> {
+                    val intent = Intent(_context, AppActionListActivity::class.java)
                     _context.startActivity(intent)
                 }
                 else -> MessageUtils.toastMessage(_context, "coba", ConstantObject.vToastInfo)

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "540284307719",
+    "firebase_url": "https://mobile-wcs-hris.firebaseio.com",
+    "project_id": "mobile-wcs-hris",
+    "storage_bucket": "mobile-wcs-hris.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540284307719:android:278987ee050b54770e9da2",
+        "android_client_info": {
+          "package_name": "com.wcs.mobilehris"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540284307719-pg0dvbfmk020n63vtlpemijtkllldlms.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_jmjPoqQt1pGI_wo5-lfiRCn0TWfPpv8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "540284307719-pg0dvbfmk020n63vtlpemijtkllldlms.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

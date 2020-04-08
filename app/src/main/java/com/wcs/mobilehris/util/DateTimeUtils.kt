@@ -2,10 +2,13 @@
 
 package com.wcs.mobilehris.util
 
+import android.net.ParseException
+import android.util.Log
 import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.math.log
 
 
 object DateTimeUtils {
@@ -41,6 +44,18 @@ object DateTimeUtils {
 
             val dateSource = source.parse(dateTime.toString())
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            if (dateSource != null) {
+                dateFormat.format(dateSource)
+            } else { "" }
+        } catch (e: Exception) { "" }
+    }
+
+    fun changeDateFormat(dateTime: String?): String? {
+        return try {
+            val source = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            val dateSource = source.parse(dateTime.toString())
+
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             if (dateSource != null) {
                 dateFormat.format(dateSource)
             } else { "" }

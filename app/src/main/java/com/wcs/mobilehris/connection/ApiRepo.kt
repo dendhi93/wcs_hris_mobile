@@ -323,7 +323,7 @@ class ApiRepo {
             })
     }
 
-    fun deleteRejectActivity(activityHeaderId : String, nik : String, context : Context, callback: ApiCallback<JSONObject>) {
+    fun deleteActivity(activityHeaderId : String, nik : String, context : Context, callback: ApiCallback<JSONObject>) {
         AndroidNetworking.initialize(context)
 
         AndroidNetworking.post(BuildConfig.HRIS_URL + "deleteactivitybyheaderid/" + activityHeaderId.trim() + "/" + nik)
@@ -338,6 +338,70 @@ class ApiRepo {
                 override fun onError(anError: ANError?) {
                     Log.d("###","err delete or reject activity "+anError?.errorDetail.toString())
                     Log.d("###","err delete or reject activity "+anError?.errorBody.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+
+            })
+    }
+
+    fun getActivityApprovalAll(userId: String, context: Context, callback: ApiCallback<JSONObject>){
+        AndroidNetworking.initialize(context)
+
+        val url = BuildConfig.HRIS_URL+"getactivityapprovalall/"+userId.trim()
+        AndroidNetworking.get(url)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let {
+                        when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) }
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err leave "+anError?.message.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+            })
+    }
+
+    fun approveActivityDetail(docNo : String, context : Context, callback: ApiCallback<JSONObject>) {
+        AndroidNetworking.initialize(context)
+
+        AndroidNetworking.post(BuildConfig.HRIS_URL + "acitvityapprove/" + docNo.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err activityApprove Detail "+anError?.errorDetail.toString())
+                    Log.d("###","err activityApprove Body "+anError?.errorBody.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+
+            })
+    }
+
+    fun rejectActivityDetail(docNo : String, reason : String, context: Context, callback: ApiCallback<JSONObject>) {
+        AndroidNetworking.initialize(context)
+
+        AndroidNetworking.post(BuildConfig.HRIS_URL + "activityreject/" + docNo.trim() + "/" + reason)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err activityReject Detail "+anError?.errorDetail.toString())
+                    Log.d("###","err activityReject Body "+anError?.errorBody.toString())
                     callback.onDataError(anError?.message.toString())
                 }
 
@@ -416,6 +480,48 @@ class ApiRepo {
                 override fun onError(anError: ANError?) {
                     Log.d("###","err delete Leave "+anError?.errorDetail.toString())
                     Log.d("###","err delete or Leave "+anError?.errorBody.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+
+            })
+    }
+
+    fun approveLeaveRequest(docNo : String, context : Context, callback: ApiCallback<JSONObject>) {
+        AndroidNetworking.initialize(context)
+
+        AndroidNetworking.post(BuildConfig.HRIS_URL + "leaverequestapprove/" + docNo.trim())
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err delete Leave "+anError?.errorDetail.toString())
+                    Log.d("###","err delete or Leave "+anError?.errorBody.toString())
+                    callback.onDataError(anError?.message.toString())
+                }
+
+            })
+    }
+
+    fun rejectLeaveRequest(docNo : String, reason : String, context: Context, callback: ApiCallback<JSONObject>) {
+        AndroidNetworking.initialize(context)
+
+        AndroidNetworking.post(BuildConfig.HRIS_URL + "leaverequestreject/" + docNo.trim() + "/" + reason)
+            .setOkHttpClient(ConnectionObject.okHttpClient(false, ConnectionObject.timeout))
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsOkHttpResponseAndJSONObject(object : OkHttpResponseAndJSONObjectRequestListener {
+                override fun onResponse(okHttpResponse: Response?, response: JSONObject?) {
+                    okHttpResponse?.let { when{ConnectionObject.checkSuccessHttpCode(it.code().toString()) -> callback.onDataLoaded(response) } }
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("###","err rejectLeaveRequest Detail "+anError?.errorDetail.toString())
+                    Log.d("###","err rejectLeaveRequest Body "+anError?.errorBody.toString())
                     callback.onDataError(anError?.message.toString())
                 }
 

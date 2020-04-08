@@ -30,6 +30,7 @@ class LeaveTransViewModel (private val context: Context,
     val isHiddenButton = ObservableField(false)
     val isHiddenRejectButton = ObservableField(false)
     val isHiddenDocText = ObservableField(false)
+    val stLeaveRejectButton = ObservableField("")
     val stLeaveSubmitButton = ObservableField("")
     val stLeaveDateFrom = ObservableField("")
     val stLeaveDateInto = ObservableField("")
@@ -79,15 +80,18 @@ class LeaveTransViewModel (private val context: Context,
             }
             ConstantObject.extra_fromIntentApproval -> {
                 isDtlLeaveMenu.set(true)
-                stLeaveSubmitButton.set(context.getString(R.string.save))
+                stLeaveSubmitButton.set(context.getString(R.string.approve))
                 isHiddenButton.set(false)
                 isHiddenRejectButton.set(false)
+                stLeaveRejectButton.set(context.getString(R.string.reject_save))
             }
             else -> {
                 isDtlLeaveMenu.set(false)
                 stLeaveSubmitButton.set(ConstantObject.vEditTask)
                 isHiddenButton.set(false)
-                isHiddenRejectButton.set(true)
+                isHiddenRejectButton.set(false)
+                stLeaveRejectButton.set(context.getString(R.string.delete))
+
             }
         }
     }
@@ -106,8 +110,8 @@ class LeaveTransViewModel (private val context: Context,
                         strIdLeave = jObjLeave.getString("ID")
                         strDocNo = jObjLeave.getString("DOCUMENT_NO")
 
-                        stLeaveDateFrom.set(DateTimeUtils.getChangeDateFormat(jObjLeave.getString("DATE_FROM"), ConstantObject.dateTimeFormat_3))
-                        stLeaveDateInto.set(DateTimeUtils.getChangeDateFormat(jObjLeave.getString("DATE_TO"), ConstantObject.dateTimeFormat_3))
+                        stLeaveDateFrom.set(jObjLeave.getString("DATE_FROM"))
+                        stLeaveDateInto.set(jObjLeave.getString("DATE_TO"))
                         stLeaveCountTime.set(jObjLeave.getString("LEAVE_HOUR"))
                         stLeaveTimeFrom.set(DateTimeUtils.getChangeTimeFormat(jObjLeave.getString("TIME_FROM")))
                         stLeaveTimeInto.set(DateTimeUtils.getChangeTimeFormat(jObjLeave.getString("TIME_TO")))
@@ -263,8 +267,10 @@ class LeaveTransViewModel (private val context: Context,
             !ConnectionObject.isNetworkAvailable(context) -> leaveTransInterface.onAlertLeaveTrans(context.getString(
                 R.string.alert_no_connection),
                 ConstantObject.vAlertDialogNoConnection, LeaveTransactionActivity.ALERT_LEAVE_TRANS_NO_CONNECTION)
+
             intentFromLeave == ConstantObject.vEditTask -> leaveTransInterface.onAlertLeaveTrans(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT)
+
             intentFromLeave == ConstantObject.extra_fromIntentRequest ->{
                 when {
                     !validateLeave() -> leaveTransInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
@@ -282,6 +288,10 @@ class LeaveTransViewModel (private val context: Context,
         isProgressLeaveTrans.set(true)
         when(clickAlertFrom) {
             LeaveTransactionActivity.ALERT_LEAVE_TRANS_REQUEST -> postReqLeave()
+            LeaveTransactionActivity.ALERT_LEAVE_TRANS_EDIT -> editLeaveRequest()
+            LeaveTransactionActivity.ALERT_LEAVE_TRANS_DELETE -> deleteLeaveRequest()
+            LeaveTransactionActivity.ALERT_LEAVE_TRANS_APPROVE -> approveLeaveRequest(strDocNo)
+            LeaveTransactionActivity.ALERT_LEAVE_TRANS_REJECT -> rejectLeaveRequest(strDocNo, stLeaveRejectNotes.get().toString())
             else ->{
                 Handler().postDelayed({
                     when(clickAlertFrom) {
@@ -295,7 +305,7 @@ class LeaveTransViewModel (private val context: Context,
     }
 
     private fun postReqLeave(){
-        apiRepo.insertLeave(preference.getUn(), context, jObjReqLeave(0, ""), object : ApiRepo.ApiCallback<JSONObject>{
+        apiRepo.insertLeave(preference.getUn(), context, jObjReqLeave(0, "", 1), object : ApiRepo.ApiCallback<JSONObject>{
             override fun onDataLoaded(data: JSONObject?) {
                 data?.let {
                     Log.d("###", "json $data")
@@ -311,7 +321,17 @@ class LeaveTransViewModel (private val context: Context,
         })
     }
 
-    private fun jObjReqLeave(strIdLeave : Int, strDocNumber : String):JSONObject{
+    private fun jObjReqLeave(strIdLeave : Int, strDocNumber : String, func : Int):JSONObject{
+        var dateFrom : String = ""
+        var dateTo : String = ""
+        if(func == 1) {
+            dateFrom = stLeaveDateFrom.get().toString()
+            dateTo = stLeaveDateInto.get().toString()
+        } else if (func == 2) {
+            dateFrom = DateTimeUtils.changeDateFormat(stLeaveDateFrom.get().toString()).toString()
+            dateTo = DateTimeUtils.changeDateFormat(stLeaveDateInto.get().toString()).toString()
+        }
+
         val paramLeaveReq = JSONObject()
         paramLeaveReq.put("ID", strIdLeave)
         paramLeaveReq.put("CHARGE_CD", reasonCode)
@@ -321,8 +341,8 @@ class LeaveTransViewModel (private val context: Context,
         paramLeaveReq.put("LEAVE_TYPE_NAME", reasonLeaveDescription)
         paramLeaveReq.put("LEAVE_REASON", stLeaveNotes.get().toString().trim())
         paramLeaveReq.put("NIK", preference.getUn().trim())
-        paramLeaveReq.put("DATE_FROM", stLeaveDateFrom.get().toString().trim())
-        paramLeaveReq.put("DATE_TO", stLeaveDateInto.get().toString().trim())
+        paramLeaveReq.put("DATE_FROM", dateFrom)
+        paramLeaveReq.put("DATE_TO", dateTo)
         paramLeaveReq.put("TIME_FROM", DateTimeUtils.getChangeEnglishTimeFormat(stLeaveTimeFrom.get().toString()))
         paramLeaveReq.put("TIME_TO", DateTimeUtils.getChangeEnglishTimeFormat(stLeaveTimeInto.get().toString()))
         paramLeaveReq.put("LEAVE_DAY", countDay())
@@ -343,12 +363,8 @@ class LeaveTransViewModel (private val context: Context,
         return paramLeaveReq
     }
 
-    fun editRequestLeave() {
-        leaveTransInterface.enableUI()
-    }
-
-    fun processEditLeave() {
-        apiRepo.insertLeave(preference.getUn(), context, jObjReqLeave(strIdLeave.toInt(), strDocNo), object : ApiRepo.ApiCallback<JSONObject>{
+    fun editLeaveRequest() {
+        apiRepo.insertLeave(preference.getUn(), context, jObjReqLeave(strIdLeave.toInt(), strDocNo, 2), object : ApiRepo.ApiCallback<JSONObject>{
             override fun onDataLoaded(data: JSONObject?) {
                 data?.let {
                     val objectResponse = it.getString(ConstantObject.vResponseData)
@@ -356,7 +372,6 @@ class LeaveTransViewModel (private val context: Context,
 
                     val responseSuccess = it.getString(ConstantObject.vResponseStatus)
                     if(responseSuccess.contains(ConstantObject.vValueResponseSuccess)) {
-                        leaveTransInterface.disableUI()
                         leaveTransInterface.onSuccessLeaveTrans(context.getString(R.string.alert_transaction_success))
                     }
                 }
@@ -369,15 +384,49 @@ class LeaveTransViewModel (private val context: Context,
         })
     }
 
-    fun deleteRequestLeave() {
-
-
+    fun deleteLeaveRequest() {
         apiRepo.deleteLeave(preference.getUn(), strIdLeave, context, object : ApiRepo.ApiCallback<JSONObject> {
             override fun onDataLoaded(data: JSONObject?) {
                 data?.let {
                     val objectResponse = it.getString(ConstantObject.vResponseData)
                     Log.d("###", "deleteActivity -> response = $data")
-                    leaveTransInterface.onSuccessDeleteTask()
+                    leaveTransInterface.onSuccessLeaveTrans(context.getString(R.string.alert_transaction_success))
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                isProgressLeaveTrans.set(false)
+                leaveTransInterface.onMessage("failed delete " +error.toString(), ConstantObject.vToastError)
+            }
+
+        })
+    }
+
+    fun approveLeaveRequest(docNo : String) {
+        apiRepo.approveLeaveRequest(docNo, context, object : ApiRepo.ApiCallback<JSONObject> {
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val objectResponse = it.getString(ConstantObject.vResponseData)
+                    Log.d("###", "approveLeaveRequest -> response = $data")
+                    leaveTransInterface.onSuccessLeaveTrans(context.getString(R.string.alert_transaction_success))
+                }
+            }
+
+            override fun onDataError(error: String?) {
+                isProgressLeaveTrans.set(false)
+                leaveTransInterface.onMessage("failed approve leave request " +error.toString(), ConstantObject.vToastError)
+            }
+
+        })
+    }
+
+    fun rejectLeaveRequest(docNo : String, reason : String) {
+        apiRepo.rejectLeaveRequest(docNo, reason, context, object : ApiRepo.ApiCallback<JSONObject> {
+            override fun onDataLoaded(data: JSONObject?) {
+                data?.let {
+                    val objectResponse = it.getString(ConstantObject.vResponseData)
+                    Log.d("###", "rejectLeaveRequest -> response = $data")
+                    leaveTransInterface.onSuccessLeaveTrans(context.getString(R.string.alert_transaction_success))
                 }
             }
 
@@ -405,9 +454,14 @@ class LeaveTransViewModel (private val context: Context,
             !ConnectionObject.isNetworkAvailable(context) -> leaveTransInterface.onAlertLeaveTrans(
                 context.getString(R.string.alert_no_connection), ConstantObject.vAlertDialogNoConnection,
                 LeaveTransactionActivity.ALERT_LEAVE_TRANS_NO_CONNECTION)
-            else -> leaveTransInterface.onAlertLeaveTrans(context.getString(R.string.transaction_alert_confirmation),
+
+            intentFromLeave == ConstantObject.vEditTask -> leaveTransInterface.onAlertLeaveTrans(context.getString(R.string.transaction_alert_confirmation),
+                ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_DELETE)
+
+            intentFromLeave == ConstantObject.extra_fromIntentApproval -> leaveTransInterface.onAlertLeaveTrans(context.getString(R.string.transaction_alert_confirmation),
                 ConstantObject.vAlertDialogConfirmation, LeaveTransactionActivity.ALERT_LEAVE_TRANS_REJECT)
         }
+
     }
 
     private fun validateLeave() : Boolean{
@@ -417,8 +471,7 @@ class LeaveTransViewModel (private val context: Context,
                     stLeaveTimeFrom.get().equals("")||
                     stLeaveTimeInto.get().equals("")||
                     stLeaveCountTime.get().equals("")||
-                    stLeaveNotes.get().equals("")||
-                    reasonCode == "" -> return false
+                    stLeaveNotes.get().equals("") -> return false
         }
         return true
     }

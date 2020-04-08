@@ -141,4 +141,15 @@
     <string name="time_into">Time To</string>
     <string name="time_label">Time</string>
 
+    <!--activity approval-->
+    <string name="nik">NIK</string>
+    <string name="employee_name">Name</string>
+    <string name="available">Availability</string>
+    <string name="created_by">Created By</string>
+
+    <string name="edit">EDIT</string>
+    <string name="delete">DELETE</string>
+    <string name="approve">APPROVE</string>
+    <string name="reject">REJECT</string>
+
 </resources>
