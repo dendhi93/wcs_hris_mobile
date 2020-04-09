@@ -34,25 +34,6 @@ object DateTimeUtils {
     }
 
     fun getChangeDateFormat(dateTime: String, dateFormatType : Int): String? {
-    fun getChangeTimeFormat(selectedTime : String) : String{
-        return try{
-            val timeSource = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
-            val finalTimeSource = timeSource.parse(selectedTime.trim())
-            val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-            timeFormat.format(finalTimeSource)
-        }catch (e : Exception){""}
-    }
-
-    fun getChangeEnglishTimeFormat(selectedTime : String) : String{
-        return try{
-            val timeSource = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-            val finalTimeSource = timeSource.parse(selectedTime.trim())
-            val timeFormat = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
-            timeFormat.format(finalTimeSource)
-        }catch (e : Exception){""}
-    }
-
-    fun getChangeDateFormat(dateTime: String?, dateFormatType : Int): String? {
         return try {
             val source = when(dateFormatType){
                 ConstantObject.dateTimeFormat_1 -> SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault())
@@ -67,18 +48,6 @@ object DateTimeUtils {
                 else -> SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             }
 
-            if (dateSource != null) {
-                dateFormat.format(dateSource)
-            } else { "" }
-        } catch (e: Exception) { "" }
-    }
-
-    fun changeDateFormat(dateTime: String?): String? {
-        return try {
-            val source = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            val dateSource = source.parse(dateTime.toString())
-
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             if (dateSource != null) {
                 dateFormat.format(dateSource)
             } else { "" }
