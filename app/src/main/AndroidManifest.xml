@@ -35,28 +35,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
-        <activity android:name=".feature.leave.transaction.LeaveTransactionActivity"/>
-        <activity android:name=".feature.leave.list.LeaveListActivity" />
-        <activity android:name=".feature.dtlreqtravel.DtlRequestTravelActivity" />
-        <activity
-            android:name=".feature.city.CityActivity"
-            android:label="@string/search_city_activity" />
-        <activity
-            android:name=".feature.requesttravel.RequestTravelActivity"
-            android:label="@string/req_travel_activity" />
-        <activity
-            android:name=".feature.requesttravellist.RequestTravelListActivity" />
-        <activity
-            android:name=".feature.confirmtask.ConfirmTaskActivity"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".feature.team.activity.TeamActivity"
-            android:label="@string/search_team_activity" />
-        <activity
-            android:name=".feature.createtask.CreateTaskActivity"
-            android:label="@string/create_task_activity"
-            android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".feature.dtltask.DetailTaskActivity" />
         <activity android:name=".feature.preparation.permission.PermissionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -74,12 +52,37 @@
         <activity
             android:name=".feature.dtlnotification.DetailNotificationActivity"
             android:label="@string/dtl_notification_activity" />
+        <activity android:name=".feature.benefitclaim.list.listDtl.BenefitDtlListActivity"/>
+        <activity android:name=".feature.benefitclaim.transaction.BenefitClaimTransActivty" />
+        <activity android:name=".feature.benefitclaim.list.listheader.BenefitClaimListActivity" />
+        <activity android:name=".feature.leave.transaction.LeaveTransactionActivity" />
+        <activity android:name=".feature.leave.list.LeaveListActivity" />
+        <activity android:name=".feature.dtlreqtravel.DtlRequestTravelActivity" />
+        <activity
+            android:name=".feature.city.CityActivity"
+            android:label="@string/search_city_activity" />
+        <activity
+            android:name=".feature.requesttravel.RequestTravelActivity"
+            android:label="@string/req_travel_activity" />
+        <activity android:name=".feature.requesttravellist.RequestTravelListActivity" />
+        <activity
+            android:name=".feature.confirmtask.ConfirmTaskActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".feature.team.activity.TeamActivity"
+            android:label="@string/search_team_activity" />
+        <activity
+            android:name=".feature.createtask.CreateTaskActivity"
+            android:label="@string/create_task_activity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".feature.dtltask.DetailTaskActivity" />
 
-        <service android:name=".service.HrisService"
+        <service
+            android:name=".service.HrisService"
             android:permission="TODO"
             tools:ignore="ExportedService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
     </application>

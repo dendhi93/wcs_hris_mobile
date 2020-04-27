@@ -1,7 +1,6 @@
 package com.wcs.mobilehris.feature.approval
 
 import android.content.Context
-import android.os.Handler
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R

@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.feature.benefitclaim.list.listheader.BenefitClaimListActivity
 import com.wcs.mobilehris.feature.leave.list.LeaveListActivity
 import com.wcs.mobilehris.feature.requesttravellist.RequestTravelListActivity
 import com.wcs.mobilehris.util.ConstantObject
@@ -48,6 +49,11 @@ class CustomRequestAdapter(private val _context : Context,
                 }
                 ConstantObject.leaveMenu -> {
                     val intent = Intent(_context, LeaveListActivity::class.java)
+                    intent.putExtra(ConstantObject.extra_intent, customIntentTravelFrom)
+                    _context.startActivity(intent)
+                }
+                ConstantObject.benefitMenu -> {
+                    val intent = Intent(_context, BenefitClaimListActivity::class.java)
                     intent.putExtra(ConstantObject.extra_intent, customIntentTravelFrom)
                     _context.startActivity(intent)
                 }

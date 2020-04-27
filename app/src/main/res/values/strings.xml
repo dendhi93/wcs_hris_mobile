@@ -140,4 +140,17 @@
     <string name="time_label">Time</string>
     <string name="doc_no">Doc No</string>
 
+    <!--benefit content form-->
+    <string name="req_benefit_hist_activity">Request Benefit History</string>
+    <string name="req_benefit_dtl_activity">Add Benefit Transaction</string>
+    <string name="approval_benefit_list_activity">Approval Benefit Report</string>
+    <string name="transDate">Txn Date</string>
+    <string name="transCode">Txn Code</string>
+    <string name="transName">Txn Name</string>
+    <string name="acceptedPerson">Person</string>
+    <string name="amountClaim">Amount CLaim</string>
+    <string name="paidClaim">Paid CLaim</string>
+    <string name="diagnose">Diagnose</string>
+    <string name="benefitDescription">Description</string>
+
 </resources>

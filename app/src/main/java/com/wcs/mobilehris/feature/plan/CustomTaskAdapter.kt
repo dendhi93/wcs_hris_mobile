@@ -125,6 +125,4 @@ class CustomTaskAdapter (private val _context : Context, private val planList : 
         }
         popup.show()
     }
-
-
 }

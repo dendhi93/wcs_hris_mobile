@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_customPlan"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="1dp"
+    android:padding="1dp"
+    android:elevation="2dp"
+    app:cardMaxElevation="0dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/cardview_light_background"
+    tools:ignore="PrivateResource"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_tiny_4"
+        android:layout_marginBottom="@dimen/spacing_tiny_4"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_toStartOf="@+id/imgB_menu_benefit">
+
+                <LinearLayout
+                    android:id="@+id/ln_custom_1"
+                    android:layout_marginTop="@dimen/spacing_small_1"
+                    android:layout_marginBottom="@dimen/spacing_tiny_4"
+                    android:layout_marginEnd="@dimen/spacing_tiny_4"
+                    android:layout_marginStart="@dimen/spacing_small_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:text="@string/transDate" />
+
+                    <TextView
+                        android:id="@+id/tvItem_content1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_tiny_4"
+                    android:layout_marginBottom="@dimen/spacing_tiny_4"
+                    android:layout_marginEnd="@dimen/spacing_tiny_4"
+                    android:layout_marginStart="@dimen/spacing_small_1">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:text="@string/transCode" />
+
+                    <TextView
+                        android:id="@+id/tvItem_content2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_tiny_4"
+                    android:layout_marginBottom="@dimen/spacing_tiny_4"
+                    android:layout_marginEnd="@dimen/spacing_tiny_4"
+                    android:layout_marginStart="@dimen/spacing_small_1">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:text="@string/transName" />
+
+                    <TextView
+                        android:id="@+id/tvItem_content3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageButton
+                android:contentDescription="@string/content_description_image"
+                android:layout_margin="@dimen/spacing_tiny_4"
+                android:background="@color/colorWhite"
+                android:id="@+id/imgB_menu_benefit"
+                android:layout_width="@dimen/spacing_large"
+                android:layout_height="@dimen/spacing_large"
+                android:src="@mipmap/ic_three_dot"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny_4"
+            android:layout_marginBottom="@dimen/spacing_tiny_4"
+            android:layout_marginEnd="@dimen/spacing_tiny_4"
+            android:layout_marginStart="@dimen/spacing_small_1">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:text="@string/acceptedPerson" />
+
+            <TextView
+                android:id="@+id/tvItem_content4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny_4"
+            android:layout_marginBottom="@dimen/spacing_tiny_4"
+            android:layout_marginEnd="@dimen/spacing_tiny_4"
+            android:layout_marginStart="@dimen/spacing_small_1">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:text="@string/amountClaim" />
+
+            <TextView
+                android:id="@+id/tvItem_content5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny_4"
+            android:layout_marginBottom="@dimen/spacing_tiny_4"
+            android:layout_marginEnd="@dimen/spacing_tiny_4"
+            android:layout_marginStart="@dimen/spacing_small_1">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:text="@string/paidClaim" />
+
+            <TextView
+                android:id="@+id/tvItem_content6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny_4"
+            android:layout_marginBottom="@dimen/spacing_tiny_4"
+            android:layout_marginEnd="@dimen/spacing_tiny_4"
+            android:layout_marginStart="@dimen/spacing_small_1">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:text="@string/diagnose" />
+
+            <TextView
+                android:id="@+id/tvItem_content7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny_4"
+            android:layout_marginBottom="@dimen/spacing_small_1"
+            android:layout_marginEnd="@dimen/spacing_tiny_4"
+            android:layout_marginStart="@dimen/spacing_small_1">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:text="@string/benefitDescription" />
+
+            <TextView
+                android:id="@+id/tvItem_content8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

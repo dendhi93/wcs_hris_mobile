@@ -1,0 +1,85 @@
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.wcs.mobilehris.feature.benefitclaim.list.listDtl.BenefitDtlListViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/pb_benefDtlList"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/permission_button_margin_vertical"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:visibility="@{viewModel.isVisibleBenefitDtlProgress ? View.VISIBLE : View.GONE}"
+            android:indeterminate="true" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rc_benefDtlList"
+            android:layoutAnimation="@anim/layout_animation_up_to_down"
+            android:layout_width="match_parent"
+            android:visibility="@{viewModel.isVisibleRecyler ? View.VISIBLE : View.GONE}"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/tv_benefList_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="@{viewModel.isVisibleRecyler ? View.GONE : View.VISIBLE}"
+            android:textStyle="bold"
+            android:textSize="@dimen/alph_size_small_2"
+            android:text="@string/empty_data" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/colorWhite"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/icon_medium"
+            android:layout_marginEnd="@dimen/icon_medium"
+            android:visibility="@{viewModel.isVisibleBottomLinear ? View.GONE : View.VISIBLE}"
+            android:onClick="@{() -> viewModel.onClickFabClickDtl()}"
+            android:id="@+id/fab_benefList"
+            android:src="@mipmap/ic_plus_48"
+            app:elevation="6dp"
+            app:fabSize="normal"
+            tools:ignore="RelativeOverlap" />
+
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:visibility="@{viewModel.isVisibleBottomLinear ? View.VISIBLE : View.GONE}"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="?android:attr/buttonBarButtonStyle"
+                android:text="@string/appr_button"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/bg_blue_button"
+                android:onClick="@{() -> viewModel.onClickApproveBenefit()}"
+                android:layout_margin="@dimen/spacing_tiny"
+                android:layout_height="@dimen/button_height"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="?android:attr/buttonBarButtonStyle"
+                android:text="@string/reject_save"
+                android:background="@drawable/bg_transparent_button"
+                android:onClick="@{() -> viewModel.onClickRejectBenefit()}"
+                android:layout_margin="@dimen/spacing_tiny"
+                android:layout_height="@dimen/button_height"/>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

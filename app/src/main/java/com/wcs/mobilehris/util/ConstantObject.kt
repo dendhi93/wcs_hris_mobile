@@ -28,9 +28,10 @@ object ConstantObject {
     const val vEditTask = "Edit"
     const val vApproved = "Approved"
     const val vRejected = "Rejected"
+    const val vNew = "NEW"
     const val vWaitingTask = "WAITING"
-    const val vNoApproval = "No Approval"
     const val vLeaveApprove = "APPROVED"
+    const val vNoApproval = "No Approval"
     const val vLeaveReject = "REJECT"
 
     //type progressBar

@@ -12,12 +12,12 @@ android {
     defaultConfig {
         multiDexEnabled true
         applicationId "com.wcs.mobilehris"
-        minSdkVersion 24
+        minSdkVersion 22
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "HRIS_URL", "\"http://172.17.23.161:3001/\""
+        buildConfigField "String", "HRIS_URL", "\"http://172.18.85.209:3001/\""
     }
     dataBinding {
         enabled = true
@@ -72,6 +72,7 @@ dependencies {
     //connection lib
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     //database
     implementation "android.arch.persistence.room:runtime:1.1.1"
