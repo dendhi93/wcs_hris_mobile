@@ -1,18 +1,21 @@
 package com.wcs.mobilehris.feature.benefitclaim.list.listDtl
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.connection.ConnectionObject
+import com.wcs.mobilehris.feature.benefitclaim.trans.BenefitTransActivity
 import com.wcs.mobilehris.util.ConstantObject
 
 class BenefitDtlListViewModel(private val context: Context,
                               private val benefitListDtlInterface: BenefitDtlInterface) : ViewModel(){
     val isVisibleBottomLinear = ObservableField(false)
     val isVisibleBenefitDtlProgress = ObservableField(false)
-    val benefitDocNo = ObservableField("")
+    val stBenefitDocNo = ObservableField("")
+    val stBenefitFrom = ObservableField("")
     val isVisibleRecyler = ObservableField(false)
 
     fun validateDataBenefitDtl(transType : String, intentFrom : String){
@@ -75,7 +78,20 @@ class BenefitDtlListViewModel(private val context: Context,
         }
     }
 
-    fun onClickFabClickDtl(){}
+    fun onClickFabClickDtl(){
+        val intent = Intent(context, BenefitTransActivity::class.java)
+        intent.putExtra(BenefitTransActivity.extraBenefitTransDate, "")
+        intent.putExtra(BenefitTransActivity.extraBenefitTransType, "")
+        intent.putExtra(BenefitTransActivity.extraBenefitTransName, "")
+        intent.putExtra(BenefitTransActivity.extraBenefitTransPerson, "")
+        intent.putExtra(BenefitTransActivity.extraBenefitTransDiagnose, "")
+        intent.putExtra(BenefitTransActivity.extraTransAmount, "")
+        intent.putExtra(BenefitTransActivity.extraTransPaidAmount, "")
+        intent.putExtra(BenefitTransActivity.extraTransDescription, "")
+        intent.putExtra(ConstantObject.extra_intent, stBenefitFrom.get().toString().trim())
+        intent.putExtra(BenefitTransActivity.extraTransType, BenefitTransActivity.extraValueTransDtlType)
+        context.startActivity(intent)
+    }
 
     fun onClickApproveBenefit(){}
 

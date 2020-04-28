@@ -1,6 +1,7 @@
 package com.wcs.mobilehris.feature.benefitclaim.list.listDtl
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.feature.benefitclaim.trans.BenefitTransActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
@@ -57,24 +59,37 @@ class CustomBenefitDtlAdapter(private val context : Context,
             ConstantObject.vNew -> popup.inflate(R.menu.menu_benefit_dtl_list)
             else -> popup.inflate(R.menu.menu_benefit_only_detail)
         }
-
+        val intent = Intent(context, BenefitTransActivity::class.java)
         popup.setOnMenuItemClickListener{ item: MenuItem? ->
             when(item?.itemId){
-                R.id.mnu_custom_benefit_list_dtl ->{
-                    MessageUtils.toastMessage(context, "detail", ConstantObject.vToastInfo)
-//                    val intent = Intent(_context, DetailTaskActivity::class.java)
-//                    intent.putExtra(DetailTaskActivity.extraTaskId, model.taskId)
-//                    intent.putExtra(DetailTaskActivity.extraCode, model.contentChargeCode)
-//                    _context.startActivity(intent)
+                R.id.mnu_custom_benefit_list_dtl, R.id.mnu_custom_benefit_list_only_dtl ->{
+                    intent.putExtra(BenefitTransActivity.extraBenefitTransDate, model.benefitDtlDate.trim())
+                    intent.putExtra(BenefitTransActivity.extraBenefitTransType, model.benefitType.trim())
+                    intent.putExtra(BenefitTransActivity.extraBenefitTransName, model.benefitName.trim())
+                    intent.putExtra(BenefitTransActivity.extraBenefitTransPerson, model.personalBenefit.trim())
+                    intent.putExtra(BenefitTransActivity.extraBenefitTransDiagnose, model.diagnoseDisease.trim())
+                    intent.putExtra(BenefitTransActivity.extraTransAmount, model.amountClaim.trim())
+                    intent.putExtra(BenefitTransActivity.extraTransPaidAmount, model.paidClaim.trim())
+                    intent.putExtra(BenefitTransActivity.extraTransDescription, model.benefitDescription.trim())
+                    intent.putExtra(ConstantObject.extra_intent, customIntentBenefDtlFrom)
+                    intent.putExtra(BenefitTransActivity.extraTransType, BenefitTransActivity.extraValueTransDtlType)
+                    context.startActivity(intent)
                 }
                 R.id.mnu_custom_benefit_list_edit ->{
-                    MessageUtils.toastMessage(context, "edit", ConstantObject.vToastInfo)
+                    intent.putExtra(BenefitTransActivity.extraBenefitTransDate, model.benefitDtlDate.trim())
+                    intent.putExtra(BenefitTransActivity.extraBenefitTransType, model.benefitType.trim())
+                    intent.putExtra(BenefitTransActivity.extraBenefitTransName, model.benefitName.trim())
+                    intent.putExtra(BenefitTransActivity.extraBenefitTransPerson, model.personalBenefit.trim())
+                    intent.putExtra(BenefitTransActivity.extraBenefitTransDiagnose, model.diagnoseDisease.trim())
+                    intent.putExtra(BenefitTransActivity.extraTransAmount, model.amountClaim.trim())
+                    intent.putExtra(BenefitTransActivity.extraTransPaidAmount, model.paidClaim.trim())
+                    intent.putExtra(BenefitTransActivity.extraTransDescription, model.benefitDescription.trim())
+                    intent.putExtra(ConstantObject.extra_intent, customIntentBenefDtlFrom)
+                    intent.putExtra(BenefitTransActivity.extraTransType, BenefitTransActivity.extraValueTransEditType)
+                    context.startActivity(intent)
                 }
                 R.id.mnu_custom_benefit_list_delete ->{
                     MessageUtils.toastMessage(context, "delete", ConstantObject.vToastInfo)
-                }
-                R.id.mnu_custom_benefit_list_only_dtl -> {
-                    MessageUtils.toastMessage(context, "detail", ConstantObject.vToastInfo)
                 }
             }
             true

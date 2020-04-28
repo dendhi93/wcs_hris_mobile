@@ -54,6 +54,7 @@
             android:name=".feature.dtlnotification.DetailNotificationActivity"
             android:label="@string/dtl_notification_activity" />
         <activity android:name=".feature.benefitclaim.list.listDtl.BenefitDtlListActivity" />
+        <activity android:name=".feature.benefitclaim.list.listheader.BenefitClaimListActivity" />
         <activity android:name=".feature.leave.transaction.LeaveTransactionActivity" />
         <activity android:name=".feature.leave.list.LeaveListActivity" />
         <activity android:name=".feature.dtlreqtravel.DtlRequestTravelActivity" />

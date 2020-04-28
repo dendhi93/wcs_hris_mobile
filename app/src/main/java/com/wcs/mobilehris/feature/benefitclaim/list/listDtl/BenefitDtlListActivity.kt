@@ -30,8 +30,9 @@ class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface {
     override fun onStart() {
         super.onStart()
         intentBenefDtlFrom = intent.getStringExtra(ConstantObject.extra_intent)
+        activityBenefitDtlBinding.viewModel?.stBenefitFrom?.set(intentBenefDtlFrom.trim())
         intentBenefDtlRequestor = intent.getStringExtra(extraBenefitRequestor)
-        activityBenefitDtlBinding.viewModel?.benefitDocNo?.set(intent.getStringExtra(extraBenefitDocNo))
+        activityBenefitDtlBinding.viewModel?.stBenefitDocNo?.set(intent.getStringExtra(extraBenefitDocNo))
         intentBenefDtlTypeTrans = intent.getStringExtra(extraBenefitTransType)
         activityBenefitDtlBinding.viewModel?.isVisibleRecyler?.set(false)
         supportActionBar?.let {
@@ -39,7 +40,7 @@ class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface {
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
             when(intentBenefDtlFrom){
                 ConstantObject.extra_fromIntentRequest -> {
-                    if(activityBenefitDtlBinding.viewModel?.benefitDocNo?.get().toString().trim() == ""){
+                    if(activityBenefitDtlBinding.viewModel?.stBenefitDocNo?.get().toString().trim() == ""){
                         it.title = getString(R.string.req_benefit_dtl_activity)
                     }else{it.title = getString(R.string.req_benefit_hist_activity)}
                 }
