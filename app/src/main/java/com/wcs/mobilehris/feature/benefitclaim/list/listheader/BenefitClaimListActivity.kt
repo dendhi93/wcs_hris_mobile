@@ -33,7 +33,7 @@ class BenefitClaimListActivity : AppCompatActivity(),
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
 //            intentBenefFrom = intent.getStringExtra(ConstantObject.extra_intent)
-            intentBenefFrom = ConstantObject.extra_fromIntentRequest
+            intentBenefFrom = ConstantObject.extra_fromIntentApproval
             when(intentBenefFrom){
                 ConstantObject.extra_fromIntentRequest -> it.title = getString(R.string.req_benefit_hist_activity)
                 else -> it.title = getString(R.string.approval_benefit_list_activity)

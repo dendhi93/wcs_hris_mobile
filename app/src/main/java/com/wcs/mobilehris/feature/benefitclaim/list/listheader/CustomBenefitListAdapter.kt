@@ -51,7 +51,7 @@ class CustomBenefitListAdapter(private val context : Context,
             intent.putExtra(BenefitDtlListActivity.extraBenefitDocNo, model.benefitDoc.trim())
             intent.putExtra(BenefitDtlListActivity.extraBenefitTransType, model.statusBenefit)
             when(customIntentBenefitFrom){
-                ConstantObject.vApproved -> intent.putExtra(BenefitDtlListActivity.extraBenefitRequestor, model.nameRequestor)
+                ConstantObject.extra_fromIntentApproval -> intent.putExtra(BenefitDtlListActivity.extraBenefitRequestor, model.nameRequestor)
                 else -> intent.putExtra(BenefitDtlListActivity.extraBenefitRequestor, "")
             }
             context.startActivity(intent)

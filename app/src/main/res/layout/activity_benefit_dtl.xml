@@ -23,6 +23,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rc_benefDtlList"
+            android:layout_below="@+id/pb_benefDtlList"
             android:layoutAnimation="@anim/layout_animation_up_to_down"
             android:layout_width="match_parent"
             android:visibility="@{viewModel.isVisibleRecyler ? View.VISIBLE : View.GONE}"
@@ -47,7 +48,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="@dimen/icon_medium"
             android:layout_marginEnd="@dimen/icon_medium"
-            android:visibility="@{viewModel.isVisibleBottomLinear ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.isVisibleBenefitFab ? View.VISIBLE : View.GONE}"
             android:onClick="@{() -> viewModel.onClickFabClickDtl()}"
             android:id="@+id/fab_benefList"
             android:src="@mipmap/ic_plus_48"
@@ -68,6 +69,7 @@
                 android:text="@string/appr_button"
                 android:textColor="@color/colorWhite"
                 android:background="@drawable/bg_blue_button"
+                android:enabled="@{!viewModel.isVisibleBenefitDtlProgress}"
                 android:onClick="@{() -> viewModel.onClickApproveBenefit()}"
                 android:layout_margin="@dimen/spacing_tiny"
                 android:layout_height="@dimen/button_height"/>
@@ -76,6 +78,7 @@
                 android:layout_weight="1"
                 style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/reject_save"
+                android:enabled="@{!viewModel.isVisibleBenefitDtlProgress}"
                 android:background="@drawable/bg_transparent_button"
                 android:onClick="@{() -> viewModel.onClickRejectBenefit()}"
                 android:layout_margin="@dimen/spacing_tiny"

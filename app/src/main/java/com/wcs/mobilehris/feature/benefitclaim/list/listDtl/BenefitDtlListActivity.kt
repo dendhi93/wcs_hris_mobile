@@ -2,22 +2,31 @@ package com.wcs.mobilehris.feature.benefitclaim.list.listDtl
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.textfield.TextInputEditText
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.ActivityBenefitDtlBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
+import com.wcs.mobilehris.utilinterface.CustomBottomSheetInterface
+import com.wcs.mobilehris.utilinterface.DialogInterface
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface {
+class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface, DialogInterface, CustomBottomSheetInterface {
     private lateinit var activityBenefitDtlBinding: ActivityBenefitDtlBinding
     private lateinit var benefitDtlAdapter : CustomBenefitDtlAdapter
     private var intentBenefDtlFrom = ""
     private var intentBenefDtlRequestor = ""
     private var intentBenefDtlTypeTrans = ""
     private var arrBenefitDtl = ArrayList<BenefitDtlModel>()
+    private var keyDialogActive = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,13 +73,29 @@ class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface {
         when(messageType){
             ConstantObject.vToastError -> MessageUtils.toastMessage(this, message, ConstantObject.vToastError)
             ConstantObject.vToastInfo -> MessageUtils.toastMessage(this, message, ConstantObject.vToastInfo)
+            ConstantObject.vToastSuccess -> MessageUtils.toastMessage(this, message, ConstantObject.vToastSuccess)
+            else -> MessageUtils.snackBarMessage(message,this, ConstantObject.vSnackBarWithButton)
         }
     }
 
     override fun onAlertBenefitList(alertMessage: String,alertTitle: String,intTypeActionAlert: Int) {
         when(intTypeActionAlert){
-            ALERT_BENEFITDTL_LIST_NO_CONNECTION -> { MessageUtils.alertDialogDismiss(alertMessage, alertTitle, this)}
+            ALERT_BENEFITDTL_LIST_NO_CONNECTION -> MessageUtils.alertDialogDismiss(alertMessage, alertTitle, this)
+            ALERT_BENEFITDTL_LIST_APPROVED ->{
+                keyDialogActive = ALERT_BENEFITDTL_LIST_APPROVED
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
+            ALERT_BENEFITDTL_LIST_REJECT ->{
+                keyDialogActive = ALERT_BENEFITDTL_LIST_REJECT
+                MessageUtils.alertDialogOkCancel(alertMessage, alertTitle, this, this)
+            }
         }
+    }
+
+    override fun onSuccessBenefit(message: String) {
+        onBenefitDtlMessage(message, ConstantObject.vToastSuccess)
+        activityBenefitDtlBinding.viewModel?.isVisibleBenefitDtlProgress?.set(false)
+        finish()
     }
 
     companion object{
@@ -78,6 +103,8 @@ class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface {
         const val extraBenefitRequestor = "extra_benefit_requestor_name"
         const val extraBenefitTransType = "extra_benefit_trans_type"
         const val ALERT_BENEFITDTL_LIST_NO_CONNECTION = 1
+        const val ALERT_BENEFITDTL_LIST_APPROVED = 3
+        const val ALERT_BENEFITDTL_LIST_REJECT = 5
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -88,5 +115,36 @@ class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onPositiveClick(o: Any) {
+        when(keyDialogActive){
+            ALERT_BENEFITDTL_LIST_APPROVED ->activityBenefitDtlBinding.viewModel?.onProcessBenefit(ALERT_BENEFITDTL_LIST_APPROVED)
+            ALERT_BENEFITDTL_LIST_REJECT -> CustomBottomSheetDialogFragment(this).show(supportFragmentManager, "Dialog")
+        }
+    }
+
+    override fun onNegativeClick(o: Any) {}
+
+    class CustomBottomSheetDialogFragment(private val callback: CustomBottomSheetInterface) : BottomSheetDialogFragment() {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        ): View? {
+            val v: View = inflater.inflate(R.layout.custom_bottom_sheet_reject, container, false)
+            val btnSubmitReject = v.findViewById<View>(R.id.btn_customBottomSheet_reject) as Button
+            val txtNotes = v.findViewById<View>(R.id.txt_customBottomSheet_notes) as TextInputEditText
+            btnSubmitReject.setOnClickListener{
+                when {
+                    txtNotes.text.toString().trim() == "" -> MessageUtils.toastMessage(requireContext(),
+                        requireContext().getString(R.string.fill_in_the_blank), ConstantObject.vToastInfo)
+                    else -> callback.onRejectTransaction(txtNotes.text.toString().trim())
+                }
+            }
+            return v
+        }
+    }
+
+    override fun onRejectTransaction(notesReject: String) {
+        activityBenefitDtlBinding.viewModel?.stBenefitRejectNotes?.set(notesReject.trim())
+        activityBenefitDtlBinding.viewModel?.onProcessBenefit(ALERT_BENEFITDTL_LIST_REJECT)
     }
 }
