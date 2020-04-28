@@ -25,6 +25,7 @@ class BenefitTransViewModel(private val context: Context,
     private var mDay : Int = 0
 
     fun initDataBenefit(benefTransType : String){
+        Log.d("###","" +benefTransType)
         when(benefTransType){
             BenefitTransActivity.extraValueTransDtlType -> {
                 isVisibleBenefitButton.set(false)
@@ -59,5 +60,18 @@ class BenefitTransViewModel(private val context: Context,
         datePickerDialog.show()
     }
 
+    fun onInitCurrency(){
+        val listCur = mutableListOf<CurrencyModel>()
+        listCur.add(CurrencyModel("IDR","IDR"))
+        listCur.add(CurrencyModel("USD","USD"))
+        listCur.add(CurrencyModel("SGD","SGD"))
+        listCur.add(CurrencyModel("EUR","EUR"))
+        listCur.add(CurrencyModel("AUR","AUD"))
+
+        when(listCur.size){
+            0 ->{}
+            else -> benefitTransactionInterface.onLoadCurrencySpinner(listCur)
+        }
+    }
     fun onClickAddBenefit(){}
 }

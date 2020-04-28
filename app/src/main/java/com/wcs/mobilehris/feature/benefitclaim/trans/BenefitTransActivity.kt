@@ -3,18 +3,26 @@ package com.wcs.mobilehris.feature.benefitclaim.trans
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.databinding.ActivityBenefitTransBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
+    "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
+)
 class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
     private lateinit var activityBenefitTransBinding: ActivityBenefitTransBinding
     private var intentBenefitFrom = ""
     private var intentBenefitTransType = ""
     private var intentTransType = ""
+    private var intentCurrencyDesc = ""
+    private var arrCurrencyCode = ArrayList<String>()
+    private var arrCurrencyDesc = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +43,17 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
         activityBenefitTransBinding.viewModel?.stBenefitTransName?.set(intent.getStringExtra(extraBenefitTransName))
         activityBenefitTransBinding.viewModel?.stBenefitTransPerson?.set(intent.getStringExtra(extraBenefitTransPerson))
         activityBenefitTransBinding.viewModel?.stBenefitTransDiagnose?.set(intent.getStringExtra(extraBenefitTransDiagnose))
-        activityBenefitTransBinding.viewModel?.stBenefitTransAmount?.set(intent.getStringExtra(extraTransAmount))
-        activityBenefitTransBinding.viewModel?.stBenefitPaidAmount?.set(intent.getStringExtra(extraTransPaidAmount))
         activityBenefitTransBinding.viewModel?.stBenefitTransDescription ?.set(intent.getStringExtra(extraTransDescription))
+        val transAmount = intent.getStringExtra(extraTransAmount)
+        val paidAmount = intent.getStringExtra(extraTransPaidAmount)
+        if(paidAmount != ""){ activityBenefitTransBinding.viewModel?.stBenefitPaidAmount?.set(paidAmount.split(" ")[0]) }
         activityBenefitTransBinding.viewModel?.initDataBenefit(intentTransType)
+        activityBenefitTransBinding.viewModel?.onInitCurrency()
+        if(transAmount != ""){
+            activityBenefitTransBinding.viewModel?.stBenefitTransAmount?.set(transAmount.split(" ")[0])
+            intentCurrencyDesc = transAmount.split(" ")[1]
+            onSelectedSpinnerCurrency(intentCurrencyDesc)
+        }
     }
 
     override fun onMessage(message: String, messageType: Int) {
@@ -56,24 +71,66 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
         }
     }
 
-    override fun onSelectedSpinnerTransName(selectedTransName: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onSelectedSpinnerPerson(selectedPerson: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onSelectedSpinnerDiagnose(selectedDiagnose: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onSelectedSpinnerCurrency(selectedCurrency: String) {
-        TODO("Not yet implemented")
+//    override fun onSelectedSpinnerTransName(selectedTransName: String) {
+//        TODO("Not yet implemented")
+//    }
+//
+//    override fun onSelectedSpinnerPerson(selectedPerson: String) {
+//        TODO("Not yet implemented")
+//    }
+//
+//    override fun onSelectedSpinnerDiagnose(selectedDiagnose: String) {
+//        TODO("Not yet implemented")
+//    }
+//
+    private fun onSelectedSpinnerCurrency(selectedCurrency: String) {
+        when{
+            arrCurrencyDesc.isNotEmpty() ->{
+                for (i in arrCurrencyDesc.indices){
+                    when(arrCurrencyDesc[i].trim()){
+                        selectedCurrency -> activityBenefitTransBinding.spReqBenefitCurrency.setSelection(i)
+                    }
+                }
+            }
+        }
     }
 
     override fun onSuccessAddBenefit() {
         TODO("Not yet implemented")
+    }
+
+    override fun onLoadCurrencySpinner(curList: List<CurrencyModel>) {
+        var index  = 0
+        for(i in curList.indices){
+            when(index){
+                0 ->{
+                    arrCurrencyCode.add("")
+                    arrCurrencyDesc.add("Currency")
+                    arrCurrencyCode.add(curList[i].currCode)
+                    arrCurrencyDesc.add(curList[i].curDesc)
+                }
+                else ->{
+                    arrCurrencyCode.add(curList[i].currCode)
+                    arrCurrencyDesc.add(curList[i].curDesc)
+                }
+            }
+            index += 1
+        }
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrCurrencyDesc)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
+        activityBenefitTransBinding.spReqBenefitCurrency.adapter = adapter
+        activityBenefitTransBinding.spReqBenefitCurrency.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+               if(position > 0){
+                   val code = arrCurrencyCode[position].trim()
+                   val descCurrency = arrCurrencyDesc[position].trim()
+               }
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

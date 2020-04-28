@@ -82,6 +82,7 @@
                         android:id="@+id/sp_reqBenefit_transName"
                         android:background="@color/colorGray200"
                         android:layout_width="match_parent"
+                        android:enabled="@{viewModel.isEnableTv}"
                         android:layout_margin="@dimen/spacing_tiny_3"
                         android:layout_height="@dimen/text_fields_height"/>
 
@@ -89,6 +90,7 @@
                         android:id="@+id/sp_reqBenefit_person"
                         android:background="@color/colorGray200"
                         android:layout_width="match_parent"
+                        android:enabled="@{viewModel.isEnableTv}"
                         android:layout_margin="@dimen/spacing_tiny_3"
                         android:layout_height="@dimen/text_fields_height"/>
 
@@ -96,6 +98,7 @@
                         android:id="@+id/sp_reqBenefit_diagnose"
                         android:background="@color/colorGray200"
                         android:layout_width="match_parent"
+                        android:enabled="@{viewModel.isEnableTv}"
                         android:layout_margin="@dimen/spacing_tiny_3"
                         android:layout_height="@dimen/text_fields_height"/>
 
@@ -139,7 +142,8 @@
                         <Spinner
                             android:id="@+id/sp_reqBenefit_currency"
                             android:background="@color/colorGray200"
-                            android:layout_width="@dimen/icon_huge"
+                            android:layout_width="@dimen/spacing_huge_2"
+                            android:enabled="@{viewModel.isEnableTv}"
                             android:layout_margin="@dimen/spacing_tiny_3"
                             android:layout_height="@dimen/text_fields_height"/>
                     </LinearLayout>

@@ -94,7 +94,7 @@ class BenefitDtlListViewModel(private val context: Context,
         intent.putExtra(BenefitTransActivity.extraTransPaidAmount, "")
         intent.putExtra(BenefitTransActivity.extraTransDescription, "")
         intent.putExtra(ConstantObject.extra_intent, stBenefitFrom.get().toString().trim())
-        intent.putExtra(BenefitTransActivity.extraTransType, BenefitTransActivity.extraValueTransDtlType)
+        intent.putExtra(BenefitTransActivity.extraTransType, ConstantObject.vNew)
         context.startActivity(intent)
     }
 
@@ -135,6 +135,4 @@ class BenefitDtlListViewModel(private val context: Context,
         }
 
     }
-
-    fun onRejectBenefit(){}
 }
