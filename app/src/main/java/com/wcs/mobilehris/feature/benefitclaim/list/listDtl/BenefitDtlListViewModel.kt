@@ -14,7 +14,6 @@ class BenefitDtlListViewModel(private val context: Context,
     val isVisibleBenefitDtlProgress = ObservableField(false)
     val benefitDocNo = ObservableField("")
     val isVisibleRecyler = ObservableField(false)
-    private val mutableBenefitDtlList = mutableListOf<BenefitDtlModel>()
 
     fun validateDataBenefitDtl(transType : String, intentFrom : String){
         when{
@@ -26,6 +25,7 @@ class BenefitDtlListViewModel(private val context: Context,
     }
 
     private fun getBenefDtlData(intentFrom : String, transBenefitType : String){
+        val mutableBenefitDtlList = mutableListOf<BenefitDtlModel>()
         var benefitDtlModel : BenefitDtlModel
         when(intentFrom){
             ConstantObject.extra_fromIntentRequest ->{

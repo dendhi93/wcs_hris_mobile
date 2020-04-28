@@ -9,7 +9,7 @@ import com.wcs.mobilehris.database.entity.*
     ChargeCodeEntity::class,
     TransportTypeEntity::class,
     ReasonTravelEntity::class,
-    ReasonLeaveEntity::class], version = 1)
+    ReasonLeaveEntity::class], exportSchema = false,version = 1)
 abstract class MainDatabase : RoomDatabase(){
     abstract fun updateMasterDao() : UpdateMasterDao
     abstract fun chargeCodeDao() : ChargeCodeDao

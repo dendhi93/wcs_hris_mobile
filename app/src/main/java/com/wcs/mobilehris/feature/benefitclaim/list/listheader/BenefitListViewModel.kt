@@ -14,7 +14,6 @@ import com.wcs.mobilehris.util.ConstantObject
 class BenefitListViewModel(private val context: Context,
                            private val benefitListInterface: BenefitListInterface) : ViewModel(){
     val isVisibleFabBenefit = ObservableField(false)
-    private val mutableBenefitList = mutableListOf<BenefitModel>()
 
     fun validateDataBenefit(typeOfLoading : Int, intentBenefitFrom : String){
         when{
@@ -27,6 +26,7 @@ class BenefitListViewModel(private val context: Context,
 
     private fun getBenefitData(typeOfLoading : Int, intentBenefitFrom : String){
         var benefitModel : BenefitModel
+        val mutableBenefitList = mutableListOf<BenefitModel>()
         when(typeOfLoading){ConstantObject.vLoadWithProgressBar -> benefitListInterface.showUI(ConstantObject.vProgresBarUI) }
         benefitListInterface.hideUI(ConstantObject.vRecylerViewUI)
         benefitListInterface.showUI(ConstantObject.vGlobalUI)
