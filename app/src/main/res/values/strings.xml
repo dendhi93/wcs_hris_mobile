@@ -152,5 +152,7 @@
     <string name="paidClaim">Paid CLaim</string>
     <string name="diagnose">Diagnose</string>
     <string name="benefitDescription">Description</string>
+    <string name="inputTransDate">Transaction Date</string>
+    <string name="currency">Currency</string>
 
 </resources>
