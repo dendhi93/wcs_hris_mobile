@@ -14,6 +14,7 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
     private lateinit var activityBenefitTransBinding: ActivityBenefitTransBinding
     private var intentBenefitFrom = ""
     private var intentBenefitTransType = ""
+    private var intentTransType = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,9 +28,17 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
         }
-        intentBenefitFrom = intent.getStringExtra(extraTransType)
+        intentBenefitFrom = intent.getStringExtra(ConstantObject.extra_intent)
         intentBenefitTransType = intent.getStringExtra(extraBenefitTransType)
-
+        intentTransType = intent.getStringExtra(extraTransType)
+        activityBenefitTransBinding.viewModel?.stBenefitDate?.set(intent.getStringExtra(extraBenefitTransDate))
+        activityBenefitTransBinding.viewModel?.stBenefitTransName?.set(intent.getStringExtra(extraBenefitTransName))
+        activityBenefitTransBinding.viewModel?.stBenefitTransPerson?.set(intent.getStringExtra(extraBenefitTransPerson))
+        activityBenefitTransBinding.viewModel?.stBenefitTransDiagnose?.set(intent.getStringExtra(extraBenefitTransDiagnose))
+        activityBenefitTransBinding.viewModel?.stBenefitTransAmount?.set(intent.getStringExtra(extraTransAmount))
+        activityBenefitTransBinding.viewModel?.stBenefitPaidAmount?.set(intent.getStringExtra(extraTransPaidAmount))
+        activityBenefitTransBinding.viewModel?.stBenefitTransDescription ?.set(intent.getStringExtra(extraTransDescription))
+        activityBenefitTransBinding.viewModel?.initDataBenefit(intentTransType)
     }
 
     override fun onMessage(message: String, messageType: Int) {

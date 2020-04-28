@@ -59,35 +59,11 @@ class CustomBenefitDtlAdapter(private val context : Context,
             ConstantObject.vNew -> popup.inflate(R.menu.menu_benefit_dtl_list)
             else -> popup.inflate(R.menu.menu_benefit_only_detail)
         }
-        val intent = Intent(context, BenefitTransActivity::class.java)
+
         popup.setOnMenuItemClickListener{ item: MenuItem? ->
             when(item?.itemId){
-                R.id.mnu_custom_benefit_list_dtl, R.id.mnu_custom_benefit_list_only_dtl ->{
-                    intent.putExtra(BenefitTransActivity.extraBenefitTransDate, model.benefitDtlDate.trim())
-                    intent.putExtra(BenefitTransActivity.extraBenefitTransType, model.benefitType.trim())
-                    intent.putExtra(BenefitTransActivity.extraBenefitTransName, model.benefitName.trim())
-                    intent.putExtra(BenefitTransActivity.extraBenefitTransPerson, model.personalBenefit.trim())
-                    intent.putExtra(BenefitTransActivity.extraBenefitTransDiagnose, model.diagnoseDisease.trim())
-                    intent.putExtra(BenefitTransActivity.extraTransAmount, model.amountClaim.trim())
-                    intent.putExtra(BenefitTransActivity.extraTransPaidAmount, model.paidClaim.trim())
-                    intent.putExtra(BenefitTransActivity.extraTransDescription, model.benefitDescription.trim())
-                    intent.putExtra(ConstantObject.extra_intent, customIntentBenefDtlFrom)
-                    intent.putExtra(BenefitTransActivity.extraTransType, BenefitTransActivity.extraValueTransDtlType)
-                    context.startActivity(intent)
-                }
-                R.id.mnu_custom_benefit_list_edit ->{
-                    intent.putExtra(BenefitTransActivity.extraBenefitTransDate, model.benefitDtlDate.trim())
-                    intent.putExtra(BenefitTransActivity.extraBenefitTransType, model.benefitType.trim())
-                    intent.putExtra(BenefitTransActivity.extraBenefitTransName, model.benefitName.trim())
-                    intent.putExtra(BenefitTransActivity.extraBenefitTransPerson, model.personalBenefit.trim())
-                    intent.putExtra(BenefitTransActivity.extraBenefitTransDiagnose, model.diagnoseDisease.trim())
-                    intent.putExtra(BenefitTransActivity.extraTransAmount, model.amountClaim.trim())
-                    intent.putExtra(BenefitTransActivity.extraTransPaidAmount, model.paidClaim.trim())
-                    intent.putExtra(BenefitTransActivity.extraTransDescription, model.benefitDescription.trim())
-                    intent.putExtra(ConstantObject.extra_intent, customIntentBenefDtlFrom)
-                    intent.putExtra(BenefitTransActivity.extraTransType, BenefitTransActivity.extraValueTransEditType)
-                    context.startActivity(intent)
-                }
+                R.id.mnu_custom_benefit_list_dtl, R.id.mnu_custom_benefit_list_only_dtl ->onIntentPopUp("Detail", model)
+                R.id.mnu_custom_benefit_list_edit -> onIntentPopUp("Edit", model)
                 R.id.mnu_custom_benefit_list_delete ->{
                     MessageUtils.toastMessage(context, "delete", ConstantObject.vToastInfo)
                 }
@@ -95,5 +71,23 @@ class CustomBenefitDtlAdapter(private val context : Context,
             true
         }
         popup.show()
+    }
+
+    private fun onIntentPopUp(transType : String,model : BenefitDtlModel){
+        val intent = Intent(context, BenefitTransActivity::class.java)
+        intent.putExtra(BenefitTransActivity.extraBenefitTransDate, model.benefitDtlDate.trim())
+        intent.putExtra(BenefitTransActivity.extraBenefitTransType, model.benefitType.trim())
+        intent.putExtra(BenefitTransActivity.extraBenefitTransName, model.benefitName.trim())
+        intent.putExtra(BenefitTransActivity.extraBenefitTransPerson, model.personalBenefit.trim())
+        intent.putExtra(BenefitTransActivity.extraBenefitTransDiagnose, model.diagnoseDisease.trim())
+        intent.putExtra(BenefitTransActivity.extraTransAmount, model.amountClaim.trim())
+        intent.putExtra(BenefitTransActivity.extraTransPaidAmount, model.paidClaim.trim())
+        intent.putExtra(BenefitTransActivity.extraTransDescription, model.benefitDescription.trim())
+        intent.putExtra(ConstantObject.extra_intent, customIntentBenefDtlFrom)
+        when(transType){
+            "Detail" -> intent.putExtra(BenefitTransActivity.extraTransType, BenefitTransActivity.extraValueTransDtlType)
+            "Edit" -> intent.putExtra(BenefitTransActivity.extraTransType, BenefitTransActivity.extraValueTransEditType)
+        }
+        context.startActivity(intent)
     }
 }

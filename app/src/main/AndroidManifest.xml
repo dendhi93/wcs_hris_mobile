@@ -35,7 +35,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
-        <activity android:name=".feature.benefitclaim.trans.BenefitTransActivity"></activity>
+        <activity android:name=".feature.benefitclaim.trans.BenefitTransActivity"
+            android:label="@string/req_benefit_dtl_activity"/>
         <activity android:name=".feature.preparation.permission.PermissionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
