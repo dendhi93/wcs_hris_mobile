@@ -1,9 +1,6 @@
 package com.wcs.mobilehris.database.daos
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.wcs.mobilehris.database.entity.BenefitDtlEntity
 
 @Dao
@@ -17,9 +14,30 @@ interface BenefitDtlDao {
     @Query("DELETE FROM tBenefitDtl")
     fun deleteAlltBenefitDtl()
 
+    @Query("DELETE FROM tBenefitDtl where id = :idBenefit")
+    fun deleteBenefitById(idBenefit : Int)
+
     @Query("SELECT count(id) FROM tBenefitDtl")
     fun getCountBenefitDtl() : Int
 
+    @Query("SELECT max(id) FROM tBenefitDtl")
+    fun getMaxIdBenefitDtl() : Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertBenfitDtl(benefitDtlEntity: BenefitDtlEntity)
+
+    @Update
+    fun updateBenefitDtl(benefitDtlEntity: BenefitDtlEntity)
+
+    @Query("UPDATE tBenefitDtl set tBenefitDtlDate = :benefDate, tBenefitType = :benefType, tBenefitName = :benefName, tPersonalBenefit = :benefPerson, tAmountClaim = :benefAmount, tPaidClaim = :benefPaid, tDiagnoseDisease = :benefDiagnose, tBenefitDescription = :benefDescription, tBenefitDocNo = :benefDocNo  where id = :idBenefit")
+    fun updateBenefitById(idBenefit: Int,
+                          benefDate : String,
+                          benefType : String,
+                          benefName : String,
+                          benefPerson : String,
+                          benefAmount : String,
+                          benefPaid : String,
+                          benefDiagnose : String,
+                          benefDescription :String,
+                          benefDocNo : String)
 }

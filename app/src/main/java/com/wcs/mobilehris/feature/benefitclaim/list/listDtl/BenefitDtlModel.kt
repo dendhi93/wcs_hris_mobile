@@ -9,5 +9,6 @@ data class BenefitDtlModel(
     val amountClaim : String,
     val paidClaim : String,
     val diagnoseDisease : String,
-    val benefitDescription : String
+    val benefitDescription : String,
+    val benefitDocNo : String
 )

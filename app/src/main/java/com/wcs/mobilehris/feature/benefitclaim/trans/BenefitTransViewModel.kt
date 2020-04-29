@@ -5,13 +5,21 @@ import android.content.Context
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
+import com.wcs.mobilehris.R
+import com.wcs.mobilehris.application.WcsHrisApps
+import com.wcs.mobilehris.connection.ConnectionObject
+import com.wcs.mobilehris.database.daos.BenefitDtlDao
+import com.wcs.mobilehris.database.entity.BenefitDtlEntity
 import com.wcs.mobilehris.util.ConstantObject
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.util.*
 
 class BenefitTransViewModel(private val context: Context,
                             private val benefitTransactionInterface: BenefitTransactionInterface):ViewModel(){
     val isVisibleBenefitTransProgress = ObservableField(false)
     val isVisibleBenefitButton = ObservableField(false)
+    val stBenefitDocNoTrans = ObservableField("")
     val isEnableTv = ObservableField(false)
     val stBenefitDate = ObservableField("")
     val stBenefitTransName = ObservableField("")
@@ -20,6 +28,9 @@ class BenefitTransViewModel(private val context: Context,
     val stBenefitTransAmount = ObservableField("")
     val stBenefitPaidAmount = ObservableField("")
     val stBenefitTransDescription = ObservableField("")
+    val stBenefitTransType = ObservableField("")
+    val stBenefitTransId = ObservableField("")
+    private lateinit var benefitDtlDao: BenefitDtlDao
     private val calendar : Calendar = Calendar.getInstance()
     private var mYear : Int = 0
     private var mMonth : Int = 0
@@ -27,6 +38,7 @@ class BenefitTransViewModel(private val context: Context,
 
     fun initDataBenefit(benefTransType : String){
         Log.d("###","" +benefTransType)
+        benefitDtlDao = WcsHrisApps.database.benefitDtlDao()
         when(benefTransType){
             BenefitTransActivity.extraValueTransDtlType -> {
                 isVisibleBenefitButton.set(false)
@@ -121,5 +133,70 @@ class BenefitTransViewModel(private val context: Context,
         }
     }
 
-    fun onClickAddBenefit(){}
+    fun onClickAddBenefit(){
+        when{
+            !ConnectionObject.isNetworkAvailable(context) ->
+                benefitTransactionInterface.onAlertBenefitTrans(context.getString(R.string.alert_no_connection),
+                    ConstantObject.vAlertDialogNoConnection, BenefitTransActivity.ALERT_BENEFIT_TRANS_NO_CONNECTION)
+            !validateBenefTrans() -> benefitTransactionInterface.onMessage(context.getString(R.string.fill_in_the_blank), ConstantObject.vSnackBarWithButton)
+            else -> onSubmitBenefit()
+        }
+    }
+
+    private fun validateBenefTrans():Boolean{
+        if(stBenefitDate.get().toString().trim() == "" ||
+                stBenefitPaidAmount.get().toString().trim() == ""||
+                stBenefitTransAmount.get().toString().trim() == "" ||
+                stBenefitTransDescription.get().toString().trim() == ""||
+                stBenefitTransDiagnose.get().toString().trim() == ""||
+                stBenefitTransName.get().toString().trim() == "" ||
+                stBenefitTransPerson.get().toString().trim() == ""){
+            return false
+        }
+        return true
+    }
+
+    private fun onSubmitBenefit(){
+        doAsync {
+            isVisibleBenefitTransProgress.set(true)
+            val benefType = when(stBenefitTransType.get().toString().trim()){
+                "" -> "MEDICAL"
+                else -> stBenefitTransType.get().toString().trim()
+            }
+            val validateDocNo = when(stBenefitDocNoTrans.get().toString().trim()){
+                "" -> "BEN-099"
+                else -> stBenefitDocNoTrans.get().toString().trim()
+            }
+            when(stBenefitDocNoTrans.get().toString().trim()){
+                "" ->{
+                    benefitDtlDao.insertBenfitDtl(BenefitDtlEntity(
+                        benefitDtlDao.getMaxIdBenefitDtl()+1, stBenefitDate.get().toString().trim(),
+                        benefType,stBenefitTransName.get().toString().trim(),
+                        stBenefitTransPerson.get().toString().trim(),
+                        stBenefitTransAmount.get().toString().trim()+ " "+ stBenefitPaidAmount.get().toString().trim().split( " ")[1],
+                        stBenefitPaidAmount.get().toString().trim(),stBenefitTransDiagnose.get().toString().trim(),
+                        stBenefitTransDescription.get().toString().trim(),validateDocNo.trim()
+                    ))
+                }
+                else ->{
+                    Log.d("###","date "+stBenefitDate.get().toString().trim())
+                    benefitDtlDao.updateBenefitDtl(BenefitDtlEntity(
+                        benefitDtlDao.getMaxIdBenefitDtl()+1, stBenefitDate.get().toString().trim(),
+                        benefType.trim(),stBenefitTransName.get().toString().trim(),
+                        stBenefitTransPerson.get().toString().trim(),
+                        stBenefitTransAmount.get().toString().trim()+ " "+ stBenefitPaidAmount.get().toString().trim().split( " ")[1],
+                        stBenefitPaidAmount.get().toString().trim(),stBenefitTransDiagnose.get().toString().trim(),
+                        stBenefitTransDescription.get().toString().trim(),validateDocNo.trim()
+                    ))
+                }
+            }
+
+            uiThread {
+                when(stBenefitDocNoTrans.get().toString().trim()){
+                    "" -> benefitTransactionInterface.onSuccessAddBenefit("Transaction success")
+                    else -> benefitTransactionInterface.onSuccessAddBenefit("Transaction success Updated")
+                }
+            }
+        }
+    }
 }

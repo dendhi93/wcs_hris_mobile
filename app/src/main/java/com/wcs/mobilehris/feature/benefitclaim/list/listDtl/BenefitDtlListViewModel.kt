@@ -32,11 +32,11 @@ class BenefitDtlListViewModel(private val context: Context,
         benefitDtlDao = WcsHrisApps.database.benefitDtlDao()
         doAsync {
             val count = benefitDtlDao.getCountBenefitDtl()
+            Log.d("###",""+count)
             if(count > 0){
                 val docNoBefore = benefitDtlDao.getBenefitDocData(stBenefitDocNo.get().toString().trim())
                 if(stBenefitDocNo.get().toString().trim() != docNoBefore){
                     benefitDtlDao.deleteAlltBenefitDtl()
-                    Log.d("###","deleted")
                 }
             }
             when{
@@ -70,7 +70,7 @@ class BenefitDtlListViewModel(private val context: Context,
 
                             benefitDtlEntity = BenefitDtlEntity(2, "2020-04-15",
                                 "MEDICAL","RAWAT JALAN",
-                                "BUDI","100.000 IDR",
+                                "CHILD 1","200.000 IDR",
                                 "100.000 IDR","ISPA","ISPA",
                                 stBenefitDocNo.get().toString().trim())
                             benefitDtlDao.insertBenfitDtl(benefitDtlEntity)
@@ -79,10 +79,12 @@ class BenefitDtlListViewModel(private val context: Context,
                         val mutableListDbBenfDtl = benefitDtlDao.getBenefitByDoc(stBenefitDocNo.get().toString().trim())
                         if(mutableListDbBenfDtl.isNotEmpty()){
                             for(i in mutableListDbBenfDtl.indices){
+                                Log.d("###","date " +mutableListDbBenfDtl[i].tBenefitDtlDate)
                                 benefitDtlModel = BenefitDtlModel(""+(i+1).toString(),mutableListDbBenfDtl[i].tBenefitDtlDate,
                                     mutableListDbBenfDtl[i].tBenefitType, mutableListDbBenfDtl[i].tBenefitName,
                                     mutableListDbBenfDtl[i].tPersonalBenefit, mutableListDbBenfDtl[i].tAmountClaim,
-                                    mutableListDbBenfDtl[i].tPaidClaim, mutableListDbBenfDtl[i].tDiagnoseDisease,mutableListDbBenfDtl[i].tBenefitDescription)
+                                    mutableListDbBenfDtl[i].tPaidClaim, mutableListDbBenfDtl[i].tDiagnoseDisease,
+                                    mutableListDbBenfDtl[i].tBenefitDescription, stBenefitDocNo.get().toString().trim())
                                 mutableBenefitDtlList.add(benefitDtlModel)
                             }
                         }
@@ -110,7 +112,7 @@ class BenefitDtlListViewModel(private val context: Context,
 
                         benefitDtlEntity = BenefitDtlEntity(2, "2020-04-15",
                             "MEDICAL","RAWAT JALAN",
-                            "BUDI","100.000 IDR",
+                            "CHILD 1","100.000 IDR",
                             "100.000 IDR","ISPA","ISPA",
                             stBenefitDocNo.get().toString().trim())
                         benefitDtlDao.insertBenfitDtl(benefitDtlEntity)
@@ -122,7 +124,8 @@ class BenefitDtlListViewModel(private val context: Context,
                             benefitDtlModel = BenefitDtlModel(""+(i+1).toString(),mutableListDbBenfDtl[i].tBenefitDtlDate,
                                 mutableListDbBenfDtl[i].tBenefitType, mutableListDbBenfDtl[i].tBenefitName,
                                 mutableListDbBenfDtl[i].tPersonalBenefit, mutableListDbBenfDtl[i].tAmountClaim,
-                                mutableListDbBenfDtl[i].tPaidClaim, mutableListDbBenfDtl[i].tDiagnoseDisease,mutableListDbBenfDtl[i].tBenefitDescription)
+                                mutableListDbBenfDtl[i].tPaidClaim, mutableListDbBenfDtl[i].tDiagnoseDisease,
+                                mutableListDbBenfDtl[i].tBenefitDescription, stBenefitDocNo.get().toString().trim())
                             mutableBenefitDtlList.add(benefitDtlModel)
                         }
                     }
@@ -147,6 +150,8 @@ class BenefitDtlListViewModel(private val context: Context,
         intent.putExtra(BenefitTransActivity.extraTransAmount, "")
         intent.putExtra(BenefitTransActivity.extraTransPaidAmount, "")
         intent.putExtra(BenefitTransActivity.extraTransDescription, "")
+        intent.putExtra(BenefitTransActivity.extraBenefDocNo, "")
+        intent.putExtra(BenefitTransActivity.extraBenefitId, "0")
         intent.putExtra(ConstantObject.extra_intent, stBenefitFrom.get().toString().trim())
         intent.putExtra(BenefitTransActivity.extraTransType, ConstantObject.vNew)
         context.startActivity(intent)

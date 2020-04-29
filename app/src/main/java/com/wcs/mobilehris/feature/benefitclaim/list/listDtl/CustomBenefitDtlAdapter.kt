@@ -13,13 +13,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wcs.mobilehris.R
 import com.wcs.mobilehris.feature.benefitclaim.trans.BenefitTransActivity
 import com.wcs.mobilehris.util.ConstantObject
-import com.wcs.mobilehris.util.MessageUtils
 
 class CustomBenefitDtlAdapter(private val context : Context,
                               private val listBenefDtl : MutableList<BenefitDtlModel>,
                               private val customIntentBenefDtlFrom : String,
                                private val statusBenefit: String):
     RecyclerView.Adapter<CustomBenefitDtlAdapter.ViewHolder>(){
+    private lateinit var selectedBenefitInterface: SelectedBenefInterface
+
+    fun initSelectedBenefCallback(itemCallBack : SelectedBenefInterface){
+        this.selectedBenefitInterface = itemCallBack
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomBenefitDtlAdapter.ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_list_benefit_dtl,parent,false))
@@ -64,9 +68,7 @@ class CustomBenefitDtlAdapter(private val context : Context,
             when(item?.itemId){
                 R.id.mnu_custom_benefit_list_dtl, R.id.mnu_custom_benefit_list_only_dtl ->onIntentPopUp("Detail", model)
                 R.id.mnu_custom_benefit_list_edit -> onIntentPopUp("Edit", model)
-                R.id.mnu_custom_benefit_list_delete ->{
-                    MessageUtils.toastMessage(context, "delete", ConstantObject.vToastInfo)
-                }
+                R.id.mnu_custom_benefit_list_delete ->{ selectedBenefitInterface.selectedItemBenefit(model) }
             }
             true
         }
@@ -83,6 +85,8 @@ class CustomBenefitDtlAdapter(private val context : Context,
         intent.putExtra(BenefitTransActivity.extraTransAmount, model.amountClaim.trim())
         intent.putExtra(BenefitTransActivity.extraTransPaidAmount, model.paidClaim.trim())
         intent.putExtra(BenefitTransActivity.extraTransDescription, model.benefitDescription.trim())
+        intent.putExtra(BenefitTransActivity.extraBenefDocNo, model.benefitDocNo.trim())
+        intent.putExtra(BenefitTransActivity.extraBenefitId, model.benefitDtlId.trim())
         intent.putExtra(ConstantObject.extra_intent, customIntentBenefDtlFrom)
         when(transType){
             "Detail" -> intent.putExtra(BenefitTransActivity.extraTransType, BenefitTransActivity.extraValueTransDtlType)

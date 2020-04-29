@@ -18,7 +18,6 @@ import com.wcs.mobilehris.util.MessageUtils
 class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
     private lateinit var activityBenefitTransBinding: ActivityBenefitTransBinding
     private var intentBenefitFrom = ""
-    private var intentBenefitTransType = ""
     private var intentTransType = ""
     private var intentCurrencyDesc = ""
     private var arrCurrencyCode = ArrayList<String>()
@@ -114,13 +113,15 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
 
     private fun intentBenefit(){
         intentBenefitFrom = intent.getStringExtra(ConstantObject.extra_intent)
-        intentBenefitTransType = intent.getStringExtra(extraBenefitTransType)
         intentTransType = intent.getStringExtra(extraTransType)
+        activityBenefitTransBinding.viewModel?.stBenefitTransType?.set(intent.getStringExtra(extraBenefitTransType))
+        activityBenefitTransBinding.viewModel?.stBenefitDocNoTrans?.set(intent.getStringExtra(extraBenefDocNo))
         activityBenefitTransBinding.viewModel?.stBenefitDate?.set(intent.getStringExtra(extraBenefitTransDate))
         activityBenefitTransBinding.viewModel?.stBenefitTransName?.set(intent.getStringExtra(extraBenefitTransName))
         activityBenefitTransBinding.viewModel?.stBenefitTransPerson?.set(intent.getStringExtra(extraBenefitTransPerson))
         activityBenefitTransBinding.viewModel?.stBenefitTransDiagnose?.set(intent.getStringExtra(extraBenefitTransDiagnose))
         activityBenefitTransBinding.viewModel?.stBenefitTransDescription ?.set(intent.getStringExtra(extraTransDescription))
+        activityBenefitTransBinding.viewModel?.stBenefitTransId?.set(intent.getStringExtra(extraBenefitId))
 
         onSelectedSpinnerTransName(activityBenefitTransBinding.viewModel?.stBenefitTransName?.get().toString().trim())
         onSelectedSpinnerPerson(activityBenefitTransBinding.viewModel?.stBenefitTransPerson?.get().toString().trim())
@@ -135,7 +136,11 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
         }
         activityBenefitTransBinding.viewModel?.initDataBenefit(intentTransType)
     }
-    override fun onSuccessAddBenefit() {}
+    override fun onSuccessAddBenefit(message :String) {
+        onMessage(message, ConstantObject.vToastSuccess)
+        activityBenefitTransBinding.viewModel?.isVisibleBenefitTransProgress?.set(false)
+        finish()
+    }
 
     override fun onLoadCurrencySpinner(curList: List<CurrencyModel>) {
         var index  = 0
@@ -166,7 +171,7 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
                        onMessage("Please fill amount claim first", ConstantObject.vSnackBarWithButton)
                        activityBenefitTransBinding.spReqBenefitCurrency.setSelection(0)
                    }else{
-                       val code = arrCurrencyCode[position].trim()
+//                       val code = arrCurrencyCode[position].trim()
                        val descCurrency = arrCurrencyDesc[position].trim()
                        activityBenefitTransBinding.viewModel?.
                        stBenefitPaidAmount?.set(activityBenefitTransBinding.viewModel?.stBenefitTransAmount?.get().toString()+ " "+descCurrency.trim())
@@ -205,6 +210,7 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
                 if(position > 0){
                     val nameCode = arrBenefNameCode[position].trim()
                     val benefdesc = arrBenefNameDesc[position].trim().split(" (")[0]
+                    activityBenefitTransBinding.viewModel?.stBenefitTransName?.set(benefdesc.trim())
                 }
             }
         }
@@ -236,6 +242,7 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
                 if(position > 0){
                     val personCode = arrPersonCode[position].trim()
                     val personName = arrPersonName[position].trim().split(" - ")[0]
+                    activityBenefitTransBinding.viewModel?.stBenefitTransPerson?.set(personName.trim())
                 }
             }
         }
@@ -267,6 +274,7 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
                 if(position > 0){
                     val diagnoseCode = arrDiagnoseCode[position].trim()
                     val diagnoseDesc = arrDiagnoseName[position].trim()
+                    activityBenefitTransBinding.viewModel?.stBenefitTransDiagnose?.set(diagnoseDesc)
                 }
             }
         }
@@ -294,7 +302,9 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
         const val extraTransPaidAmount = "trans_benefit_paid_amount"
         const val extraTransDescription = "trans_benefit_description"
         const val extraTransType = "trans_type"
+        const val extraBenefitId = "benefit_id"
         const val extraValueTransDtlType = "trans_detail"
         const val extraValueTransEditType = "trans_edit"
+        const val extraBenefDocNo = "doc_no"
     }
 }

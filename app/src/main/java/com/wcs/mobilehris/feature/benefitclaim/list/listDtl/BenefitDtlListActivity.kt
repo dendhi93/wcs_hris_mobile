@@ -20,7 +20,10 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface, DialogInterface, CustomBottomSheetInterface {
+class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface,
+    DialogInterface,
+    CustomBottomSheetInterface,
+    SelectedBenefInterface{
     private lateinit var activityBenefitDtlBinding: ActivityBenefitDtlBinding
     private lateinit var benefitDtlAdapter : CustomBenefitDtlAdapter
     private var intentBenefDtlFrom = ""
@@ -60,6 +63,7 @@ class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface, DialogI
             }
         }
         benefitDtlAdapter = CustomBenefitDtlAdapter(this, arrBenefitDtl, intentBenefDtlFrom,intentBenefDtlTypeTrans)
+        benefitDtlAdapter.initSelectedBenefCallback(this)
         activityBenefitDtlBinding.rcBenefDtlList.adapter = benefitDtlAdapter
     }
 
@@ -178,5 +182,15 @@ class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface, DialogI
             }
         }
 
+    }
+
+    override fun selectedItemBenefit(benefitDtlModel: BenefitDtlModel) {
+        doAsync {
+            benefitDtlDao.deleteBenefitById(benefitDtlModel.benefitDtlId.toInt())
+            uiThread {
+                onBenefitDtlMessage("Success Deleted", ConstantObject.vToastSuccess)
+                activityBenefitDtlBinding.viewModel?.validateDataBenefitDtl(intentBenefDtlTypeTrans, intentBenefDtlFrom)
+            }
+        }
     }
 }
