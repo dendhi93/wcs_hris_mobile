@@ -36,14 +36,15 @@ class BenefitDtlListViewModel(private val context: Context,
                 val docNoBefore = benefitDtlDao.getBenefitDocData(stBenefitDocNo.get().toString().trim())
                 if(stBenefitDocNo.get().toString().trim() != docNoBefore){
                     benefitDtlDao.deleteAlltBenefitDtl()
+                    Log.d("###","deleted")
                 }
             }
-        }
-        when{
-            !ConnectionObject.isNetworkAvailable(context) ->
-                benefitListDtlInterface.onAlertBenefitList(context.getString(R.string.alert_no_connection),
-                    ConstantObject.vAlertDialogNoConnection, BenefitDtlListActivity.ALERT_BENEFITDTL_LIST_NO_CONNECTION)
-            else -> getBenefDtlData(intentFrom, transType)
+            when{
+                !ConnectionObject.isNetworkAvailable(context) ->
+                    benefitListDtlInterface.onAlertBenefitList(context.getString(R.string.alert_no_connection),
+                        ConstantObject.vAlertDialogNoConnection, BenefitDtlListActivity.ALERT_BENEFITDTL_LIST_NO_CONNECTION)
+                else -> getBenefDtlData(intentFrom, transType)
+            }
         }
     }
 
@@ -58,7 +59,7 @@ class BenefitDtlListViewModel(private val context: Context,
                 if(transBenefitType.trim() != ConstantObject.vNew){
                     doAsync {
                         val count = benefitDtlDao.getCountBenefitDtl()
-                        Log.d("###",""+count)
+                        Log.d("###_2",""+count)
                         if(count == 0){
                             benefitDtlEntity = BenefitDtlEntity(1, "2020-04-15",
                                 "MEDICAL","RAWAT JALAN",
@@ -186,6 +187,20 @@ class BenefitDtlListViewModel(private val context: Context,
                 },2000)
             }
         }
+    }
 
+    fun onPublishBenefit(){
+        when{
+            mutableBenefitDtlList.size == 0 -> benefitListDtlInterface.onBenefitDtlMessage("Please add transaction first" , ConstantObject.vSnackBarWithButton)
+            !ConnectionObject.isNetworkAvailable(context) ->
+                benefitListDtlInterface.onAlertBenefitList(context.getString(R.string.alert_no_connection),
+                    ConstantObject.vAlertDialogNoConnection, BenefitDtlListActivity.ALERT_BENEFITDTL_LIST_NO_CONNECTION)
+            else ->{
+                isVisibleBenefitDtlProgress.set(true)
+                Handler().postDelayed({
+                    benefitListDtlInterface.onSuccessBenefit(context.getString(R.string.alert_transaction_success))
+                },2000)
+            }
+        }
     }
 }

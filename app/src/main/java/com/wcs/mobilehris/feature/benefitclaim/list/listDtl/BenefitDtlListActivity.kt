@@ -126,7 +126,7 @@ class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface, DialogI
                 return true
             }
             R.id.mnu_custom_benefit_list_save ->{
-                onBenefitDtlMessage("Coba", ConstantObject.vToastInfo)
+                activityBenefitDtlBinding.viewModel?.onPublishBenefit()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
