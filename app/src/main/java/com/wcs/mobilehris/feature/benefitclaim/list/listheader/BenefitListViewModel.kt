@@ -51,7 +51,7 @@ class BenefitListViewModel(private val context: Context,
                 mutableBenefitList.add(benefitModel)
                 benefitModel =
                     BenefitModel(
-                        "BEN-002",
+                        "BEN-003",
                         "",
                         ConstantObject.vLeaveApprove,
                         "2020-05-10"

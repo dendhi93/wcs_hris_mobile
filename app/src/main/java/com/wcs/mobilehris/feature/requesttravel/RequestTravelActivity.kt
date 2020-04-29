@@ -416,7 +416,7 @@ class RequestTravelActivity : AppCompatActivity(), RequestTravelInterface,
     }
 
     override fun selectedDisplayFriend(friendModel: FriendModel) {
-        //todo search conflicted
+        //search conflicted
         activityRequestTravelBinding.viewModel?.getConflictedFriend(friendModel.friendId.trim())
     }
 

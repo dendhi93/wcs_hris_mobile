@@ -8,8 +8,4 @@ interface BenefitTransactionInterface {
     fun onLoadSpinnerTransName(benfNameList : List<BenefitNameModel>)
     fun onLoadSpinnerPerson(personList : List<BenefitPersonModel>)
     fun onLoadSpinnerDiagnose(diagnoseList : List<DiagnoseModel>)
-//    fun onSelectedSpinnerTransName(selectedTransName : String)
-//    fun onSelectedSpinnerPerson(selectedPerson : String)
-//    fun onSelectedSpinnerDiagnose(selectedDiagnose : String)
-//    fun onSelectedSpinnerCurrency(selectedCurrency : String)
 }

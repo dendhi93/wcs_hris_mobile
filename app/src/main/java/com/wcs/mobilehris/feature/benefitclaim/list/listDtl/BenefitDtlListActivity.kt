@@ -2,21 +2,22 @@ package com.wcs.mobilehris.feature.benefitclaim.list.listDtl
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.wcs.mobilehris.R
+import com.wcs.mobilehris.application.WcsHrisApps
+import com.wcs.mobilehris.database.daos.BenefitDtlDao
 import com.wcs.mobilehris.databinding.ActivityBenefitDtlBinding
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.MessageUtils
 import com.wcs.mobilehris.utilinterface.CustomBottomSheetInterface
 import com.wcs.mobilehris.utilinterface.DialogInterface
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface, DialogInterface, CustomBottomSheetInterface {
@@ -27,6 +28,7 @@ class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface, DialogI
     private var intentBenefDtlTypeTrans = ""
     private var arrBenefitDtl = ArrayList<BenefitDtlModel>()
     private var keyDialogActive = 0
+    private lateinit var benefitDtlDao: BenefitDtlDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +36,7 @@ class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface, DialogI
         activityBenefitDtlBinding.viewModel = BenefitDtlListViewModel(this, this)
         activityBenefitDtlBinding.rcBenefDtlList.layoutManager = LinearLayoutManager(this)
         activityBenefitDtlBinding.rcBenefDtlList.setHasFixedSize(true)
+        benefitDtlDao = WcsHrisApps.database.benefitDtlDao()
     }
 
     override fun onStart() {
@@ -58,7 +61,6 @@ class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface, DialogI
         }
         benefitDtlAdapter = CustomBenefitDtlAdapter(this, arrBenefitDtl, intentBenefDtlFrom,intentBenefDtlTypeTrans)
         activityBenefitDtlBinding.rcBenefDtlList.adapter = benefitDtlAdapter
-        activityBenefitDtlBinding.viewModel?.validateDataBenefitDtl(intentBenefDtlTypeTrans, intentBenefDtlFrom)
     }
 
     override fun onLoadBenefitDtlList(benefitDtlList: List<BenefitDtlModel>) {
@@ -107,10 +109,24 @@ class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface, DialogI
         const val ALERT_BENEFITDTL_LIST_REJECT = 5
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.clear()
+        val inflater = menuInflater
+        if(intentBenefDtlFrom == ConstantObject.extra_fromIntentRequest){inflater.inflate(R.menu.menu_benefit_dtl_save, menu)}
+        return super.onPrepareOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                doAsync {
+                    benefitDtlDao.deleteAlltBenefitDtl()
+                    uiThread { finish() }
+                }
+                return true
+            }
+            R.id.mnu_custom_benefit_list_save ->{
+                onBenefitDtlMessage("Coba", ConstantObject.vToastInfo)
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -146,5 +162,21 @@ class BenefitDtlListActivity : AppCompatActivity(), BenefitDtlInterface, DialogI
     override fun onRejectTransaction(notesReject: String) {
         activityBenefitDtlBinding.viewModel?.stBenefitRejectNotes?.set(notesReject.trim())
         activityBenefitDtlBinding.viewModel?.onProcessBenefit(ALERT_BENEFITDTL_LIST_REJECT)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activityBenefitDtlBinding.viewModel?.validateDataBenefitDtl(intentBenefDtlTypeTrans, intentBenefDtlFrom)
+    }
+
+    override fun onBackPressed() {
+        doAsync {
+            benefitDtlDao.deleteAlltBenefitDtl()
+            uiThread {
+                super.onBackPressed()
+                finish()
+            }
+        }
+
     }
 }
