@@ -40,18 +40,18 @@ class BenefitDtlListViewModel(private val context: Context,
                 if(transBenefitType.trim() != ConstantObject.vNew){
                     benefitDtlModel = BenefitDtlModel("1", "2020-04-15",
                         "MEDICAL","RAWAT JALAN",
-                        "ANDIKA","100.000 IDR",
-                        "100.000 IDR","DEMAM","ISPA")
+                        "BUDI","100.000 IDR",
+                        "100.000 IDR","ISPA","ISPA")
                     mutableBenefitDtlList.add(benefitDtlModel)
                     benefitDtlModel = BenefitDtlModel("1", "2020-04-15",
                         "MEDICAL","RAWAT JALAN",
-                        "KHANIF","100.000 IDR",
-                        "100.000 IDR","DEMAM","ISPA")
+                        "CHILD 1","100.000 IDR",
+                        "100.000 IDR","ISPA","ISPA")
                     mutableBenefitDtlList.add(benefitDtlModel)
                     benefitDtlModel = BenefitDtlModel("1", "2020-04-15",
                         "MEDICAL","RAWAT JALAN",
-                        "MICHAEL","100.000 IDR",
-                        "100.000 IDR","DEMAM","ISPA")
+                        "CHILD 2","100.000 IDR",
+                        "100.000 IDR","ISPA","ISPA")
                     mutableBenefitDtlList.add(benefitDtlModel)
                 }
             }
@@ -60,18 +60,18 @@ class BenefitDtlListViewModel(private val context: Context,
                 isVisibleBenefitFab.set(false)
                 benefitDtlModel = BenefitDtlModel("1", "2020-04-15",
                     "MEDICAL","RAWAT JALAN",
-                    "ANDIKA","100.000 IDR",
-                    "100.000 IDR","DEMAM","ISPA")
+                    "BUDI","100.000 IDR",
+                    "100.000 IDR","ISPA","ISPA")
                 mutableBenefitDtlList.add(benefitDtlModel)
                 benefitDtlModel = BenefitDtlModel("1", "2020-04-15",
                     "MEDICAL","RAWAT JALAN",
-                    "KHANIF","100.000 IDR",
-                    "100.000 IDR","DEMAM","ISPA")
+                    "ISTRI","100.000 IDR",
+                    "100.000 IDR","ISPA","ISPA")
                 mutableBenefitDtlList.add(benefitDtlModel)
                 benefitDtlModel = BenefitDtlModel("1", "2020-04-15",
                     "MEDICAL","RAWAT JALAN",
-                    "MICHAEL","100.000 IDR",
-                    "100.000 IDR","DEMAM","ISPA")
+                    "CHILD","100.000 IDR",
+                    "100.000 IDR","ISPA","ISPA")
                 mutableBenefitDtlList.add(benefitDtlModel)
             }
         }

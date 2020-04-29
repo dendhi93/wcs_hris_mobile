@@ -23,6 +23,12 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
     private var intentCurrencyDesc = ""
     private var arrCurrencyCode = ArrayList<String>()
     private var arrCurrencyDesc = ArrayList<String>()
+    private var arrBenefNameCode = ArrayList<String>()
+    private var arrBenefNameDesc = ArrayList<String>()
+    private var arrPersonCode = ArrayList<String>()
+    private var arrPersonName = ArrayList<String>()
+    private var arrDiagnoseCode = ArrayList<String>()
+    private var arrDiagnoseName = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,24 +42,11 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.mipmap.ic_arrow_back)
         }
-        intentBenefitFrom = intent.getStringExtra(ConstantObject.extra_intent)
-        intentBenefitTransType = intent.getStringExtra(extraBenefitTransType)
-        intentTransType = intent.getStringExtra(extraTransType)
-        activityBenefitTransBinding.viewModel?.stBenefitDate?.set(intent.getStringExtra(extraBenefitTransDate))
-        activityBenefitTransBinding.viewModel?.stBenefitTransName?.set(intent.getStringExtra(extraBenefitTransName))
-        activityBenefitTransBinding.viewModel?.stBenefitTransPerson?.set(intent.getStringExtra(extraBenefitTransPerson))
-        activityBenefitTransBinding.viewModel?.stBenefitTransDiagnose?.set(intent.getStringExtra(extraBenefitTransDiagnose))
-        activityBenefitTransBinding.viewModel?.stBenefitTransDescription ?.set(intent.getStringExtra(extraTransDescription))
-        val transAmount = intent.getStringExtra(extraTransAmount)
-        val paidAmount = intent.getStringExtra(extraTransPaidAmount)
-        if(paidAmount != ""){ activityBenefitTransBinding.viewModel?.stBenefitPaidAmount?.set(paidAmount.split(" ")[0]) }
-        activityBenefitTransBinding.viewModel?.initDataBenefit(intentTransType)
         activityBenefitTransBinding.viewModel?.onInitCurrency()
-        if(transAmount != ""){
-            activityBenefitTransBinding.viewModel?.stBenefitTransAmount?.set(transAmount.split(" ")[0])
-            intentCurrencyDesc = transAmount.split(" ")[1]
-            onSelectedSpinnerCurrency(intentCurrencyDesc)
-        }
+        activityBenefitTransBinding.viewModel?.initBenefitName()
+        activityBenefitTransBinding.viewModel?.initPerson()
+        activityBenefitTransBinding.viewModel?.initDiagnose()
+        intentBenefit()
     }
 
     override fun onMessage(message: String, messageType: Int) {
@@ -71,18 +64,6 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
         }
     }
 
-//    override fun onSelectedSpinnerTransName(selectedTransName: String) {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun onSelectedSpinnerPerson(selectedPerson: String) {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun onSelectedSpinnerDiagnose(selectedDiagnose: String) {
-//        TODO("Not yet implemented")
-//    }
-//
     private fun onSelectedSpinnerCurrency(selectedCurrency: String) {
         when{
             arrCurrencyDesc.isNotEmpty() ->{
@@ -95,9 +76,66 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
         }
     }
 
-    override fun onSuccessAddBenefit() {
-        TODO("Not yet implemented")
+    private fun onSelectedSpinnerTransName(selectedTransname: String) {
+        when{
+            arrBenefNameDesc.isNotEmpty() ->{
+                for (i in arrBenefNameDesc.indices){
+                    when(arrBenefNameDesc[i].trim().split(" (")[0]){
+                        selectedTransname -> activityBenefitTransBinding.spReqBenefitTransName.setSelection(i)
+                    }
+                }
+            }
+        }
     }
+
+    private fun onSelectedSpinnerPerson(selectedPerson: String) {
+        when{
+            arrPersonName.isNotEmpty() ->{
+                for (i in arrPersonName.indices){
+                    when(arrPersonName[i].trim().split(" - ")[0]){
+                        selectedPerson -> activityBenefitTransBinding.spReqBenefitPerson.setSelection(i)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun onSelectedSpinnerDiagnose(selectedDiagnose: String) {
+        when{
+            arrDiagnoseName.isNotEmpty() ->{
+                for (i in arrDiagnoseName.indices){
+                    when(arrDiagnoseName[i].trim()){
+                        selectedDiagnose -> activityBenefitTransBinding.spReqBenefitDiagnose.setSelection(i)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun intentBenefit(){
+        intentBenefitFrom = intent.getStringExtra(ConstantObject.extra_intent)
+        intentBenefitTransType = intent.getStringExtra(extraBenefitTransType)
+        intentTransType = intent.getStringExtra(extraTransType)
+        activityBenefitTransBinding.viewModel?.stBenefitDate?.set(intent.getStringExtra(extraBenefitTransDate))
+        activityBenefitTransBinding.viewModel?.stBenefitTransName?.set(intent.getStringExtra(extraBenefitTransName))
+        activityBenefitTransBinding.viewModel?.stBenefitTransPerson?.set(intent.getStringExtra(extraBenefitTransPerson))
+        activityBenefitTransBinding.viewModel?.stBenefitTransDiagnose?.set(intent.getStringExtra(extraBenefitTransDiagnose))
+        activityBenefitTransBinding.viewModel?.stBenefitTransDescription ?.set(intent.getStringExtra(extraTransDescription))
+
+        onSelectedSpinnerTransName(activityBenefitTransBinding.viewModel?.stBenefitTransName?.get().toString().trim())
+        onSelectedSpinnerPerson(activityBenefitTransBinding.viewModel?.stBenefitTransPerson?.get().toString().trim())
+        onSelectedSpinnerDiagnose(activityBenefitTransBinding.viewModel?.stBenefitTransDiagnose?.get().toString().trim())
+        val paidAmount = intent.getStringExtra(extraTransPaidAmount)
+        if(paidAmount != ""){ activityBenefitTransBinding.viewModel?.stBenefitPaidAmount?.set(paidAmount.split(" ")[0]) }
+        val transAmount = intent.getStringExtra(extraTransAmount)
+        if(transAmount != ""){
+            activityBenefitTransBinding.viewModel?.stBenefitTransAmount?.set(transAmount.split(" ")[0])
+            intentCurrencyDesc = transAmount.split(" ")[1]
+            onSelectedSpinnerCurrency(intentCurrencyDesc)
+        }
+        activityBenefitTransBinding.viewModel?.initDataBenefit(intentTransType)
+    }
+    override fun onSuccessAddBenefit() {}
 
     override fun onLoadCurrencySpinner(curList: List<CurrencyModel>) {
         var index  = 0
@@ -120,15 +158,116 @@ class BenefitTransActivity : AppCompatActivity(), BenefitTransactionInterface {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
         activityBenefitTransBinding.spReqBenefitCurrency.adapter = adapter
         activityBenefitTransBinding.spReqBenefitCurrency.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                if(position > 0){
-                   val code = arrCurrencyCode[position].trim()
-                   val descCurrency = arrCurrencyDesc[position].trim()
+                   if(activityBenefitTransBinding.viewModel?.stBenefitTransAmount?.get().toString() == ""){
+                       onMessage("Please fill amount claim first", ConstantObject.vSnackBarWithButton)
+                       activityBenefitTransBinding.spReqBenefitCurrency.setSelection(0)
+                   }else{
+                       val code = arrCurrencyCode[position].trim()
+                       val descCurrency = arrCurrencyDesc[position].trim()
+                       activityBenefitTransBinding.viewModel?.
+                       stBenefitPaidAmount?.set(activityBenefitTransBinding.viewModel?.stBenefitTransAmount?.get().toString()+ " "+descCurrency.trim())
+                   }
                }
+            }
+        }
+    }
+
+    override fun onLoadSpinnerTransName(benfNameList: List<BenefitNameModel>) {
+        var index  = 0
+        for(i in benfNameList.indices){
+            when(index){
+                0 ->{
+                    arrBenefNameCode.add("")
+                    arrBenefNameDesc.add("Transaction Name")
+                    arrBenefNameCode.add(benfNameList[i].benefitCode)
+                    if(benfNameList[i].benefitHeader != ""){ arrBenefNameDesc.add(benfNameList[i].benefitDesc +" ("+benfNameList[i].benefitHeader+")")
+                    }else{arrBenefNameDesc.add(benfNameList[i].benefitDesc)}
+                }
+                else ->{
+                    arrBenefNameCode.add(benfNameList[i].benefitCode)
+                    if(benfNameList[i].benefitHeader != ""){ arrBenefNameDesc.add(benfNameList[i].benefitDesc +" ("+benfNameList[i].benefitHeader+")")
+                    }else{arrBenefNameDesc.add(benfNameList[i].benefitDesc)}
+                }
+            }
+            index += 1
+        }
+        val adapterBenefitName = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrBenefNameDesc)
+        adapterBenefitName.setDropDownViewResource(android.R.layout.simple_spinner_item)
+        activityBenefitTransBinding.spReqBenefitTransName.adapter = adapterBenefitName
+        activityBenefitTransBinding.spReqBenefitTransName.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(position > 0){
+                    val nameCode = arrBenefNameCode[position].trim()
+                    val benefdesc = arrBenefNameDesc[position].trim().split(" (")[0]
+                }
+            }
+        }
+    }
+
+    override fun onLoadSpinnerPerson(personList: List<BenefitPersonModel>) {
+        var index  = 0
+        for(i in personList.indices){
+            when(index){
+                0 ->{
+                    arrPersonCode.add("")
+                    arrPersonName.add("Accept By")
+                    arrPersonCode.add(personList[i].personId)
+                    arrPersonName.add(personList[i].personName + " - " + personList[i].personRelation)
+                }
+                else ->{
+                    arrPersonCode.add(personList[i].personId)
+                    arrPersonName.add(personList[i].personName + " - " + personList[i].personRelation)
+                }
+            }
+            index += 1
+        }
+        val adapterPerson = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrPersonName)
+        adapterPerson.setDropDownViewResource(android.R.layout.simple_spinner_item)
+        activityBenefitTransBinding.spReqBenefitPerson.adapter = adapterPerson
+        activityBenefitTransBinding.spReqBenefitPerson.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(position > 0){
+                    val personCode = arrPersonCode[position].trim()
+                    val personName = arrPersonName[position].trim().split(" - ")[0]
+                }
+            }
+        }
+    }
+
+    override fun onLoadSpinnerDiagnose(diagnoseList: List<DiagnoseModel>) {
+        var index  = 0
+        for(i in diagnoseList.indices){
+            when(index){
+                0 ->{
+                    arrDiagnoseCode.add("")
+                    arrDiagnoseName.add("Diagnose")
+                    arrDiagnoseCode.add(diagnoseList[i].diagnoseCode)
+                    arrDiagnoseName.add(diagnoseList[i].diagnoseDesc)
+                }
+                else ->{
+                    arrDiagnoseCode.add(diagnoseList[i].diagnoseCode)
+                    arrDiagnoseName.add(diagnoseList[i].diagnoseDesc)
+                }
+            }
+            index += 1
+        }
+        val adapterDiagnose = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrDiagnoseName)
+        adapterDiagnose.setDropDownViewResource(android.R.layout.simple_spinner_item)
+        activityBenefitTransBinding.spReqBenefitDiagnose.adapter = adapterDiagnose
+        activityBenefitTransBinding.spReqBenefitDiagnose.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(position > 0){
+                    val diagnoseCode = arrDiagnoseCode[position].trim()
+                    val diagnoseDesc = arrDiagnoseName[position].trim()
+                }
             }
         }
     }

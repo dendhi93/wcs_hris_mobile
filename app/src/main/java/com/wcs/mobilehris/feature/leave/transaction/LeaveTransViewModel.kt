@@ -271,7 +271,7 @@ class LeaveTransViewModel (private val context: Context,
         }
     }
 
-    //todo add api here
+    //add api here
      fun onSubmitLeave(clickAlertFrom : Int){
          isProgressLeaveTrans.set(true)
         when(clickAlertFrom) {
