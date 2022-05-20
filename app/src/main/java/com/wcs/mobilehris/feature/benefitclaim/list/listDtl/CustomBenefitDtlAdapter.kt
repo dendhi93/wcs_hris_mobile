@@ -33,27 +33,27 @@ class CustomBenefitDtlAdapter(private val context : Context,
 
     override fun onBindViewHolder(holder: CustomBenefitDtlAdapter.ViewHolder, position: Int) {
         val benfDtlModel = listBenefDtl[position]
-        holder.tvitemContent1.text = benfDtlModel.benefitDtlDate.trim()
-        holder.tvitemContent2.text = benfDtlModel.benefitType.trim()
-        holder.tvitemContent3.text = benfDtlModel.benefitName.trim()
-        holder.tvitemContent4.text = benfDtlModel.personalBenefit.trim()
-        holder.tvitemContent5.text = benfDtlModel.amountClaim.trim()
-        holder.tvitemContent6.text = benfDtlModel.paidClaim.trim()
-        holder.tvitemContent7.text = benfDtlModel.diagnoseDisease.trim()
-        holder.tvitemContent8.text = benfDtlModel.benefitDescription.trim()
+        holder.tvItemContent1.text = benfDtlModel.benefitDtlDate.trim()
+        holder.tvItemContent2.text = benfDtlModel.benefitType.trim()
+        holder.tvItemContent3.text = benfDtlModel.benefitName.trim()
+        holder.tvItemContent4.text = benfDtlModel.personalBenefit.trim()
+        holder.tvItemContent5.text = benfDtlModel.amountClaim.trim()
+        holder.tvItemContent6.text = benfDtlModel.paidClaim.trim()
+        holder.tvItemContent7.text = benfDtlModel.diagnoseDisease.trim()
+        holder.tvItemContent8.text = benfDtlModel.benefitDescription.trim()
         holder.imgBMenu.setOnClickListener { showBenefitPopUp(it, benfDtlModel) }
     }
 
     inner class  ViewHolder(view : View) : RecyclerView.ViewHolder(view){
         var imgBMenu : ImageButton = view.findViewById(R.id.imgB_menu_benefit)
-        var tvitemContent1 : TextView = view.findViewById(R.id.tvItem_content1)
-        var tvitemContent2 : TextView = view.findViewById(R.id.tvItem_content2)
-        var tvitemContent3 : TextView = view.findViewById(R.id.tvItem_content3)
-        var tvitemContent4 : TextView = view.findViewById(R.id.tvItem_content4)
-        var tvitemContent5 : TextView = view.findViewById(R.id.tvItem_content5)
-        var tvitemContent6 : TextView = view.findViewById(R.id.tvItem_content6)
-        var tvitemContent7 : TextView = view.findViewById(R.id.tvItem_content7)
-        var tvitemContent8 : TextView = view.findViewById(R.id.tvItem_content8)
+        var tvItemContent1 : TextView = view.findViewById(R.id.tvItem_content1)
+        var tvItemContent2 : TextView = view.findViewById(R.id.tvItem_content2)
+        var tvItemContent3 : TextView = view.findViewById(R.id.tvItem_content3)
+        var tvItemContent4 : TextView = view.findViewById(R.id.tvItem_content4)
+        var tvItemContent5 : TextView = view.findViewById(R.id.tvItem_content5)
+        var tvItemContent6 : TextView = view.findViewById(R.id.tvItem_content6)
+        var tvItemContent7 : TextView = view.findViewById(R.id.tvItem_content7)
+        var tvItemContent8 : TextView = view.findViewById(R.id.tvItem_content8)
     }
 
     private fun showBenefitPopUp(view : View, model : BenefitDtlModel){
