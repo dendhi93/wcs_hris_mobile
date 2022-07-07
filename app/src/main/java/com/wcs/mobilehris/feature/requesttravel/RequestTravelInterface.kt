@@ -4,7 +4,6 @@ import com.wcs.mobilehris.database.entity.ChargeCodeEntity
 import com.wcs.mobilehris.database.entity.ReasonTravelEntity
 import com.wcs.mobilehris.database.entity.TransportTypeEntity
 import com.wcs.mobilehris.feature.dtltask.FriendModel
-import com.wcs.mobilehris.utilinterface.ActionInterface
 import com.wcs.mobilehris.utilinterface.DialogInterface
 
 interface RequestTravelInterface : DialogInterface {
