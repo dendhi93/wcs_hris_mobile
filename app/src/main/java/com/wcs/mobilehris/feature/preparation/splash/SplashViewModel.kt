@@ -1,7 +1,7 @@
 package com.wcs.mobilehris.feature.preparation.splash
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
@@ -12,7 +12,6 @@ import com.wcs.mobilehris.connection.ApiRepo.ApiCallback
 import com.wcs.mobilehris.connection.ConnectionObject
 import com.wcs.mobilehris.database.daos.*
 import com.wcs.mobilehris.database.entity.*
-import com.wcs.mobilehris.feature.menu.MenuActivity
 import com.wcs.mobilehris.util.ConstantObject
 import com.wcs.mobilehris.util.Preference
 import org.jetbrains.anko.doAsync
@@ -21,9 +20,10 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 
-class SplashViewModel(private var _context : Context,
-                      private var _splashInterface: SplashInterface,
-                      private var apiRepo: ApiRepo) : ViewModel() {
+class SplashViewModel(
+    @SuppressLint("StaticFieldLeak") private var _context : Context,
+    private var _splashInterface: SplashInterface,
+    private var apiRepo: ApiRepo) : ViewModel() {
 
     val stErrDownload = ObservableField("")
     val isPrgBarVisible = ObservableField(false)
